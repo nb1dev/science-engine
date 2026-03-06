@@ -1,0 +1,164 @@
+{
+  "_doc": "Compiled from dysbiosis_taxa_assessment.md — Dysbiosis marker interpretation rules",
+  "_version": "1.0",
+
+  "taxa_panels": {
+    "F_nucleatum": {
+      "full_name": "Fusobacterium nucleatum",
+      "detection_level": "Species (cannot distinguish clade C1 commensal vs C2 pathogenic)",
+      "healthy_range": "Undetectable to <0.01% in 70-80% of healthy individuals",
+      "thresholds": {
+        "normal": {"max": 0.01, "interpretation": "Reassuring — no CRC-associated marker"},
+        "trace": {"max": 0.01, "interpretation": "Borderline — assess SCFA context"},
+        "elevated": {"min": 0.01, "max": 0.1, "interpretation": "Dysbiosis marker — moderate concern"},
+        "notably_elevated": {"min": 0.1, "max": 0.5, "interpretation": "Strong dysbiosis marker — assess SCFA context"},
+        "significantly_elevated": {"min": 0.5, "interpretation": "Highest risk — clinical follow-up recommended"}
+      },
+      "metaPhlAn_limitation": "Cannot distinguish pathogenic clade C2 from commensal C1"
+    },
+    "S_gallolyticus": {
+      "full_name": "Streptococcus gallolyticus",
+      "detection_level": "Species (cannot distinguish subsp. gallolyticus CRC vs pasteurianus not-CRC)",
+      "healthy_range": "Typically undetectable in >95% of healthy individuals",
+      "thresholds": {
+        "normal": {"max": 0.001, "interpretation": "Reassuring — consistent with absence"},
+        "detected": {"min": 0.001, "interpretation": "CRITICAL: subspecies identity unknown — clinical significance indeterminate"}
+      },
+      "metaPhlAn_limitation": "Most critical limitation — only subsp. gallolyticus is CRC-associated, but MetaPhlAn cannot distinguish"
+    },
+    "P_anaerobius": {
+      "full_name": "Peptostreptococcus anaerobius",
+      "detection_level": "Species-level reliable",
+      "healthy_range": "<0.5% typical",
+      "thresholds": {
+        "absent": {"max": 0.0, "interpretation": "No proteolytic dysbiosis marker"},
+        "low": {"max": 0.1, "interpretation": "Normal variation — reassuring"},
+        "mildly_elevated": {"min": 0.1, "max": 0.5, "interpretation": "Monitor in SCFA context"},
+        "notably_elevated": {"min": 0.5, "max": 1.0, "interpretation": "Dysbiosis marker — assess SCFA producers"},
+        "significantly_elevated": {"min": 1.0, "interpretation": "Strong dysbiosis signature"}
+      },
+      "metaPhlAn_limitation": "None significant — species-level detection reliable"
+    },
+    "E_Shigella": {
+      "full_name": "Escherichia-Shigella",
+      "detection_level": "Genus (E. coli and Shigella grouped)",
+      "healthy_range": "0.5-3% typical, present in 80-90% of healthy individuals",
+      "thresholds": {
+        "absent": {"max": 0.0, "interpretation": "Unusual — minimal facultative colonization, supports obligate anaerobe dominance"},
+        "low_normal": {"max": 1.0, "interpretation": "Within/below healthy range"},
+        "normal_borderline": {"min": 1.0, "max": 3.0, "interpretation": "Healthy range — assess context"},
+        "elevated": {"min": 3.0, "max": 5.0, "interpretation": "Dysbiosis marker — assess SCFA context"},
+        "significantly_elevated": {"min": 5.0, "interpretation": "Strong dysbiosis signature (typical in IBD)"}
+      },
+      "metaPhlAn_limitation": "Cannot detect pks+ genotoxin-producing strains (colibactin DNA damage)"
+    }
+  },
+
+  "overall_assessment_patterns": {
+    "all_absent": {
+      "label": "Reassuring",
+      "interpretation": "All four dysbiosis-associated taxa undetected, consistent with healthy compositional state",
+      "client_text": "No high-risk bacterial markers were detected — this is a positive sign for your gut health."
+    },
+    "single_detected_low": {
+      "label": "Contextual",
+      "interpretation": "One taxon detected at low levels — assess in context of SCFA producers",
+      "client_text": "One marker was detected at low levels. This is common and not necessarily concerning, especially when your beneficial bacteria are active."
+    },
+    "multiple_detected": {
+      "label": "Dysbiosis signature",
+      "interpretation": "Multiple taxa detected — compositional dysbiosis pattern present",
+      "client_text": "Several markers associated with gut imbalance were detected. This aligns with the other patterns we see and is something we can address."
+    },
+    "convergent_with_low_scfa": {
+      "label": "Convergent dysbiosis",
+      "interpretation": "Elevated dysbiosis taxa AND depleted SCFA producers — multiple lines of evidence indicate protein-driven dysbiotic state",
+      "client_text": "Multiple indicators point toward an imbalanced gut environment where protein-fermenting bacteria have gained ground over beneficial ones. This is the most important area to address."
+    }
+  },
+
+  "concordance_matrix": {
+    "description": "How dysbiosis markers align with SCFA/guild patterns",
+    "patterns": [
+      {"dysbiosis": "All absent", "scfa": "High", "proteolytic": "Low", "interpretation": "Optimal concordance — healthy"},
+      {"dysbiosis": "Trace/low", "scfa": "High", "proteolytic": "Low", "interpretation": "Favorable — robust SCFA suppresses dysbiosis"},
+      {"dysbiosis": "Elevated", "scfa": "High", "proteolytic": "Low", "interpretation": "Divergent — mixed signal, stable alternative state"},
+      {"dysbiosis": "Elevated", "scfa": "Low", "proteolytic": "Low", "interpretation": "Partial dysbiosis — early compositional shift"},
+      {"dysbiosis": "Elevated", "scfa": "Low", "proteolytic": "High", "interpretation": "Convergent dysbiosis — multiple markers align"}
+    ]
+  },
+
+  "disease_associated_abundances": {
+    "F_nucleatum": {
+      "CRC": {"range": "0.01-5%", "median": "1-2%", "fold_enrichment": "36-132x vs healthy"},
+      "adenoma": {"range": "0.05-1%", "fold_enrichment": "15-50x"},
+      "IBD": {"range": "0.05-1%", "fold_enrichment": "10-20x"}
+    },
+    "S_gallolyticus": {
+      "CRC": {"present_in": "50-70% of CRC samples", "range": "0.001-2%"},
+      "adenoma": {"present_in": "30-50%"},
+      "healthy": {"absent_in": "~95%"}
+    },
+    "P_anaerobius": {
+      "CRC": {"range": "0.1-1%"},
+      "IBD": {"range": "0.1-1%"},
+      "healthy": {"range": "<0.5%"}
+    },
+    "E_Shigella": {
+      "CRC": {"range": "1-5%", "note": "pks+ strains enriched"},
+      "Crohns": {"range": "5-15%", "note": "notably elevated"},
+      "healthy": {"range": "0.5-3%", "present_in": "80-90%"}
+    }
+  },
+
+  "clinical_followup_criteria": {
+    "recommend_followup_if": [
+      "Any taxon above red flag threshold (F.n. >0.1%, S.g. detected, P.a. >0.5%, E-S >5%)",
+      "Multiple taxa (2+) detected simultaneously above trace",
+      "Elevated taxa + depleted SCFA producers (F.prausnitzii <2%, Roseburia <1%)",
+      "Client reports GI symptoms (chronic diarrhea, blood in stool, abdominal pain)",
+      "Family history of CRC",
+      "Personal history of polyps or IBD",
+      "Age >=50 without recent colonoscopy"
+    ],
+    "monitor_only_if": [
+      "Single taxon trace/borderline with robust SCFA producers",
+      "E-S 1-3% (healthy range) with no other markers",
+      "Asymptomatic with favorable compositional pattern"
+    ]
+  },
+
+  "interpretation_templates": {
+    "F_nucleatum": {
+      "absent": "Fusobacterium nucleatum undetected (<0.001%). Reassuring; no CRC-associated compositional marker present.",
+      "trace": "Trace F. nucleatum detected ({abundance}%). Borderline; MetaPhlAn cannot distinguish pathogenic clade C2 from commensal C1. If SCFA robust, likely transient.",
+      "elevated": "F. nucleatum elevated at {abundance}%. Dysbiosis marker; epidemiologically associated with CRC (36-132× enrichment). MetaPhlAn limitation: cannot confirm clade C2 (pathogenic).",
+      "significant": "F. nucleatum notably elevated at {abundance}%. Strong dysbiosis marker with high CRC risk association. Clinical attention warranted if accompanied by GI symptoms or family history."
+    },
+    "S_gallolyticus": {
+      "absent": "Streptococcus gallolyticus undetected. No compositional marker detected. Reassuring.",
+      "detected": "S. gallolyticus detected at {abundance}%. CRITICAL LIMITATION: MetaPhlAn cannot distinguish subsp. gallolyticus (CRC-associated) from subsp. pasteurianus (not CRC-associated). Clinical significance indeterminate without subspecies confirmation."
+    },
+    "P_anaerobius": {
+      "absent": "Peptostreptococcus anaerobius undetected. No proteolytic dysbiosis marker present.",
+      "low": "P. anaerobius low at {abundance}%. Normal variation; reassuring.",
+      "elevated": "P. anaerobius elevated at {abundance}%. Dysbiosis marker associated with CRC and IBD. Indicates proteolytic metabolism shift.",
+      "significant": "P. anaerobius significantly elevated at {abundance}%. Strong dysbiosis signature. Clinical follow-up recommended if symptomatic."
+    },
+    "E_Shigella": {
+      "absent": "Escherichia-Shigella undetected. Unusual; indicates minimal facultative colonization, consistent with robust obligate anaerobe dominance.",
+      "low_normal": "E-S at {abundance}%. Low-normal; within healthy range. No dysbiosis marker.",
+      "normal": "E-S at {abundance}%. Within healthy range (0.5-3%). Normal commensal presence. MetaPhlAn cannot detect pks+ genotoxin-producing strains.",
+      "elevated": "E-S elevated at {abundance}%. Dysbiosis marker; above healthy range. MetaPhlAn limitation: cannot detect pks+ genotoxin strains specifically associated with CRC.",
+      "significant": "E-S significantly elevated at {abundance}%. Strong dysbiosis marker (typical in IBD). This abundance indicates compositional shift toward facultative dominance."
+    }
+  },
+
+  "scenario_wording_templates": {
+    "all_absent": "All four dysbiosis-associated taxa undetected (<0.001%), consistent with healthy compositional state. No CRC-associated markers present. This profile aligns with {scfa_status} SCFA producer abundance, confirming {metabolism_type} metabolism.",
+    "es_only_normal": "Three CRC-associated markers undetected (F. nucleatum, S. gallolyticus, P. anaerobius all <0.001%). Escherichia-Shigella at {es_abundance}% within healthy range (0.5-3%), consistent with normal commensal E. coli presence. Overall: No dysbiosis signature.",
+    "single_elevated": "{taxon_name} detected at {abundance}% ({classification}). {metaPhlAn_note}. Other CRC-associated markers absent. SCFA producers: {scfa_status}. {contextual_assessment}.",
+    "multiple_detected": "Multiple dysbiosis-associated taxa detected: {taxa_list}. Compositional dysbiosis signature present. SCFA producers: {scfa_status}. {convergence_assessment}. Clinical follow-up recommended if symptomatic.",
+    "convergent_dysbiosis": "CONVERGENT DYSBIOSIS SIGNATURE: {n_taxa} dysbiosis-associated taxa elevated {taxa_list} AND SCFA producers depleted (Faecalibacterium {fp}%, Roseburia {ros}%). Multiple lines of compositional evidence indicate protein-driven dysbiotic state. Clinical follow-up recommended."
+  }
+}

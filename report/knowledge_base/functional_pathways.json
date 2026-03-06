@@ -1,0 +1,69 @@
+{
+  "_doc": "Compiled from functional_pathways.txt — Pathway interpretation algorithm",
+  "_version": "1.0",
+
+  "capacity_interpretation": {
+    "unweighted_vs_weighted": {
+      "approximately_equal": "Pathways are complete and stable — category functioning reliably",
+      "unweighted_much_higher": "Pathways detected but fragmented — coverage gaps limit efficiency",
+      "both_below_0.0005": "Metabolic category is minimal — functionally marginal",
+      "both_above_0.0015": "Strong metabolic capacity — important functional contributor"
+    }
+  },
+
+  "carrier_redundancy": {
+    "thresholds": {
+      "high": {"min": 0.70, "label": "High redundancy", "meaning": "Multiple carriers per pathway; robust. Loss of one has minimal impact."},
+      "moderate": {"min": 0.40, "max": 0.70, "label": "Moderate redundancy", "meaning": "Most pathways have backup; some dominated. Selective loss can affect flow."},
+      "low": {"min": 0.20, "max": 0.40, "label": "Low redundancy", "meaning": "Many pathways rely on 1-2 carriers. Fragile."},
+      "very_low": {"max": 0.20, "label": "Very low redundancy", "meaning": "Single-carrier pathways dominate. Loss = functional collapse."}
+    }
+  },
+
+  "pathway_character": {
+    "complete_resilient": {"criteria": "coverage=1.0 AND pielou>=0.60 AND n_carriers>=10", "risk": "LOW"},
+    "working_incomplete": {"criteria": "0.6<=coverage<1.0 AND pielou>=0.40 AND n_carriers>=5", "risk": "MODERATE"},
+    "single_carrier": {"criteria": "coverage>=0 AND pielou<0.40", "risk": "HIGH"},
+    "absent": {"criteria": "coverage=0 AND relab≈0", "risk": "CRITICAL if essential"}
+  },
+
+  "category_status_rules": {
+    "strong_stable": {
+      "criteria": "capacity_unweighted >= 0.0015 AND median_pielou >= 0.65",
+      "client_frame": "Your microbiome reliably produces [function]. This is a strength."
+    },
+    "working_at_risk": {
+      "criteria": "0.0005 <= capacity < 0.0015 AND 0.40 <= median_pielou < 0.65",
+      "client_frame": "Your microbiome produces [function], but a few key species carry most of the load. Supporting these species would strengthen resilience."
+    },
+    "severely_limited": {
+      "criteria": "capacity < 0.0005 OR median_pielou < 0.40",
+      "client_frame": "This metabolic capacity is at risk and may need targeted intervention."
+    }
+  },
+
+  "metabolic_hierarchy": {
+    "tier_0_foundational": ["SCFA metabolism", "Central carbon metabolism"],
+    "tier_1_cofactor": ["B vitamins (B1, B2, B5, B6, B7, B9, B12, K)", "Amino acid synthesis (BCAA, tryptophan)"],
+    "tier_2_secondary": ["Tryptophan metabolism", "Other specialty metabolisms"],
+    "bottleneck_scoring": {
+      "severe": "≥2 bottlenecks in Tier 0 — cascading effects likely",
+      "high": "≥2 bottlenecks in Tier 1 — cofactor deficiency limits enzyme function",
+      "manageable": "<1 bottleneck — specific interventions can address"
+    }
+  },
+
+  "scfa_interpretation": {
+    "key_pathways": {
+      "PWY-7111": "Pyruvate fermentation to isobutanol — alternative SCFA, not protective butyrate",
+      "PWY-5676": "Classical butyrate pathway (acetyl-CoA) — the protective pathway",
+      "CENTFERM-PWY": "Butanoate fermentation — primary butyrate route",
+      "PWY-6583": "Pyruvate to butanoate — secondary butyrate pathway"
+    },
+    "quality_control": {
+      "concern": "F. prausnitzii/Roseburia detected but PWY-5676 absent",
+      "likely_cause": "Incomplete reference database, low sequencing depth, or HUMAnN annotation limitations",
+      "guidance": "Assume butyrate capacity present based on taxonomic detection. Confirm with fecal SCFA measurement if clinical concern."
+    }
+  }
+}

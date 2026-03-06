@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "source": "Supplement_Formulation_Generation_Framework_v3.0.md (Rule 6.X)",
+    "description": "Therapeutic dose escalation rules when client reports confirmed vitamin deficiency."
+  },
+  "decision_logic": {
+    "deficiency_with_active_symptoms": "Use THERAPEUTIC MAINTENANCE DOSE (highest tier)",
+    "deficiency_without_symptoms": "Use ENHANCED STANDARD DOSE (moderate increase)",
+    "symptoms_only_no_confirmed_deficiency": "Use STANDARD CSV DOSE (from vitamins_minerals.json)"
+  },
+  "therapeutic_dose_table": [
+    {
+      "vitamin": "Vitamin D",
+      "standard_dose": {"value": 20, "unit": "mcg", "iu": 800},
+      "enhanced_dose": {"value": 37.5, "unit": "mcg", "iu": 1500},
+      "therapeutic_dose": {"value": 50, "unit": "mcg", "iu": 2000},
+      "upper_limit": {"value": 100, "unit": "mcg", "iu": 4000},
+      "monitoring_required": "Calcium levels",
+      "masking_risk": "Nonspecific symptoms (fatigue, mood, immune) delay diagnosis"
+    },
+    {
+      "vitamin": "Vitamin B12",
+      "standard_dose": {"value": 50, "unit": "mcg"},
+      "enhanced_dose": {"value": 500, "unit": "mcg"},
+      "therapeutic_dose": {"value": 1000, "unit": "mcg"},
+      "upper_limit": null,
+      "monitoring_required": "Neurological symptoms",
+      "masking_risk": "B12 + Perimenopause: fatigue, brain fog, low mood attributed to hormonal changes. Delays treatment of neurological symptoms (pins/needles, numbness, balance, memory)."
+    },
+    {
+      "vitamin": "Folate (B9)",
+      "standard_dose": {"value": 200, "unit": "mcg"},
+      "enhanced_dose": {"value": 400, "unit": "mcg"},
+      "therapeutic_dose": {"value": 800, "unit": "mcg"},
+      "upper_limit": {"value": 1000, "unit": "mcg"},
+      "monitoring_required": "Methylation status",
+      "masking_risk": null
+    },
+    {
+      "vitamin": "Iron",
+      "standard_dose": {"value": 6, "unit": "mg"},
+      "enhanced_dose": {"value": 18, "unit": "mg"},
+      "therapeutic_dose": {"value": 25, "unit": "mg", "max": 30},
+      "upper_limit": {"value": 45, "unit": "mg"},
+      "monitoring_required": "CBC, ferritin",
+      "masking_risk": "Fatigue attributed to stress/lifestyle delays treatment"
+    },
+    {
+      "vitamin": "Vitamin B6",
+      "standard_dose": {"value": 0.9, "unit": "mg"},
+      "enhanced_dose": {"value": 10, "unit": "mg"},
+      "therapeutic_dose": {"value": 25, "unit": "mg"},
+      "upper_limit": {"value": 100, "unit": "mg"},
+      "monitoring_required": "Neuropathy risk",
+      "masking_risk": null
+    },
+    {
+      "vitamin": "Magnesium",
+      "standard_dose": {"value": 250, "unit": "mg"},
+      "enhanced_dose": {"value": 350, "unit": "mg"},
+      "therapeutic_dose": {"value": 400, "unit": "mg"},
+      "upper_limit": {"value": 400, "unit": "mg"},
+      "monitoring_required": "GI tolerance",
+      "masking_risk": null
+    }
+  ],
+  "client_sheet_template": "Higher dose ({therapeutic} vs standard {standard}) addresses your reported {vitamin} deficiency{symptom_suffix}. {monitoring_recommendation}.",
+  "questionnaire_fields_required": [
+    "reported_deficiencies",
+    "vitamin_deficiencies",
+    "medical_history"
+  ]
+}

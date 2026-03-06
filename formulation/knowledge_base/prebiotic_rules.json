@@ -1,0 +1,172 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "sources": [
+      "Required_Prebiotic_List_by_Mix.md",
+      "Prebiotic_Dosing_Design_Rules.md",
+      "Supplement_Formulation_Generation_Framework_v3.0.md"
+    ],
+    "description": "Complete prebiotic selection and dosing rules. Combines per-mix prebiotic requirements, CFU-based dosing, sensitivity clamps, and contradiction override logic."
+  },
+
+  "dosing_by_cfu_tier": {
+    "50B": {"total_g_range": [4, 6], "high_sensitivity": [3, 4], "moderate": [4, 6], "low_high_tolerance": [6, 8]},
+    "75B": {"total_g_range": [5, 9], "high_sensitivity": [4, 5], "moderate": [5, 7], "low_high_tolerance": [7, 9]},
+    "100B": {"total_g_range": [6, 10], "high_sensitivity": [5, 6], "moderate": [6, 8], "low_high_tolerance": [8, 10]},
+    "50B_mix8": {"total_g_range": [7, 9], "high_sensitivity": [5, 6], "moderate": [6, 7], "low_high_tolerance": [7, 9], "note": "Mix 8 HIGH LOAD strategy for aggressive Fiber guild expansion"}
+  },
+
+  "mix8_titration_protocol": {
+    "weeks_1_2": {"g_range": [5, 6], "description": "Adaptation period, assess tolerance"},
+    "weeks_3_4": {"g_range": [7, 8], "description": "Competitive pressure begins"},
+    "weeks_5_16": {"g_range": [7, 9], "description": "Sustained Fiber guild expansion"}
+  },
+
+  "prebiotic_threshold_warning": {
+    "threshold_g": 10,
+    "action": "RAISE WARNING: Extremely high fiber load — Review clinical necessity",
+    "assessment": ["Clinical urgency", "Client tolerance", "Adherence impact"],
+    "historical_precedent": "Batch 001 includes 9.5g load — used successfully. ≥10g requires heightened scrutiny."
+  },
+
+  "per_mix_prebiotics": {
+    "mix_1": {
+      "mix_name": "Dysbiosis Recovery",
+      "must_include": ["GOS", "Inulin", "FOS", "Beta-glucans"],
+      "highly_recommended": ["Quercetin", "Psyllium"],
+      "optional": ["Curcumin", "Apple polyphenols"],
+      "contradiction_overrides": {
+        "gas_bloating_ibs_d_fodmap": {
+          "replace": {"FOS": "PHGG", "GOS": "PHGG or beta-glucans", "medium_high_inulin": "PHGG ± psyllium"},
+          "keep": ["beta-glucans"],
+          "note": "Can keep trace FOS/inulin (0.5-1g) for substrate signalling"
+        }
+      }
+    },
+    "mix_2": {
+      "mix_name": "Bifidogenic Restore",
+      "must_include": ["GOS", "Inulin", "FOS"],
+      "highly_recommended": ["Lactulose", "Beta-glucans"],
+      "optional": ["Apple polyphenols", "Fermented pomegranate polyphenols"],
+      "contradiction_overrides": {
+        "gas_bloating_ibs_d_fodmap": {
+          "replace": {"GOS_bulk": "PHGG + beta-glucans", "FOS_bulk": "PHGG", "pure_inulin": "PHGG ± psyllium"},
+          "note": "Keep very small GOS/FOS only if tolerated; otherwise fully PHGG-dominant"
+        }
+      }
+    },
+    "mix_3": {
+      "mix_name": "Butyrate Specialist",
+      "must_include": ["Inulin", "FOS", "Resistant starch", "Beta-glucans"],
+      "highly_recommended": ["GOS", "Psyllium"],
+      "optional": ["Quercetin", "Curcumin"],
+      "contradiction_overrides": {
+        "gas_histamine_ibs_d_fodmap": {
+          "replace": {"large_inulin": "PHGG + beta-glucans", "large_FOS": "PHGG"},
+          "keep": ["beta-glucans"],
+          "note": "Glucomannan optional for constipation/weight. Keep minimal inulin/FOS for strain targeting."
+        }
+      }
+    },
+    "mix_4": {
+      "mix_name": "Proteolytic Suppression",
+      "must_include": ["GOS", "Inulin", "FOS"],
+      "highly_recommended": ["Psyllium", "Beta-glucans"],
+      "optional": ["Quercetin", "Apple polyphenols", "Propolis"],
+      "contradiction_overrides": {
+        "gas_sibo_fodmap_ibs_d": {
+          "replace": {"FOS_GOS_inulin_mass": "PHGG (primary) + beta-glucans"},
+          "note": "When SIBO suspected, can temporarily avoid all FOS/GOS/inulin completely and run PHGG-dominant"
+        }
+      }
+    },
+    "mix_5": {
+      "mix_name": "Mucus Barrier Restoration",
+      "must_include": ["GOS", "Inulin", "FOS"],
+      "highly_recommended": ["Psyllium", "Beta-glucans", "PHGG"],
+      "optional": ["Quercetin", "Apple polyphenols", "Pomegranate polyphenols"],
+      "contradiction_overrides": {
+        "gas_fodmap_ibs_d_histamine": {
+          "replace": {"GOS_and_larger_FOS": "PHGG + psyllium + beta-glucans", "medium_high_inulin": "PHGG as main, psyllium secondary"},
+          "keep": ["Safflower fiber"],
+          "note": "Safflower fiber is gentle, skin/barrier-oriented, less FODMAP-like"
+        }
+      }
+    },
+    "mix_6": {
+      "mix_name": "Maintenance Gold Standard",
+      "must_include": ["GOS", "Inulin", "FOS", "Beta-glucans"],
+      "highly_recommended": ["Psyllium"],
+      "optional": ["Quercetin", "Apple polyphenols"],
+      "contradiction_overrides": {
+        "any_gi_sensitivity_fodmap": {
+          "replace": {"GOS": "PHGG + beta-glucans", "higher_inulin": "PHGG ± psyllium", "FOS_bulk": "PHGG"},
+          "keep": ["beta-glucans"],
+          "note": "Keep minimal FOS for Akkermansia/Bifido signalling"
+        }
+      }
+    },
+    "mix_7": {
+      "mix_name": "Psychobiotic",
+      "must_include": ["Inulin", "FOS", "Resistant starch", "GOS"],
+      "highly_recommended": ["Beta-glucans", "Quercetin"],
+      "optional": ["Curcumin", "Omega-3"],
+      "note": "Resistant starch particularly important for L. fermentum LF16 (GABA production)",
+      "contradiction_overrides": {
+        "gas_fodmap_sibo_stress_sensitivity": {
+          "replace": {"most_inulin_and_FOS": "PHGG + beta-glucans", "GOS": "PHGG"},
+          "note": "Keep tiny amounts of RS-like substrate via beta-glucans + PHGG"
+        }
+      }
+    },
+    "mix_8": {
+      "mix_name": "Fiber Expansion & Competitive Displacement",
+      "must_include": ["Beta-glucans", "Psyllium/Arabinoxylan", "Resistant Starch", "Inulin"],
+      "must_include_doses": {"Inulin": "1.0-1.5g moderate dose"},
+      "highly_recommended": ["GOS", "FOS"],
+      "highly_recommended_doses": {"GOS": "0.5-1.0g trace", "FOS": "0.5g trace"},
+      "optional": ["Quercetin", "Beta-carotene"],
+      "optional_doses": {"Quercetin": "200-400mg (not antimicrobial dose)"},
+      "strategy": "HIGH LOAD — complex polysaccharides that Bacteroidetes/Firmicutes excel at but Akkermansia doesn't preferentially use",
+      "contradiction_overrides": {
+        "bloating_fodmap_gas": {
+          "replace": {"beta_glucan_bulk": "PHGG (2.5-3.0g as primary gentle fiber)"},
+          "keep": ["Psyllium (min 1.0g)", "RS (1.0-1.5g)"],
+          "reduce": {"GOS_inulin": "trace only (0.5g each max)", "FOS": "replace with PHGG"}
+        }
+      }
+    }
+  },
+
+  "condition_specific_additions": {
+    "description": "Optional layers that can be added on top of core prebiotic pairing, within total gram budget",
+    "metabolic": {
+      "high_cholesterol": ["beta-glucans", "bergamot", "plant sterols"],
+      "high_triglycerides": ["EPA/DHA ~2g", "PHGG or beta-glucans"],
+      "blood_sugar": ["PHGG", "beta-glucans", "psyllium", "glucomannan"]
+    },
+    "immune": {
+      "infection_susceptibility": ["quercetin", "propolis or royal jelly", "moderate fiber base"]
+    },
+    "skin": {
+      "barrier_focused": ["safflower fiber", "apple polyphenols", "PHGG or beta-glucans"]
+    },
+    "appetite": {
+      "weight_management": ["glucomannan", "PHGG or psyllium", "capsicum extract"]
+    },
+    "stress": {
+      "gut_brain_axis": ["polyphenol-heavy layer", "omega-3", "PHGG-dominant, low-moderate fiber"]
+    },
+    "integration_rule": "Condition-specific additions must fit within CFU-based total gram range, clamped by sensitivity band. Core + additions = one total prebiotic load."
+  },
+
+  "polyphenol_antimicrobial_thresholds": {
+    "description": "Doses above these ranges have documented antimicrobial activity — use supplement doses below these",
+    "quercetin": {"antimicrobial_range_mg": [500, 1000], "note": "New nutritionist-confirmed dose 300-500mg is at lower bound of antimicrobial range. 300-400mg is safe for microbiome modulation; avoid >500mg."},
+    "curcumin": {"antimicrobial_range_mg": [500, 2000]},
+    "fermented_pomegranate": {"antimicrobial_range_mg": [500, 1000]},
+    "apple_polyphenol_extract": {"prebiotic_range_mg": [300, 600], "antimicrobial_range_mg": [1000, null]},
+    "propolis": {"antimicrobial_range_mg": [300, 1000]},
+    "royal_jelly": {"antimicrobial_range_mg": [150, 1000]}
+  }
+}

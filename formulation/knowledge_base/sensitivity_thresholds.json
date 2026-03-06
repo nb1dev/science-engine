@@ -1,0 +1,54 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "source": "Supplement_Formulation_Generation_Framework_v3.0.md (Rule 2.2)",
+    "description": "Client sensitivity classification based on questionnaire digestive symptoms. Determines prebiotic dosing clamp."
+  },
+  "classification_rules": {
+    "high_sensitivity": {
+      "criteria": {
+        "operator": "OR",
+        "conditions": [
+          {"field": "bloating_severity", "operator": ">=", "value": 7, "description": "Bloating ≥7/10"},
+          {"field": "bloating_frequency", "operator": "==", "value": "daily", "description": "Daily bloating"},
+          {"field": "stool_type", "operator": "in", "value": [6, 7], "description": "Bristol type 6-7 (loose/watery)"},
+          {"field": "digestive_satisfaction", "operator": "<=", "value": 3, "description": "Digestive satisfaction ≤3/10"}
+        ]
+      },
+      "prebiotic_clamp": "lowest end of CFU band (3-5g)",
+      "max_prebiotic_g": 7,
+      "notes": "Reduce FODMAP substrates, favor PHGG/beta-glucans"
+    },
+    "moderate_sensitivity": {
+      "criteria": {
+        "operator": "AND",
+        "conditions": [
+          {"field": "bloating_severity", "operator": "between", "value": [4, 6], "description": "Bloating 4-6/10"},
+          {"field": "stool_type", "operator": "in", "value": [3, 4, 5], "description": "Bristol type 3-5"}
+        ]
+      },
+      "prebiotic_clamp": "mid-range",
+      "max_prebiotic_g": 9,
+      "notes": "Standard prebiotic approach with monitoring"
+    },
+    "low_sensitivity": {
+      "criteria": {
+        "operator": "AND",
+        "conditions": [
+          {"field": "bloating_severity", "operator": "<=", "value": 3, "description": "Bloating ≤3/10"},
+          {"field": "digestive_satisfaction", "operator": ">=", "value": 7, "description": "Digestive satisfaction ≥7/10"}
+        ]
+      },
+      "prebiotic_clamp": "upper end (up to 8-10g)",
+      "max_prebiotic_g": 10,
+      "notes": "Full prebiotic load permissible"
+    }
+  },
+  "default_classification": "moderate_sensitivity",
+  "questionnaire_fields_required": [
+    "bloating_severity",
+    "bloating_frequency",
+    "stool_type",
+    "digestive_satisfaction"
+  ]
+}

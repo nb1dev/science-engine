@@ -1,0 +1,15 @@
+# science-engine — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# AWS (Bedrock LLM + S3)
+boto3>=1.34.0
+
+# Bioinformatics / ML
+numpy>=1.24.0
+pandas>=2.0.0
+joblib>=1.3.0
+scikit-learn>=1.3.0
+
+# Visualisation (report dashboards)
+matplotlib>=3.7.0
+seaborn>=0.12.0

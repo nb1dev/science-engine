@@ -1,0 +1,520 @@
+{
+  "metadata": {
+    "version": "1.1.0",
+    "source_csv": "documents/supplement_module/final/vitamins_minerals.csv",
+    "generated_at": "2026-02-23T21:20:23.213290Z",
+    "record_count": 20,
+    "typo_corrections_applied": [
+      "Maganese",
+      "3rd Choide"
+    ],
+    "description": "Vitamins & minerals reference — doses, interactions, timing. Source of truth: CSV."
+  },
+  "global_safety_principles": {
+    "spacing_rules": {
+      "mineral_mineral_spacing_hours": 2,
+      "mineral_antibiotic_spacing_hours_range": [
+        2,
+        6
+      ],
+      "rationale": "Minerals compete for absorption transporters; spacing prevents competitive inhibition"
+    },
+    "timing_optimization": {
+      "fat_soluble_vitamins": {
+        "vitamins": [
+          "A",
+          "D",
+          "E",
+          "K"
+        ],
+        "requirement": "Take with fat-containing meals for optimal absorption"
+      },
+      "water_soluble_vitamins": {
+        "vitamins": [
+          "B-complex",
+          "C"
+        ],
+        "requirement": "Flexible timing; some better on empty stomach (B9, B12)"
+      },
+      "minerals": "Generally with food to reduce GI upset; exceptions noted per nutrient"
+    },
+    "key_synergies": {
+      "b_vitamin_complex": "B vitamins work synergistically; best taken together",
+      "calcium_vitamin_d": "Vitamin D required for calcium absorption",
+      "iron_vitamin_c": "Vitamin C enhances iron absorption by 3-4x",
+      "copper_zinc_ratio": "Maintain 1:8-15 ratio to prevent competitive inhibition"
+    }
+  },
+  "vitamins_and_minerals": [
+    {
+      "id": "thiamin",
+      "substance": "Thiamin (B1)",
+      "supplement_type": "Vitamin",
+      "subcategory": "Immune System; Skin Quality; Metabolism",
+      "max_intake_in_supplements": "1.2 mg/d",
+      "rationale": "Energy/metab.; immune; nervous sys.",
+      "interaction_risk": "Minimal; Mg synergistic; diuretics↑loss",
+      "timing_in_protocol": "Anytime w/wo food; morning pref.",
+      "notes": "Very safe; indefinite maintenance; monitor alcoholics/diabetics/diuretics.",
+      "parsed": {
+        "dose": {
+          "value": 1.2,
+          "unit": "mg",
+          "raw": "1.2 mg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Skin Quality",
+          "Metabolism"
+        ],
+        "interaction_level": "minimal"
+      }
+    },
+    {
+      "id": "riboflavin",
+      "substance": "Riboflavin (B2)",
+      "supplement_type": "Vitamin",
+      "subcategory": "Immune System; Fatigue; Skin Quality; Metabolism",
+      "max_intake_in_supplements": "1.1 mg/d",
+      "rationale": "Energy/metab.; immune; skin",
+      "interaction_risk": "Minimal; B vitamins synergistic",
+      "timing_in_protocol": "Anytime w/ breakfast; flexible",
+      "notes": "Safe; yellow urine harmless; monitor IBD/post-antibiotics.",
+      "parsed": {
+        "dose": {
+          "value": 1.1,
+          "unit": "mg",
+          "raw": "1.1 mg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Fatigue",
+          "Skin Quality",
+          "Metabolism"
+        ],
+        "interaction_level": "minimal"
+      }
+    },
+    {
+      "id": "niacin",
+      "substance": "Niacin (B3)",
+      "supplement_type": "Vitamin",
+      "subcategory": "Immune System; Fatigue; Skin Quality; Metabolism",
+      "max_intake_in_supplements": "Nicotinamide: 160 mg/d",
+      "rationale": "Energy/metab.; immune; skin",
+      "interaction_risk": "Flushing (IR forms); avoid alcohol; ↑uric acid gout",
+      "timing_in_protocol": "Extended-release w/ food/bedtime; avoid hot/spicy",
+      "notes": "Flushing harmless, tolerance 1wk; >500mg liver risk—supervise; monitor LFTs; pregnant women should not exceed 16 mg/d",
+      "parsed": {
+        "dose": {
+          "form": "Nicotinamide",
+          "value": 160.0,
+          "unit": "mg",
+          "raw": "160 mg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Fatigue",
+          "Skin Quality",
+          "Metabolism"
+        ],
+        "interaction_level": "high"
+      }
+    },
+    {
+      "id": "pantothenic_acid",
+      "substance": "Pantothenic acid (B5)",
+      "supplement_type": "Vitamin",
+      "subcategory": "Fatigue; Metabolism",
+      "max_intake_in_supplements": "5 mg/d",
+      "rationale": "Energy/metab.",
+      "interaction_risk": "Minimal; B vitamins synergistic",
+      "timing_in_protocol": "Anytime; morning optimal",
+      "notes": "Very safe, no UL; indefinite w/ B-complex.",
+      "parsed": {
+        "dose": {
+          "value": 5.0,
+          "unit": "mg",
+          "raw": "5 mg/d"
+        },
+        "health_claims": [
+          "Fatigue",
+          "Metabolism"
+        ],
+        "interaction_level": "minimal"
+      }
+    },
+    {
+      "id": "vitamin_b6",
+      "substance": "Vitamin B6",
+      "supplement_type": "Vitamin",
+      "subcategory": "Immune System; Fatigue; Hormonal activity; Metabolism",
+      "max_intake_in_supplements": "0.9 mg/d",
+      "rationale": "Energy/metab.; immune; nervous sys.; DNA/methyl.",
+      "interaction_risk": "AVOID w/ levodopa (space 2h); >200mg neuropathy",
+      "timing_in_protocol": "Morning w/ breakfast; w/ food",
+      "notes": "Monitor >50mg (neuropathy risk); 3-6mo course; w/ folate/B12.",
+      "parsed": {
+        "dose": {
+          "value": 0.9,
+          "unit": "mg",
+          "raw": "0.9 mg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Fatigue",
+          "Hormonal activity",
+          "Metabolism"
+        ],
+        "interaction_level": "high"
+      }
+    },
+    {
+      "id": "folate",
+      "substance": "Folate (B9)",
+      "supplement_type": "Vitamin",
+      "subcategory": "Immune System; Fatigue",
+      "max_intake_in_supplements": "200 mcg/d",
+      "rationale": "Immune; DNA/methyl.",
+      "interaction_risk": "CAUTION anticonvulsants (↑dose); space meds 2h",
+      "timing_in_protocol": "Empty stomach AM; w/ Vit C",
+      "notes": "Pair w/ B12; pregnancy 400mcg preconception; monitor homocysteine.",
+      "parsed": {
+        "dose": {
+          "value": 200.0,
+          "unit": "mcg",
+          "raw": "200 mcg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Fatigue"
+        ],
+        "interaction_level": "medium"
+      }
+    },
+    {
+      "id": "vitamin_b12",
+      "substance": "Vitamin B12",
+      "supplement_type": "Vitamin",
+      "subcategory": "Immune System; Fatigue; Metabolism",
+      "max_intake_in_supplements": "25 mcg/d",
+      "rationale": "Energy/metab.; nervous sys.; DNA/methyl.",
+      "interaction_risk": "AVOID metformin/PPIs; space Ca 2h",
+      "timing_in_protocol": "Empty stomach AM; sublingual pref.",
+      "notes": "Indefinite vegans/≥50yo; IM if malabsorption; neuropathy risk untreated.",
+      "parsed": {
+        "dose": {
+          "value": 25.0,
+          "unit": "mcg",
+          "raw": "25 mcg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Fatigue",
+          "Metabolism"
+        ],
+        "interaction_level": "high"
+      }
+    },
+    {
+      "id": "biotin",
+      "substance": "Biotin (B7)",
+      "supplement_type": "Vitamin",
+      "subcategory": "Fatigue; Skin Quality",
+      "max_intake_in_supplements": "300 mcg/d",
+      "rationale": "Energy/metab.; skin",
+      "interaction_risk": ">2500mcg lab interference (thyroid/troponin)",
+      "timing_in_protocol": "Anytime; consistency > timing",
+      "notes": "30-50 mcg/d for general health maintenance; 150-300 mcg/d for skin/nail/hair formula",
+      "parsed": {
+        "dose": {
+          "value": 300.0,
+          "unit": "mcg",
+          "raw": "300 mcg/d"
+        },
+        "health_claims": [
+          "Fatigue",
+          "Skin Quality"
+        ],
+        "interaction_level": "low"
+      }
+    },
+    {
+      "id": "vitamin_a",
+      "substance": "Vitamin A",
+      "supplement_type": "Vitamin",
+      "subcategory": "Immune System; Skin Quality",
+      "max_intake_in_supplements": "0.2 mg/d",
+      "rationale": "Immune; skin; bone health",
+      "interaction_risk": "CONTRAINDICATED pregnancy >10k IU; +alcohol hepato",
+      "timing_in_protocol": "W/ fat meal; space minerals 2h",
+      "notes": "Retinol toxic >25k IU chronic; β-carotene safe preg.",
+      "parsed": {
+        "dose": {
+          "value": 0.2,
+          "unit": "mg",
+          "raw": "0.2 mg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Skin Quality"
+        ],
+        "interaction_level": "contraindicated"
+      }
+    },
+    {
+      "id": "vitamin_d",
+      "substance": "Vitamin D",
+      "supplement_type": "Vitamin",
+      "subcategory": "Immune System",
+      "max_intake_in_supplements": "20 mcg/d",
+      "rationale": "Immune; bone health",
+      "interaction_risk": "Bolus dosing toxicity risk; daily pref.",
+      "timing_in_protocol": "W/ fat meals daily AM; space minerals",
+      "notes": "Daily 800-1000IU safe; target 40-60ng/mL; UL 4000IU.",
+      "parsed": {
+        "dose": {
+          "value": 20.0,
+          "unit": "mcg",
+          "raw": "20 mcg/d"
+        },
+        "health_claims": [
+          "Immune System"
+        ],
+        "interaction_level": "low"
+      }
+    },
+    {
+      "id": "vitamin_c",
+      "substance": "Vitamin C",
+      "supplement_type": "Vitamin",
+      "subcategory": "Immune System; Fatigue; Skin Quality; Metabolism",
+      "max_intake_in_supplements": "250 mg/d",
+      "rationale": "Immune; skin",
+      "interaction_risk": ">2g kidney stones; avoid Cu high-dose",
+      "timing_in_protocol": "anytime",
+      "notes": "Safe <2g; enhances Fe; GI upset >2g.",
+      "parsed": {
+        "dose": {
+          "value": 250.0,
+          "unit": "mg",
+          "raw": "250 mg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Fatigue",
+          "Skin Quality",
+          "Metabolism"
+        ],
+        "interaction_level": "high"
+      }
+    },
+    {
+      "id": "vitamin_e",
+      "substance": "Vitamin E",
+      "supplement_type": "Vitamin",
+      "subcategory": "",
+      "max_intake_in_supplements": "180 mg/d",
+      "rationale": "Immune; eyes; skin",
+      "interaction_risk": "Avoid with Anticoagulants (vit E can increase the risk of bleeding) and Statins and niacins (vit E can potentially reduce their effects)",
+      "timing_in_protocol": "Anytime w/wo food; w/ food",
+      "notes": "Vitamin E shouldn’t be taken by cancer patients undergoing chemotherapy, as the antioxidants in vitamin E can alter effectiveness of the chemo.",
+      "parsed": {
+        "dose": {
+          "value": 180.0,
+          "unit": "mg",
+          "raw": "180 mg/d"
+        },
+        "health_claims": [],
+        "interaction_level": "high"
+      }
+    },
+    {
+      "id": "calcium",
+      "substance": "Calcium",
+      "supplement_type": "Mineral",
+      "subcategory": "Metabolism",
+      "max_intake_in_supplements": "500 mg/d",
+      "rationale": "Bone health; immune",
+      "interaction_risk": "Competes Fe/Zn/Mg/tetracyclines (space 2h)",
+      "timing_in_protocol": "W/ meals; day",
+      "notes": "Split doses; constip.—hydrate/fiber; w/ Vit D.",
+      "parsed": {
+        "dose": {
+          "value": 500.0,
+          "unit": "mg",
+          "raw": "500 mg/d"
+        },
+        "health_claims": [
+          "Metabolism"
+        ],
+        "interaction_level": "low"
+      }
+    },
+    {
+      "id": "copper",
+      "substance": "Copper",
+      "supplement_type": "Mineral",
+      "subcategory": "Immune System; Metabolism",
+      "max_intake_in_supplements": "1 mg/d",
+      "rationale": "Energy/metab.; immune",
+      "interaction_risk": "Zn imbalance (1:8-15 ratio); Cu+VitC oxidative",
+      "timing_in_protocol": "W/ meals AM; space Fe/Zn 2h",
+      "notes": "Toxicity >10k mcg; inhibits probiotics high-dose.",
+      "parsed": {
+        "dose": {
+          "value": 1.0,
+          "unit": "mg",
+          "raw": "1 mg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Metabolism"
+        ],
+        "interaction_level": "low"
+      }
+    },
+    {
+      "id": "iodine",
+      "substance": "Iodine",
+      "supplement_type": "Mineral",
+      "subcategory": "Metabolism; Hormonal Activity; Skin Quality",
+      "max_intake_in_supplements": "100 mcg/d\n150 mcg/d (for pregnant and lactating women)",
+      "rationale": "Thyroid/horm.; energy/metab.; nervous sys.",
+      "interaction_risk": "Triggers thyroid autoimm.; +Li goiter",
+      "timing_in_protocol": "Anytime AM; consistent",
+      "notes": "UL 1100mcg; test TSH preg.; seaweed variable.",
+      "parsed": {
+        "dose": {
+          "value": 100.0,
+          "unit": "mcg",
+          "raw": "100 mcg/d\n150 mcg/d (for pregnant and lactating women)"
+        },
+        "health_claims": [
+          "Metabolism",
+          "Hormonal Activity",
+          "Skin Quality"
+        ],
+        "interaction_level": "low"
+      }
+    },
+    {
+      "id": "iron",
+      "substance": "Iron",
+      "supplement_type": "Mineral",
+      "subcategory": "Immune System; Metabolism; Fatigue",
+      "max_intake_in_supplements": "6 mg/d",
+      "rationale": "Energy/metab.; immune",
+      "interaction_risk": "Competes Ca/Zn/antibiotics (space 2-6h)",
+      "timing_in_protocol": "Empty stomach w/ VitC; AM",
+      "notes": "Split/alt-day dosing GI; men avoid; retest ferritin.",
+      "parsed": {
+        "dose": {
+          "value": 6.0,
+          "unit": "mg",
+          "raw": "6 mg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Metabolism",
+          "Fatigue"
+        ],
+        "interaction_level": "low"
+      }
+    },
+    {
+      "id": "magnesium",
+      "substance": "Magnesium",
+      "supplement_type": "Mineral",
+      "subcategory": "Fatigue; Metabolism",
+      "max_intake_in_supplements": "250 mg/d",
+      "rationale": "Energy/metab.; nervous sys.; bone health",
+      "interaction_risk": "Competes Ca/Fe (space); antibiotics",
+      "timing_in_protocol": "Evening/bedtime; w/ food",
+      "notes": "Glycinate best; diarrhea >500mg; indefinite.",
+      "parsed": {
+        "dose": {
+          "value": 250.0,
+          "unit": "mg",
+          "raw": "250 mg/d"
+        },
+        "health_claims": [
+          "Fatigue",
+          "Metabolism"
+        ],
+        "interaction_level": "low"
+      }
+    },
+    {
+      "id": "manganese",
+      "substance": "Manganese",
+      "supplement_type": "Mineral",
+      "subcategory": "Metabolism",
+      "max_intake_in_supplements": "0.5 mg/d",
+      "rationale": "Energy/metab.; bone health",
+      "interaction_risk": "Neurotoxic >10mg; competes Fe",
+      "timing_in_protocol": "Anytime w/ food; space 2h",
+      "notes": "Rare def.; UL 11mg; toxicity >deficiency.",
+      "parsed": {
+        "dose": {
+          "value": 0.5,
+          "unit": "mg",
+          "raw": "0.5 mg/d"
+        },
+        "health_claims": [
+          "Metabolism"
+        ],
+        "interaction_level": "low"
+      }
+    },
+    {
+      "id": "selenium",
+      "substance": "Selenium",
+      "supplement_type": "Mineral",
+      "subcategory": "Immune System; Thyroid Function",
+      "max_intake_in_supplements": "40 mcg/d",
+      "rationale": "Immune; thyroid/horm.; energy/metab.",
+      "interaction_risk": "Toxicity >400mcg (selenosis)",
+      "timing_in_protocol": "Protein breakfast AM",
+      "notes": "UL 400mcg; Brazil nuts variable; 3-6mo therapeutic.",
+      "parsed": {
+        "dose": {
+          "value": 40.0,
+          "unit": "mcg",
+          "raw": "40 mcg/d"
+        },
+        "health_claims": [
+          "Immune System",
+          "Thyroid Function"
+        ],
+        "interaction_level": "low"
+      }
+    },
+    {
+      "id": "zinc",
+      "substance": "Zinc",
+      "supplement_type": "Mineral",
+      "subcategory": "Immune System; Skin Quality; Hormonal Activity",
+      "max_intake_in_supplements": "11mg/d for men and 8mg/d for women",
+      "rationale": "Immune; skin; energy/metab.",
+      "interaction_risk": "Competes Ca/Mg/Fe/Cu (space 2h); antibiotics",
+      "timing_in_protocol": "AM light food; space minerals",
+      "notes": "Max dosage 40mg/d",
+      "parsed": {
+        "dose": {
+          "male": 11.0,
+          "female": 8.0,
+          "unit": "mg",
+          "frequency": "daily",
+          "raw": "11mg/d for men and 8mg/d for women"
+        },
+        "health_claims": [
+          "Immune System",
+          "Skin Quality",
+          "Hormonal Activity"
+        ],
+        "interaction_level": "low"
+      }
+    }
+  ]
+}

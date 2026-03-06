@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "source": "Supplement_Formulation_Generation_Framework_v3.0.md (Step 7.5)",
+    "description": "Universal timing optimization rules for sleep-support components and goal-dependent adaptogens."
+  },
+  "universal_rules": [
+    {
+      "rule_id": 1,
+      "name": "Magnesium Evening Timing for Sleep Support",
+      "trigger": {
+        "operator": "OR",
+        "conditions": [
+          {"field": "sleep_quality", "operator": "<=", "value": 7},
+          {"field": "goals", "operator": "contains", "value": "improve_sleep"}
+        ]
+      },
+      "action": {
+        "component": "Magnesium",
+        "timing": "evening",
+        "delivery": "evening_hard_capsule",
+        "dose_mg": 250,
+        "instructions": "Take 1-2 hours before bed"
+      },
+      "rationale": "Magnesium supports sleep through melatonin production, muscle relaxation, and GABA receptor modulation. Time-sensitive — requires evening dosing.",
+      "else_action": {
+        "timing": "evening",
+        "delivery": "evening_hard_capsule",
+        "rationale": "Magnesium is ALWAYS evening timing (1-2h before bed) regardless of sleep goal. Dosing (1 vs 2 capsules) depends on need scoring."
+      }
+    },
+    {
+      "rule_id": 2,
+      "name": "Ashwagandha Goal-Priority Dependent Timing",
+      "trigger": {
+        "field": "top_priority_goal",
+        "description": "Determined by highest-ranked client goal or severity assessment"
+      },
+      "decision_tree": {
+        "if_top_goal_sleep": {
+          "timing": "evening",
+          "delivery": "evening_hard_capsule",
+          "rationale": "Sleep improvement is primary goal; evening cortisol reduction optimizes sleep onset"
+        },
+        "if_top_goal_energy_or_focus": {
+          "timing": "morning",
+          "delivery": "morning_hard_capsule",
+          "rationale": "Energy/focus is primary goal; daytime HPA modulation supports sustained energy"
+        },
+        "if_top_goal_stress_anxiety": {
+          "tie_breaking": {
+            "if_sleep_lte_6": "evening",
+            "if_energy_lt_4": "morning",
+            "default": "evening"
+          }
+        },
+        "if_multiple_top_priorities": {
+          "if_sleep_lte_6_and_energy_gte_5": "evening",
+          "if_energy_lt_4_and_sleep_gte_6": "morning",
+          "default": "evening"
+        }
+      }
+    },
+    {
+      "rule_id": 3,
+      "name": "L-Theanine Sleep Synergy Logic",
+      "trigger": {
+        "operator": "AND",
+        "conditions": [
+          {"description": "Magnesium placed evening (per Rule 1)"},
+          {"description": "L-theanine is included in formulation"},
+          {"field": "goals", "operator": "contains", "value": "improve_sleep"}
+        ]
+      },
+      "action": {
+        "component": "L-Theanine",
+        "timing": "evening",
+        "delivery": "evening_hard_capsule",
+        "join_with": "Magnesium",
+        "typical_capsule": "250mg Mg + 200mg L-theanine = 450mg (69% capacity)",
+        "rationale": "Sleep support duo — magnesium for physical relaxation, L-theanine for mental calm"
+      },
+      "else_action": {
+        "timing": "morning",
+        "delivery": "morning_sachet",
+        "rationale": "Daytime calm focus without sedation"
+      }
+    }
+  ],
+  "evening_capsule_composition": {
+    "purpose": "Sleep optimization when magnesium is evening-timed",
+    "include": ["Magnesium", "L-Theanine", "Melatonin", "Glycine"],
+    "exclude": ["Quercetin", "Antioxidants", "General botanicals", "Immune vitamins", "Digestive enzymes"],
+    "capacity_limit_mg": 650,
+    "rationale": "Evening capsule = sleep-focused. Avoid mixing sleep + non-sleep functions."
+  }
+}

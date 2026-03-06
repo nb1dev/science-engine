@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "source": "Supplement_Formulation_Generation_Framework_v3.0.md (Universal CLR Decision Framework + Mix Selection)",
+    "description": "CLR-based guild decision trees for mix selection refinement and prebiotic dosing strategy. CLR = Competitive Landscape Ratio."
+  },
+  "clr_interpretation": {
+    "positive_above_0.3": "Guild is WINNING competition (enriched relative to ecosystem baseline)",
+    "negative_below_neg0.3": "Guild is LOSING competition (depleted relative to ecosystem baseline)",
+    "near_zero": "Guild at EQUILIBRIUM with ecosystem baseline (-0.3 to +0.3)",
+    "directionality_principle": "Only use 'Feed What's Winning' for guilds you WANT to expand. For guilds you WANT suppressed (mucin, proteolytic), negative CLR is FAVORABLE."
+  },
+  "diagnostic_ratios": {
+    "CUR": {"name": "Carbohydrate Utilization Ratio", "positive": "Carbohydrate-driven", "negative": "Protein-driven"},
+    "FCR": {"name": "Fermentation Completion Ratio", "positive": "Direct pathway dominance", "negative": "Constrained terminal processing"},
+    "MDR": {"name": "Mucus Dependency Ratio", "positive": "Mucus-dependent (unfavorable)", "negative": "Diet-fed (favorable)"},
+    "PPR": {"name": "Putrefaction Pressure Ratio", "positive": "Protein fermentation pressure", "negative": "SCFA dominance (favorable)"}
+  },
+  "mix_selection_triggers": {
+    "mix_1": {
+      "name": "Dysbiosis Recovery",
+      "primary_triggers": ["post_antibiotic_use", "very_low_microbial_abundance", "GMWI2_score_low", "severe_dysbiosis"],
+      "secondary_triggers": ["AAD_risk", "CDAD_risk", "very_low_diversity"]
+    },
+    "mix_2": {
+      "name": "Bifidogenic Restore",
+      "primary_triggers": ["Bifidobacteria_below_20pct", "Bifidobacteria_absent"],
+      "secondary_triggers": ["IBS_constipation", "post_dysbiosis_bifido_recovery"]
+    },
+    "mix_3": {
+      "name": "Butyrate Specialist",
+      "primary_triggers": ["butyrate_producers_below_10pct", "Faecalibacterium_below_5pct"],
+      "secondary_triggers": ["fatigue", "loss_of_appetite", "constipation", "barrier_dysfunction"],
+      "clr_refinement": "If FCR <0, confirms terminal processing constrained"
+    },
+    "mix_4": {
+      "name": "Proteolytic Suppression",
+      "primary_triggers": ["proteolytic_guild_high", "PPR_above_0.5"],
+      "secondary_triggers": ["malodorous_stool", "food_sensitivities", "brain_fog"]
+    },
+    "mix_5": {
+      "name": "Mucus Barrier Restoration",
+      "primary_triggers": ["Akkermansia_above_10pct_AND_MDR_below_neg0.5"],
+      "pattern": "Akkermansia >10% + diet-fed → barrier dysfunction IS the issue",
+      "secondary_triggers": ["leaky_gut", "food_sensitivities"]
+    },
+    "mix_6": {
+      "name": "Maintenance Gold Standard",
+      "primary_triggers": ["healthy_recovering_gut", "sustained_eubiosis", "post_acute_maintenance"],
+      "secondary_triggers": ["chronic_IBD_UC", "liver_support"]
+    },
+    "mix_7": {
+      "name": "Psychobiotic",
+      "primary_triggers": ["stress_gte_5_with_gut_brain_involvement"],
+      "secondary_triggers": ["IBS_with_psychological_overlay"],
+      "enhancement_rule": "LP815 added when stress≥6/10 OR sleep≤4/10"
+    },
+    "mix_8": {
+      "name": "Fiber Expansion & Competitive Displacement",
+      "primary_triggers_ALL_must_be_met": [
+        "Akkermansia_above_10pct",
+        "MDR_above_pos0.5",
+        "Fiber_Degraders_below_30pct"
+      ],
+      "pattern": "Akkermansia >10% + mucus-dependent + substrate bottleneck",
+      "mechanism": "Competitive displacement via Fiber guild expansion rather than direct Akkermansia suppression",
+      "expected_trajectory": {
+        "weeks_2_4": "Fiber guild expansion begins",
+        "weeks_4_8": "Akkermansia pressure reduces",
+        "weeks_8_12": "MDR normalizes (mucus → diet-fed transition)",
+        "weeks_12_16": "Akkermansia stabilizes 1-4%"
+      }
+    }
+  },
+  "akkermansia_decision_tree": {
+    "description": "When Akkermansia >10%, use MDR to choose between Mix 5 and Mix 8",
+    "if_MDR_above_pos0.5": {
+      "interpretation": "Mucus-dependent metabolism",
+      "if_Fiber_below_30pct": {"select": "Mix 8", "strategy": "HIGH prebiotic load (7-9g complex polysaccharides)"},
+      "if_Fiber_above_30pct": {"select": "Mix 1 or Mix 6", "note": "Substrate adequate, other factors"}
+    },
+    "if_MDR_below_neg0.5": {
+      "interpretation": "Diet-fed but Akkermansia still high",
+      "select": "Mix 5",
+      "strategy": "Moderate prebiotics (5-6g), barrier support"
+    },
+    "if_MDR_between": {
+      "interpretation": "Transitional",
+      "select": "Assess additional patterns (FCR, CUR, symptoms)",
+      "default": "Substrate expansion (boost Fiber)"
+    }
+  },
+  "guild_specific_clr_decisions": {
+    "fiber_degraders": {
+      "low_positive_clr": {"pattern": "<30% + CLR >+0.3", "interpretation": "Substrate-limited, not competition-limited", "strategy": "HIGH substrate load (7-9g)", "mechanism": "Feed what's winning"},
+      "low_negative_clr": {"pattern": "<30% + CLR <-0.3", "interpretation": "Double problem (low + losing)", "strategy": "Add fiber-fermenting strains + moderate substrate"},
+      "adequate_negative_clr": {"pattern": "30-50% + CLR <-0.3", "interpretation": "Adequate now but declining", "strategy": "Assess competitor, targeted intervention"}
+    },
+    "bifidobacteria": {
+      "absent": {"pattern": "<1%", "strategy": "Direct restoration (Mix 2) + oligosaccharides", "note": "CLR undefined when absent"},
+      "depleted_negative_clr": {"pattern": "1-2% + CLR <-0.5", "strategy": "Mix 2 + HIGH oligosaccharides (GOS, inulin)"},
+      "adequate_positive_clr": {"pattern": "2-10% + CLR >+0.3", "strategy": "Maintain via standard oligosaccharides"}
+    },
+    "butyrate_producers": {
+      "low_negative_clr": {"pattern": "<10% + CLR <-0.5", "strategy": "Mix 3 + high RS/inulin. Check FCR."},
+      "low_positive_clr": {"pattern": "<10% + CLR >+0.3", "strategy": "Add strains (Mix 3) AND increase substrate"},
+      "adequate_negative_clr": {"pattern": "10-25% + CLR <-0.3", "strategy": "Boost upstream substrate (Fiber, Cross-Feeder)"}
+    },
+    "mucin_degraders": {
+      "low_negative_favorable": {"pattern": "<5% + CLR <-0.5 + MDR <-0.5", "interpretation": "FAVORABLE suppression", "strategy": "DO NOT boost — this is optimal"},
+      "high_positive_unfavorable": {"pattern": ">10% + CLR >+0.5 + MDR >+0.5", "interpretation": "Mucus-dependent", "strategy": "Mix 8 — competitive displacement"}
+    },
+    "proteolytic": {
+      "minimal_negative_favorable": {"pattern": "1-3% + CLR <-1.0 + PPR <-1.0", "interpretation": "IDEAL state", "strategy": "DO NOT boost — maintain suppression"},
+      "elevated_positive_unfavorable": {"pattern": ">5% + CLR >+0.5 + PPR >+0.5", "interpretation": "Protein fermentation pressure", "strategy": "Mix 4 + HIGH fiber load"}
+    }
+  },
+  "prebiotic_load_by_clr_pattern": {
+    "positive_clrs": {"range_g": [7, 9], "rationale": "Competitive guilds substrate-limited, rapid expansion potential"},
+    "mixed_clrs": {"range_g": [6, 7], "rationale": "Some competition issues, substrate helps"},
+    "negative_clrs": {"range_g": [4, 6], "rationale": "Competition problem primary, substrate secondary"},
+    "presence_abundance_mismatch_positive": {"range_g": [7, 9], "rationale": "Unlock compressed genetic potential"}
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "source": "Questionnaire goal fields → supplement health claim categories mapping",
+    "description": "Maps questionnaire goal identifiers to health claim categories used in supplement selection."
+  },
+  "goal_mappings": {
+    "boost_energy_reduce_fatigue": {
+      "health_claims": ["Fatigue", "Metabolism"],
+      "vitamin_claims": ["Immune System", "Fatigue", "Metabolism"],
+      "description": "Energy and fatigue reduction"
+    },
+    "increase_energy_reduce_fatigue": {
+      "health_claims": ["Fatigue", "Metabolism"],
+      "vitamin_claims": ["Immune System", "Fatigue", "Metabolism"],
+      "description": "Energy and fatigue reduction (alias)"
+    },
+    "improve_skin_health": {
+      "health_claims": ["Skin Quality"],
+      "vitamin_claims": ["Skin Quality"],
+      "description": "Skin quality improvement"
+    },
+    "improve_skin": {
+      "health_claims": ["Skin Quality"],
+      "vitamin_claims": ["Skin Quality"],
+      "description": "Skin quality improvement (alias)"
+    },
+    "improve_sleep": {
+      "health_claims": ["Sleep Quality"],
+      "vitamin_claims": [],
+      "triggers_timing_rules": true,
+      "description": "Sleep quality improvement"
+    },
+    "improve_sleep_quality": {
+      "health_claims": ["Sleep Quality"],
+      "vitamin_claims": [],
+      "triggers_timing_rules": true,
+      "description": "Sleep quality improvement (alias)"
+    },
+    "reduce_stress_anxiety": {
+      "health_claims": ["Stress/Anxiety"],
+      "vitamin_claims": [],
+      "description": "Stress and anxiety reduction"
+    },
+    "improve_mood_reduce_anxiety": {
+      "health_claims": ["Stress/Anxiety"],
+      "vitamin_claims": ["Fatigue"],
+      "description": "Mood improvement and anxiety reduction (alias)"
+    },
+    "improve_digestion": {
+      "health_claims": ["Bowel Function", "Abdominal Discomfort", "Flatulence"],
+      "vitamin_claims": [],
+      "description": "Digestive health improvement"
+    },
+    "improve_digestion_gut_comfort": {
+      "health_claims": ["Bowel Function", "Abdominal Discomfort", "Flatulence"],
+      "vitamin_claims": [],
+      "description": "Digestive health improvement (alias)"
+    },
+    "reduce_bloating_irregular_stool": {
+      "health_claims": ["Bowel Function", "Flatulence", "Abdominal Discomfort"],
+      "vitamin_claims": [],
+      "description": "Bloating and stool regularity"
+    },
+    "resolve_bloating_irregular_stool": {
+      "health_claims": ["Bowel Function", "Flatulence", "Abdominal Discomfort"],
+      "vitamin_claims": [],
+      "description": "Bloating and stool regularity (alias)"
+    },
+    "improve_focus_concentration": {
+      "health_claims": ["Concentration", "Memory & Cognition"],
+      "vitamin_claims": ["Fatigue", "Metabolism"],
+      "description": "Cognitive function and focus"
+    },
+    "strengthen_immune_system": {
+      "health_claims": ["Infection Susceptibility"],
+      "vitamin_claims": ["Immune System"],
+      "description": "Immune system support"
+    },
+    "strengthen_immune_resilience": {
+      "health_claims": ["Infection Susceptibility"],
+      "vitamin_claims": ["Immune System"],
+      "description": "Immune system resilience (alias)"
+    },
+    "longevity_healthy_aging": {
+      "health_claims": ["Anti-inflammatory"],
+      "vitamin_claims": ["Immune System", "Metabolism"],
+      "description": "Longevity and healthy aging"
+    },
+    "general_wellness_healthy_aging": {
+      "health_claims": ["Anti-inflammatory"],
+      "vitamin_claims": ["Immune System", "Metabolism"],
+      "description": "General wellness and healthy aging (alias)"
+    },
+    "weight_management": {
+      "health_claims": ["Fullness/Satiety"],
+      "vitamin_claims": ["Metabolism"],
+      "description": "Weight management and appetite control"
+    },
+    "improve_mood": {
+      "health_claims": ["Stress/Anxiety"],
+      "vitamin_claims": ["Fatigue"],
+      "description": "Mood improvement"
+    },
+    "support_heart_health": {
+      "health_claims": ["Blood Cholesterol", "Triglycerides"],
+      "vitamin_claims": ["Metabolism"],
+      "description": "Cardiovascular health support"
+    },
+    "balance_blood_sugar": {
+      "health_claims": ["Blood Sugar"],
+      "vitamin_claims": ["Metabolism"],
+      "description": "Blood sugar regulation"
+    },
+    "microbiome_restoration": {
+      "health_claims": ["Microbiome Restoration"],
+      "vitamin_claims": [],
+      "description": "General microbiome restoration",
+      "note": "This is primarily addressed by synbiotic mix selection, not supplement health claims"
+    }
+  },
+  "microbiome_signal_to_vitamin_claims": {
+    "description": "Microbiome-driven vitamin needs (from metagenomic signals, not questionnaire)",
+    "biotin_limited_producer": {
+      "vitamin_claim": "Biotin",
+      "trigger": "biotin_producers_detected < 3 out of 4",
+      "vitamin": "Biotin (B7)"
+    },
+    "folate_risk": {
+      "vitamin_claim": "Folate",
+      "trigger": "folate_risk_score >= 2",
+      "vitamin": "Folate (B9)"
+    },
+    "b12_inverse_signal": {
+      "vitamin_claim": "B12",
+      "trigger": "b12_inverse_signal_present",
+      "vitamin": "Vitamin B12"
+    },
+    "b_complex_risk": {
+      "vitamin_claim": "B-Complex",
+      "trigger": "b_complex_risk_score >= 2",
+      "vitamins": ["Thiamin (B1)", "Riboflavin (B2)", "Niacin (B3)", "Pantothenic acid (B5)", "Vitamin B6"]
+    }
+  }
+}

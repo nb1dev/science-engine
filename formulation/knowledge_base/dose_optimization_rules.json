@@ -1,0 +1,48 @@
+{
+  "metadata": {
+    "version": 1,
+    "description": "JSON-driven dose optimization rules for evening capsule assembly. The DoseOptimizer is the ONLY layer allowed to change upstream-selected doses. Each change is within KB min-max range and documented with explicit reasons.",
+    "created": "2026-03-05",
+    "changelog": [
+      "v1: Ashwagandha + L-Theanine single-capsule fit rule"
+    ]
+  },
+  "rules": [
+    {
+      "id": "ashwagandha_theanine_single_capsule",
+      "enabled": true,
+      "description": "Flex Ashwagandha to 450mg + L-Theanine at source dose into Evening Capsule 1 when Quercetin is absent, to eliminate Evening Capsule 2 and reduce total daily units.",
+      "scope": {
+        "delivery": "evening_hard_capsule",
+        "requires": ["Ashwagandha", "L-Theanine"],
+        "forbidden": ["Quercetin"]
+      },
+      "constraints": {
+        "Ashwagandha": {
+          "kb_min_mg": 300,
+          "kb_max_mg": 600,
+          "allowed_direction": "decrease_only"
+        },
+        "L-Theanine": {
+          "respect_source_dose": true
+        },
+        "capsule": {
+          "capacity_mg": 650,
+          "target_fill_mg": 650,
+          "allow_excipient": true
+        }
+      },
+      "action": {
+        "type": "set_combination_dose_if_exact_fit",
+        "combination": [
+          { "name": "Ashwagandha", "target_mg": 450 },
+          { "name": "L-Theanine", "use_source_dose": true }
+        ],
+        "metadata": {
+          "optimized_reason": "evening_capsule_fit_optimization",
+          "note": "Adjusted Ashwagandha within KB range (300-600mg) to create a single full evening capsule with L-Theanine, reducing total daily unit count."
+        }
+      }
+    }
+  ]
+}

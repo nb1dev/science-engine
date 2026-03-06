@@ -1,0 +1,157 @@
+{
+  "_doc": "Compiled from Dietary_Context_Inference.md — CLR ratio dietary pattern inference",
+  "_version": "1.0",
+
+  "core_principle": "Metabolic signatures suggest dietary patterns but cannot confirm actual intake. Pattern → hypothesis, not pattern → confirmed diet.",
+
+  "clr_dietary_patterns": {
+    "CUR_high": {
+      "trigger": "CUR > +0.5",
+      "likely_diet": "High fiber intake, moderate-to-low protein",
+      "consistent_with": ["High vegetable/whole grain intake", "Adequate resistant starch", "Moderate protein consumption"],
+      "intervention": "Maintenance focus — system functioning well"
+    },
+    "CUR_low": {
+      "trigger": "CUR < -0.5",
+      "likely_diet": "Low fiber, high protein OR inadequate fermentable fiber",
+      "consistent_with": ["Low vegetable/whole grain intake", "High animal protein", "Processed food dominance", "Very fast transit time"],
+      "intervention": "Increase fermentable fiber substrates, consider phased protein modulation"
+    },
+    "CUR_balanced": {
+      "trigger": "CUR -0.5 to +0.5",
+      "likely_diet": "Moderate fiber and protein balance",
+      "consistent_with": ["Balanced omnivorous diet", "Moderate fiber and protein intake"],
+      "intervention": "Check other ratios for specific bottlenecks"
+    },
+    "FCR_low": {
+      "trigger": "FCR < -0.3",
+      "likely_diet": "Single-fiber source dominance OR rapidly fermentable fiber excess",
+      "consistent_with": ["Supplement use (inulin/FOS only)", "Single vegetable dominance", "Probiotic use with high lactate strains"],
+      "intervention": "Diversify fiber sources, avoid adding more of same fiber type"
+    },
+    "MDR_high": {
+      "trigger": "MDR > +0.5",
+      "likely_diet": "Fiber insufficiency (total dietary fiber < 15g/day)",
+      "consistent_with": ["Low vegetable/whole grain intake", "Refined carb dominance", "Low-carb/ketogenic pattern"],
+      "intervention": "GRADUAL fiber reintroduction — start with low-fermentability fibers"
+    },
+    "MDR_low": {
+      "trigger": "MDR < -0.5",
+      "likely_diet": "Adequate-to-high fiber intake (>25g/day)",
+      "consistent_with": ["High vegetable/whole grain intake", "Plant-forward dietary pattern"],
+      "intervention": "Fiber adequacy confirmed"
+    },
+    "PPR_high": {
+      "trigger": "PPR > +0.5",
+      "likely_diet": "High protein relative to fiber",
+      "consistent_with": ["High animal protein (>1.5g/kg)", "Low fiber (<20g/day)", "Bodybuilding/high-protein patterns"],
+      "intervention": "Increase fiber (dilutes protein substrate), consider protein modulation"
+    }
+  },
+
+  "integrated_templates": {
+    "western_diet": {
+      "signature": "CUR < -0.3 AND PPR > +0.5 AND MDR >= -0.5",
+      "description": "High protein, low fiber, refined carbohydrates",
+      "client_summary": "Your metabolic pattern suggests a diet higher in protein and lower in fiber-rich plant foods than ideal for your gut bacteria."
+    },
+    "plant_forward_optimal": {
+      "signature": "CUR > +0.5 AND FCR > +0.3 AND MDR < -0.5 AND PPR < -0.5",
+      "description": "High fiber diversity, moderate protein, plant-forward",
+      "client_summary": "Your metabolic pattern is consistent with a varied, plant-rich diet that provides diverse fibers — this is ideal for gut health."
+    },
+    "supplement_driven_monoculture": {
+      "signature": "CUR > +0.3 AND FCR < -0.3 AND Cross-Feeders low",
+      "description": "High single-fiber supplement use creating narrow fermentation",
+      "client_summary": "Your gut bacteria are getting plenty of fiber, but it may be too uniform — diversifying your fiber sources could improve how efficiently they work together."
+    },
+    "fiber_starved": {
+      "signature": "CUR < -0.3 AND MDR > +0.5",
+      "description": "Very low fiber (<15g), mucus reliance",
+      "client_summary": "Your gut bacteria aren't getting enough fiber from your diet and are turning to your gut's mucus layer as a backup fuel source — this isn't sustainable long-term."
+    }
+  },
+
+  "guild_pattern_inference": {
+    "pattern_A_high_fiber_low_cross": {
+      "guild_metrics": "Fiber Degraders >30%, high redundancy + Cross-Feeders <10%, low redundancy",
+      "likely_diet": "Single-fiber source dominance OR rapidly fermented fiber excess",
+      "examples": ["Daily inulin supplement but limited dietary fiber diversity", "High-FODMAP diet without varied vegetables"],
+      "intervention": "Diversify fiber types: add resistant starch, slowly fermented fibers, rotate sources"
+    },
+    "pattern_B_protein_over_fiber": {
+      "guild_metrics": "Proteolytic >15% + Fiber Degraders <20% + CUR likely negative",
+      "likely_diet": "High protein:fiber ratio OR little fiber reaches colon",
+      "examples": ["Protein >2g/kg body weight", "Fiber <15g/day", "Fast GI transit"],
+      "intervention": "Increase total fiber (target >30g/day), emphasize slowly digested fibers"
+    },
+    "redundancy_pattern_low_diversity": {
+      "guild_metrics": "Fiber J <0.50 AND Cross-Feeders J <0.40 AND Butyrate J <0.50",
+      "likely_diet": "Low dietary diversity — repeated same foods",
+      "examples": ["Chicken/broccoli/rice daily", "Limited plant food rotation"],
+      "intervention": "Rotate vegetables weekly (20+ plants/week), vary grain and protein sources",
+      "timeline": "4-6 weeks for redundancy to increase"
+    }
+  },
+
+  "pathway_inference": {
+    "b_vitamin_pathways_low": {
+      "pattern": "Multiple B vitamin pathways all <0.001 allocation",
+      "dual_interpretation": {
+        "dietary_sufficiency": "Microbes don't need to synthesize — abundant in gut from diet (evolutionary economy)",
+        "ecosystem_collapse": "Microbiome lacks synthesizing organisms — may contribute to deficiency risk"
+      },
+      "resolution": "Dietary intake assessment REQUIRED to distinguish"
+    },
+    "scfa_routing_alternative": {
+      "pattern": "PWY-7111 (isobutanol) present but PWY-5676 (classical butyrate) absent despite F.prausnitzii/Roseburia present",
+      "likely_cause": "Acetate limitation due to Cross-Feeder constraints",
+      "intervention": "Increase soluble fiber (acetate-producing substrate), support Cross-Feeder guild"
+    }
+  },
+
+  "multi_causality_warnings": {
+    "CUR_low_alternatives": [
+      "Primary: High protein:fiber dietary ratio",
+      "Alternative: Fast transit time (adequate fiber not fermenting)",
+      "Alternative: Recent antibiotic exposure (selectively eliminated fiber degraders)",
+      "Alternative: Malabsorption (carbs absorbed in small intestine)",
+      "Alternative: Individual metabolic factors",
+      "Alternative: Recent dietary shift not yet reflected (3-7 day lag)"
+    ],
+    "PPR_high_alternatives": [
+      "Primary: High-protein diet",
+      "Alternative: Low fiber with moderate protein (fiber insufficiency is the driver)",
+      "Alternative: Fast transit (protein reaches colon but fiber doesn't ferment)",
+      "Alternative: Post-antibiotic state (Alistipes/Bilophila survived)",
+      "Alternative: Upper GI dysfunction (protein maldigestion)"
+    ],
+    "resolution_strategy": [
+      "1. Identify metabolic pattern from CLR ratios",
+      "2. Generate primary dietary hypothesis",
+      "3. List alternative non-dietary explanations",
+      "4. Assess dietary intake (3-day diary)",
+      "5. Assess relevant history (antibiotics, motility, chronic conditions)",
+      "6. Determine most likely cause(s) — often multi-factorial",
+      "7. Tailor intervention to actual cause, not assumed cause"
+    ]
+  },
+
+  "practical_workflow": [
+    "Step 1: Calculate CLR ratios (CUR, FCR, MDR, PPR)",
+    "Step 2: Pattern matching against integrated templates",
+    "Step 3: Guild-level confirmation (check abundances match ratios)",
+    "Step 4: Optional dietary intake questionnaire (qualitative)",
+    "Step 5: Intervention prioritization based on confirmed cause"
+  ],
+
+  "limitations": [
+    "Inference ≠ assessment — cannot confirm actual dietary intake",
+    "Individual variation: identical diets may produce different microbiome responses",
+    "Transit time affects fermentation regardless of fiber intake",
+    "Microbiome reflects recent 3-7 day dietary patterns, not long-term habits",
+    "Medications, stress, sleep affect microbiome independent of diet",
+    "Cannot infer: specific caloric intake, precise macronutrient ratios, food intolerances/allergies, eating disorders",
+    "CAN infer (with caveats): relative fiber intake, protein:fiber ratio, dietary diversity, fiber type patterns, plant:animal ratio"
+  ]
+}

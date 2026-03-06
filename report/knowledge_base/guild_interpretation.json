@@ -1,0 +1,204 @@
+{
+  "_doc": "Compiled from Guild_analysis_v3.md — FFA-weighted guild interpretation rules",
+  "_version": "1.0",
+
+  "guild_definitions": {
+    "Fiber Degraders": {
+      "function": "Degrade polysaccharides and resistant starch. Release oligosaccharides, acetate, propionate, succinate. Entry point of substrate cascade.",
+      "healthy_range": {"min": 30, "max": 50, "optimal": 40, "unit": "%"},
+      "critical_impact": "Loss is the earliest structural failure",
+      "system_role": "Ecosystem Gatekeepers — determine whether ecosystem is diet-fed or host-fed",
+      "client_description": "fiber-processing bacteria that break down plant foods into fuel for other beneficial bacteria"
+    },
+    "HMO/Oligosaccharide-Utilising Bifidobacteria": {
+      "function": "Convert oligosaccharides to lactate and acetate via phosphoketolase pathway. Rapid acidification. Amplify carbohydrate fermentation.",
+      "healthy_range": {"min": 2, "max": 10, "optimal": 6, "unit": "%"},
+      "critical_impact": "Absence eliminates lactate production pathway, reducing SCFA amplification by 50-70%",
+      "system_role": "Early Fermentation Amplifiers — generate intermediates for secondary fermenters",
+      "client_description": "Bifidobacteria that convert plant sugars into lactate — a key fuel that feeds your gut-lining energy producers"
+    },
+    "Cross-Feeders": {
+      "function": "Consume lactate, acetate, succinate, hydrogen. Convert intermediates to propionate and butyrate precursors. Maintain redox balance.",
+      "healthy_range": {"min": 6, "max": 12, "optimal": 9, "unit": "%"},
+      "critical_impact": "Absence creates metabolic dead ends — intermediates accumulate",
+      "system_role": "Secondary Fermentation Stabilizers — CRITICAL CONNECTORS between degradation and terminal SCFA",
+      "dependency_multiplier": 3.0,
+      "client_description": "intermediate processors that convert raw fermentation products into finished beneficial compounds, preventing waste buildup"
+    },
+    "Butyrate Producers": {
+      "function": "Produce butyrate from acetate, lactate, simple sugars. Feed colonocytes. Maintain epithelial barrier. Anti-inflammatory signaling.",
+      "healthy_range": {"min": 10, "max": 25, "optimal": 17.5, "unit": "%"},
+      "critical_impact": "Depletion reduces colonocyte energy, barrier integrity, anti-inflammatory capacity",
+      "system_role": "Terminal SCFA Producers — downstream-dependent, require acetate supply",
+      "dependency_multiplier": 1.5,
+      "client_description": "bacteria that produce butyrate — the primary energy source for your gut lining cells, and a key anti-inflammatory compound"
+    },
+    "Mucin Degraders": {
+      "function": "Degrade mucin O-glycans. Produce acetate and propionate. Always-on backup carbon source.",
+      "healthy_range": {"min": 1, "max": 4, "optimal": 2.5, "unit": "%"},
+      "interpretation_spectrum": {
+        "too_low_0_1": "Insufficient mucin turnover — accumulation of aged mucus",
+        "optimal_1_4": "Healthy mucus homeostasis — balanced degradation and production",
+        "concerning_4_8": "Elevated — context-dependent, concerning if low fiber",
+        "problematic_above_8": "Excessive barrier erosion — fiber starvation likely"
+      },
+      "system_role": "Host-Substrate Users — adaptive buffer during fiber fluctuation, pathological when dominant",
+      "client_description": "bacteria that maintain your gut's protective mucus layer through controlled turnover"
+    },
+    "Proteolytic Dysbiosis Guild": {
+      "function": "Ferment amino acids and bile substrates. Produce ammonia, H2S, phenols, indoles, BCFAs. Expansion is downstream consequence of substrate shift.",
+      "healthy_range": {"min": 1, "max": 5, "optimal": 3, "unit": "%"},
+      "dose_dependent": {
+        "minimal_below_1": "Favorable — minimal inflammatory metabolites",
+        "moderate_1_5": "Normal — necessary for BCAA processing and nitrogen cycling",
+        "elevated_5_8": "Concerning — potential inflammatory metabolite burden",
+        "high_above_10": "Dysbiotic — investigate protein:fiber ratio"
+      },
+      "system_role": "Putrefactive Strategy — indicates substrate competition shifted toward protein",
+      "client_description": "protein-fermenting bacteria that produce harsher byproducts when they become too abundant"
+    }
+  },
+
+  "clr_diagnostic_ratios": {
+    "CUR": {
+      "formula": "CLR(Fiber + Bifido average) - CLR(Proteolytic)",
+      "question": "Is fermentation carbohydrate-driven or protein-driven?",
+      "states": {
+        "carb_driven": {"threshold": ">+0.5", "label": "Carbohydrate-driven (optimal)", "meaning": "Dietary fiber dominating substrate competition"},
+        "balanced": {"threshold": "-0.5 to +0.5", "label": "Balanced", "meaning": "Mixed substrate utilization"},
+        "protein_driven": {"threshold": "<-0.5", "label": "Protein-driven (dysbiotic)", "meaning": "Protein/bile substrates dominating"}
+      }
+    },
+    "FCR": {
+      "formula": "CLR(Butyrate + CrossFeed average) - CLR(Bifido)",
+      "question": "Are intermediates efficiently converted to terminal SCFAs?",
+      "states": {
+        "efficient": {"threshold": ">+0.3", "label": "Efficient conversion", "meaning": "Intermediates efficiently converted to terminal SCFA"},
+        "moderate": {"threshold": "-0.3 to +0.3", "label": "Moderate efficiency", "meaning": "Adequate but not optimal intermediate processing"},
+        "sluggish": {"threshold": "<-0.3", "label": "Incomplete fermentation", "meaning": "Intermediate accumulation risk (lactate, acetate)"}
+      },
+      "bottleneck_identification": {
+        "bifido_absent": "Without Bifidobacteria-derived lactate, the fermentation pathway lacks its primary intermediate fuel",
+        "cross_feeders_low": "Insufficient connector bacteria to process fermentation intermediates",
+        "butyrate_low": "Terminal processors depleted — intermediates produced but not converted to butyrate",
+        "general": "Fermentation intermediates accumulate rather than being converted to beneficial compounds"
+      }
+    },
+    "MDR": {
+      "formula": "CLR(Mucin) - CLR(Fiber)",
+      "question": "Is ecosystem diet-fed or relying on host substrate?",
+      "states": {
+        "diet_fed": {"threshold": "<-0.5", "label": "Diet-fed (optimal)", "meaning": "Dietary fiber supplying substrate needs"},
+        "balanced": {"threshold": "-0.5 to +0.5", "label": "Balanced", "meaning": "Normal adaptive mucin degradation"},
+        "host_dependent": {"threshold": ">+0.5", "label": "Host-substrate dependent", "meaning": "Ecosystem relying on mucus (fiber-starved)"}
+      }
+    },
+    "PPR": {
+      "formula": "CLR(Proteolytic) - CLR(Butyrate)",
+      "question": "Is metabolism SCFA-dominant or protein fermentation-driven?",
+      "states": {
+        "scfa_dominant": {"threshold": "<-0.5", "label": "SCFA dominance (optimal)", "meaning": "Carbohydrate fermentation strongly dominant"},
+        "balanced": {"threshold": "-0.5 to +0.5", "label": "Balanced", "meaning": "Protein and carbohydrate metabolism coexisting"},
+        "putrefaction": {"threshold": ">+0.5", "label": "Putrefaction dominance", "meaning": "Protein fermentation exceeding SCFA production"}
+      }
+    }
+  },
+
+  "clr_interpretation": {
+    "description": "CLR value meaning — competitive position relative to sample geometric mean",
+    "ranges": {
+      "severely_enriched": {"min": 2.0, "fold": ">7.4x", "meaning": "Massive overabundance, potential dysfunction"},
+      "moderately_enriched": {"min": 1.0, "max": 2.0, "fold": "2.7-7.4x", "meaning": "Clear enrichment"},
+      "slightly_enriched": {"min": 0.5, "max": 1.0, "fold": "1.6-2.7x", "meaning": "Mild enrichment"},
+      "balanced": {"min": -0.5, "max": 0.5, "fold": "0.6-1.6x", "meaning": "Near competitive equilibrium"},
+      "slightly_depleted": {"min": -1.0, "max": -0.5, "fold": "0.4-0.6x", "meaning": "Mild depletion"},
+      "moderately_depleted": {"min": -2.0, "max": -1.0, "fold": "0.1-0.4x", "meaning": "Clear depletion, likely functional deficit"},
+      "severely_depleted": {"max": -2.0, "fold": "<0.1x", "meaning": "Extreme depletion, critical intervention needed"}
+    }
+  },
+
+  "nine_scenario_matrix": {
+    "description": "9 interpretation scenarios from CLR (competitive status) × Evenness (structural resilience)",
+    "scenarios": {
+      "enriched_high_J": {"clr": ">+0.5", "evenness": ">0.70", "label": "Optimal", "interpretation": "Adequate capacity + winning competition + robust redundancy", "intervention": "None — maintenance only", "risk": "Minimal"},
+      "enriched_moderate_J": {"clr": ">+0.5", "evenness": "0.40-0.70", "label": "Strong but monitor", "interpretation": "Strong function with reasonable backup", "intervention": "Monitor; diversify if symptoms", "risk": "Low-Moderate"},
+      "enriched_low_J": {"clr": ">+0.5", "evenness": "<0.40", "label": "CRITICAL VULNERABILITY", "interpretation": "Severe overabundance concentrated in single species — monoculture", "intervention": "PRIORITY 1A — Reduce overabundance AND build redundancy", "risk": "HIGH — dual concern"},
+      "balanced_high_J": {"clr": "-0.5 to +0.5", "evenness": ">0.70", "label": "Ideal", "interpretation": "Optimal equilibrium with strong redundancy", "intervention": "None — maintenance only", "risk": "Minimal"},
+      "balanced_moderate_J": {"clr": "-0.5 to +0.5", "evenness": "0.40-0.70", "label": "Stable", "interpretation": "Near-optimal with reasonable structure", "intervention": "Monitor; optimize optional", "risk": "Low"},
+      "balanced_low_J": {"clr": "-0.5 to +0.5", "evenness": "<0.40", "label": "Hidden vulnerability", "interpretation": "Adequate total but concentrated — perturbation sensitive", "intervention": "PRIORITY 2A — Diversify composition", "risk": "MODERATE"},
+      "depleted_high_J": {"clr": "<-0.5", "evenness": ">0.70", "label": "Favorable for recovery", "interpretation": "Severe deficit BUT genetic reservoir maintained — multiple species ready to expand", "intervention": "PRIORITY 1A — Expand via substrate provision", "risk": "HIGH deficit but FAVORABLE prognosis"},
+      "depleted_moderate_J": {"clr": "<-0.5", "evenness": "0.40-0.70", "label": "Standard depletion", "interpretation": "Functional deficit with moderate backup", "intervention": "PRIORITY 1B — Expand via diverse substrate", "risk": "HIGH with moderate support"},
+      "depleted_low_J": {"clr": "<-0.5", "evenness": "<0.40", "label": "WORST CASE", "interpretation": "Critical depletion with monoculture fragility — single-species dependency with no backup", "intervention": "CRITICAL — Triple strategy: maintain dominant + diversify + probiotic seed", "risk": "VERY HIGH"}
+    }
+  },
+
+  "multi_axis_synthesis": {
+    "description": "Integration of Axis1 (absolute capacity) + Axis2 (relative CLR competition)",
+    "patterns": {
+      "within_range_enriched": {"type": "CONVERGENT", "meaning": "Adequate capacity + winning competition = Optimal"},
+      "within_range_balanced": {"type": "CONVERGENT", "meaning": "Adequate capacity + neutral competition = Stable"},
+      "within_range_depleted": {"type": "DIVERGENT", "meaning": "Adequate capacity BUT losing competition = Underutilized"},
+      "below_range_depleted": {"type": "CONVERGENT", "meaning": "Insufficient capacity + losing competition = Critical deficit"},
+      "below_range_enriched": {"type": "DIVERGENT", "meaning": "Insufficient despite winning = substrate-limited"}
+    }
+  },
+
+  "priority_calculation": {
+    "formula": "Priority_Score = CLR_Severity × Dependency_Multiplier × Evenness_Caution_Factor",
+    "components": {
+      "CLR_Severity": "Distance from guild-specific optimal CLR (0-10 scale)",
+      "Dependency_Multiplier": {"Cross-Feeders": 3.0, "Fiber_Degraders": 2.0, "Butyrate_Producers": 1.5, "others": 1.0},
+      "Evenness_Caution_Factor": {"J_below_0.40": 1.5, "J_below_0.70": 1.2, "J_above_0.70": 1.0}
+    },
+    "note": "Dependency multipliers are heuristic prioritization weights, not empirically measured network impact ratios"
+  },
+
+  "undefined_clr_handling": {
+    "rule": "When guild CLR is undefined (abundance <1%), ALWAYS treat as 0 in ratio calculations. NEVER return 'undefined' as a ratio result.",
+    "rationale": "Undefined CLR means guild absent/near-absent, effectively contributing 0 competitive weight",
+    "averaging_rule": "For ratios combining guilds (CUR, FCR), ALWAYS average even if one guild is 0"
+  },
+
+  "fcr_conditional_interpretation": {
+    "description": "When Bifidobacteria absent (<1%), FCR interpretation changes",
+    "bifido_present": "Standard: measures lactate clearance efficiency",
+    "bifido_absent": "Modified: metabolic flux likely through lactate-independent pathways. Direct fiber→acetate/propionate→butyrate route. FCR value suggests metabolic routing rather than lactate efficiency.",
+    "note": "Model-based inference from genetic data, not direct metabolic flux measurement"
+  },
+
+  "extreme_clr_ratios": {
+    "description": "When ratios exceed ±2.0, indicates near-absence of one guild",
+    "MDR_very_negative": "Mucin Degraders nearly absent (<0.5%), extreme diet-feeding",
+    "PPR_very_negative": "Proteolytic nearly absent (<1%), extreme SCFA dominance",
+    "CUR_very_positive": "Proteolytic nearly absent, extreme carbohydrate preference",
+    "reporting": "Report extreme values as calculated — they accurately represent ecosystem state"
+  },
+
+  "trophic_cascades": {
+    "fiber_side": {
+      "description": "Fiber → Guild1 breaks down → Guilds 2&4 convert (parallel) → Guild3 consolidates → SCFA pool",
+      "key_loops": {
+        "bifido_butyrate": "Bifidobacteria produce lactate → Roseburia/F.prausnitzii convert to butyrate (2-3× SCFA amplification)",
+        "succinate_detox": "Prevotella/Bacteroides produce succinate → Phascolarctobacterium converts to propionate",
+        "hydrogen_management": "H2 from fermenters → consumed by Methanobrevibacter(→methane), Blautia(→acetate), Anaerobutyricum"
+      }
+    },
+    "backup_line": {
+      "description": "Host mucin → Guild5 (Mucin Degraders) → acetate/propionate → feeds Guilds 3&4",
+      "behavior": "High fiber → Guild5 minimal (protective). Low fiber → Guild5 compensatory (adaptive short-term, problematic long-term)"
+    },
+    "protein_line": {
+      "description": "Dietary protein → Guild6 (Proteolytic) → ammonia, H2S, phenols, BCFAs",
+      "impact": "Damages epithelium, promotes inflammation, selects against butyrate producers, tips community away from SCFA"
+    },
+    "critical_dependency": "Bifidobacteria absence → no lactate amplification → Cross-Feeders substrate-limited → butyrate production reduced 50-70% → single-pathway fermentation only"
+  },
+
+  "metabolic_network_model": {
+    "description": "Parallel processing model — NOT sequential. Guilds 2 (Bifido) and 4 (Cross-Feeders) operate simultaneously.",
+    "flow": "Fiber → Guild1(Fiber Degraders) → [Parallel: Guild2(Bifido) + Guild4(Cross-Feeders)] → Guild3(Butyrate Producers) → SCFA Pool",
+    "backup": "Guild5(Mucin) → always-on backup, increases when fiber decreases",
+    "competing": "Guild6(Proteolytic) → protein-driven alternative, produces inflammatory metabolites",
+    "key_principle": "Healthy gut = carbohydrate-driven ecosystem. Dysbiosis = protein and mucin-driven ecosystem."
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "_doc": "Platform payload schema v1.0 — Documents every field in {sample_id}_platform.json",
+  "_version": "1.0",
+
+  "metadata": {
+    "sample_id": {"type": "string", "source": "report_metadata.sample_id"},
+    "report_date": {"type": "string", "format": "date", "source": "report_metadata.report_date"},
+    "generated_at": {"type": "string", "format": "datetime", "source": "computed at generation time"},
+    "platform_schema_version": {"type": "string", "value": "1.0"},
+    "source_algorithm_version": {"type": "string", "source": "report_metadata.algorithm_version"},
+    "llm_model": {"type": "string|null", "source": "report_metadata.llm_model"}
+  },
+
+  "overview_tab": {
+    "_description": "Maps to platform Overview tab — first thing client sees",
+    "gut_health_glance": {
+      "summary_sentence": {"type": "string", "source": "LLM — narratives.summary_sentence", "dynamic": true},
+      "overall_score": {
+        "total": {"type": "number", "range": "0-100", "source": "scoring.compute_score()"},
+        "band": {"type": "string", "enum": ["Excellent", "Good", "Fair", "Needs Attention", "Concerning"], "source": "scoring.get_score_band()"},
+        "band_description": {"type": "string", "source": "scoring.get_score_band()"}
+      },
+      "pillars": {
+        "_note": "5 scoring pillars with score and max",
+        "health_association": {"score": "number", "max": 20},
+        "diversity_resilience": {"score": "number", "max": 15},
+        "metabolic_function": {"score": "number", "max": 20},
+        "guild_balance": {"score": "number", "max": 30},
+        "safety_profile": {"score": "number", "max": 15}
+      }
+    },
+    "whats_happening": {
+      "overall_balance": {"label": {"type": "string", "enum": ["Healthy", "Transitional", "Stressed"], "source": "overview_fields.classify_overall_balance()"}},
+      "diversity_resilience": {"label": {"type": "string", "enum": ["High", "Moderate", "Low"], "source": "overview_fields.classify_diversity_resilience()"}},
+      "key_strengths": {"type": "array[string]", "max_items": 6, "source": "overview_fields.identify_key_strengths()"},
+      "key_opportunities": {"type": "array[string]", "max_items": 5, "source": "overview_fields.identify_key_opportunities()"},
+      "summary_sentence": {"type": "string", "source": "LLM — narratives.whats_happening_summary", "dynamic": true}
+    },
+    "why_we_look_at_this": {
+      "title": {"type": "string", "static": true},
+      "text": {"type": "string", "static": true, "source": "static_content.json"}
+    },
+    "metabolic_dials": {
+      "intro_text": {"type": "string", "static": true, "source": "static_content.json"},
+      "dials": {
+        "_note": "4 metabolic dials, each with label/state/value/description",
+        "main_fuel": {
+          "label": {"type": "string", "source": "overview_fields.compute_metabolic_dials()"},
+          "state": {"type": "string", "enum": ["carb_driven", "balanced", "protein_driven"]},
+          "value": {"type": "number", "source": "CUR ratio (resolved)"},
+          "description": {"type": "string", "source": "DIAL_CONFIG states"}
+        },
+        "fermentation_efficiency": {
+          "state": {"enum": ["efficient", "ok", "sluggish"]}
+        },
+        "gut_lining_dependence": {
+          "state": {"enum": ["diet_fed", "backup", "heavy_mucus"]}
+        },
+        "harsh_byproducts": {
+          "state": {"enum": ["scfa_dominant", "balanced", "protein_pressure"]}
+        }
+      }
+    },
+    "what_this_means": {
+      "good_news": {
+        "resilience": {"type": "string", "source": "LLM", "dynamic": true},
+        "adaptation_capacity": {"type": "string", "source": "LLM", "dynamic": true},
+        "reversibility": {"type": "string", "source": "LLM", "dynamic": true}
+      },
+      "possible_impacts": {"type": "array[string]", "source": "LLM", "dynamic": true},
+      "is_something_wrong": {"type": "string", "source": "LLM", "dynamic": true},
+      "can_this_be_fixed": {"type": "string", "source": "LLM", "dynamic": true}
+    },
+    "why_this_matters": {
+      "_note": "All static content",
+      "title": {"type": "string", "static": true},
+      "intro": {"type": "string", "static": true},
+      "what_tells_us": {"type": "object", "static": true},
+      "what_doesnt_tell_us": {"type": "object", "static": true},
+      "weather_analogy": {"type": "string", "static": true},
+      "for_you": {"type": "object", "static": true}
+    }
+  },
+
+  "bacterial_groups_tab": {
+    "_description": "Maps to platform Bacterial Groups tab",
+    "intro": {"type": "object", "static": true, "source": "static_content.json"},
+    "chain_description": {"type": "object", "static": true, "source": "static_content.json"},
+    "capacity_explanation": {"type": "string", "static": true},
+    "guilds": {
+      "_note": "Array of 6 guilds in fixed order: Fiber→Bifido→Cross→Butyrate→Proteo→Mucin",
+      "_items": {
+        "step": {"type": "integer", "range": "1-6", "source": "fixed order"},
+        "name": {"type": "string", "source": "GUILD_DISPLAY_NAMES"},
+        "functional_summary": {"type": "string", "source": "guild_interpretation.json → client_description"},
+        "capacity": {
+          "actual_players": {"type": "integer", "source": "round(abundance × SCALE_FACTOR)", "note": "Optimal sums to 100"},
+          "optimal_players": {"type": "integer", "source": "round(optimal × SCALE_FACTOR)"},
+          "min_players": {"type": "integer", "source": "round(range_min × SCALE_FACTOR)"},
+          "max_players": {"type": "integer", "source": "round(range_max × SCALE_FACTOR)"},
+          "actual_pct": {"type": "number", "source": "guild abundance %"},
+          "optimal_pct": {"type": "number", "source": "GUILD_CONFIG optimal"}
+        },
+        "status": {"type": "string", "enum": ["Within range", "Below range", "Above range", "Absent", "Absent — CRITICAL"]},
+        "healthy_range": {"type": "string", "example": "30-50%"},
+        "impact_explanation": {"type": "string", "source": "LLM client_interpretation (NEVER scientific)", "dynamic": true},
+        "additional_note": {"type": "string", "source": "CLR status + evenness status (simplified)"}
+      }
+    }
+  },
+
+  "root_causes_tab": {
+    "_description": "Maps to platform Root Causes tab",
+    "title": {"type": "string", "static": true},
+    "primary_diagnosis": {"type": "string", "source": "LLM — root_causes_diagnosis", "dynamic": true},
+    "how_we_can_tell": {
+      "diagnostic_flags": {
+        "_note": "Array of quantitative diagnostic flags, sorted by severity",
+        "_items": {
+          "flag": {"type": "string", "source": "root_causes_fields.compute_diagnostic_flags()"},
+          "guild": {"type": "string"},
+          "severity": {"type": "string", "enum": ["critical", "significant", "moderate", "mild"]},
+          "direction": {"type": "string", "enum": ["absent", "below", "above", "suppressed"]},
+          "metric_detail": {"type": "object"}
+        }
+      },
+      "disclaimer": {"type": "string", "static": true}
+    },
+    "key_insights": {
+      "_note": "3-4 dynamic LLM-generated insights specific to this client",
+      "_items": {
+        "title": {"type": "string", "source": "LLM", "dynamic": true},
+        "explanation": {"type": "string", "source": "LLM", "dynamic": true}
+      }
+    },
+    "conclusion": {
+      "what_this_means": {"type": "string", "source": "LLM", "dynamic": true},
+      "reversibility": {
+        "level": {"type": "string", "enum": ["high", "moderate", "moderate_low", "low"]},
+        "label": {"type": "string"},
+        "description": {"type": "string"},
+        "estimated_timeline": {"type": "string"}
+      }
+    },
+    "trophic_impact": {
+      "cascade_impacts": {"type": "array", "source": "root_causes_fields.compute_trophic_impact()"},
+      "primary_bottleneck": {"type": "string"},
+      "total_impacts": {"type": "integer"}
+    }
+  },
+
+  "vitamins_tab": {
+    "_description": "Maps to platform Vitamins tab.",
+    "title": {"type": "string", "static": true},
+    "intro": {"type": "string", "static": true},
+    "good_news": {
+      "robust_production": {"type": "array[string]", "source": "vitamins with risk_level=0"},
+      "functional_roles": {"type": "array[string]", "static": true}
+    },
+    "vitamins": {
+      "_note": "Array of 4 vitamins: folate, B-complex, biotin, B12",
+      "_items": {
+        "key": {"type": "string", "enum": ["folate", "B_complex", "biotin", "B12"]},
+        "display_name": {"type": "string", "source": "static_content.json"},
+        "status": {"type": "string", "source": "status_labels[risk_level]"},
+        "status_level": {"type": "string"},
+        "risk_level": {"type": "integer", "range": "0-3"},
+        "role": {"type": "string", "static": true},
+        "food_sources": {"type": "array[string]", "static": true},
+        "assessment": {"type": "string", "source": "overview_fields.compute_vitamin_risks()"}
+      }
+    }
+  },
+
+  "action_plan_tab": {
+    "_description": "Maps to platform Action Plan tab. Supplement 'how' is TBD.",
+    "title": {"type": "string", "static": true},
+    "intro": {"type": "string", "static": true},
+    "reversibility": {
+      "level": {"type": "string"},
+      "label": {"type": "string"},
+      "description": {"type": "string"},
+      "estimated_timeline": {"type": "string"}
+    },
+    "steps": {
+      "_note": "Prioritized intervention steps — only guilds needing intervention",
+      "_items": {
+        "step_number": {"type": "integer", "source": "priority-ranked order"},
+        "guild_display": {"type": "string"},
+        "title": {"type": "string", "source": "STEP_TITLES"},
+        "action": {"type": "string", "enum": ["expand", "reduce"]},
+        "why": {"type": "string", "source": "WHY_DESCRIPTIONS"},
+        "how": {"type": "string", "value": "TBD — from supplement prediction pipeline"},
+        "timeline": {"type": "string", "source": "TIMELINE_MAP"},
+        "current_players": {"type": "integer", "source": "100-player scale"},
+        "target_players_min": {"type": "integer"},
+        "target_players_max": {"type": "integer"},
+        "optimal_players": {"type": "integer"},
+        "current_pct": {"type": "number"},
+        "target_range": {"type": "string"},
+        "priority_score": {"type": "number", "source": "deficit_severity × dependency × evenness_caution"}
+      }
+    },
+    "vitamin_check": {"type": "object|null", "source": "action_plan_fields.generate_vitamin_check_step()"},
+    "forecast": {
+      "_items": {
+        "guild_display": {"type": "string"},
+        "current_players": {"type": "integer"},
+        "target_players_min": {"type": "integer"},
+        "target_players_max": {"type": "integer"},
+        "direction": {"type": "string", "enum": ["↑", "↓"]}
+      }
+    },
+    "next_steps": {"type": "array[string]", "static": true},
+    "reversibility_note": {"type": "string", "static": true}
+  }
+}

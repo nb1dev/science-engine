@@ -1,0 +1,2786 @@
+{
+  "metadata": {
+    "version": "1.1.0",
+    "source_csv": "documents/supplement_module/final/supplements_nonvitamins.csv",
+    "generated_at": "2026-02-23T21:20:23.214616Z",
+    "record_count": 49,
+    "category_count": 17,
+    "typo_corrections_applied": [
+      "Maganese",
+      "3rd Choide"
+    ],
+    "description": "Non-vitamin supplements — botanicals, amino acids, adaptogens, fibers, omegas. Includes both flat list and health-category grouping."
+  },
+  "supplements_flat": [
+    {
+      "id": "mentha_piperita",
+      "substance": "Mentha Piperita (Peppermint)",
+      "supplement_type": "Spasmolytics",
+      "subcategory": "Abdominal Discomfort",
+      "rank": "1st Choice",
+      "standard_dose": "1-3g 3x daily",
+      "rationale": "Excellent gas & cramping relief",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Weeks 1+, before or in between meals",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 1.0,
+          "max": 3.0,
+          "unit": "g",
+          "raw": "1-3g 3x daily"
+        },
+        "rank_priority": 1,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Abdominal Discomfort"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "chamomile",
+      "substance": "Chamomile",
+      "supplement_type": "Spasmolytics",
+      "subcategory": "Abdominal Discomfort",
+      "rank": "2nd Choice",
+      "standard_dose": "2-4g 3x daily",
+      "rationale": "Excellent for IBS-related cramping",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Weeks 1+",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 2.0,
+          "max": 4.0,
+          "unit": "g",
+          "raw": "2-4g 3x daily"
+        },
+        "rank_priority": 2,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Abdominal Discomfort"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "ginger_root",
+      "substance": "Ginger Root (Zingiber officinale)",
+      "supplement_type": "Spasmolytics",
+      "subcategory": "Abdominal Discomfort",
+      "rank": "3rd Choice",
+      "standard_dose": "160mg powder",
+      "rationale": "Reduces pain & inflammation",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Weeks 1+, with meals",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 160.0,
+          "unit": "mg",
+          "raw": "160mg powder"
+        },
+        "rank_priority": 3,
+        "interaction_level": "low",
+        "health_claims": [
+          "Abdominal Discomfort"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "curcumin",
+      "substance": "Curcumin (from Turmeric)",
+      "supplement_type": "Fermentable Polyphenol Substrate",
+      "subcategory": "Anti-inflammatory",
+      "rank": "1st Choice",
+      "standard_dose": "500-1000mg/day (with piperine 1:100)",
+      "rationale": "Supports microbiota indirectly through anti-inflammatory effects. Piperine significantly enhances absorption.",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily",
+      "notes": "500-1000mg routine safe. Auto-add piperine at 1:100 ratio (5mg per 500mg curcumin). Display as 'Curcumin 500mg (+ 5mg Piperine)' — total weight = 505mg.",
+      "parsed": {
+        "dose": {
+          "min": 500.0,
+          "max": 1000.0,
+          "unit": "mg",
+          "raw": "500-1000mg/day (with piperine 1:100)"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Anti-inflammatory"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "capsule_only",
+      "polyphenol_tier": 2,
+      "piperine_rule": {
+        "ratio": "1:100",
+        "auto_add": true,
+        "example_display": "Curcumin 500mg (+ 5mg Piperine)",
+        "note": "Piperine is bundled with curcumin — NOT a separate component. Total weight = curcumin_mg + piperine_mg."
+      }
+    },
+    {
+      "id": "glutathione",
+      "substance": "Glutathione",
+      "supplement_type": "Amino Acid & Precursor",
+      "subcategory": "Anti-inflammatory",
+      "rank": "2nd Choice",
+      "standard_dose": "50-100mg",
+      "rationale": "Preferential - complete precursor, less redundancy",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Continuous",
+      "notes": "Indicated for athletes and active individuals (enhanced antioxidant need from oxidative stress). Also relevant for immune support, skin health, and longevity/aging goals.",
+      "parsed": {
+        "dose": {
+          "min": 50.0,
+          "max": 100.0,
+          "unit": "mg",
+          "raw": "50-100mg"
+        },
+        "rank_priority": 2,
+        "interaction_level": "low",
+        "health_claims": [
+          "Anti-inflammatory",
+          "Infection Susceptibility",
+          "Skin Quality",
+          "Sport/Recovery"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "astragalus_membranaceus",
+      "substance": "Astragalus membranaceus",
+      "supplement_type": "Other Botanical",
+      "subcategory": "Anti-inflammatory",
+      "rank": "3rd Choice",
+      "standard_dose": "600 - 2000mg 3-4x daily",
+      "rationale": "Can inhibit inflammatory markers",
+      "interaction_risk": "Medium",
+      "timing_in_protocol": "Daily, in between meals",
+      "notes": "The recent patent of a product called AstraGin™, which contains both AM and Panax notoginseng extracts, has been approved for a novel food application by the European Commission",
+      "parsed": {
+        "dose": {
+          "min": 600.0,
+          "max": 2000.0,
+          "unit": "mg",
+          "raw": "600 - 2000mg 3-4x daily"
+        },
+        "rank_priority": 3,
+        "interaction_level": "medium",
+        "health_claims": [
+          "Anti-inflammatory"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "bergamot_polyphenolic_fraction",
+      "substance": "Bergamot Polyphenolic Fraction",
+      "supplement_type": "Fermentable Polyphenol Substrate",
+      "subcategory": "Blood Cholesterol",
+      "rank": "1st Choice",
+      "standard_dose": "1000 mg/day",
+      "rationale": "",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "3 months, with meals",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 1000.0,
+          "unit": "mg",
+          "raw": "1000 mg/day"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Blood Cholesterol"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "betaglucans",
+      "substance": "Beta-Glucans (Oats)",
+      "supplement_type": "Fermentable Soluble Fiber",
+      "subcategory": "Blood Cholesterol",
+      "rank": "2nd Choice",
+      "standard_dose": "1g portion (3g daily needed)",
+      "rationale": "Authoritative claim for cholesterol maintenance; is prebiotic; Oats are preferred, because then you don't have to consider gluten-intolerances.",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily, with meals",
+      "notes": "RS3-like fermentation",
+      "parsed": {
+        "dose": {
+          "value": 1.0,
+          "unit": "g",
+          "raw": "1g portion (3g daily needed)"
+        },
+        "rank_priority": 2,
+        "interaction_level": "low",
+        "health_claims": [
+          "Blood Cholesterol"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "plant_sterolsstanols",
+      "substance": "Plant Sterols/Stanols",
+      "supplement_type": "Fermentable Polyphenol Substrate",
+      "subcategory": "Blood Cholesterol",
+      "rank": "3rd Choice",
+      "standard_dose": "0.8g daily",
+      "rationale": "Authorized novel food; strongest evidence for LDL reduction",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Daily, with meals",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 0.8,
+          "unit": "g",
+          "raw": "0.8g daily"
+        },
+        "rank_priority": 3,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Blood Cholesterol"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "bacopa_monnieri",
+      "substance": "Bacopa monnieri",
+      "supplement_type": "Other Botanical",
+      "subcategory": "Blood Sugar",
+      "rank": "1st Choice",
+      "standard_dose": "300-450 mg/day",
+      "rationale": "",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "4-12 weeks",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 300.0,
+          "max": 450.0,
+          "unit": "mg",
+          "raw": "300-450 mg/day"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Blood Sugar"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "banaba",
+      "substance": "Banaba (Lagerstroemia speciosa)",
+      "supplement_type": "Other Botanical",
+      "subcategory": "Blood Sugar",
+      "rank": "2nd Choice",
+      "standard_dose": "48-60 mg corosolic acid equivalent",
+      "rationale": "",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Continuous, with meals",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 48.0,
+          "max": 60.0,
+          "unit": "mg",
+          "raw": "48-60 mg corosolic acid equivalent"
+        },
+        "rank_priority": 2,
+        "interaction_level": "low",
+        "health_claims": [
+          "Blood Sugar"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "trigonella_foenumgraecum",
+      "substance": "Trigonella Foenum-Graecum (Fenugreek)",
+      "supplement_type": "Other Botanical",
+      "subcategory": "Blood Sugar",
+      "rank": "3rd Choice",
+      "standard_dose": "0.8g comminuted herb (see notes)",
+      "rationale": "Multi-system support",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily",
+      "notes": "Can have laxative side effects. Some studies report to have used up to 25 gram of powdered fenugreek. However too much fenugreek might also cause a drop in blood sugar for 'healthy' participants.",
+      "parsed": {
+        "dose": {
+          "value": 0.8,
+          "unit": "g",
+          "raw": "0.8g comminuted herb (see notes)"
+        },
+        "rank_priority": 3,
+        "interaction_level": "low",
+        "health_claims": [
+          "Blood Sugar"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "phgg",
+      "substance": "PHGG",
+      "supplement_type": "Fermentable Fiber",
+      "subcategory": "Bowel Function",
+      "rank": "1st Choice",
+      "standard_dose": "5-10g",
+      "rationale": "Low-FODMAP fiber, gentle in sensitive patterns",
+      "interaction_risk": "None",
+      "timing_in_protocol": "Weeks 1+",
+      "notes": "RS3-like fermentation; can be combined with psyllium for enhanced efficacy",
+      "parsed": {
+        "dose": {
+          "min": 5.0,
+          "max": 10.0,
+          "unit": "g",
+          "raw": "5-10g"
+        },
+        "rank_priority": 1,
+        "interaction_level": "none",
+        "health_claims": [
+          "Bowel Function"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "psyllium_husk",
+      "substance": "Psyllium Husk",
+      "supplement_type": "Fermentable Soluble Fiber",
+      "subcategory": "Bowel Function",
+      "rank": "2nd Choice",
+      "standard_dose": "1-3g in daily dose",
+      "rationale": "Well-studied, take with adequate water; gold standard for constipation; benefits visible at 1-2 weeks",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Weeks 1+",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 1.0,
+          "max": 3.0,
+          "unit": "g",
+          "raw": "1-3g in daily dose"
+        },
+        "rank_priority": 2,
+        "interaction_level": "low",
+        "health_claims": [
+          "Bowel Function"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "pure_inulin",
+      "substance": "Pure Inulin",
+      "supplement_type": "Prebiotic, Fermentable Soluble Fiber",
+      "subcategory": "Bowel Function",
+      "rank": "3rd Choice",
+      "standard_dose": "600-1000mg",
+      "rationale": "Use pure inulin if bifido target needed",
+      "interaction_risk": "MEDIUM (bloating)",
+      "timing_in_protocol": "After IBS-D controlled",
+      "notes": "May cause bloating initially; combine with psyllium if needed",
+      "parsed": {
+        "dose": {
+          "min": 600.0,
+          "max": 1000.0,
+          "unit": "mg",
+          "raw": "600-1000mg"
+        },
+        "rank_priority": 3,
+        "interaction_level": "medium",
+        "health_claims": [
+          "Bowel Function"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "phosphatidyl_choline",
+      "substance": "Phosphatidyl choline (Lecithin)",
+      "supplement_type": "Other Botanical",
+      "subcategory": "Concentration",
+      "rank": "1st Choice",
+      "standard_dose": "600-1200mg soy-based",
+      "rationale": "Concentration, memory, neurotransmitter synthesis",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily",
+      "notes": "when using lectin granules, consider that the concentration of phosphatidyl choline ranges from 35-70%). Studies have also suggested a dosage up to 5 grams daily.",
+      "parsed": {
+        "dose": {
+          "min": 600.0,
+          "max": 1200.0,
+          "unit": "mg",
+          "raw": "600-1200mg soy-based"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Concentration"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "ltheanine",
+      "substance": "L-Theanine",
+      "supplement_type": "Amino Acid & Precursor",
+      "subcategory": "Concentration",
+      "rank": "2nd Choice",
+      "standard_dose": "200mg (+100mg caffeine for best results)",
+      "rationale": "Calm focus; pairs well with caffeine",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Morning-Afternoon",
+      "notes": "Standard dose 200mg. For sleep-specific use, dose may be escalated to 400mg by rules engine when stress ≥7 AND sleep ≤5.",
+      "parsed": {
+        "dose": {
+          "value": 200.0,
+          "unit": "mg",
+          "raw": "200mg (+100mg caffeine for best results)"
+        },
+        "rank_priority": 2,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Concentration"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "panax_ginseng",
+      "substance": "Panax ginseng (Ginseng)",
+      "supplement_type": "Adaptogen",
+      "subcategory": "Concentration",
+      "rank": "3rd Choice",
+      "standard_dose": "0.4g dried root",
+      "rationale": "Energy + vitality support",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 0.4,
+          "unit": "g",
+          "raw": "0.4g dried root"
+        },
+        "rank_priority": 3,
+        "interaction_level": "low",
+        "health_claims": [
+          "Concentration"
+        ]
+      },
+      "timing_restriction": "morning_only",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "eleutherococcus_senticosus",
+      "substance": "Eleutherococcus Senticosus",
+      "supplement_type": "Adaptogen",
+      "subcategory": "Fatigue",
+      "rank": "1st Choice",
+      "standard_dose": "600-1500 mg/day",
+      "rationale": "Fatigue + stress resilience",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 600.0,
+          "max": 1500.0,
+          "unit": "mg",
+          "raw": "600-1500 mg/day"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Fatigue"
+        ]
+      },
+      "timing_restriction": "morning_only",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "rhodiola_rosea",
+      "substance": "Rhodiola Rosea (Rosewort)",
+      "supplement_type": "Adaptogen",
+      "subcategory": "Fatigue",
+      "rank": "2nd Choice",
+      "standard_dose": "120mg dried root",
+      "rationale": "Energy + stress resilience",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Morning-Afternoon",
+      "notes": "1st choice when treating mental burnout fatigue.",
+      "parsed": {
+        "dose": {
+          "value": 120.0,
+          "unit": "mg",
+          "raw": "120mg dried root"
+        },
+        "rank_priority": 2,
+        "interaction_level": "low",
+        "health_claims": [
+          "Fatigue"
+        ]
+      },
+      "timing_restriction": "morning_only",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "paullinia_cupana",
+      "substance": "Paullinia Cupana (Guarana)",
+      "supplement_type": "Stimulant",
+      "subcategory": "Fatigue",
+      "rank": "3rd Choice",
+      "standard_dose": "75mg+",
+      "rationale": "High caffeine content - monitor total intake",
+      "interaction_risk": "Med",
+      "timing_in_protocol": "Morning-Afternoon",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 75.0,
+          "unit": "mg",
+          "raw": "75mg+"
+        },
+        "rank_priority": 3,
+        "interaction_level": "medium",
+        "health_claims": [
+          "Fatigue"
+        ]
+      },
+      "timing_restriction": "morning_only",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "foeniculum_vulgare",
+      "substance": "Foeniculum Vulgare (Fennel)",
+      "supplement_type": "Spasmolytics",
+      "subcategory": "Flatulence",
+      "rank": "1st Choice",
+      "standard_dose": "5-7g for adults",
+      "rationale": "Essential oil fractions reduce gas production",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Weeks 1+, after meals",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 5.0,
+          "max": 7.0,
+          "unit": "g",
+          "raw": "5-7g for adults"
+        },
+        "rank_priority": 1,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Flatulence"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "star_anise",
+      "substance": "Star Anise (Illicium verum)",
+      "supplement_type": "Spasmolytics",
+      "subcategory": "Flatulence",
+      "rank": "2nd Choice",
+      "standard_dose": "2.7g",
+      "rationale": "Traditional use, aromatic carminative",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Weeks 1+, after meals",
+      "notes": "synergizes with peppermint",
+      "parsed": {
+        "dose": {
+          "value": 2.7,
+          "unit": "g",
+          "raw": "2.7g"
+        },
+        "rank_priority": 2,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Flatulence"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "melissa_officinalis",
+      "substance": "Melissa Officinalis (Lemon Balm)",
+      "supplement_type": "Spasmolytics",
+      "subcategory": "Flatulence",
+      "rank": "3rd Choice",
+      "standard_dose": "1.5-4.5g 3x daily",
+      "rationale": "Well-tolerated, antispasmodic effect",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Weeks 1+, after meals",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 1.5,
+          "max": 4.5,
+          "unit": "g",
+          "raw": "1.5-4.5g 3x daily"
+        },
+        "rank_priority": 3,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Flatulence"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "capsicum_extract",
+      "substance": "Capsicum Extract (Capsaicinoid/Capsiate)",
+      "supplement_type": "Fermentable Polyphenol Substrate",
+      "subcategory": "Fullness/Satiety",
+      "rank": "1st Choice",
+      "standard_dose": "2-6 mg/day capsaicinoids OR 9-12 mg/day capsiate",
+      "rationale": "",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "15-30 minutes BEFORE meals, 2-3x daily",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 2.0,
+          "max": 6.0,
+          "unit": "mg",
+          "raw": "2-6 mg/day capsaicinoids OR 9-12 mg/day capsiate"
+        },
+        "rank_priority": 1,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Fullness/Satiety"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "glucomannan",
+      "substance": "Glucomannan",
+      "supplement_type": "Fermentable Soluble Fiber",
+      "subcategory": "Fullness/Satiety",
+      "rank": "2nd Choice",
+      "standard_dose": "1-5g",
+      "rationale": "Soluble fiber for fullness, excellent for IBS-C; needs adequate water",
+      "interaction_risk": "Medium",
+      "timing_in_protocol": "With meals, 2-3x daily, Weeks 3+",
+      "notes": "For immediate, physical satiety, Glucomannan is generally the superior choice. If the goal is a combination of reduced appetite and higher caloric burn, Capsicum Extract is more effective.",
+      "parsed": {
+        "dose": {
+          "min": 1.0,
+          "max": 5.0,
+          "unit": "g",
+          "raw": "1-5g"
+        },
+        "rank_priority": 2,
+        "interaction_level": "medium",
+        "health_claims": [
+          "Fullness/Satiety"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "xanthan_gum",
+      "substance": "Xanthan Gum",
+      "supplement_type": "Fermentable Soluble Fiber",
+      "subcategory": "Fullness/Satiety",
+      "rank": "3rd Choice",
+      "standard_dose": "1-5g",
+      "rationale": "Food additive (E415), generally safe, FODMAP consideration for IBS-D patients",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "As needed",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 1.0,
+          "max": 5.0,
+          "unit": "g",
+          "raw": "1-5g"
+        },
+        "rank_priority": 3,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Fullness/Satiety"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "propolis",
+      "substance": "Propolis",
+      "supplement_type": "Bee Product",
+      "subcategory": "Infection Susceptibility",
+      "rank": "1st Choice",
+      "standard_dose": "300 mg extract",
+      "rationale": "Bee product (antibacterial/antiviral)",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Continuous",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 300.0,
+          "unit": "mg",
+          "raw": "300 mg extract"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Infection Susceptibility"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "quercetin",
+      "substance": "Quercetin",
+      "supplement_type": "Fermentable Polyphenol Substrate",
+      "subcategory": "Infection Susceptibility",
+      "rank": "2nd Choice",
+      "standard_dose": "300-400mg (microbiome modulation); max 500mg",
+      "rationale": "Antiviral, anti-inflammatory; 300-400mg for microbiome modulation, max 500mg/day",
+      "interaction_risk": "Medium",
+      "timing_in_protocol": "Continuous, with meals (fat enhances absorption)",
+      "notes": "Nutritionist-confirmed dose range. Cautions: anticoagulants/antiplatelets → flag interaction; kidney disease → auto-exclude; pregnancy/breastfeeding → auto-exclude; multiple medications → flag for review.",
+      "parsed": {
+        "dose": {
+          "min": 300.0,
+          "max": 500.0,
+          "unit": "mg",
+          "raw": "300-400mg (microbiome modulation); max 500mg"
+        },
+        "rank_priority": 2,
+        "interaction_level": "medium",
+        "health_claims": [
+          "Infection Susceptibility"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "capsule_only",
+      "polyphenol_tier": 1,
+      "cautions": {
+        "anticoagulants_antiplatelets": {
+          "action": "flag_interaction",
+          "drugs": [
+            "warfarin",
+            "coumadin",
+            "blood thinner",
+            "anticoagulant",
+            "antiplatelet",
+            "aspirin",
+            "clopidogrel"
+          ]
+        },
+        "kidney_disease": {
+          "action": "auto_exclude"
+        },
+        "pregnancy_breastfeeding": {
+          "action": "auto_exclude",
+          "note": "Do not add unless specifically cleared"
+        },
+        "multiple_medications": {
+          "action": "flag_for_review"
+        }
+      }
+    },
+    {
+      "id": "royal_jelly",
+      "substance": "Royal Jelly",
+      "supplement_type": "Bee Product",
+      "subcategory": "Infection Susceptibility",
+      "rank": "3rd Choice",
+      "standard_dose": "150mg+",
+      "rationale": "Energetic (bee product)",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 150.0,
+          "unit": "mg",
+          "raw": "150mg+"
+        },
+        "rank_priority": 3,
+        "interaction_level": "low",
+        "health_claims": [
+          "Infection Susceptibility"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "dha_epa",
+      "substance": "DHA & EPA",
+      "supplement_type": "Omega Fatty Acid",
+      "subcategory": "Memory & Cognition",
+      "rank": "1st Choice",
+      "standard_dose": "2g daily (combined)",
+      "rationale": "maintaining the structural integrity of brain cells and reducing inflammation; max 5g/day supplemental",
+      "interaction_risk": "Low if storage good",
+      "timing_in_protocol": "Daily",
+      "notes": "In salt form",
+      "parsed": {
+        "dose": {
+          "value": 2.0,
+          "unit": "g",
+          "raw": "2g daily (combined)"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Memory & Cognition"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "creatine",
+      "substance": "Creatine",
+      "supplement_type": "Amino Acid & Precursor",
+      "subcategory": "Memory & Cognition",
+      "rank": "2nd Choice",
+      "standard_dose": "5g initial (up to 20g), 3-5g maintenance",
+      "rationale": "Brain energy reserve; preliminary neuro evidence",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 5.0,
+          "unit": "g",
+          "raw": "5g initial (up to 20g), 3-5g maintenance"
+        },
+        "rank_priority": 2,
+        "interaction_level": "low",
+        "health_claims": [
+          "Memory & Cognition"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "fermented_pomegranate",
+      "substance": "Fermented pomegranate",
+      "supplement_type": "Fermentable Polyphenol Substrate",
+      "subcategory": "Memory & Cognition",
+      "rank": "3rd Choice",
+      "standard_dose": "500-700 mg daily",
+      "rationale": "pairing with probiotics can help polyphenol metabolism (synbiotic effect)",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily with meals",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 500.0,
+          "max": 700.0,
+          "unit": "mg",
+          "raw": "500-700 mg daily"
+        },
+        "rank_priority": 3,
+        "interaction_level": "low",
+        "health_claims": [
+          "Memory & Cognition"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "carthamus_tinctorius",
+      "substance": "Carthamus Tinctorius (Safflower)",
+      "supplement_type": "Fermentable Soluble Fiber",
+      "subcategory": "Skin Quality",
+      "rank": "1st Choice",
+      "standard_dose": "2.7g flowers",
+      "rationale": "High linoleic acid, improves skin moisture",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 2.7,
+          "unit": "g",
+          "raw": "2.7g flowers"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Skin Quality"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "apple_polyphenol_extract",
+      "substance": "Apple polyphenol extract",
+      "supplement_type": "Prebiotic, Fermentable Polyphenol Substrate",
+      "subcategory": "Skin Quality",
+      "rank": "2nd Choice",
+      "standard_dose": "300-600 mg/day",
+      "rationale": "Good for skin UV-protection, and antiaging.",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "12 weeks +, with meals",
+      "notes": "synergistic with collagen supplementation",
+      "parsed": {
+        "dose": {
+          "min": 300.0,
+          "max": 600.0,
+          "unit": "mg",
+          "raw": "300-600 mg/day"
+        },
+        "rank_priority": 2,
+        "interaction_level": "low",
+        "health_claims": [
+          "Skin Quality"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "gla",
+      "substance": "GLA (Gamma-Linolenic Acid)",
+      "supplement_type": "Omega Fatty Acid",
+      "subcategory": "Skin Quality",
+      "rank": "3rd Choice",
+      "standard_dose": "90-330mg GLA daily (1-3g EPO equivalent)",
+      "rationale": "Powerful skin anti-inflammatory (for targeting inflammatory conditions (eczema/psoriasis))",
+      "interaction_risk": "Med (storage/stability)",
+      "timing_in_protocol": "Daily",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 90.0,
+          "max": 330.0,
+          "unit": "mg",
+          "raw": "90-330mg GLA daily (1-3g EPO equivalent)"
+        },
+        "rank_priority": 3,
+        "interaction_level": "medium",
+        "health_claims": [
+          "Skin Quality"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "melatonin",
+      "substance": "Melatonin",
+      "supplement_type": "Hormone",
+      "subcategory": "Sleep Quality",
+      "rank": "1st Choice",
+      "standard_dose": "1mg portion close to bedtime",
+      "rationale": "Authorized health claim for sleep onset latency",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Evening",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 1.0,
+          "unit": "mg",
+          "raw": "1mg portion close to bedtime"
+        },
+        "rank_priority": 1,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Sleep Quality"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "ltheanine",
+      "substance": "L-Theanine",
+      "supplement_type": "Amino Acid & Precursor",
+      "subcategory": "Sleep Quality",
+      "rank": "2nd Choice",
+      "standard_dose": "200mg (standard); 400mg (escalated: stress≥7 + sleep≤5)",
+      "rationale": "Calm focus; cautious with caffeine at night (no morning grogginess)",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Evening",
+      "notes": "promote the production of alpha brain waves, which are linked to a state of relaxed wakefulness, potentially making it easier to transition into sleep. Dose escalation: 400mg permitted when stress ≥7/10 AND sleep ≤5/10 (high arousal + severe sleep deficit). Supported by clinical studies using 200-400mg doses for sleep onset latency reduction. L-Theanine has GRAS status; doses up to 900mg/day are well-tolerated with no reported adverse effects.",
+      "parsed": {
+        "dose": {
+          "value": 200.0,
+          "unit": "mg",
+          "raw": "200mg"
+        },
+        "rank_priority": 2,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Sleep Quality"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "valeriana_officinalis",
+      "substance": "Valeriana Officinalis (Valerian Root)",
+      "supplement_type": "Spasmolytics",
+      "subcategory": "Sleep Quality",
+      "rank": "3rd Choice",
+      "standard_dose": "0.2g dried root",
+      "rationale": "Powerful but can cause morning grogginess",
+      "interaction_risk": "Med (tolerance build)",
+      "timing_in_protocol": "Evening only",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "value": 0.2,
+          "unit": "g",
+          "raw": "0.2g dried root"
+        },
+        "rank_priority": 3,
+        "interaction_level": "medium",
+        "health_claims": [
+          "Sleep Quality"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "ashwagandha",
+      "substance": "Ashwagandha (Withania somnifera)",
+      "supplement_type": "Adaptogen",
+      "subcategory": "Stress/Anxiety",
+      "rank": "1st Choice",
+      "standard_dose": "300mg-600mg",
+      "rationale": "Anxiety/sleep modulation; check thyroid interactions",
+      "interaction_risk": "Low (individual variation)",
+      "timing_in_protocol": "Daily (takes 1-2 weeks to notice effects)",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 300.0,
+          "max": 600.0,
+          "unit": "mg",
+          "raw": "300mg-600mg"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Stress/Anxiety"
+        ]
+      },
+      "timing_restriction": "evening_ok",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "lglutamine",
+      "substance": "L-Glutamine",
+      "supplement_type": "Amino Acid & Precursor",
+      "subcategory": "Stress/Anxiety",
+      "rank": "2nd Choice",
+      "standard_dose": "50-400mg/kg body mass (5-10g daily)",
+      "rationale": "Conditionally essential, immune-critical during stress",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Continuous",
+      "notes": "It helps repair the gut lining while supporting mental calmness.",
+      "parsed": {
+        "dose": {
+          "min": 50.0,
+          "max": 400.0,
+          "unit": "mg",
+          "raw": "50-400mg/kg body mass (5-10g daily)"
+        },
+        "rank_priority": 2,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Stress/Anxiety"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "rhodiola_rosea",
+      "substance": "Rhodiola Rosea (Rosewort)",
+      "supplement_type": "Adaptogen",
+      "subcategory": "Stress/Anxiety",
+      "rank": "3rd Choice",
+      "standard_dose": "120mg dried root",
+      "rationale": "Energy + stress resilience",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Morning-Afternoon (can be stimulating)",
+      "notes": "Best for someone experiencing burnout, mental fatigue, lack of concentration, or lethargy.",
+      "parsed": {
+        "dose": {
+          "value": 120.0,
+          "unit": "mg",
+          "raw": "120mg dried root"
+        },
+        "rank_priority": 3,
+        "interaction_level": "low",
+        "health_claims": [
+          "Stress/Anxiety"
+        ]
+      },
+      "timing_restriction": "morning_only",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "dha_epa",
+      "substance": "DHA & EPA",
+      "supplement_type": "Omega Fatty Acid",
+      "subcategory": "Triglycerides",
+      "rank": "1st Choice",
+      "standard_dose": "2g daily (combined)",
+      "rationale": "Maintain normal triglycerides; max 5g/day supplemental",
+      "interaction_risk": "Low if storage good",
+      "timing_in_protocol": "Daily",
+      "notes": "In salt form",
+      "parsed": {
+        "dose": {
+          "value": 2.0,
+          "unit": "g",
+          "raw": "2g daily (combined)"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Triglycerides"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "amla",
+      "substance": "Amla",
+      "supplement_type": "Other Botanical",
+      "subcategory": "Triglycerides",
+      "rank": "2nd Choice",
+      "standard_dose": "500mg - 1000mg daily",
+      "rationale": "Amla has been shown to reduce serum triglyceride, LDL-cholesterol, and total cholesterol levels. It acts by managing lipid metabolism and has anti-atherosclerotic effects.",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "morning, before meal",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 500.0,
+          "max": 1000.0,
+          "unit": "mg",
+          "raw": "500mg - 1000mg daily"
+        },
+        "rank_priority": 2,
+        "interaction_level": "low",
+        "health_claims": [
+          "Triglycerides"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "gynostemma_pentaphyllum",
+      "substance": "Gynostemma Pentaphyllum",
+      "supplement_type": "Adaptogen",
+      "subcategory": "Triglycerides",
+      "rank": "3rd Choice",
+      "standard_dose": "100-300mg for 15+ days",
+      "rationale": "Polysaccharide + saponin support",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Daily",
+      "notes": "",
+      "parsed": {
+        "dose": {
+          "min": 100.0,
+          "max": 300.0,
+          "unit": "mg",
+          "raw": "100-300mg for 15+ days"
+        },
+        "rank_priority": 3,
+        "interaction_level": "low",
+        "health_claims": [
+          "Triglycerides"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "capsule_only"
+    },
+    {
+      "id": "oligofructose",
+      "substance": "Oligofructose (FOS)",
+      "supplement_type": "Prebiotic",
+      "subcategory": "Microbiome Restoration",
+      "rank": "1st Choice",
+      "standard_dose": "3-8 g/day",
+      "rationale": "Microbiome restoration",
+      "interaction_risk": "Low",
+      "timing_in_protocol": "Continuous",
+      "notes": "supports Akkermansia/Odoribacter growth; caution FODMAP sensitivity. Recommended is a combintation of FOS and GOS",
+      "parsed": {
+        "dose": {
+          "min": 3.0,
+          "max": 8.0,
+          "unit": "g",
+          "raw": "3-8 g/day"
+        },
+        "rank_priority": 1,
+        "interaction_level": "low",
+        "health_claims": [
+          "Microbiome Restoration"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "galactooligosaccharides",
+      "substance": "Galactooligosaccharides (GOS)",
+      "supplement_type": "Prebiotic",
+      "subcategory": "Microbiome Restoration",
+      "rank": "2nd Choice",
+      "standard_dose": "5-10 g/day",
+      "rationale": "Microbiome restoration",
+      "interaction_risk": "Medium",
+      "timing_in_protocol": "12 weeks +, daily",
+      "notes": "Contraindications: Severe IBS‚ÄëD (may worsen diarrhea); active IBD flares; FODMAP sensitivity (GOS is FODMAP)",
+      "parsed": {
+        "dose": {
+          "min": 5.0,
+          "max": 10.0,
+          "unit": "g",
+          "raw": "5-10 g/day"
+        },
+        "rank_priority": 2,
+        "interaction_level": "medium",
+        "health_claims": [
+          "Microbiome Restoration"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "lactulose",
+      "substance": "Lactulose",
+      "supplement_type": "Prebiotic",
+      "subcategory": "Microbiome Restoration",
+      "rank": "3rd Choice",
+      "standard_dose": "10-20g/day",
+      "rationale": "Microbiome restoration + laxative",
+      "interaction_risk": "Medium",
+      "timing_in_protocol": "4-8 weeks",
+      "notes": "Dose dependent laxative; caution with diabetes",
+      "parsed": {
+        "dose": {
+          "min": 10.0,
+          "max": 20.0,
+          "unit": "g",
+          "raw": "10-20g/day"
+        },
+        "rank_priority": 3,
+        "interaction_level": "medium",
+        "health_claims": [
+          "Microbiome Restoration"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "any"
+    },
+    {
+      "id": "astaxanthin",
+      "substance": "Astaxanthin (H. pluvialis)",
+      "supplement_type": "Carotenoid Antioxidant",
+      "subcategory": "Immune System; Skin Quality",
+      "rank": "1st Choice",
+      "standard_dose": "3mg active (30mg 10% oleoresin)",
+      "rationale": "Potent antioxidant; supports skin UV protection and eye health; anti-inflammatory; muscle recovery support",
+      "interaction_risk": "Very Low",
+      "timing_in_protocol": "Daily with fat-containing meal",
+      "notes": "Part of fixed softgel formulation. Always co-administered with omega-3 and vitamin E.",
+      "parsed": {
+        "dose": {
+          "value": 3.0,
+          "unit": "mg",
+          "raw": "3mg active (30mg 10% oleoresin)"
+        },
+        "rank_priority": 1,
+        "interaction_level": "very_low",
+        "health_claims": [
+          "Immune System; Skin Quality"
+        ]
+      },
+      "timing_restriction": "any",
+      "delivery_constraint": "capsule_only"
+    }
+  ],
+  "polyphenol_classification": {
+    "description": "Polyphenol delivery classification for the polyphenol diversity rule",
+    "total_polyphenol_mass_cap_mg": 1000,
+    "tier_1_capsule_shareable": {
+      "description": "Capsule-only (bitter/irritating) — can share evening capsule headroom",
+      "substances": [
+        "quercetin",
+        "propolis",
+        "royal_jelly",
+        "capsicum_extract"
+      ],
+      "notes": "Fit into evening capsule headroom, divided among selected Tier 1 polyphenols"
+    },
+    "tier_2_dedicated_capsule": {
+      "description": "Capsule-only — too large to share, gets own dedicated capsule",
+      "substances": [
+        "curcumin",
+        "bergamot_polyphenolic_fraction"
+      ],
+      "notes": "Each gets own morning capsule. Curcumin+piperine = 505mg min. Bergamot = 1000mg (size 00)."
+    },
+    "sachet_safe": {
+      "description": "Mild taste — can go in sachet",
+      "substances": [
+        "apple_polyphenol_extract",
+        "fermented_pomegranate"
+      ],
+      "notes": "Budget = 1000mg - total_capsule_polyphenols. If budget is 0, no sachet polyphenols."
+    }
+  },
+  "health_categories": [
+    {
+      "category": "Abdominal Discomfort",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "mentha_piperita",
+          "substance": "Mentha Piperita (Peppermint)",
+          "supplement_type": "Spasmolytics",
+          "subcategory": "Abdominal Discomfort",
+          "rank": "1st Choice",
+          "standard_dose": "1-3g 3x daily",
+          "rationale": "Excellent gas & cramping relief",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Weeks 1+, before or in between meals",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 1.0,
+              "max": 3.0,
+              "unit": "g",
+              "raw": "1-3g 3x daily"
+            },
+            "rank_priority": 1,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Abdominal Discomfort"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "chamomile",
+          "substance": "Chamomile",
+          "supplement_type": "Spasmolytics",
+          "subcategory": "Abdominal Discomfort",
+          "rank": "2nd Choice",
+          "standard_dose": "2-4g 3x daily",
+          "rationale": "Excellent for IBS-related cramping",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Weeks 1+",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 2.0,
+              "max": 4.0,
+              "unit": "g",
+              "raw": "2-4g 3x daily"
+            },
+            "rank_priority": 2,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Abdominal Discomfort"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "ginger_root",
+          "substance": "Ginger Root (Zingiber officinale)",
+          "supplement_type": "Spasmolytics",
+          "subcategory": "Abdominal Discomfort",
+          "rank": "3rd Choice",
+          "standard_dose": "160mg powder",
+          "rationale": "Reduces pain & inflammation",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Weeks 1+, with meals",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 160.0,
+              "unit": "mg",
+              "raw": "160mg powder"
+            },
+            "rank_priority": 3,
+            "interaction_level": "low",
+            "health_claims": [
+              "Abdominal Discomfort"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "capsule_only"
+        }
+      ]
+    },
+    {
+      "category": "Anti-inflammatory",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "curcumin",
+          "substance": "Curcumin (from Turmeric)",
+          "supplement_type": "Fermentable Polyphenol Substrate",
+          "subcategory": "Anti-inflammatory",
+          "rank": "1st Choice",
+          "standard_dose": "Varies (enhance with black pepper)",
+          "rationale": "Supports microbiota indirectly through anti-inflammatory effects",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "raw": "Varies (enhance with black pepper)"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Anti-inflammatory"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "capsule_only"
+        },
+        {
+          "id": "glutathione",
+          "substance": "Glutathione",
+          "supplement_type": "Amino Acid & Precursor",
+          "subcategory": "Anti-inflammatory",
+          "rank": "2nd Choice",
+          "standard_dose": "50-100mg",
+          "rationale": "Preferential - complete precursor, less redundancy",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Continuous",
+          "notes": "Indicated for athletes and active individuals (enhanced antioxidant need from oxidative stress). Also relevant for immune support, skin health, and longevity/aging goals.",
+          "parsed": {
+            "dose": {
+              "min": 50.0,
+              "max": 100.0,
+              "unit": "mg",
+              "raw": "50-100mg"
+            },
+            "rank_priority": 2,
+            "interaction_level": "low",
+            "health_claims": [
+              "Anti-inflammatory",
+              "Infection Susceptibility",
+              "Skin Quality",
+              "Sport/Recovery"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "astragalus_membranaceus",
+          "substance": "Astragalus membranaceus",
+          "supplement_type": "Other Botanical",
+          "subcategory": "Anti-inflammatory",
+          "rank": "3rd Choice",
+          "standard_dose": "600 - 2000mg 3-4x daily",
+          "rationale": "Can inhibit inflammatory markers",
+          "interaction_risk": "Medium",
+          "timing_in_protocol": "Daily, in between meals",
+          "notes": "The recent patent of a product called AstraGin™, which contains both AM and Panax notoginseng extracts, has been approved for a novel food application by the European Commission",
+          "parsed": {
+            "dose": {
+              "min": 600.0,
+              "max": 2000.0,
+              "unit": "mg",
+              "raw": "600 - 2000mg 3-4x daily"
+            },
+            "rank_priority": 3,
+            "interaction_level": "medium",
+            "health_claims": [
+              "Anti-inflammatory"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "capsule_only"
+        }
+      ]
+    },
+    {
+      "category": "Blood Cholesterol",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "bergamot_polyphenolic_fraction",
+          "substance": "Bergamot Polyphenolic Fraction",
+          "supplement_type": "Fermentable Polyphenol Substrate",
+          "subcategory": "Blood Cholesterol",
+          "rank": "1st Choice",
+          "standard_dose": "1000 mg/day",
+          "rationale": "",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "3 months, with meals",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 1000.0,
+              "unit": "mg",
+              "raw": "1000 mg/day"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Blood Cholesterol"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "betaglucans",
+          "substance": "Beta-Glucans (Oats)",
+          "supplement_type": "Fermentable Soluble Fiber",
+          "subcategory": "Blood Cholesterol",
+          "rank": "2nd Choice",
+          "standard_dose": "1g portion (3g daily needed)",
+          "rationale": "Authoritative claim for cholesterol maintenance; is prebiotic; Oats are preferred, because then you don't have to consider gluten-intolerances.",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily, with meals",
+          "notes": "RS3-like fermentation",
+          "parsed": {
+            "dose": {
+              "value": 1.0,
+              "unit": "g",
+              "raw": "1g portion (3g daily needed)"
+            },
+            "rank_priority": 2,
+            "interaction_level": "low",
+            "health_claims": [
+              "Blood Cholesterol"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "plant_sterolsstanols",
+          "substance": "Plant Sterols/Stanols",
+          "supplement_type": "Fermentable Polyphenol Substrate",
+          "subcategory": "Blood Cholesterol",
+          "rank": "3rd Choice",
+          "standard_dose": "0.8g daily",
+          "rationale": "Authorized novel food; strongest evidence for LDL reduction",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Daily, with meals",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 0.8,
+              "unit": "g",
+              "raw": "0.8g daily"
+            },
+            "rank_priority": 3,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Blood Cholesterol"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Blood Sugar",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "bacopa_monnieri",
+          "substance": "Bacopa monnieri",
+          "supplement_type": "Other Botanical",
+          "subcategory": "Blood Sugar",
+          "rank": "1st Choice",
+          "standard_dose": "300-450 mg/day",
+          "rationale": "",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "4-12 weeks",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 300.0,
+              "max": 450.0,
+              "unit": "mg",
+              "raw": "300-450 mg/day"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Blood Sugar"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "capsule_only"
+        },
+        {
+          "id": "banaba",
+          "substance": "Banaba (Lagerstroemia speciosa)",
+          "supplement_type": "Other Botanical",
+          "subcategory": "Blood Sugar",
+          "rank": "2nd Choice",
+          "standard_dose": "48-60 mg corosolic acid equivalent",
+          "rationale": "",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Continuous, with meals",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 48.0,
+              "max": 60.0,
+              "unit": "mg",
+              "raw": "48-60 mg corosolic acid equivalent"
+            },
+            "rank_priority": 2,
+            "interaction_level": "low",
+            "health_claims": [
+              "Blood Sugar"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "trigonella_foenumgraecum",
+          "substance": "Trigonella Foenum-Graecum (Fenugreek)",
+          "supplement_type": "Other Botanical",
+          "subcategory": "Blood Sugar",
+          "rank": "3rd Choice",
+          "standard_dose": "0.8g comminuted herb (see notes)",
+          "rationale": "Multi-system support",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily",
+          "notes": "Can have laxative side effects. Some studies report to have used up to 25 gram of powdered fenugreek. However too much fenugreek might also cause a drop in blood sugar for 'healthy' participants.",
+          "parsed": {
+            "dose": {
+              "value": 0.8,
+              "unit": "g",
+              "raw": "0.8g comminuted herb (see notes)"
+            },
+            "rank_priority": 3,
+            "interaction_level": "low",
+            "health_claims": [
+              "Blood Sugar"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Bowel Function",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "phgg",
+          "substance": "PHGG",
+          "supplement_type": "Fermentable Fiber",
+          "subcategory": "Bowel Function",
+          "rank": "1st Choice",
+          "standard_dose": "5-10g",
+          "rationale": "Low-FODMAP fiber, gentle in sensitive patterns",
+          "interaction_risk": "None",
+          "timing_in_protocol": "Weeks 1+",
+          "notes": "RS3-like fermentation; can be combined with psyllium for enhanced efficacy",
+          "parsed": {
+            "dose": {
+              "min": 5.0,
+              "max": 10.0,
+              "unit": "g",
+              "raw": "5-10g"
+            },
+            "rank_priority": 1,
+            "interaction_level": "none",
+            "health_claims": [
+              "Bowel Function"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "psyllium_husk",
+          "substance": "Psyllium Husk",
+          "supplement_type": "Fermentable Soluble Fiber",
+          "subcategory": "Bowel Function",
+          "rank": "2nd Choice",
+          "standard_dose": "1-3g in daily dose",
+          "rationale": "Well-studied, take with adequate water; gold standard for constipation; benefits visible at 1-2 weeks",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Weeks 1+",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 1.0,
+              "max": 3.0,
+              "unit": "g",
+              "raw": "1-3g in daily dose"
+            },
+            "rank_priority": 2,
+            "interaction_level": "low",
+            "health_claims": [
+              "Bowel Function"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "pure_inulin",
+          "substance": "Pure Inulin",
+          "supplement_type": "Prebiotic, Fermentable Soluble Fiber",
+          "subcategory": "Bowel Function",
+          "rank": "3rd Choice",
+          "standard_dose": "600-1000mg",
+          "rationale": "Use pure inulin if bifido target needed",
+          "interaction_risk": "MEDIUM (bloating)",
+          "timing_in_protocol": "After IBS-D controlled",
+          "notes": "May cause bloating initially; combine with psyllium if needed",
+          "parsed": {
+            "dose": {
+              "min": 600.0,
+              "max": 1000.0,
+              "unit": "mg",
+              "raw": "600-1000mg"
+            },
+            "rank_priority": 3,
+            "interaction_level": "medium",
+            "health_claims": [
+              "Bowel Function"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Concentration",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "phosphatidyl_choline",
+          "substance": "Phosphatidyl choline (Lecithin)",
+          "supplement_type": "Other Botanical",
+          "subcategory": "Concentration",
+          "rank": "1st Choice",
+          "standard_dose": "600-1200mg soy-based",
+          "rationale": "Concentration, memory, neurotransmitter synthesis",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily",
+          "notes": "when using lectin granules, consider that the concentration of phosphatidyl choline ranges from 35-70%). Studies have also suggested a dosage up to 5 grams daily.",
+          "parsed": {
+            "dose": {
+              "min": 600.0,
+              "max": 1200.0,
+              "unit": "mg",
+              "raw": "600-1200mg soy-based"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Concentration"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "ltheanine",
+          "substance": "L-Theanine",
+          "supplement_type": "Amino Acid & Precursor",
+          "subcategory": "Concentration",
+          "rank": "2nd Choice",
+          "standard_dose": "200mg (+100mg caffeine for best results)",
+          "rationale": "Calm focus; pairs well with caffeine",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Morning-Afternoon",
+          "notes": "Standard dose 200mg. For sleep-specific use, dose may be escalated to 400mg by rules engine when stress ≥7 AND sleep ≤5.",
+          "parsed": {
+            "dose": {
+              "value": 200.0,
+              "unit": "mg",
+              "raw": "200mg (+100mg caffeine for best results)"
+            },
+            "rank_priority": 2,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Concentration"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "panax_ginseng",
+          "substance": "Panax ginseng (Ginseng)",
+          "supplement_type": "Adaptogen",
+          "subcategory": "Concentration",
+          "rank": "3rd Choice",
+          "standard_dose": "0.4g dried root",
+          "rationale": "Energy + vitality support",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 0.4,
+              "unit": "g",
+              "raw": "0.4g dried root"
+            },
+            "rank_priority": 3,
+            "interaction_level": "low",
+            "health_claims": [
+              "Concentration"
+            ]
+          },
+          "timing_restriction": "morning_only",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Fatigue",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "eleutherococcus_senticosus",
+          "substance": "Eleutherococcus Senticosus",
+          "supplement_type": "Adaptogen",
+          "subcategory": "Fatigue",
+          "rank": "1st Choice",
+          "standard_dose": "600-1500 mg/day",
+          "rationale": "Fatigue + stress resilience",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 600.0,
+              "max": 1500.0,
+              "unit": "mg",
+              "raw": "600-1500 mg/day"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Fatigue"
+            ]
+          },
+          "timing_restriction": "morning_only",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "rhodiola_rosea",
+          "substance": "Rhodiola Rosea (Rosewort)",
+          "supplement_type": "Adaptogen",
+          "subcategory": "Fatigue",
+          "rank": "2nd Choice",
+          "standard_dose": "120mg dried root",
+          "rationale": "Energy + stress resilience",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Morning-Afternoon",
+          "notes": "1st choice when treating mental burnout fatigue.",
+          "parsed": {
+            "dose": {
+              "value": 120.0,
+              "unit": "mg",
+              "raw": "120mg dried root"
+            },
+            "rank_priority": 2,
+            "interaction_level": "low",
+            "health_claims": [
+              "Fatigue"
+            ]
+          },
+          "timing_restriction": "morning_only",
+          "delivery_constraint": "capsule_only"
+        },
+        {
+          "id": "paullinia_cupana",
+          "substance": "Paullinia Cupana (Guarana)",
+          "supplement_type": "Stimulant",
+          "subcategory": "Fatigue",
+          "rank": "3rd Choice",
+          "standard_dose": "75mg+",
+          "rationale": "High caffeine content - monitor total intake",
+          "interaction_risk": "Med",
+          "timing_in_protocol": "Morning-Afternoon",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 75.0,
+              "unit": "mg",
+              "raw": "75mg+"
+            },
+            "rank_priority": 3,
+            "interaction_level": "medium",
+            "health_claims": [
+              "Fatigue"
+            ]
+          },
+          "timing_restriction": "morning_only",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Flatulence",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "foeniculum_vulgare",
+          "substance": "Foeniculum Vulgare (Fennel)",
+          "supplement_type": "Spasmolytics",
+          "subcategory": "Flatulence",
+          "rank": "1st Choice",
+          "standard_dose": "5-7g for adults",
+          "rationale": "Essential oil fractions reduce gas production",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Weeks 1+, after meals",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 5.0,
+              "max": 7.0,
+              "unit": "g",
+              "raw": "5-7g for adults"
+            },
+            "rank_priority": 1,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Flatulence"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "star_anise",
+          "substance": "Star Anise (Illicium verum)",
+          "supplement_type": "Spasmolytics",
+          "subcategory": "Flatulence",
+          "rank": "2nd Choice",
+          "standard_dose": "2.7g",
+          "rationale": "Traditional use, aromatic carminative",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Weeks 1+, after meals",
+          "notes": "synergizes with peppermint",
+          "parsed": {
+            "dose": {
+              "value": 2.7,
+              "unit": "g",
+              "raw": "2.7g"
+            },
+            "rank_priority": 2,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Flatulence"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "capsule_only"
+        },
+        {
+          "id": "melissa_officinalis",
+          "substance": "Melissa Officinalis (Lemon Balm)",
+          "supplement_type": "Spasmolytics",
+          "subcategory": "Flatulence",
+          "rank": "3rd Choice",
+          "standard_dose": "1.5-4.5g 3x daily",
+          "rationale": "Well-tolerated, antispasmodic effect",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Weeks 1+, after meals",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 1.5,
+              "max": 4.5,
+              "unit": "g",
+              "raw": "1.5-4.5g 3x daily"
+            },
+            "rank_priority": 3,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Flatulence"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Fullness/Satiety",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "capsicum_extract",
+          "substance": "Capsicum Extract (Capsaicinoid/Capsiate)",
+          "supplement_type": "Fermentable Polyphenol Substrate",
+          "subcategory": "Fullness/Satiety",
+          "rank": "1st Choice",
+          "standard_dose": "2-6 mg/day capsaicinoids OR 9-12 mg/day capsiate",
+          "rationale": "",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "15-30 minutes BEFORE meals, 2-3x daily",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 2.0,
+              "max": 6.0,
+              "unit": "mg",
+              "raw": "2-6 mg/day capsaicinoids OR 9-12 mg/day capsiate"
+            },
+            "rank_priority": 1,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Fullness/Satiety"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "glucomannan",
+          "substance": "Glucomannan",
+          "supplement_type": "Fermentable Soluble Fiber",
+          "subcategory": "Fullness/Satiety",
+          "rank": "2nd Choice",
+          "standard_dose": "1-5g",
+          "rationale": "Soluble fiber for fullness, excellent for IBS-C; needs adequate water",
+          "interaction_risk": "Medium",
+          "timing_in_protocol": "With meals, 2-3x daily, Weeks 3+",
+          "notes": "For immediate, physical satiety, Glucomannan is generally the superior choice. If the goal is a combination of reduced appetite and higher caloric burn, Capsicum Extract is more effective.",
+          "parsed": {
+            "dose": {
+              "min": 1.0,
+              "max": 5.0,
+              "unit": "g",
+              "raw": "1-5g"
+            },
+            "rank_priority": 2,
+            "interaction_level": "medium",
+            "health_claims": [
+              "Fullness/Satiety"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "xanthan_gum",
+          "substance": "Xanthan Gum",
+          "supplement_type": "Fermentable Soluble Fiber",
+          "subcategory": "Fullness/Satiety",
+          "rank": "3rd Choice",
+          "standard_dose": "1-5g",
+          "rationale": "Food additive (E415), generally safe, FODMAP consideration for IBS-D patients",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "As needed",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 1.0,
+              "max": 5.0,
+              "unit": "g",
+              "raw": "1-5g"
+            },
+            "rank_priority": 3,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Fullness/Satiety"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Immune System; Skin Quality",
+      "supplement_count": 1,
+      "supplements": [
+        {
+          "id": "astaxanthin",
+          "substance": "Astaxanthin (H. pluvialis)",
+          "supplement_type": "Carotenoid Antioxidant",
+          "subcategory": "Immune System; Skin Quality",
+          "rank": "1st Choice",
+          "standard_dose": "3mg active (30mg 10% oleoresin)",
+          "rationale": "Potent antioxidant; supports skin UV protection and eye health; anti-inflammatory; muscle recovery support",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Daily with fat-containing meal",
+          "notes": "Part of fixed softgel formulation. Always co-administered with omega-3 and vitamin E.",
+          "parsed": {
+            "dose": {
+              "value": 3.0,
+              "unit": "mg",
+              "raw": "3mg active (30mg 10% oleoresin)"
+            },
+            "rank_priority": 1,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Immune System; Skin Quality"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Infection Susceptibility",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "propolis",
+          "substance": "Propolis",
+          "supplement_type": "Bee Product",
+          "subcategory": "Infection Susceptibility",
+          "rank": "1st Choice",
+          "standard_dose": "300 mg extract",
+          "rationale": "Bee product (antibacterial/antiviral)",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Continuous",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 300.0,
+              "unit": "mg",
+              "raw": "300 mg extract"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Infection Susceptibility"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "capsule_only"
+        },
+        {
+          "id": "quercetin",
+          "substance": "Quercetin",
+          "supplement_type": "Fermentable Polyphenol Substrate",
+          "subcategory": "Infection Susceptibility",
+          "rank": "2nd Choice",
+          "standard_dose": "Up to 40mg",
+          "rationale": "Antiviral, anti-inflammatory; natural from quercetin-rich foods",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Continuous, with meals (fat enhances absorption)",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "raw": "Up to 40mg"
+            },
+            "rank_priority": 2,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Infection Susceptibility"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "royal_jelly",
+          "substance": "Royal Jelly",
+          "supplement_type": "Bee Product",
+          "subcategory": "Infection Susceptibility",
+          "rank": "3rd Choice",
+          "standard_dose": "150mg+",
+          "rationale": "Energetic (bee product)",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 150.0,
+              "unit": "mg",
+              "raw": "150mg+"
+            },
+            "rank_priority": 3,
+            "interaction_level": "low",
+            "health_claims": [
+              "Infection Susceptibility"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "capsule_only"
+        }
+      ]
+    },
+    {
+      "category": "Memory & Cognition",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "dha_epa",
+          "substance": "DHA & EPA",
+          "supplement_type": "Omega Fatty Acid",
+          "subcategory": "Memory & Cognition",
+          "rank": "1st Choice",
+          "standard_dose": "2g daily (combined)",
+          "rationale": "maintaining the structural integrity of brain cells and reducing inflammation; max 5g/day supplemental",
+          "interaction_risk": "Low if storage good",
+          "timing_in_protocol": "Daily",
+          "notes": "In salt form",
+          "parsed": {
+            "dose": {
+              "value": 2.0,
+              "unit": "g",
+              "raw": "2g daily (combined)"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Memory & Cognition"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "creatine",
+          "substance": "Creatine",
+          "supplement_type": "Amino Acid & Precursor",
+          "subcategory": "Memory & Cognition",
+          "rank": "2nd Choice",
+          "standard_dose": "5g initial (up to 20g), 3-5g maintenance",
+          "rationale": "Brain energy reserve; preliminary neuro evidence",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 5.0,
+              "unit": "g",
+              "raw": "5g initial (up to 20g), 3-5g maintenance"
+            },
+            "rank_priority": 2,
+            "interaction_level": "low",
+            "health_claims": [
+              "Memory & Cognition"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "fermented_pomegranate",
+          "substance": "Fermented pomegranate",
+          "supplement_type": "Fermentable Polyphenol Substrate",
+          "subcategory": "Memory & Cognition",
+          "rank": "3rd Choice",
+          "standard_dose": "500-700 mg daily",
+          "rationale": "pairing with probiotics can help polyphenol metabolism (synbiotic effect)",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily with meals",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 500.0,
+              "max": 700.0,
+              "unit": "mg",
+              "raw": "500-700 mg daily"
+            },
+            "rank_priority": 3,
+            "interaction_level": "low",
+            "health_claims": [
+              "Memory & Cognition"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Microbiome Restoration",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "oligofructose",
+          "substance": "Oligofructose (FOS)",
+          "supplement_type": "Prebiotic",
+          "subcategory": "Microbiome Restoration",
+          "rank": "1st Choice",
+          "standard_dose": "3-8 g/day",
+          "rationale": "Microbiome restoration",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Continuous",
+          "notes": "supports Akkermansia/Odoribacter growth; caution FODMAP sensitivity. Recommended is a combintation of FOS and GOS",
+          "parsed": {
+            "dose": {
+              "min": 3.0,
+              "max": 8.0,
+              "unit": "g",
+              "raw": "3-8 g/day"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Microbiome Restoration"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "galactooligosaccharides",
+          "substance": "Galactooligosaccharides (GOS)",
+          "supplement_type": "Prebiotic",
+          "subcategory": "Microbiome Restoration",
+          "rank": "2nd Choice",
+          "standard_dose": "5-10 g/day",
+          "rationale": "Microbiome restoration",
+          "interaction_risk": "Medium",
+          "timing_in_protocol": "12 weeks +, daily",
+          "notes": "Contraindications: Severe IBS‚ÄëD (may worsen diarrhea); active IBD flares; FODMAP sensitivity (GOS is FODMAP)",
+          "parsed": {
+            "dose": {
+              "min": 5.0,
+              "max": 10.0,
+              "unit": "g",
+              "raw": "5-10 g/day"
+            },
+            "rank_priority": 2,
+            "interaction_level": "medium",
+            "health_claims": [
+              "Microbiome Restoration"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "lactulose",
+          "substance": "Lactulose",
+          "supplement_type": "Prebiotic",
+          "subcategory": "Microbiome Restoration",
+          "rank": "3rd Choice",
+          "standard_dose": "10-20g/day",
+          "rationale": "Microbiome restoration + laxative",
+          "interaction_risk": "Medium",
+          "timing_in_protocol": "4-8 weeks",
+          "notes": "Dose dependent laxative; caution with diabetes",
+          "parsed": {
+            "dose": {
+              "min": 10.0,
+              "max": 20.0,
+              "unit": "g",
+              "raw": "10-20g/day"
+            },
+            "rank_priority": 3,
+            "interaction_level": "medium",
+            "health_claims": [
+              "Microbiome Restoration"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Skin Quality",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "carthamus_tinctorius",
+          "substance": "Carthamus Tinctorius (Safflower)",
+          "supplement_type": "Fermentable Soluble Fiber",
+          "subcategory": "Skin Quality",
+          "rank": "1st Choice",
+          "standard_dose": "2.7g flowers",
+          "rationale": "High linoleic acid, improves skin moisture",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 2.7,
+              "unit": "g",
+              "raw": "2.7g flowers"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Skin Quality"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "apple_polyphenol_extract",
+          "substance": "Apple polyphenol extract",
+          "supplement_type": "Prebiotic, Fermentable Polyphenol Substrate",
+          "subcategory": "Skin Quality",
+          "rank": "2nd Choice",
+          "standard_dose": "300-600 mg/day",
+          "rationale": "Good for skin UV-protection, and antiaging.",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "12 weeks +, with meals",
+          "notes": "synergistic with collagen supplementation",
+          "parsed": {
+            "dose": {
+              "min": 300.0,
+              "max": 600.0,
+              "unit": "mg",
+              "raw": "300-600 mg/day"
+            },
+            "rank_priority": 2,
+            "interaction_level": "low",
+            "health_claims": [
+              "Skin Quality"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "gla",
+          "substance": "GLA (Gamma-Linolenic Acid)",
+          "supplement_type": "Omega Fatty Acid",
+          "subcategory": "Skin Quality",
+          "rank": "3rd Choice",
+          "standard_dose": "90-330mg GLA daily (1-3g EPO equivalent)",
+          "rationale": "Powerful skin anti-inflammatory (for targeting inflammatory conditions (eczema/psoriasis))",
+          "interaction_risk": "Med (storage/stability)",
+          "timing_in_protocol": "Daily",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 90.0,
+              "max": 330.0,
+              "unit": "mg",
+              "raw": "90-330mg GLA daily (1-3g EPO equivalent)"
+            },
+            "rank_priority": 3,
+            "interaction_level": "medium",
+            "health_claims": [
+              "Skin Quality"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Sleep Quality",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "melatonin",
+          "substance": "Melatonin",
+          "supplement_type": "Hormone",
+          "subcategory": "Sleep Quality",
+          "rank": "1st Choice",
+          "standard_dose": "1mg portion close to bedtime",
+          "rationale": "Authorized health claim for sleep onset latency",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Evening",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 1.0,
+              "unit": "mg",
+              "raw": "1mg portion close to bedtime"
+            },
+            "rank_priority": 1,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Sleep Quality"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "ltheanine",
+          "substance": "L-Theanine",
+          "supplement_type": "Amino Acid & Precursor",
+          "subcategory": "Sleep Quality",
+          "rank": "2nd Choice",
+          "standard_dose": "200mg (standard); 400mg (escalated: stress≥7 + sleep≤5)",
+          "rationale": "Calm focus; cautious with caffeine at night (no morning grogginess)",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Evening",
+          "notes": "promote the production of alpha brain waves, which are linked to a state of relaxed wakefulness, potentially making it easier to transition into sleep. Dose escalation: 400mg permitted when stress ≥7/10 AND sleep ≤5/10 (high arousal + severe sleep deficit). Supported by clinical studies using 200-400mg doses for sleep onset latency reduction. L-Theanine has GRAS status; doses up to 900mg/day are well-tolerated with no reported adverse effects.",
+          "parsed": {
+            "dose": {
+              "value": 200.0,
+              "unit": "mg",
+              "raw": "200mg"
+            },
+            "rank_priority": 2,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Sleep Quality"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "valeriana_officinalis",
+          "substance": "Valeriana Officinalis (Valerian Root)",
+          "supplement_type": "Spasmolytics",
+          "subcategory": "Sleep Quality",
+          "rank": "3rd Choice",
+          "standard_dose": "0.2g dried root",
+          "rationale": "Powerful but can cause morning grogginess",
+          "interaction_risk": "Med (tolerance build)",
+          "timing_in_protocol": "Evening only",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "value": 0.2,
+              "unit": "g",
+              "raw": "0.2g dried root"
+            },
+            "rank_priority": 3,
+            "interaction_level": "medium",
+            "health_claims": [
+              "Sleep Quality"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "capsule_only"
+        }
+      ]
+    },
+    {
+      "category": "Stress/Anxiety",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "ashwagandha",
+          "substance": "Ashwagandha (Withania somnifera)",
+          "supplement_type": "Adaptogen",
+          "subcategory": "Stress/Anxiety",
+          "rank": "1st Choice",
+          "standard_dose": "300mg-600mg",
+          "rationale": "Anxiety/sleep modulation; check thyroid interactions",
+          "interaction_risk": "Low (individual variation)",
+          "timing_in_protocol": "Daily (takes 1-2 weeks to notice effects)",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 300.0,
+              "max": 600.0,
+              "unit": "mg",
+              "raw": "300mg-600mg"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Stress/Anxiety"
+            ]
+          },
+          "timing_restriction": "evening_ok",
+          "delivery_constraint": "capsule_only"
+        },
+        {
+          "id": "lglutamine",
+          "substance": "L-Glutamine",
+          "supplement_type": "Amino Acid & Precursor",
+          "subcategory": "Stress/Anxiety",
+          "rank": "2nd Choice",
+          "standard_dose": "50-400mg/kg body mass (5-10g daily)",
+          "rationale": "Conditionally essential, immune-critical during stress",
+          "interaction_risk": "Very Low",
+          "timing_in_protocol": "Continuous",
+          "notes": "It helps repair the gut lining while supporting mental calmness.",
+          "parsed": {
+            "dose": {
+              "min": 50.0,
+              "max": 400.0,
+              "unit": "mg",
+              "raw": "50-400mg/kg body mass (5-10g daily)"
+            },
+            "rank_priority": 2,
+            "interaction_level": "very_low",
+            "health_claims": [
+              "Stress/Anxiety"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "rhodiola_rosea",
+          "substance": "Rhodiola Rosea (Rosewort)",
+          "supplement_type": "Adaptogen",
+          "subcategory": "Stress/Anxiety",
+          "rank": "3rd Choice",
+          "standard_dose": "120mg dried root",
+          "rationale": "Energy + stress resilience",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Morning-Afternoon (can be stimulating)",
+          "notes": "Best for someone experiencing burnout, mental fatigue, lack of concentration, or lethargy.",
+          "parsed": {
+            "dose": {
+              "value": 120.0,
+              "unit": "mg",
+              "raw": "120mg dried root"
+            },
+            "rank_priority": 3,
+            "interaction_level": "low",
+            "health_claims": [
+              "Stress/Anxiety"
+            ]
+          },
+          "timing_restriction": "morning_only",
+          "delivery_constraint": "capsule_only"
+        }
+      ]
+    },
+    {
+      "category": "Triglycerides",
+      "supplement_count": 3,
+      "supplements": [
+        {
+          "id": "dha_epa",
+          "substance": "DHA & EPA",
+          "supplement_type": "Omega Fatty Acid",
+          "subcategory": "Triglycerides",
+          "rank": "1st Choice",
+          "standard_dose": "2g daily (combined)",
+          "rationale": "Maintain normal triglycerides; max 5g/day supplemental",
+          "interaction_risk": "Low if storage good",
+          "timing_in_protocol": "Daily",
+          "notes": "In salt form",
+          "parsed": {
+            "dose": {
+              "value": 2.0,
+              "unit": "g",
+              "raw": "2g daily (combined)"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Triglycerides"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "amla",
+          "substance": "Amla",
+          "supplement_type": "Other Botanical",
+          "subcategory": "Triglycerides",
+          "rank": "2nd Choice",
+          "standard_dose": "500mg - 1000mg daily",
+          "rationale": "Amla has been shown to reduce serum triglyceride, LDL-cholesterol, and total cholesterol levels. It acts by managing lipid metabolism and has anti-atherosclerotic effects.",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "morning, before meal",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 500.0,
+              "max": 1000.0,
+              "unit": "mg",
+              "raw": "500mg - 1000mg daily"
+            },
+            "rank_priority": 2,
+            "interaction_level": "low",
+            "health_claims": [
+              "Triglycerides"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        },
+        {
+          "id": "gynostemma_pentaphyllum",
+          "substance": "Gynostemma Pentaphyllum",
+          "supplement_type": "Adaptogen",
+          "subcategory": "Triglycerides",
+          "rank": "3rd Choice",
+          "standard_dose": "100-300mg for 15+ days",
+          "rationale": "Polysaccharide + saponin support",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily",
+          "notes": "",
+          "parsed": {
+            "dose": {
+              "min": 100.0,
+              "max": 300.0,
+              "unit": "mg",
+              "raw": "100-300mg for 15+ days"
+            },
+            "rank_priority": 3,
+            "interaction_level": "low",
+            "health_claims": [
+              "Triglycerides"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "capsule_only"
+        }
+      ]
+    }
+  ]
+}

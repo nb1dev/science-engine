@@ -1,0 +1,92 @@
+{
+  "_doc": "Compiled from Framework v1.7 PART D (Quality Requirements) + PART I (Scientific Accuracy) + PART G (Language)",
+  "_version": "1.0",
+
+  "quality_requirements": {
+    "medical_disclaimer": "This microbiome analysis provides insights into gut bacterial composition and potential metabolic functions based on DNA sequencing. It is NOT a diagnostic test and does NOT diagnose, treat, cure, or prevent any disease. The findings suggest optimization opportunities and potential metabolic patterns, not medical conditions. All interpretations are probabilistic and functional assessments based on compositional data, not definitive clinical diagnoses. Always consult qualified healthcare providers for medical advice, diagnosis, or treatment decisions.",
+    
+    "gmwi2_explanation": "GMWI2 is a disease-agnostic health indicator based on 155 bacterial species with health/disease associations, developed from 8,069 stool metagenomes across 26 countries using Lasso-penalized logistic regression.",
+    
+    "timeline_clarification": "Gut bacterial composition changes can begin to manifest in stool within 3-7 days after sustained dietary pattern shift. However, meaningful improvements in guild abundances and health impacts typically require 6-12 weeks of consistent dietary and supplement intervention. Early compositional changes (days) precede functional ecosystem remodeling (weeks to months).",
+    
+    "stool_snapshot": "Your test analyzes bacteria in your stool — a snapshot of what's leaving your system. It reflects your recent past (3-7 days), not what's happening right now."
+  },
+
+  "scientific_accuracy_caveats": {
+    "clr_is_sample_relative": {
+      "rule": "CLR values describe competitive position relative to THIS sample's geometric mean, NOT absolute functional capacity",
+      "correct_language": "CLR -1.59 means competitively disadvantaged relative to sample mean",
+      "incorrect_language": "CLR -1.59 means severely suppressed (without context)",
+      "key_point": "A guild can have negative CLR yet maintain adequate function through high redundancy or efficient metabolism"
+    },
+    "abundance_function_nonlinear": {
+      "rule": "Guild functional output is NOT strictly proportional to abundance",
+      "factors": ["Metabolic regulation affects output", "Substrate availability constrains function", "Species-specific enzymatic efficiency varies", "Redundancy affects total capacity"],
+      "correct_language": "Below threshold; relationship between abundance and function non-linear",
+      "incorrect_language": "16.59% provides 55% of optimal capacity (assumes linearity)"
+    },
+    "proteolytic_balanced_perspective": {
+      "rule": "Present both risks (excessive) AND benefits (moderate BCAA processing, nitrogen cycling)",
+      "correct_language": "While excessive activity generates inflammatory metabolites, moderate activity necessary for BCAA metabolism",
+      "incorrect_language": "Proteolytic organisms generate harmful metabolites (only negative framing)"
+    },
+    "guild_capacity_not_genetic_potential": {
+      "rule": "Use 'healthy range maximum' not 'genetic potential'",
+      "correct_language": "82% of healthy reference range maximum",
+      "incorrect_language": "82% of maximum genetic potential"
+    },
+    "substrate_flow_complexity": {
+      "rule": "Substrate flow inference has multiple confounders",
+      "confounders": [
+        "Substrate specificity — not all fiber products feed all downstream guilds",
+        "Direct dietary sources — oligosaccharides can reach colon without Fiber Degrader processing",
+        "Spatial/temporal dynamics — fermentation staged along colon",
+        "Alternative mechanisms — low CLR may reflect efficient downstream clearance, not substrate limitation"
+      ],
+      "correct_language": "May reduce availability; relationship complex due to confounders",
+      "incorrect_language": "Low Fiber Degraders causes low Bifidobacteria (oversimplified causation)"
+    },
+    "metagenomic_limitations": {
+      "what_it_measures": [
+        "Genetic presence of bacterial species",
+        "Relative abundance within sample",
+        "Functional gene presence (pathway capacity)",
+        "Ecological competitive relationships (CLR)"
+      ],
+      "what_it_cannot_measure": [
+        "Actual enzyme expression (gene presence ≠ gene activity)",
+        "Real-time metabolic rates",
+        "Metabolite concentrations (lactate, butyrate, etc.)",
+        "Environmental conditions (pH, redox, oxygen)",
+        "Substrate availability (what's actually being fermented)",
+        "Host-microbe interactions"
+      ],
+      "appropriate_language": ["may", "suggests", "consistent with", "if confirmed"],
+      "inappropriate_language": ["causes", "proves", "confirms", "definitely"]
+    }
+  },
+
+  "language_guidelines": {
+    "client_facing_tone": {
+      "use": ["your", "your bacteria", "your gut", "your microbiome"],
+      "avoid_technical": ["CLR", "GMWI2", "FFA", "guild names without explanation"],
+      "framing": "Optimization opportunities, not diseases. Possibilities, not diagnoses."
+    },
+    "scope_boundaries": {
+      "in_scope": [
+        "Guild abundance targets",
+        "Ecological mechanisms",
+        "Substrate-organism relationships",
+        "Timeline estimates",
+        "What we see → what it means → why it happened"
+      ],
+      "out_of_scope": [
+        "Specific food recommendations with quantities",
+        "Supplement dosing protocols",
+        "Meal plans or recipes",
+        "Medical diagnoses",
+        "Guaranteed outcomes"
+      ]
+    }
+  }
+}

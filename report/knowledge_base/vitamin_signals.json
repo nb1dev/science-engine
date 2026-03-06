@@ -1,0 +1,139 @@
+{
+  "_doc": "Compiled from vitamin-specific_assessment_signals.txt + vitamin_supplementation_decision_matrix.txt",
+  "_version": "1.0",
+
+  "assessment_principle": "Use metagenomic signals (compositional patterns) NOT pathway presence/absence for vitamin decisions. Pathway presence ≠ vitamin production.",
+
+  "interpretation_cautions": {
+    "evidence_level": "These signals are based on observational studies, systematic reviews, and Mendelian Randomization (MR) analyses. MR uses genetic variants to infer causality — stronger than observational but cannot establish clinical thresholds.",
+    "predictive_accuracy": "No microbiome-based vitamin deficiency prediction has been validated with standard classification metrics (AUC, sensitivity, specificity). These signals are HYPOTHESIS-GENERATING, not diagnostic.",
+    "required_language": {
+      "USE": ["may suggest", "exploratory signal", "associated with", "consistent with", "serum confirmation recommended"],
+      "DO_NOT_USE": ["predicts", "confirms", "diagnoses", "indicates deficiency"]
+    },
+    "clinical_standard": "Serum/plasma biomarkers remain the gold standard. Microbiome signals SUPPLEMENT, never replace, clinical testing.",
+    "population_limitations": "Most evidence from European-ancestry or Middle Eastern populations. Transferability uncertain.",
+    "directionality": "Only vitamins with documented microbial biosynthesis (B12, biotin, folate, B-complex) have plausible predictive logic. For vitamin D, microbiome is likely a CONSEQUENCE of deficiency, not a predictor."
+  },
+
+  "vitamin_signals": {
+    "B12_cobalamin": {
+      "signal_type": "INVERSE — higher producer abundance paradoxically associated with deficiency",
+      "do_NOT_use": "B12 biosynthetic pathway abundance or B12-producing taxa abundance",
+      "why": "B12 deficiency triggers adaptive/compensatory mechanism — microbiota increases producer abundance, but vitamins may be structurally inactive or poorly absorbed",
+      "metagenomic_metrics": {
+        "B_ovatus": {"threshold": ">10%", "meaning": "Higher abundance associated with B12 deficiency (inverse signal)", "action": "Flag for serum confirmation"},
+        "Shannon": {"threshold": "<2.0", "meaning": "Lower diversity associated with deficiency"}
+      },
+      "exploratory_MR_signals": {
+        "_evidence": "Hou et al., 2025 — Two-sample MR (n=18,340, 24 cohorts, European ancestry). EXPLORATORY: clinical thresholds NOT validated.",
+        "primary_FDR_significant": {
+          "taxon": "Akkermansia (Verrucomicrobiae/Verrucomicrobiales/Verrucomicrobiaceae)",
+          "p_value": 0.001,
+          "FDR_significant": true,
+          "direction": "Higher abundance → higher odds of B12 deficiency",
+          "threshold_for_flagging": ">8% (2× healthy range max of 4%)",
+          "note": "Counter-intuitive. Only AmII phylogroup has B12 biosynthesis genes (propionate). AmI (type strain) lacks them (succinate). Genus-level mixes both."
+        },
+        "nominal_associations_not_FDR": [
+          {"taxon": "Coprococcus 2", "p_value": 0.019},
+          {"taxon": "Coprococcus 3", "p_value": 0.048},
+          {"taxon": "Enterorhabdus", "p_value": 0.041},
+          {"taxon": "Lachnospiraceae (genus)", "p_value": 0.035},
+          {"taxon": "Lactococcus", "p_value": 0.040},
+          {"taxon": "Ruminococcaceae UCG002", "p_value": 0.025},
+          {"taxon": "Ruminococcaceae UCG011", "p_value": 0.010},
+          {"taxon": "Enterobacteriales/Enterobacteriaceae", "p_value": 0.006}
+        ],
+        "implementation_note": "These signals supplement, not replace, clinical B12 assessment. Use 'may suggest' language only."
+      },
+      "category_1_always_supplement": [
+        "Vegan/vegetarian: 50-100 mcg daily OR 2000 mcg weekly (indefinite)",
+        "Age ≥50: 500 mcg daily OR 2000 mcg weekly (indefinite, 10-30% have atrophic gastritis)",
+        "Post-GI surgery: 500-2000 mcg IM monthly (indefinite)",
+        "Metformin use: supplement regardless (inhibits ileal absorption)"
+      ]
+    },
+    "B9_folate": {
+      "signal_type": "DIVERSITY-DEPENDENT — diversity correlates with RBC folate, but ex vivo production does NOT",
+      "metagenomic_metrics": {
+        "Shannon": {"threshold": "<2.0", "weight": "+1 risk point", "meaning": "Lower diversity = reduced folate-producing capacity"},
+        "Bacteroides": {"threshold": "<5%", "weight": "+1 risk point", "meaning": "Primary folate producers (40-65% have the pathway)"},
+        "Bifidobacterium": {"threshold": "<2%", "weight": "+1 risk point", "meaning": "Produce 2x more folate in exponential growth phase"}
+      },
+      "risk_score": {"max": 3, "supplementation_trigger": "≥2/3 risk score + poor dietary intake"},
+      "red_flag": "Loss of Bacteroides / gain of Prevotella enterotype → reduced folate production potential",
+      "category_1_always_supplement": [
+        "Pregnancy/lactation: 400 mcg daily (preconception through week 12)",
+        "High-risk NTD: 5 mg daily"
+      ]
+    },
+    "B7_biotin": {
+      "signal_type": "LIMITED PRODUCER — only 4 species have documented biosynthesis",
+      "known_producers": ["Bacteroides fragilis", "Prevotella copri", "Fusobacterium varium", "Campylobacter coli"],
+      "metagenomic_metrics": {
+        "producer_count": {"out_of": 4, "threshold": "≤1 producer present", "meaning": "Very limited microbial biotin production capacity"}
+      },
+      "note": "~20% of microbiota completely lacks biotin synthesis genes and COMPETES with host for biotin",
+      "clinical_markers": ["Brittle nails", "Hair thinning/loss", "Dermatitis", "Elevated urinary 3-hydroxyisovaleric acid >195 µmol/24h"],
+      "serum_warning": "Serum biotin is NOT reliable — can remain falsely normal despite deficiency"
+    },
+    "B_complex_B1_B2_B5_B6": {
+      "signal_type": "COMPOSITION-DEPENDENT — production depends on microbiota composition, not pathway presence",
+      "metagenomic_metrics": {
+        "Bacteroides": {"threshold": ">10%", "meaning": "PROTECTIVE for B1, B2, B5, B6 production"},
+        "FB_ratio": {"threshold": ">1.85", "weight": "+1 risk point", "meaning": "Dysbiotic ratio impairs production"},
+        "Lachno_Rumino": {"threshold": "<2%", "weight": "+1 risk point", "meaning": "Loss of key producer families"}
+      },
+      "risk_score": {"max": 3, "supplementation_trigger": "≥2/3 risk score + symptoms"},
+      "red_flags": [
+        "Crohn's/IBD: reduced Firmicutes = reduced B-vitamin capacity",
+        "Antibiotic use: transient producer reduction",
+        "Western diet: 19-51% lower vitamin biosynthetic gene abundance"
+      ]
+    },
+    "K2_menaquinones": {
+      "signal_type": "POOREST — metagenomic data insufficient for K2 assessment",
+      "why_poor": [
+        "Most long-chain MKs in colon where bile-independent absorption uncertain",
+        "Production varies by species, growth conditions, community interactions",
+        "No established threshold for 'adequate' microbial K2"
+      ],
+      "better_approach": "Use dietary fermented food intake + vitamin K1 assessment as primary signals",
+      "metagenomic_metrics": {
+        "Akkermansia": {"threshold": "<0.5%", "meaning": "Loss of keystone species (K2 producer among others)", "action": "Consider K2 100-180 mcg MK-7 if age >50 + low bone density"}
+      }
+    }
+  },
+
+  "decision_tree": {
+    "step_1": {
+      "question": "Does client meet ANY Category 1 criteria?",
+      "criteria": ["Vegan/vegetarian", "Age ≥50", "Post-antibiotic <2 weeks", "Pregnant/lactating", "Post-GI surgery", "IBD with dysbiosis (Shannon <2.0 OR Lachno+Rumino <2%)"],
+      "if_yes": "Proceed to Category 1 protocol — supplement regardless of microbiota",
+      "if_no": "Go to Step 2 — check microbiota metrics"
+    },
+    "step_2_microbiota_checks": [
+      {"metric": "Shannon <2.0", "action": "Folate 400-600 mcg daily (3-6 months) if dietary intake also low"},
+      {"metric": "F:B ratio >1.85", "action": "B-complex multivitamin daily"},
+      {"metric": "Lachno+Rumino <2%", "action": "B-complex + prebiotic fiber (3-6 months)"},
+      {"metric": "B. ovatus >10%", "action": "B12 50-100 mcg daily OR 2000 mcg weekly (serum confirm)"},
+      {"metric": "A. muciniphila <0.5%", "action": "K2 MK-7 100-180 mcg daily (1-3+ years)"}
+    ]
+  },
+
+  "safety_notes": {
+    "drug_interactions": [
+      "Folate + anticonvulsants: may need higher doses",
+      "B6 + levodopa: may antagonize effect (separate by 2+ hours)",
+      "K2 + warfarin: risk of INR reversal (<180 mcg usually safe)",
+      "B12 + metformin: reduced absorption (supplement regardless)",
+      "B1 + loop diuretics: increased urinary losses"
+    ],
+    "form_preferences": {
+      "B12": "Cyanocobalamin (most stable); methylcobalamin acceptable",
+      "Folate": "Folic acid standard; methylfolate only if MTHFR concerns",
+      "K2": "MK-7 preferred over MK-4 (longer half-life)"
+    }
+  }
+}

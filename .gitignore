@@ -1,0 +1,46 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Python
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+
+# Pipeline-generated outputs (go to analysis/ dir, not tracked here)
+**/output/
+*.log
+
+# Generated report/formulation artifacts
+*_platform.json
+*_formulation.json
+*_manufacturing_recipe.json
+*_component_rationale.json
+*_decision_trace.json
+*_microbiome_analysis.json
+*_narrative_report.md
+*_narrative_report.pdf
+*_dashboard*.html
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Environment / secrets
+.env
+*.pem
+*.key
+
+# IDE
+.vscode/
+.idea/

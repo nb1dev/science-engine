@@ -1,0 +1,104 @@
+{
+  "_doc": "Compiled from taxa_substrate_and_products.md — Species-level metabolic profiles for 52 gut taxa",
+  "_version": "1.0",
+
+  "butyrate_producers": {
+    "high_efficiency": {
+      "Subdoligranulum_variabile": {"eats": "Glucose, β-glucans", "makes": "Butyrate", "role": "Primary degrader of complex carbs to butyrate"},
+      "Coprococcus_comes": {"eats": "Carbohydrates, fiber oligosaccharides", "makes": "Butyrate (0.8), Acetate (0.2)", "role": "Butyrate kinase pathway"},
+      "Coprococcus_eutactus": {"eats": "Carbohydrates, plant fiber", "makes": "Butyrate (0.8), Acetate (0.2)", "role": "Dual butyrate synthesis pathways"},
+      "Coprococcus_catus": {"eats": "Fructose, lactate", "makes": "Butyrate (fructose), Propionate (lactate)", "role": "Substrate-dependent metabolic switching"},
+      "Flavonifractor_plautii": {"eats": "Carbohydrates, lysine", "makes": "Butyrate, Propionate", "role": "Multi-pathway butyrate synthesis"},
+      "Intestinimonas_butyriciproducens": {"eats": "Fructoselysine (Amadori product), glucose, lysine", "makes": "Butyrate, Acetate", "role": "Unique: uses both glucose and lysine simultaneously"},
+      "Eubacterium_eligens": {"eats": "Carbohydrates, plant fiber", "makes": "Butyrate (0.75), Acetate (0.25)", "role": "Acetyl-CoA pathway specialist"},
+      "Faecalibacterium_prausnitzii": {"eats": "β-mannans, plant oligosaccharides, guanosine", "makes": "Butyrate, Acetate, 5-aminosalicylic acid, Lactate", "role": "Anti-inflammatory metabolites beyond butyrate", "healthy_range": ">5%"},
+      "Eubacterium_rectale": {"eats": "Resistant starch (cross-feeding from R.bromii)", "makes": "Butyrate (0.5), Acetate (0.1)", "role": "Secondary starch degrader"},
+      "Agathobacter_rectalis": {"eats": "Starch, diverse polysaccharides", "makes": "Butyrate (0.5), Acetate (0.1), Lactate", "role": "Resistant starch specialist"}
+    },
+    "lactate_acetate_cross_feeders": {
+      "Anaerostipes_hadrus": {"eats": "Lactate + Acetate, sugar alcohols", "makes": "Butyrate (0.4), cross-feeding metabolites (0.6)", "role": "Lactate-acetate cross-feeding converter"},
+      "Anaerostipes_caccae": {"eats": "Lactate + Acetate, sorbitol", "makes": "Butyrate (0.4)", "role": "Specialized lactate utilization via lctABCDEF cluster"},
+      "Anaerobutyricum_soehngenii": {"eats": "Lactate + Acetate, sucrose, sorbitol", "makes": "Butyrate (0.35)", "role": "Prefers lactate pathway"},
+      "Eubacterium_hallii": {"eats": "Carbohydrates, lactate, acetate", "makes": "Butyrate (0.45), Acetate (0.55)", "role": "Mixed butyrate and acetate metabolism"}
+    },
+    "roseburia_generalists": {
+      "Roseburia_intestinalis": {"eats": "Xylan, β-mannans, acetate", "makes": "Butyrate (0.4), Acetate (0.3)", "role": "Xylan specialist; acetate-utilizing", "healthy_range": "0.9-5%"},
+      "Roseburia_inulinivorans": {"eats": "Inulin, carbohydrates", "makes": "Butyrate (0.4), Acetate (0.3)", "role": "Inulin degradation specialist"},
+      "Roseburia_hominis": {"eats": "Plant polysaccharides, xylan", "makes": "Butyrate (0.45)", "role": "High butyrate efficiency on plant polymers"},
+      "Roseburia_faecis": {"eats": "Plant polysaccharides, xylan, β-mannan", "makes": "Butyrate (0.45)", "role": "Equivalent to R. hominis profile"}
+    }
+  },
+
+  "fiber_degraders": {
+    "resistant_starch_specialists": {
+      "Ruminococcus_bromii": {"eats": "Resistant starch (RS2, RS3, RS4)", "makes": "Oligosaccharides (DP3-DP4), Acetate, H₂, CO₂", "role": "KEYSTONE: initiates starch degradation, enables secondary utilizers"},
+      "Ruminococcus_champanellensis": {"eats": "Resistant starch", "makes": "Oligosaccharides, fermentation products", "role": "Primary starch degrader"},
+      "Ruminococcus_callidus": {"eats": "Resistant starch", "makes": "Oligosaccharides, Acetate", "role": "Starch-degrading specialist"}
+    },
+    "prevotella": {
+      "Prevotella_copri": {"eats": "Cellulose, complex fiber, rhamnogalacturonan", "makes": "Succinate, Fumarate, Acetate, Propionate", "role": "Extensive CAZy enzymes; pathogenic potential under dysbiosis", "healthy_range": "<5% Western, 17-30% non-Western"},
+      "Prevotella_ruminicola": {"eats": "Complex plant fiber, hemicellulose", "makes": "Acetate, Propionate", "role": "Hemicellulose specialist"}
+    },
+    "bacteroides": {
+      "Bacteroides_ovatus": {"eats": "Xylan, mannan, plant polysaccharides", "makes": "Acetate, Propionate, Isovalerate", "role": "~100 PULs; distinct niche from B. thetaiotaomicron"},
+      "Bacteroides_uniformis": {"eats": "Mannans, plant-derived polysaccharides", "makes": "Acetate, Propionate", "role": "GH26 mannosidase specialist"},
+      "Bacteroides_xylanisolvens": {"eats": "Xylan, plant cell wall polymers", "makes": "Acetate, Propionate", "role": "Xylan deconstruction"},
+      "Parabacteroides_distasonis": {"eats": "Inulin, raffinose, mucin O-glycans", "makes": "Acetate, Propionate", "role": "Dual: 0.6 fiber / 0.4 mucin; α-fucosidase producer"},
+      "Bacteroides_thetaiotaomicron": {"eats": "Starch, fructans, diverse polysaccharides, mucin", "makes": "Acetate, Propionate, Succinate", "role": "~100 PULs; 0.6 fiber / 0.35 mucin / 0.05 dysbiosis; cross-feeds succinate to Phascolarctobacterium"}
+    },
+    "blautia": {
+      "Blautia_wexlerae": {"eats": "Starch (intracellular accumulation), carbs", "makes": "Succinate, Lactate, Acetate (no butyrate)", "role": "Starch accumulator; cross-feeds to butyrate producers"},
+      "Blautia_coccoides": {"eats": "Dietary fiber, glycosylceramides", "makes": "Acetate, Propionate", "role": "Mucus function promoter; fiber-dependent"}
+    }
+  },
+
+  "bifidobacteria": {
+    "Bifidobacterium_longum": {"eats": "HMOs (fucosylated, sialylated), plant oligosaccharides", "makes": "Acetate, Lactate", "role": "infantis=HMO consumer; longum=plant oligosaccharide preference"},
+    "Bifidobacterium_adolescentis": {"eats": "HMOs, short-chain FOS", "makes": "Acetate, Lactate", "role": "Cross-feeds FOS products to F. prausnitzii"},
+    "Bifidobacterium_bifidum": {"eats": "HMOs (N/O-glycans), plant oligosaccharides", "makes": "Acetate, Lactate, Fucose", "role": "Intracellular strategy; extracellular sialidase"},
+    "Bifidobacterium_breve": {"eats": "HMOs, short-chain fructans", "makes": "Acetate, Lactate", "role": "Infant colonizer; limited HMO vs infantis"},
+    "Bifidobacterium_pseudocatenulatum": {"eats": "HMOs, plant oligosaccharides", "makes": "Acetate, Lactate", "role": "Mucosal colonizer"}
+  },
+
+  "cross_feeding_specialists": {
+    "Phascolarctobacterium_faecium": {"eats": "Succinate (asaccharolytic), glutamate", "makes": "Propionate (via succinate pathway)", "role": "Converts B.thetaiotaomicron succinate to propionate"},
+    "Methanobrevibacter_smithii": {"eats": "H₂ + CO₂, formate", "makes": "Methane", "role": "Archaeon; hydrogen disposal; energy extraction", "clinical_note": ">10% associated with methane overproduction, constipation"},
+    "Blautia_hydrogenotrophica": {"eats": "H₂ + CO₂ (Wood-Ljungdahl pathway)", "makes": "Acetate, Formate", "role": "Reductive acetogen; prevents hydrogen buildup"}
+  },
+
+  "mucin_degraders": {
+    "Akkermansia_muciniphila": {"eats": "Mucin O-glycans, core proteins, sialic acid", "makes": "Propionate, Acetate, Succinate, BCFAs", "role": "Mucosal specialist; constitutive mucin enzymes; health-associated at 1-4%", "healthy_range": "1-4%"},
+    "Ruminococcus_gnavus": {"eats": "Mucin (terminal sialic acid)", "makes": "Succinate (dysbiosis metabolite)", "role": "Trans-sialidase; mucin damage risk in dysbiosis (0.65 mucin/0.35 dysbiosis)"},
+    "Ruminococcus_torques": {"eats": "Mucin glycoproteins", "makes": "Oligosaccharides, Butyrate", "role": "Keystone mucin degrader; releases products for B.thetaiotaomicron"},
+    "Bacteroides_fragilis": {"eats": "Mucin O-glycans, fiber", "makes": "Acetate, Propionate, polysaccharide A", "role": "Dual: immune-tolerizing via PSA (0.6 mucin/0.4 dysbiosis)"}
+  },
+
+  "proteolytic_dysbiosis": {
+    "Alistipes_putredinis": {"eats": "Amino acids, tryptophan", "makes": "Succinate, Butyrate, Indole-3-propionic acid, Indoleacrylic acid", "role": "Proteolytic core; tryptophan metabolite producer"},
+    "Alistipes_finegoldii": {"eats": "Amino acids", "makes": "Succinate, proteolytic metabolites", "role": "Dysbiosis-associated amino acid fermenter"},
+    "Bilophila_wadsworthia": {"eats": "Taurine, isethionate, conjugated bile acids", "makes": "H₂S, Acetate", "role": "Taurine desulfonation; H₂S producer"},
+    "Desulfovibrio_piger": {"eats": "H₂, lactate, formate + sulfate as electron acceptor", "makes": "H₂S, Succinate", "role": "Sulfate reduction specialist; H₂S toxic to epithelium"},
+    "Clostridium_perfringens": {"eats": "Amino acids, peptides, host proteins", "makes": "Toxins (alpha, beta, epsilon), collagenase, pro-inflammatory metabolites", "role": "Opportunistic pathogen; toxin producer"},
+    "Fusobacterium_nucleatum": {"eats": "Amino acids (glutamate, lysine)", "makes": "Butyrate, Polyamines (putrescine, cadaverine), Ammonia", "role": "Biofilm promoter; CRC-associated; alkaline pH shift"},
+    "Escherichia_coli": {"eats": "Carbohydrates, amino acids, glucose", "makes": "Organic acids, Lactate, H₂, CO₂", "role": "Facultative anaerobe; PAMP producer; pks+ strains produce colibactin"}
+  },
+
+  "key_cross_feeding_relationships": [
+    {"from": "Ruminococcus bromii", "to": "Eubacterium rectale", "substrate": "Oligosaccharides from starch", "significance": "KEYSTONE: initiates starch cascade"},
+    {"from": "Bacteroides thetaiotaomicron", "to": "Phascolarctobacterium faecium", "substrate": "Succinate → Propionate", "significance": "Primary succinate detoxification"},
+    {"from": "Roseburia intestinalis + Bifidobacteria", "to": "Butyrate producers", "substrate": "Acetate cross-feeding", "significance": "Butyrate enhancement via acetate"},
+    {"from": "Ruminococcus torques", "to": "Bacteroides thetaiotaomicron", "substrate": "Released mucin oligosaccharides", "significance": "Mucin degradation cascade"},
+    {"from": "Bifidobacteria", "to": "Anaerostipes/Anaerobutyricum", "substrate": "Lactate + Acetate → Butyrate", "significance": "PRIMARY: 2-3× SCFA amplification pathway"}
+  ],
+
+  "reference_ranges": {
+    "Faecalibacterium_prausnitzii": {"healthy": ">5%", "prevalence": "~95%", "dysbiosis": ">2-5× reduction in disease"},
+    "Roseburia_genus": {"healthy": "0.9-5%", "prevalence": "65-95%", "depleted_in": "IBD, IBS, T2D"},
+    "Bifidobacterium_total": {"healthy_western": "3-10%", "japanese": "~18%", "infant": "60-70%"},
+    "Bacteroides_genus": {"healthy_iqr": "19-35%", "prevalence": "~99%"},
+    "Akkermansia_muciniphila": {"healthy": "1-4%", "prevalence": "70-80%", "note": "Bimodal distribution"},
+    "Prevotella_copri": {"healthy_western": "<5%", "non_western": "17-30%"},
+    "Escherichia_coli": {"healthy": "<0.5%", "dysbiosis": ">1-10%"},
+    "Fusobacterium_nucleatum": {"healthy": "<0.1%", "note": "Strong dysbiosis marker in CRC"}
+  }
+}

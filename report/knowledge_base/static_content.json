@@ -1,0 +1,131 @@
+{
+  "_doc": "Universal/static text content for all 5 platform tabs. These texts are the same for every client.",
+  "_version": "1.0",
+
+  "overview_tab": {
+    "why_we_look_at_this": {
+      "title": "Why We Look at This",
+      "text": "Your gut microbiome is a complex ecosystem of trillions of bacteria that directly influences your digestion, immunity, energy levels, and overall wellbeing. By analyzing the DNA of bacteria in your stool sample, we can understand which bacteria are present, how they work together, and what metabolic functions they perform. This gives us a personalized map of your gut health that guides targeted, science-based recommendations."
+    },
+    "processing_food_intro": {
+      "title": "How Your Gut Is Processing Food Right Now",
+      "text": "These four metabolic 'dials' show how your bacteria are currently processing food and producing beneficial or harmful compounds. Together, they paint a picture of your gut's metabolic state — whether it's running on the right fuel, converting food efficiently, and maintaining a healthy balance."
+    },
+    "why_this_matters": {
+      "title": "Why This Matters",
+      "intro": "Your test analyzes bacteria in your stool — a snapshot of what's leaving your system.",
+      "what_tells_us": {
+        "title": "What this tells us:",
+        "items": [
+          "Which bacteria are present and how abundant",
+          "Their genetic capacity",
+          "Who's winning the competition",
+          "Potential activities"
+        ]
+      },
+      "what_doesnt_tell_us": {
+        "title": "What it doesn't tell us:",
+        "items": [
+          "How active bacteria are RIGHT NOW",
+          "Exact amounts of compounds being produced",
+          "What's happening in your small intestine or stomach",
+          "Whether patterns cause YOUR specific symptoms"
+        ]
+      },
+      "weather_analogy": "Think of it like a weather report: Tells you today's conditions and helps predict what's coming, but not the complete climate story.",
+      "for_you": {
+        "title": "For YOU:",
+        "items": [
+          "Changes take 3-7 days to show in stool (reflects recent past)",
+          "We combine this with your symptoms, diet, health history for complete picture",
+          "This shows optimisation opportunities, not diseases"
+        ]
+      }
+    }
+  },
+
+  "bacterial_groups_tab": {
+    "intro": {
+      "title": "Your Gut Bacteria Groups",
+      "text": "Your gut bacteria don't work alone — they form specialized teams, each responsible for a different stage of food processing. We call these teams 'bacterial guilds.' By measuring how strong each team is, we can see where your gut is performing well and where it needs support. Think of it as a staffing report for your gut's workforce."
+    },
+    "chain_description": {
+      "title": "How Bacteria Work Together as a Chain",
+      "text": "Your gut bacteria process food in stages, like an assembly line. Each team passes its work to the next. If one team is understaffed, the whole production line slows down. Here are the six teams we assess, in the order they work:",
+      "steps_summary": [
+        {"step": 1, "name": "Fiber-Processing Bacteria", "role": "Break down plant foods into raw materials for other teams"},
+        {"step": 2, "name": "Bifidobacteria", "role": "Convert sugars into lactate — fuel for downstream teams"},
+        {"step": 3, "name": "Intermediate Processors", "role": "Bridge the gap between raw materials and finished products"},
+        {"step": 4, "name": "Gut-Lining Energy Producers", "role": "Produce butyrate — the primary energy source for your gut lining"},
+        {"step": 5, "name": "Protein-Fermenting Bacteria", "role": "Process proteins — ideally kept in check"},
+        {"step": 6, "name": "Mucus-Layer Bacteria", "role": "Maintain your gut's protective mucus layer"}
+      ]
+    },
+    "capacity_explanation": "To help you understand each team's staffing level, we normalize all six teams to a scale of 100 ideal workers. This shows you at a glance how many workers each team has compared to its ideal size."
+  },
+
+  "root_causes_tab": {
+    "title": "Underlying Causes of Imbalance",
+    "disclaimer": "This is a behavioral inference from microbial patterns. It reflects what your bacteria suggest about recent conditions and should be confirmed with food diary data where available."
+  },
+
+  "vitamins_tab": {
+    "title": "Vitamins",
+    "intro": "Your gut bacteria produce certain vitamins in addition to what you get from food. This section checks whether your bacterial community has the capacity to support robust vitamin production, or whether dietary reinforcement may be needed.",
+    "functional_roles": [
+      "Rapid gut lining renewal (3-5 day turnover)",
+      "Gut immune cell support",
+      "Gut-brain communication",
+      "Barrier protection (antioxidant support, energy)"
+    ],
+    "vitamin_details": {
+      "folate": {
+        "display_name": "Folate (B9)",
+        "role": "DNA synthesis, red blood cells, cell division",
+        "food_sources": ["Leafy greens", "Legumes", "Asparagus", "Brussels sprouts", "Fortified grains"]
+      },
+      "B_complex": {
+        "display_name": "B-Complex (B1, B2, B5, B6)",
+        "role": "Energy metabolism, brain function, nervous system support",
+        "food_sources": ["Whole grains", "Eggs", "Nuts", "Legumes", "Meat", "Mushrooms"]
+      },
+      "biotin": {
+        "display_name": "Biotin (B7)",
+        "role": "DNA repair, cell growth, fatty acid synthesis",
+        "food_sources": ["Eggs", "Nuts", "Seeds", "Sweet potatoes", "Mushrooms"]
+      },
+      "B12": {
+        "display_name": "Vitamin B12",
+        "role": "Nerve function, red blood cell formation, DNA synthesis",
+        "food_sources": ["Meat", "Fish", "Dairy", "Eggs", "Fortified foods"]
+      }
+    },
+    "status_labels": {
+      "0": "Excellent production",
+      "1": "Moderate — some support may help",
+      "2": "Limited — dietary reinforcement recommended",
+      "3": "Very limited — active support needed"
+    }
+  },
+
+  "action_plan_tab": {
+    "title": "Your Personalized Action Plan",
+    "intro": "Based on your microbiome analysis, here is a prioritized intervention roadmap. Steps are ranked by their potential impact on your overall gut ecosystem efficiency.",
+    "timeline_estimates": {
+      "bifidobacteria_restoration": "4-6 weeks to detect initial changes",
+      "cross_feeder_expansion": "6-12 weeks for measurable improvement",
+      "butyrate_optimization": "4-6 weeks with adequate substrate",
+      "fiber_degrader_expansion": "Ongoing — gradual dietary and ecological shift",
+      "proteolytic_reduction": "4-6 weeks as competing guilds strengthen",
+      "mucin_rebalancing": "8-12 weeks as fiber availability increases",
+      "overall_system_recovery": "12-16 weeks for significant improvement"
+    },
+    "next_steps": [
+      "Review your personalized action plan",
+      "If you have not yet completed the questionnaire, complete the dietary questionnaire for fine-tuned recommendations",
+      "Receive your personalized supplement recommendation",
+      "Retest in 16 weeks to measure progress"
+    ],
+    "reversibility_note": "Microbiome imbalances are typically not permanent. With targeted intervention, significant improvement is expected within 12-16 weeks."
+  }
+}

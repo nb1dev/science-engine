@@ -1,0 +1,56 @@
+{
+  "_doc": "Population quartiles computed from all processed samples. Updated weekly. Used by scoring, overview_fields, root_causes_fields.",
+  "last_updated": "2026-02-19 15:53",
+  "sample_count": 41,
+  "shannon": {
+    "q25": 2.79,
+    "q50": 3.292,
+    "q75": 3.444,
+    "min": 2.073,
+    "max": 3.615,
+    "n": 41
+  },
+  "pielou": {
+    "q25": 0.659,
+    "q50": 0.721,
+    "q75": 0.764,
+    "min": 0.513,
+    "max": 0.799,
+    "n": 41
+  },
+  "clr_ratios": {
+    "CUR": {
+      "q25": 0,
+      "q50": 0,
+      "q75": 0,
+      "min": 0,
+      "max": 0,
+      "n": 0
+    },
+    "FCR": {
+      "q25": 0,
+      "q50": 0,
+      "q75": 0,
+      "min": 0,
+      "max": 0,
+      "n": 0
+    },
+    "MDR": {
+      "q25": 0,
+      "q50": 0,
+      "q75": 0,
+      "min": 0,
+      "max": 0,
+      "n": 0
+    },
+    "PPR": {
+      "q25": 0,
+      "q50": 0,
+      "q75": 0,
+      "min": 0,
+      "max": 0,
+      "n": 0
+    }
+  },
+  "guild_abundances": {}
+}

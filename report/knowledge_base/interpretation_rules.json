@@ -1,0 +1,186 @@
+{
+  "_doc": "Compiled from Compositional_metrics.txt + Diversity_signatures.txt — Framework v1.7",
+  "_version": "1.0",
+
+  "compositional_metrics": {
+    "GMWI2": {
+      "description": "Overall health association score based on 155 taxa model (GMWI2). Positive = health-associated, negative = dysbiotic.",
+      "thresholds": {
+        "healthy": {"min": 0.5, "label": "Healthy (confident)", "color": "green"},
+        "transitional": {"min": -0.5, "max": 0.5, "label": "Transitional", "color": "orange"},
+        "unhealthy": {"max": -0.5, "label": "Unhealthy (confident)", "color": "red"}
+      }
+    },
+    "BR": {
+      "description": "Bias Ratio — fraction of health-association weight from supportive vs opportunistic taxa",
+      "thresholds": {
+        "beneficial_dominant": {"min": 0.5, "label": "Beneficial-dominant", "color": "green"},
+        "opportunistic_dominant": {"max": 0.5, "label": "Opportunistic-dominant", "color": "red"}
+      }
+    },
+    "CB": {
+      "description": "Count Balance — balance of supportive vs opportunistic species counts (not magnitudes)",
+      "thresholds": {
+        "supportive_skewed": {"min": 0.05, "label": "Supportive-skewed richness", "color": "green"},
+        "balanced": {"min": -0.05, "max": 0.05, "label": "Balanced richness", "color": "blue"},
+        "opportunistic_skewed": {"max": -0.05, "label": "Opportunistic-skewed richness", "color": "red"}
+      },
+      "role": "Supporting check on GMWI2/BR, not primary decision maker"
+    },
+    "wGMWI2": {
+      "description": "Abundance-weighted GMWI2 — health score adjusted by relative abundance (what IS vs what COULD BE)",
+      "thresholds": {
+        "healthy_dominance": {"min": 0.10, "label": "Healthy dominance", "color": "green"},
+        "slightly_healthy": {"min": 0, "max": 0.10, "label": "Slightly healthy", "color": "light_green"},
+        "slightly_dysbiotic": {"min": -0.10, "max": 0, "label": "Slightly dysbiotic", "color": "orange"},
+        "unhealthy_dominance": {"max": -0.10, "label": "Unhealthy dominance", "color": "red"}
+      }
+    },
+    "SB": {
+      "description": "Signature Balance — log-ratio of supportive vs opportunistic abundances. Primary guild-dominance indicator.",
+      "thresholds": {
+        "strong_supportive": {"min": 0.70, "label": "Strong supportive dominance", "color": "green"},
+        "mild_supportive": {"min": 0.35, "max": 0.70, "label": "Mild supportive dominance", "color": "light_green"},
+        "balanced": {"min": -0.35, "max": 0.35, "label": "Balanced guilds", "color": "blue"},
+        "opportunistic_moderate": {"min": -0.70, "max": -0.35, "label": "Opportunistic moderately dominant", "color": "orange"},
+        "opportunistic_strong": {"max": -0.70, "label": "Opportunistic strongly dominant", "color": "red"}
+      }
+    },
+    "HF": {
+      "description": "Health Fraction — scaled position between model's theoretical min and max. Empirically calibrated from reference microbiomes.",
+      "thresholds": {
+        "resilient": {"min": 0.62, "label": "Resilient", "color": "green"},
+        "transitional": {"min": 0.54, "max": 0.62, "label": "Transitional", "color": "orange"},
+        "depleted": {"max": 0.54, "label": "Depleted", "color": "red"}
+      }
+    },
+    "z_score": {
+      "description": "Deviation from healthy reference mean in SD units (SD ≈ 0.75)",
+      "thresholds": {
+        "typical": {"min": -1.0, "max": 1.0, "label": "Typical variation", "color": "green"},
+        "mild_deviation": {"min": -2.0, "max": -1.0, "label": "Mild deviation", "color": "orange"},
+        "mild_deviation_positive": {"min": 1.0, "max": 2.0, "label": "Mild deviation (healthier)", "color": "orange"},
+        "strong_outlier": {"max": -2.0, "label": "Strong outlier (dysbiotic)", "color": "red"},
+        "strong_outlier_positive": {"min": 2.0, "label": "Strong outlier (very healthy)", "color": "green"}
+      }
+    }
+  },
+
+  "pattern_classification": {
+    "description": "Five primary composite states from Framework PART A with stepwise algorithm",
+    "stepwise_algorithm": {
+      "phase_1_presence": {
+        "description": "Establish baseline from GMWI2, BR, CB — what COULD BE the health state",
+        "primary": "GMWI2 (sums actual health coefficients)",
+        "validators": ["BR (proportion of health weight)", "CB (species count balance)"],
+        "mismatch_combinations": {
+          "BR_green_GMWI2_red": "Few strong negative taxa + many weak positive taxa → complex baseline",
+          "BR_red_GMWI2_green": "Few strong positives outweigh many weak negatives → fragile health potential",
+          "CB_disagrees": "Richness structure mismatched with coefficient weighting"
+        },
+        "output": "Baseline status (Healthy/Transitional/Unhealthy) + mismatch notes"
+      },
+      "phase_2_abundance": {
+        "description": "Reality check from wGMWI2, SB — what IS the ecological reality",
+        "comparisons": {
+          "GMWI2_pos_wGMWI2_pos": "Presence and dominance both healthy",
+          "GMWI2_pos_wGMWI2_neg": "Hidden dysbiosis: healthy taxa present but opportunists dominate biomass",
+          "GMWI2_neg_wGMWI2_pos": "Recovery pattern: dysbiotic diversity but health-associated dominants",
+          "both_near_zero": "Weak signal — rely on HF and z"
+        },
+        "output": "Dominance state + concordance flag + qualitative label"
+      },
+      "phase_3_reference": {
+        "description": "Context from HF, z — how typical or atypical is this",
+        "combinations": {
+          "HF_healthy_z_healthy": "Within healthy population envelope",
+          "HF_depleted_z_negative": "Well outside healthy envelope — clear depletion",
+          "HF_transitional_z_normal": "Borderline on model extremes but population-typical"
+        },
+        "output": "Resilience category + outlier status"
+      }
+    },
+    "patterns": {
+      "healthy_optimal": {
+        "criteria": "GMWI2 >= 0.5 AND wGMWI2 >= 0 AND SB >= 0.35 AND HF >= 0.62 AND |z| < 2",
+        "label": "Healthy / Optimal",
+        "client_description": "Your microbiome shows a strong, healthy composition with beneficial bacteria dominant at both the genetic and abundance levels."
+      },
+      "transitional": {
+        "criteria": "Mixed green/orange across GMWI2, wGMWI2, SB, HF. No strong red flags.",
+        "subtypes": {
+          "stable": "Presence metrics green, abundance mildly orange — stable but room for improvement",
+          "fragile": "Presence mixed/orange, abundance clearly orange/red — at risk of sliding toward dysbiosis"
+        },
+        "label": "Transitional",
+        "client_description": "Your microbiome is in a transitional state — sitting between healthy and unhealthy, with potential for improvement in either direction."
+      },
+      "presence_abundance_mismatch": {
+        "criteria": "GMWI2 and wGMWI2 have opposite signs (sign reversal)",
+        "subtypes": {
+          "hidden_dysbiosis": "GMWI2 >= 0.5 but wGMWI2 < 0 — good species present but not winning competition",
+          "recovery_pattern": "GMWI2 < 0 but wGMWI2 > 0 — health-associated dominants recovering"
+        },
+        "label": "Presence-Abundance Mismatch",
+        "client_description_hidden": "Your microbiome has good genetic diversity with many beneficial species present, but they're facing competitive pressure from other bacteria and not fully expressing their potential.",
+        "client_description_recovery": "Your microbiome shows signs of recovery — health-promoting bacteria are gaining dominance even though the overall genetic profile still carries some legacy of past imbalance."
+      },
+      "recovery_pattern": {
+        "criteria": "GMWI2 red/ambiguous BUT wGMWI2 > 0 AND SB > 0 AND HF >= transitional",
+        "label": "Recovery Pattern",
+        "client_description": "Your microbiome is actively recovering — health-promoting bacteria are gaining ground. The genetic profile still shows past imbalance, but the current dynamics are trending positively."
+      },
+      "unhealthy_dysbiotic": {
+        "criteria": "GMWI2 <= -0.5 OR (wGMWI2 <= -0.10 AND SB < -0.35), AND HF <= 0.54 and/or z <= -1",
+        "label": "Unhealthy / Dysbiotic",
+        "client_description": "Your microbiome shows significant imbalance with opportunistic bacteria outcompeting beneficial ones, requiring targeted intervention."
+      }
+    },
+    "summary_writing_structure": {
+      "format": "One-line headline (status + key driver) → Presence sentence → Abundance sentence → Reference sentence → Plain-language conclusion",
+      "example": "Transitional with Bifidobacteria Absence: Genetic presence shows borderline health (GMWI2 -0.19). Abundance weighting confirms concordant transitional state (wGMWI2 -0.004). Health Fraction places this in the middle tertile (0.557). Overall: ecosystem poised between states with intervention potential."
+    }
+  },
+
+  "diversity_signatures": {
+    "shannon": {
+      "description": "Shannon diversity index — combined species richness and evenness. Higher = more diverse ecosystem.",
+      "interpretation": "Descriptive value. No explicit thresholds — interpretation driven mainly by Pielou evenness.",
+      "reference_ranges": {
+        "high": {"min": 3.0, "description": "High species richness and evenness"},
+        "moderate": {"min": 2.0, "max": 3.0, "description": "Moderate diversity"},
+        "low": {"max": 2.0, "description": "Low diversity — concerning"}
+      }
+    },
+    "cross_rank_dysbiosis_check": {
+      "description": "Flags dysbiosis pattern when higher taxonomic rank has J>0.6 but deeper rank drops below 0.4",
+      "rule": "If family-level evenness > 0.6 AND species-level evenness < 0.4, flag hierarchical fragility",
+      "interpretation": "Apparent balance at family level masks severe dominance at species level — structural vulnerability hidden by taxonomy aggregation",
+      "client_text": "While your gut looks balanced at a broad level, zooming in reveals that within some bacterial families, one species dominates — this creates hidden fragility."
+    },
+    "pielou_evenness": {
+      "description": "Species-level Pielou evenness J — how evenly distributed organisms are. Higher = more balanced.",
+      "zones": {
+        "green": {
+          "threshold": 0.70,
+          "label": "Stable and resilient",
+          "headline": "Community balance: Stable and resilient.",
+          "client_text": "Species are well balanced rather than dominated by a few strains, which supports steady day-to-day function and recovery after stress."
+        },
+        "amber": {
+          "min": 0.40,
+          "max": 0.70,
+          "label": "Imbalanced but coping",
+          "headline": "Community balance: Mildly imbalanced (watch zone).",
+          "client_text": "A few species hold more 'power' than others, so the system can work well in calm conditions but is easier to destabilize."
+        },
+        "red": {
+          "max": 0.40,
+          "label": "Dominated and fragile",
+          "headline": "Community balance: Dominated and fragile.",
+          "client_text": "A small group of microbes dominates, leaving little 'backup' if one group is disturbed, which increases the risk of symptoms when diet or stress changes."
+        }
+      }
+    }
+  }
+}
