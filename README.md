@@ -1,6 +1,6 @@
 # science-engine
 
-Bioinformatics and AI pipeline for the nb1 microbiome analysis platform (Prebiomics). Processes raw microbiome sequencing data into personalised health reports and supplement formulations.
+Bioinformatics and AI pipeline for the NB1 Health platform for personalised supplements. Processes raw microbiome sequencing data into personalised health reports and supplement formulations.
 
 ## What it does
 
@@ -96,4 +96,3 @@ See `documentation/` for:
 - `PLATFORM_UI_MAPPING.md` — pipeline output → platform UI field mapping
 - `PLATFORM_UX_SPEC.md` — UX specification for the client report
 - `PRIORITY_SYSTEM_CHANGELOG.md` — supplement priority logic change history
-# science-engine
