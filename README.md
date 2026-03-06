@@ -96,3 +96,4 @@ See `documentation/` for:
 - `PLATFORM_UI_MAPPING.md` — pipeline output → platform UI field mapping
 - `PLATFORM_UX_SPEC.md` — UX specification for the client report
 - `PRIORITY_SYSTEM_CHANGELOG.md` — supplement priority logic change history
+# science-engine
