@@ -1,0 +1,435 @@
+{
+  "_doc": "Trigger rules for root cause domain evaluation in generate_health_report.py. Each domain maps to one or more questionnaire field checks. The engine evaluates these conditions against questionnaire data to determine which domains are active for a given sample.",
+  "_version": "1.0",
+  "_operators": {
+    ">=": "Greater than or equal to (numeric)",
+    "<=": "Less than or equal to (numeric)",
+    ">": "Greater than (numeric)",
+    "<": "Less than (numeric)",
+    "==": "Exact match (string, bool, or numeric)",
+    "!=": "Not equal (string, bool, or numeric)",
+    "in": "Value is in the provided list",
+    "not_in": "Value is NOT in the provided list",
+    "exists": "Field exists and is not null/empty",
+    "any_true": "At least one sub-field evaluates to true"
+  },
+  "_logic": "Multiple conditions within a domain use AND logic by default. Use 'logic: or' to switch to OR. 'confidence' (confirmed | likely | possible) is assigned based on trigger strength.",
+
+  "antibiotic_use": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_7.antibiotics_past_year",
+        "operator": "==",
+        "value": true,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_7.antibiotic_use_past_year",
+        "operator": "==",
+        "value": "yes",
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_7.long_term_antibiotics",
+        "operator": "==",
+        "value": true,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_3.antibiotic_courses",
+        "operator": "exists",
+        "value": null,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_3.antibiotics_frequency",
+        "operator": "in",
+        "value": ["once", "twice", "three_plus", "one", "two", "three"],
+        "confidence_contribution": "confirmed"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "likely",
+    "questionnaire_display_text": "Recent antibiotic use reported"
+  },
+
+  "low_dietary_fiber": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_4.fiber_intake",
+        "operator": "in",
+        "value": ["low", "Low", "low (rare vegetables, fruit, or whole grains)"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_4.diet_pattern",
+        "operator": "in",
+        "value": ["keto", "Keto", "low_carb", "Low-carb", "carnivore", "Carnivore"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_4.processed_foods",
+        "operator": "in",
+        "value": ["daily", "Daily"],
+        "confidence_contribution": "possible"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "likely",
+    "questionnaire_display_text": "Low fiber intake reported"
+  },
+
+  "high_protein_diet": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_4.protein_pattern",
+        "operator": "in",
+        "value": ["mostly_animal", "Mostly animal (meat, dairy)", "mostly animal"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_4.diet_pattern",
+        "operator": "in",
+        "value": ["keto", "Keto", "low_carb", "Low-carb", "paleo", "Paleo", "carnivore", "Carnivore"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_4.red_meat_frequency",
+        "operator": "in",
+        "value": [">=3x/week", "3+/week", "daily", "≥3×/week"],
+        "confidence_contribution": "possible"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "likely",
+    "questionnaire_display_text": "High protein / low-carb dietary pattern"
+  },
+
+  "alcohol_consumption": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_4.alcohol_frequency",
+        "operator": "in",
+        "value": ["regularly", "Regularly", "daily", "Daily"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_4.alcohol",
+        "operator": "in",
+        "value": ["regular", "Regular", "regularly", "Regularly", "daily", "Daily"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_4.drinks_per_week",
+        "operator": ">=",
+        "value": 7,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_4.alcohol_drinks_per_week",
+        "operator": ">=",
+        "value": 7,
+        "confidence_contribution": "confirmed"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "likely",
+    "questionnaire_display_text": "Regular alcohol consumption reported"
+  },
+
+  "smoking": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_4.tobacco_use",
+        "operator": "in",
+        "value": ["current", "Current", "sometimes", "Sometimes", "currently", "Currently"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_4.smoking_status",
+        "operator": "in",
+        "value": ["current", "Current", "sometimes", "Sometimes", "active", "Active"],
+        "confidence_contribution": "confirmed"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "likely",
+    "questionnaire_display_text": "Current or recent tobacco use reported"
+  },
+
+  "stress_anxiety": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_5.overall_stress_level_1_10",
+        "operator": ">=",
+        "value": 7,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_5.stress_level",
+        "operator": ">=",
+        "value": 7,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_5.mood_swings_anxiety_burnout",
+        "operator": "==",
+        "value": true,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_5.mood_swings_anxiety",
+        "operator": "in",
+        "value": ["yes", "Yes", true],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_1.goals.main_goals_ranked",
+        "operator": "contains",
+        "value": "improve_mood_reduce_anxiety",
+        "confidence_contribution": "possible"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "likely",
+    "questionnaire_display_text": "High stress levels or anxiety reported"
+  },
+
+  "poor_sleep": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_5.sleep_quality_rating_1_10",
+        "operator": "<=",
+        "value": 5,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_5.sleep_quality",
+        "operator": "<=",
+        "value": 5,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_5.wake_up_unrefreshed",
+        "operator": "==",
+        "value": true,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_5.problems_falling_asleep",
+        "operator": "==",
+        "value": true,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_1.goals.main_goals_ranked",
+        "operator": "contains",
+        "value": "improve_sleep_quality",
+        "confidence_contribution": "possible"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "likely",
+    "questionnaire_display_text": "Poor sleep quality reported"
+  },
+
+  "bloating_ibs": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_2.bloating_severity",
+        "operator": ">=",
+        "value": 5,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_2.bloating_frequency",
+        "operator": "in",
+        "value": ["daily", "Daily", "several times a week", "Several times a week", "3-4 times per week", "4-5 times per week"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_7.diagnoses",
+        "operator": "contains_any",
+        "value": ["IBS", "IBD", "ibs", "ibd", "irritable bowel"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_1.goals.main_goals_ranked",
+        "operator": "contains_any",
+        "value": ["reduce_bloating", "improve_digestive_comfort", "improve_bowel_regularity"],
+        "confidence_contribution": "possible"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "likely",
+    "questionnaire_display_text": "Bloating or digestive discomfort reported"
+  },
+
+  "low_physical_activity": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_1.basic.average_daily_activity_level",
+        "operator": "in",
+        "value": ["sedentary", "Sedentary", "light", "Light"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_5.activity_level",
+        "operator": "in",
+        "value": ["sedentary", "Sedentary", "light", "Light"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_5.vigorous_days_per_week",
+        "operator": "<=",
+        "value": 1,
+        "confidence_contribution": "possible"
+      },
+      {
+        "field_path": "questionnaire_data.step_5.average_daily_steps",
+        "operator": "in",
+        "value": ["<5,000", "<5000", "under 5000", "less than 5000"],
+        "confidence_contribution": "possible"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "possible",
+    "questionnaire_display_text": "Low physical activity level reported"
+  },
+
+  "ultra_processed_diet": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_4.processed_foods",
+        "operator": "in",
+        "value": ["daily", "Daily", "frequently", "Frequently"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_4.processed_refined_foods",
+        "operator": "in",
+        "value": ["daily", "Daily", "frequently", "Frequently", "Weekly"],
+        "confidence_contribution": "confirmed"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "likely",
+    "questionnaire_display_text": "Frequent ultra-processed food consumption reported"
+  },
+
+  "fatigue_energy": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_8.gut_brain.chronic_fatigue",
+        "operator": "in",
+        "value": [true, "yes", "Yes", "often", "Often"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_8.gut_brain.concentration_issues",
+        "operator": "in",
+        "value": ["often", "Often", "frequently", "Frequently"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_1.goals.main_goals_ranked",
+        "operator": "contains_any",
+        "value": ["improve_energy_levels"],
+        "confidence_contribution": "possible"
+      },
+      {
+        "field_path": "questionnaire_data.step_5.concentration_brain_fog",
+        "operator": "in",
+        "value": ["often", "Often", "frequently", "Frequently"],
+        "confidence_contribution": "confirmed"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "possible",
+    "questionnaire_display_text": "Fatigue or low energy reported"
+  },
+
+  "skin_symptoms": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_8.gut_skin.skin_issues_severity",
+        "operator": ">=",
+        "value": 4,
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_8.gut_skin.skin_issues",
+        "operator": "in",
+        "value": ["yes", "Yes", true, "persistent", "Persistent"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_1.goals.main_goals_ranked",
+        "operator": "contains",
+        "value": "improve_skin_health",
+        "confidence_contribution": "possible"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "possible",
+    "questionnaire_display_text": "Skin symptoms reported"
+  },
+
+  "immune_gut_axis": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_8.gut_immune.frequent_infections",
+        "operator": "in",
+        "value": [true, "yes", "Yes", "often", "Often"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_1.goals.main_goals_ranked",
+        "operator": "contains",
+        "value": "strengthen_immune_resilience",
+        "confidence_contribution": "possible"
+      },
+      {
+        "field_path": "questionnaire_data.step_7.diagnoses",
+        "operator": "contains_any",
+        "value": ["autoimmune", "Autoimmune", "IBD", "Crohn", "colitis", "celiac"],
+        "confidence_contribution": "confirmed"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "possible",
+    "questionnaire_display_text": "Immune vulnerability or autoimmune history reported"
+  },
+
+  "metabolic_risk": {
+    "trigger_conditions": [
+      {
+        "field_path": "questionnaire_data.step_8.gut_metabolic.metabolic_syndrome",
+        "operator": "in",
+        "value": [true, "yes", "Yes"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_7.diagnoses",
+        "operator": "contains_any",
+        "value": ["diabetes", "Diabetes", "hypertension", "Hypertension", "fatty liver", "Fatty liver", "metabolic"],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_8.gut_liver.cholesterol_elevated",
+        "operator": "in",
+        "value": ["yes", "Yes", true],
+        "confidence_contribution": "confirmed"
+      },
+      {
+        "field_path": "questionnaire_data.step_1.goals.main_goals_ranked",
+        "operator": "contains_any",
+        "value": ["weight_management", "metabolic_support"],
+        "confidence_contribution": "possible"
+      }
+    ],
+    "logic": "or",
+    "default_confidence": "possible",
+    "questionnaire_display_text": "Metabolic health concerns reported"
+  }
+}

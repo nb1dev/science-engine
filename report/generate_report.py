@@ -50,7 +50,81 @@ def _merge_guild_interpretations(bacterial_groups: dict, guild_interps: dict) ->
     return result
 
 
+def _extract_narratives_from_existing(sample_dir: str, sample_id: str) -> dict | None:
+    """
+    Pull LLM-generated narrative text from an already-existing master JSON.
+
+    Returns a narratives dict (same shape as generate_all_narratives output) if a
+    valid master JSON exists with non-placeholder narrative content, else None.
+
+    Use case: re-running deterministic pipeline (new thresholds, scoring changes,
+    dial recalibration) without paying for LLM calls when the narrative text hasn't
+    changed.  Pass --reuse-narratives to enable.
+    """
+    master_path = os.path.join(
+        sample_dir, 'reports', 'reports_json',
+        f'microbiome_analysis_master_{sample_id}.json'
+    )
+    if not os.path.exists(master_path):
+        logger.info(f"  No existing master JSON found at {master_path} — will call LLM")
+        return None
+
+    try:
+        with open(master_path) as f:
+            existing = json.load(f)
+    except Exception as e:
+        logger.warning(f"  Could not read existing master JSON: {e} — will call LLM")
+        return None
+
+    # Validate that narratives are real (not placeholders or empty)
+    exec_sum = existing.get('executive_summary', {})
+    overall_pattern = exec_sum.get('overall_pattern', {})
+    sci_text = overall_pattern.get('scientific', '') if isinstance(overall_pattern, dict) else str(overall_pattern)
+    if not sci_text or sci_text.startswith('[LLM') or sci_text.startswith('[placeholder'):
+        logger.info(f"  Existing master JSON has placeholder narratives — will call LLM")
+        return None
+
+    # Extract narrative fields back into the standard narratives dict shape
+    narratives = {}
+
+    # summary_sentence / whats_happening_summary
+    narratives['summary_sentence'] = exec_sum.get('overall_pattern', '')
+    narratives['whats_happening_summary'] = exec_sum.get('key_finding', '')
+    narratives['can_this_be_fixed'] = exec_sum.get('recovery_potential', '')
+
+    # key_messages fields
+    km = existing.get('key_messages', {})
+    narratives['good_news'] = km.get('good_news', {})
+    narratives['possible_impacts'] = km.get('possible_impacts', [])
+    narratives['is_something_wrong'] = km.get('is_something_wrong', '')
+    if not narratives['can_this_be_fixed']:
+        narratives['can_this_be_fixed'] = km.get('can_this_be_fixed', '')
+
+    # metabolic + vitamin interpretation
+    mf = existing.get('metabolic_function', {})
+    narratives['metabolic_interpretation'] = mf.get('interpretation', '')
+    vs = existing.get('vitamin_synthesis', {})
+    narratives['vitamin_interpretation'] = vs.get('interpretation', '')
+
+    # guild interpretations (scientific + client per guild)
+    guild_interps = {}
+    for gname, gdata in existing.get('bacterial_groups', {}).items():
+        guild_interps[gname] = {
+            'scientific': gdata.get('scientific_interpretation', ''),
+            'client': gdata.get('client_interpretation', ''),
+        }
+    narratives['guild_interpretations'] = guild_interps
+
+    # root causes diagnosis
+    rc = existing.get('root_causes', {})
+    narratives['root_causes_diagnosis'] = rc.get('primary_diagnosis', '') if isinstance(rc, dict) else ''
+
+    logger.info(f"  ✓ Reusing existing LLM narratives (0 API calls)")
+    return narratives
+
+
 def build_all(sample_dir: str, no_llm: bool = False,
+              reuse_narratives: bool = False,
               model_id: str = 'eu.anthropic.claude-sonnet-4-20250514-v1:0',
               region: str = 'eu-west-1') -> tuple:
     """
@@ -75,9 +149,23 @@ def build_all(sample_dir: str, no_llm: bool = False,
     fields = compute_overview_fields(data)
 
     # ── Step 4: LLM narratives ──
+    # Three modes:
+    #   --no-llm:           Skip entirely, use placeholder strings (for dev/testing)
+    #   --reuse-narratives: Extract from existing master JSON if it has valid content.
+    #                       Falls back to LLM call if no valid JSON found.
+    #                       Use for: re-running deterministic changes (new thresholds,
+    #                       scoring, dial recalibration) without paying for API calls.
+    #   (default):          Call LLM via Bedrock.
     if no_llm:
         logger.info("  Skipping LLM narratives (--no-llm)")
         narratives = generate_placeholder_narratives()
+    elif reuse_narratives:
+        logger.info("  --reuse-narratives: trying to extract from existing master JSON...")
+        narratives = _extract_narratives_from_existing(sample_dir, sample_id)
+        if narratives is None:
+            # No valid existing JSON — fall back to LLM
+            logger.info(f"  Fallback: generating narratives via Bedrock ({model_id})...")
+            narratives = generate_all_narratives(data, score_result, fields, model_id, region)
     else:
         logger.info(f"  Generating narratives via Bedrock ({model_id})...")
         narratives = generate_all_narratives(data, score_result, fields, model_id, region)
@@ -277,16 +365,18 @@ def process_sample(sample_dir: str, output_path: str = None, **kwargs) -> str:
         json.dump(platform_json, f, indent=2)
     logger.info(f"  Saved: {platform_path}")
 
-    # Generate microbiome dashboard HTML
+    # Generate client-facing health report HTML
     try:
-        from generate_dashboard import generate_dashboard
-        html_dir = os.path.join(sample_dir, 'reports', 'reports_html')
-        os.makedirs(html_dir, exist_ok=True)
-        dashboard_path = os.path.join(html_dir, f'microbiome_health_report_{sample_id}.html')
-        generate_dashboard(platform_path, dashboard_path)
-        logger.info(f"  Saved: {dashboard_path}")
+        from generate_health_report import process_sample as generate_health_report
+        health_report_path = generate_health_report(
+            sample_dir,
+            no_llm=kwargs.get('no_llm', False),
+            model_id=kwargs.get('model_id', 'eu.anthropic.claude-sonnet-4-20250514-v1:0'),
+            region=kwargs.get('region', 'eu-west-1'),
+        )
+        logger.info(f"  Saved: {health_report_path}")
     except Exception as e:
-        logger.warning(f"  Dashboard generation failed: {e}")
+        logger.warning(f"  Health report generation failed: {e}")
 
     return output_path
 
@@ -329,7 +419,15 @@ def main():
     group.add_argument('--batch-dir', help='Path to batch directory')
 
     parser.add_argument('--output', help='Custom output path')
-    parser.add_argument('--no-llm', action='store_true', help='Skip LLM narrative generation')
+    parser.add_argument('--no-llm', action='store_true',
+                        help='Skip LLM narrative generation (placeholders used — dev/testing only)')
+    parser.add_argument('--reuse-narratives', action='store_true',
+                        help=(
+                            'Reuse LLM narratives from existing master JSON instead of calling '
+                            'Bedrock. Safe for reruns after deterministic-only changes (new '
+                            'thresholds, scoring, dial recalibration). Falls back to Bedrock '
+                            'if no valid existing JSON is found for a sample.'
+                        ))
     parser.add_argument('--model-id', default='eu.anthropic.claude-sonnet-4-20250514-v1:0',
                         help='Bedrock inference profile ID')
     parser.add_argument('--region', default='eu-west-1', help='AWS region')
@@ -339,7 +437,15 @@ def main():
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    kwargs = {'no_llm': args.no_llm, 'model_id': args.model_id, 'region': args.region}
+    if args.no_llm and args.reuse_narratives:
+        parser.error('--no-llm and --reuse-narratives are mutually exclusive')
+
+    kwargs = {
+        'no_llm': args.no_llm,
+        'reuse_narratives': args.reuse_narratives,
+        'model_id': args.model_id,
+        'region': args.region,
+    }
 
     if args.sample_dir:
         process_sample(args.sample_dir, output_path=args.output, **kwargs)

@@ -117,6 +117,12 @@
       "vitamin_claims": [],
       "description": "General microbiome restoration",
       "note": "This is primarily addressed by synbiotic mix selection, not supplement health claims"
+    },
+    "other": {
+      "health_claims": [],
+      "vitamin_claims": [],
+      "description": "UNRESOLVED other goal — parse_inputs._resolve_goals() should have mapped this to a real key before reaching here",
+      "note": "If this entry is ever matched in extract_health_claims(), it means the other_goal_details free-text was not resolved. Check parse_inputs.py _normalize_other_goal() and _resolve_goals()."
     }
   },
   "microbiome_signal_to_vitamin_claims": {

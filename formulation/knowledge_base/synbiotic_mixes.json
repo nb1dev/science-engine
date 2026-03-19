@@ -1,9 +1,10 @@
 {
   "metadata": {
-    "version": "1.0.0",
-    "source": "synbiotic_mix_selection_llm_database.json + Framework v3.0 (Mix 8)",
+    "version": "2.0.0",
+    "source": "probiotic_mixes_v2.xlsx + prebiotics4mixes_v2.md (17 March 2026)",
     "description": "Consolidated synbiotic mix reference — 8 mixes with strains, default prebiotic formulas, and clinical triggers.",
-    "note": "LP815 enhancement is applied separately by the pipeline (not baked into mixes)."
+    "note": "LP815 enhancement is applied separately by the pipeline (not baked into mixes). Mix 7 is the sole exception — LP815 is a core named strain in that mix at 10B.",
+    "previous_version": "archive/v1_2026_03_17/synbiotic_mixes_v1.json"
   },
   "mixes": {
     "1": {
@@ -36,52 +37,77 @@
       },
       "strains": [
         {
-          "name": "Bifidobacterium longum DSM 24736",
-          "evidence": "WGO_L2",
-          "role": "Cross-feeding hub for guild restoration"
-        },
-        {
-          "name": "Lactobacillus plantarum 299v (DSM 9843)",
+          "name": "Lactobacillus plantarum 299v",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "SCFA protection and IBS support"
+          "role": "SCFA protection, IBS support, competitive exclusion anchor"
         },
         {
           "name": "Lactobacillus rhamnosus GG",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "AAD/CDAD prevention and barrier support"
+          "role": "Epithelial barrier protection, AAD/CDAD prevention, pathogen exclusion"
         },
         {
-          "name": "Lactobacillus acidophilus CL1285",
+          "name": "Lactobacillus acidophilus NCFM",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Pathogen exclusion and C. difficile suppression"
+          "role": "Antimicrobial compound production, pathogen exclusion, lactose digestion"
         },
         {
-          "name": "Lactobacillus reuteri DSM 17938",
+          "name": "Bifidobacterium longum Bl-05",
+          "supplier": "IFF",
+          "cfu_billions": 10,
+          "evidence": "WGO_L2",
+          "role": "Acetate producer, cross-feeding hub for guild restoration"
+        },
+        {
+          "name": "Lactobacillus reuteri UALre-16",
+          "supplier": "Novonesis",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Antimicrobial protection and motility support"
+          "role": "Reuterin (antimicrobial) production, histamine-mediated immune modulation"
         }
       ],
       "default_prebiotic_formula": {
-        "total_g": 7,
-        "total_fodmap_g": 4,
+        "total_g": 6,
+        "total_fodmap_g": 2,
         "components": [
           {
-            "substance": "Pure Inulin",
-            "dose_g": 3,
-            "fodmap": true
+            "substance": "PHGG",
+            "dose_g": 2.0,
+            "fodmap": false,
+            "rationale": "Gentle distal fermentation base — tolerated even in sensitive gut"
           },
           {
-            "substance": "PHGG",
-            "dose_g": 3,
-            "fodmap": false
+            "substance": "Beta-Glucans",
+            "dose_g": 2.0,
+            "fodmap": false,
+            "rationale": "Butyrate substrate; broad saccharolytic/acetogenic chain support"
+          },
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 1.0,
+            "fodmap": true,
+            "rationale": "Must-include — minimum effective dose for trophic chain signalling"
+          },
+          {
+            "substance": "GOS",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — minimum dose for Bifidogenic cross-feeding"
           },
           {
             "substance": "FOS",
-            "dose_g": 1,
-            "fodmap": true
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — minimum dose for saccharolytic substrate diversity"
           }
         ],
-        "rationale": "3:3:1 ratio (inulin:PHGG:FOS) prioritizes tolerability. PHGG spreads fermentation load distally."
+        "rationale": "Offline gentle-first formula: PHGG + Beta-glucans carry bulk weight (low gas, non-FODMAP). All must_include substrates (Inulin, GOS, FOS, Beta-glucans) present at minimum effective doses. Treats all offline clients as sensitive."
       }
     },
     "2": {
@@ -89,7 +115,7 @@
       "mix_name": "Bifidogenic Restore",
       "clinical_purpose": "Selectively enrich Bifidobacterium when depleted (IBS, constipation, low Bifido guild)",
       "ecological_rationale": {
-        "scientific": "Selective Bifidobacterium depletion without broader dysbiosis indicates a guild-specific deficit in the acetogenic/lactate-producing niche. Bifidobacteria are keystone organisms for lactate cross-feeding, immune modulation (Treg induction), and barrier-protective signaling. This mix uses 3 complementary Bifidobacterium species (B. infantis, B. lactis, B. breve) alongside Bifido-selective prebiotics (GOS, Lactulose, Inulin) to selectively enrich this guild without disturbing other functional groups.",
+        "scientific": "Selective Bifidobacterium depletion without broader dysbiosis indicates a guild-specific deficit in the acetogenic/lactate-producing niche. Bifidobacteria are keystone organisms for lactate cross-feeding, immune modulation (Treg induction), and barrier-protective signaling. This mix uses 3 complementary Bifidobacterium species (B. infantis/longum, B. animalis lactis B420, B. animalis lactis BB-12, B. breve BR03+B632) alongside Bifido-selective prebiotics (GOS, Lactulose, Inulin) to selectively enrich this guild without disturbing other functional groups.",
         "client_friendly": "One specific group of beneficial bacteria — Bifidobacteria — is depleted while the rest of the gut ecosystem is healthy. This mix focuses specifically on rebuilding this important group using targeted probiotic strains and prebiotics that preferentially feed Bifidobacteria.",
         "selection_scenarios": [
           {
@@ -103,51 +129,70 @@
       "strains": [
         {
           "name": "Bifidobacterium infantis/longum 35624",
+          "supplier": "Novonesis",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Primary IBS anchor and Bifido restoration"
+          "role": "Primary IBS anchor and Bifido restoration, IL-10/IL-12 normalisation"
         },
         {
           "name": "Bifidobacterium animalis subsp. lactis B420",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "CAN_I",
-          "role": "Metabolic Bifido (acetate/propionate)"
-        },
-        {
-          "name": "Bifidobacterium breve BR03",
-          "evidence": "CAN_I",
-          "role": "Complementary Bifido for guild diversity"
-        },
-        {
-          "name": "Lactobacillus acidophilus CL1285",
-          "evidence": "WGO_L1",
-          "role": "IBS support and gas reduction"
+          "role": "Metabolic Bifido — acetate/propionate production, GPR43-PPARα signalling"
         },
         {
           "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Constipation + Bifido enrichment"
+          "role": "Constipation relief, bile salt hydrolase activity, mucus adherence, pathogen inhibition"
+        },
+        {
+          "name": "Lactobacillus acidophilus NCFM",
+          "supplier": "IFF",
+          "cfu_billions": 10,
+          "evidence": "WGO_L1",
+          "role": "Lactate producer feeding Bifidobacteria via cross-feeding; IBS support, gas reduction"
+        },
+        {
+          "name": "Bifidobacterium breve BR03 + Bifidobacterium breve B632 (premix)",
+          "supplier": "Probiotical",
+          "cfu_billions": 10,
+          "evidence": "CAN_I",
+          "role": "Serpin-producing capacity — serine protease inhibition reducing IBS-associated proteolytic activity"
         }
       ],
       "default_prebiotic_formula": {
-        "total_g": 5.5,
-        "total_fodmap_g": 5.5,
+        "total_g": 5,
+        "total_fodmap_g": 3,
         "components": [
           {
-            "substance": "Pure Inulin",
-            "dose_g": 2,
-            "fodmap": true
+            "substance": "PHGG",
+            "dose_g": 2.0,
+            "fodmap": false,
+            "rationale": "Gentle base — tolerated in sensitive gut, slow distal fermentation"
           },
           {
             "substance": "GOS",
-            "dose_g": 2,
-            "fodmap": true
+            "dose_g": 1.0,
+            "fodmap": true,
+            "rationale": "Must-include — primary Bifido-selective oligosaccharide; minimum effective dose"
           },
           {
-            "substance": "Lactulose",
-            "dose_g": 1.5,
-            "fodmap": true
+            "substance": "Pure Inulin",
+            "dose_g": 1.0,
+            "fodmap": true,
+            "rationale": "Must-include — NCFM degrades oligofructose releasing lactate for Bifido cross-feeding"
+          },
+          {
+            "substance": "FOS",
+            "dose_g": 1.0,
+            "fodmap": true,
+            "rationale": "Must-include — short-chain Bifido substrate diversity"
           }
         ],
-        "rationale": "Inulin + GOS + Lactulose = Bifido-dominant environment. All three are strong Bifido selectors."
+        "rationale": "Offline gentle-first formula: PHGG carries bulk weight (non-FODMAP). GOS + Inulin + FOS all present as must_include at minimum doses. Lactulose omitted (highly_recommended only) — too osmotically aggressive for sensitive clients in offline mode."
       }
     },
     "3": {
@@ -155,7 +200,7 @@
       "mix_name": "Fiber & SCFA Restoration",
       "clinical_purpose": "Restore SCFA-producing guild when fiber fermenters / butyrate producers are low",
       "ecological_rationale": {
-        "scientific": "Restores the complete SCFA trophic chain: fiber degradation → acetate/lactate production → butyrate conversion. Uses Lactobacillus plantarum KABP strains (mechanistic cross-feeders for Clostridiales butyrate producers) + BB-12 (acetate donor) + complex polysaccharide prebiotics (Beta-Glucans, PHGG) that preferentially feed Bacteroidetes/Firmicutes fiber degraders. The therapeutic endpoint is restored butyrate production — the primary fuel for colonocytes and barrier integrity.",
+        "scientific": "Restores the complete SCFA trophic chain: fiber degradation → acetate/lactate production → butyrate conversion. Uses Lactobacillus plantarum UALp-05™ + 299v (mechanistic cross-feeders for Clostridiales butyrate producers) + L. acidophilus NCFM (degrades inulin-type fructans releasing fructose and producing lactate that Anaerostipes caccae and F. prausnitzii convert to butyrate) + BB-12 (acetate donor) + complex polysaccharide prebiotics (Beta-Glucans, PHGG) that preferentially feed Bacteroidetes/Firmicutes fiber degraders. The therapeutic endpoint is restored butyrate production — the primary fuel for colonocytes and barrier integrity.",
         "client_friendly": "Your fiber-processing bacteria need reinforcement — they are below the healthy range. This mix restores the complete chain from fiber digestion to short-chain fatty acid (SCFA) production, which feeds your gut lining and reduces inflammation. The prebiotic fiber blend in your sachet (PHGG, Beta-Glucans) works together with these probiotics — a dual intervention targeting the same guild from both the bacterial and substrate sides.",
         "selection_scenarios": [
           {
@@ -180,47 +225,70 @@
       },
       "strains": [
         {
-          "name": "Lactobacillus plantarum CECT 7484 (KABP022)",
+          "name": "Lactobacillus plantarum UALp-05",
+          "supplier": "Novonesis",
+          "cfu_billions": 12.5,
           "evidence": "Mechanistic",
-          "role": "Cross-feeding substrate for Clostridiales butyrate producers"
+          "role": "High-output saccharolytic fermenter; lactate and acetate cross-feeding substrate for Clostridiales butyrate producers"
         },
         {
-          "name": "Lactobacillus plantarum CECT 7485 (KABP023)",
-          "evidence": "Mechanistic",
-          "role": "Redundant cross-feeding strain"
-        },
-        {
-          "name": "Lactobacillus plantarum 299v (DSM 9843)",
+          "name": "Lactobacillus plantarum 299v",
+          "supplier": "IFF",
+          "cfu_billions": 12.5,
           "evidence": "WGO_L1",
-          "role": "Evidence-based IBS support + butyrate protection"
+          "role": "Evidence-based IBS support; maintains total SCFA during antibiotic challenge; redundant cross-feeding strain"
+        },
+        {
+          "name": "Lactobacillus acidophilus NCFM",
+          "supplier": "IFF",
+          "cfu_billions": 12.5,
+          "evidence": "WGO_L1",
+          "role": "Degrades inulin-type fructans (FOS/oligofructose) releasing free fructose and lactate as substrate for butyrate producers"
         },
         {
           "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "supplier": "IFF",
+          "cfu_billions": 12.5,
           "evidence": "WGO_L1",
-          "role": "Acetate producer feeding butyrate producers"
+          "role": "Acetate producer feeding butyrate producers; bifidobacterial supplementation increases acetate and modifies colonic fermentation"
         }
       ],
       "default_prebiotic_formula": {
-        "total_g": 8,
-        "total_fodmap_g": 3,
+        "total_g": 7,
+        "total_fodmap_g": 2,
         "components": [
           {
             "substance": "Beta-Glucans",
-            "dose_g": 3,
-            "fodmap": false
-          },
-          {
-            "substance": "Pure Inulin",
-            "dose_g": 3,
-            "fodmap": true
+            "dose_g": 3.0,
+            "fodmap": false,
+            "rationale": "Primary butyrate substrate — best match for dual-plantarum cross-feeding; non-FODMAP"
           },
           {
             "substance": "PHGG",
-            "dose_g": 2,
-            "fodmap": false
+            "dose_g": 2.0,
+            "fodmap": false,
+            "rationale": "Gentle distal fermentation base — tolerated in sensitive gut"
+          },
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 1.0,
+            "fodmap": true,
+            "rationale": "Must-include — NCFM degrades fructans releasing lactate for butyrate producers"
+          },
+          {
+            "substance": "GOS",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include (v2) — minimum dose for NCFM oligofructose signalling"
+          },
+          {
+            "substance": "FOS",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — short-chain substrate diversity for SCFA trophic chain"
           }
         ],
-        "rationale": "Beta-glucans best substrate for butyrate production. 3:3:2 ratio balances Bifido specificity with PHGG tolerance."
+        "rationale": "Offline gentle-first formula: Beta-glucans + PHGG carry 5/7g (non-FODMAP). Must-include substrates (Inulin, FOS, GOS, Beta-glucans) all present at minimum effective doses. Treats all offline clients as sensitive."
       },
       "gassy_client_formula": {
         "total_g": 8,
@@ -242,7 +310,7 @@
             "fodmap": false
           }
         ],
-        "rationale": "3:1:4 ratio heavily weights PHGG for gas-prone clients."
+        "rationale": "3:1:4 ratio heavily weights PHGG for gas-prone clients. Minimal inulin retained for NCFM fructan-degradation signalling."
       }
     },
     "4": {
@@ -250,7 +318,7 @@
       "mix_name": "Proteolytic Suppression",
       "clinical_purpose": "Suppress proteolytic/pathobiont overgrowth (malodorous stool, high proteolytic markers, food sensitivities)",
       "ecological_rationale": {
-        "scientific": "Elevated proteolytic guild (Bilophila, Desulfovibrio, Clostridium clusters) indicates excessive protein fermentation producing hydrogen sulfide, ammonia, p-cresol, and indole — cytotoxic metabolites that damage barrier integrity and promote inflammation. Intervention strategy: competitive exclusion via saccharolytic strains (L. plantarum 299v, B. longum) that shift fermentation balance from proteolytic → saccharolytic pathways. Psyllium binds endotoxin; Beta-Glucans provide alternative carbohydrate substrate.",
+        "scientific": "Elevated proteolytic guild (Bilophila, Desulfovibrio, Clostridium clusters) indicates excessive protein fermentation producing hydrogen sulfide, ammonia, p-cresol, and indole — cytotoxic metabolites that damage barrier integrity and promote inflammation. Intervention strategy: competitive exclusion via saccharolytic strains (L. plantarum 299v, B. longum Bl-05) that shift fermentation balance from proteolytic → saccharolytic pathways. L. reuteri UALre-16 produces reuterin with direct antimicrobial activity against proteolytic pathogens. L. casei 431 supports sIgA production to control pathobiont populations. Psyllium binds endotoxin; Beta-Glucans provide alternative carbohydrate substrate.",
         "client_friendly": "Certain bacteria that break down protein into harmful byproducts have become overgrown. This mix introduces beneficial bacteria that compete with these harmful organisms for resources, while providing plant-based fiber that shifts the gut's chemistry away from protein breakdown toward healthier carbohydrate digestion.",
         "selection_scenarios": [
           {
@@ -263,57 +331,83 @@
       },
       "strains": [
         {
-          "name": "Lactobacillus plantarum 299v (DSM 9843)",
+          "name": "Lactobacillus plantarum 299v",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Saccharolytic competition and pH acidification"
-        },
-        {
-          "name": "Lactobacillus reuteri ATCC PTA 6475",
-          "evidence": "WGO_L1",
-          "role": "Primary antimicrobial against pathobionts"
+          "role": "Saccharolytic competition, pH acidification via lactate, competitive displacement of proteolytic bacteria"
         },
         {
           "name": "Lactobacillus rhamnosus GG",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Barrier protection against pathobiont translocation"
+          "role": "Barrier protection against pathobiont translocation; metabolises mucin-derived sugars"
         },
         {
-          "name": "Bifidobacterium longum DSM 24736",
+          "name": "Bifidobacterium longum Bl-05",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L2",
-          "role": "Saccharolytic substrate competition"
+          "role": "Acetate production lowers luminal pH, inhibiting proteolytic Clostridia and Bacteroides"
         },
         {
-          "name": "Lactobacillus reuteri DSM 17938",
+          "name": "Lactobacillus reuteri UALre-16",
+          "supplier": "Novonesis",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Reinforces pathobiont suppression + motility"
+          "role": "Reuterin (3-HPA) antimicrobial production — direct activity against proteolytic pathogens"
+        },
+        {
+          "name": "Lactobacillus casei 431",
+          "supplier": "Novonesis",
+          "cfu_billions": 10,
+          "evidence": "Multiple",
+          "role": "Immune modulation; sIgA production to help control pathobiont populations"
         }
       ],
       "default_prebiotic_formula": {
-        "total_g": 8,
+        "total_g": 7,
         "total_fodmap_g": 2,
         "components": [
           {
             "substance": "Beta-Glucans",
-            "dose_g": 3,
-            "fodmap": false
-          },
-          {
-            "substance": "Pure Inulin",
-            "dose_g": 2,
-            "fodmap": true
-          },
-          {
-            "substance": "PHGG",
-            "dose_g": 2,
-            "fodmap": false
+            "dose_g": 2.5,
+            "fodmap": false,
+            "rationale": "Primary carbohydrate substrate — outcompetes proteolytic bacteria for fermentation niche"
           },
           {
             "substance": "Psyllium Husk",
-            "dose_g": 1,
-            "fodmap": false
+            "dose_g": 1.5,
+            "fodmap": false,
+            "rationale": "Must-include (highly_recommended) — binds endotoxin and proteolytic metabolites; non-FODMAP"
+          },
+          {
+            "substance": "PHGG",
+            "dose_g": 1.0,
+            "fodmap": false,
+            "rationale": "Gentle base fiber for sensitive gut; distal fermentation"
+          },
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 1.0,
+            "fodmap": true,
+            "rationale": "Must-include — fermentable carbohydrate for saccharolytic competitive displacement"
+          },
+          {
+            "substance": "GOS",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — minimum dose for Bifido substrate diversity"
+          },
+          {
+            "substance": "FOS",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — short-chain carbohydrate substrate for competitive niche flooding"
           }
         ],
-        "rationale": "Shift substrate from protein to carbohydrate. Psyllium binds endotoxin and proteolytic metabolites."
+        "rationale": "Offline gentle-first formula: Beta-glucans + Psyllium + PHGG carry 5/7g (non-FODMAP). Psyllium is clinically important for endotoxin binding in proteolytic suppression. Must-include FODMAP substrates (Inulin, GOS, FOS) present at minimum effective doses."
       }
     },
     "5": {
@@ -321,7 +415,7 @@
       "mix_name": "Mucus Barrier Restoration",
       "clinical_purpose": "Restore mucus barrier and support Akkermansia axis (leaky gut, zonulin↑, barrier dysfunction)",
       "ecological_rationale": {
-        "scientific": "Elevated mucin-degrading organisms (primarily Akkermansia muciniphila) with diet-fed metabolism (MDR <-0.5 or neutral) indicates barrier dysfunction rather than competitive displacement. The mucin degraders are receiving substrate from dietary sources or have indeterminate metabolic patterns. Barrier-protective strains (L. plantarum ECGC, L. paracasei CNCM) restore tight junction signaling. Inulin + PHGG support SCFA-driven barrier repair without feeding Akkermansia overgrowth.",
+        "scientific": "Elevated mucin-degrading organisms (primarily Akkermansia muciniphila) with diet-fed metabolism (MDR <-0.5 or neutral) indicates barrier dysfunction rather than competitive displacement. The mucin degraders are receiving substrate from dietary sources or have indeterminate metabolic patterns. Barrier-protective strains restore tight junction signaling: L. plantarum 299v stimulates MUC2/MUC3 goblet cell secretion; BB-12 and HN019 have strong mucus adherence; B. infantis/longum 35624 provides serpin-like anti-inflammatory barrier protection; B. breve BR03+B632 directly inhibit serine proteases that degrade mucus. Inulin + PHGG support SCFA-driven barrier repair without feeding Akkermansia overgrowth.",
         "client_friendly": "Bacteria that thin the gut's protective mucus layer have become overgrown, potentially weakening the gut barrier. This mix provides bacteria that help strengthen and rebuild the gut lining, along with gentle fibers that support healing without feeding the problematic organisms.",
         "selection_scenarios": [
           {
@@ -340,29 +434,39 @@
       },
       "strains": [
         {
-          "name": "Lactobacillus plantarum ECGC 13110402",
-          "evidence": "UK_II",
-          "role": "Core barrier strand; lipid-dependent signaling"
-        },
-        {
-          "name": "Lactobacillus paracasei CNCM I-1518",
-          "evidence": "UK_I",
-          "role": "Anchor for barrier-protective signaling"
-        },
-        {
-          "name": "Bifidobacterium breve BR03",
-          "evidence": "CAN_I",
-          "role": "General barrier; can antagonize excess Akkermansia"
+          "name": "Lactobacillus plantarum 299v",
+          "supplier": "IFF",
+          "cfu_billions": 10,
+          "evidence": "WGO_L1",
+          "role": "Stimulates MUC2/MUC3 mucin secretion from goblet cells; lactic acid and bacteriocins prevent pathogen attachment"
         },
         {
           "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "SCFA-driven tight-junction strengthening"
+          "role": "Strong mucus adherence; SCFA-driven tight-junction strengthening; barrier function enhancement"
         },
         {
-          "name": "Lactobacillus casei Shirota",
-          "evidence": "Multiple",
-          "role": "Mucosal immunologist; infection-driven barrier protection"
+          "name": "Bifidobacterium animalis subsp. lactis HN019",
+          "supplier": "IFF",
+          "cfu_billions": 10,
+          "evidence": "WGO_L1",
+          "role": "Strong mucus adherence; mucosal immune modulation; pathogen inhibition at mucosal surface"
+        },
+        {
+          "name": "Bifidobacterium infantis/longum 35624",
+          "supplier": "Novonesis",
+          "cfu_billions": 10,
+          "evidence": "WGO_L1",
+          "role": "Serpin-like activity reduces protease-mediated barrier degradation; anti-inflammatory IL-10 induction protects mucosa"
+        },
+        {
+          "name": "Bifidobacterium breve BR03 + Bifidobacterium breve B632 (premix)",
+          "supplier": "Probiotical",
+          "cfu_billions": 10,
+          "evidence": "CAN_I",
+          "role": "Serpin-positive strains — directly inhibit serine proteases that degrade mucus layer; EPS production forms protective biofilm-like layer"
         }
       ],
       "low_akkermansia_formula": {
@@ -425,20 +529,40 @@
       },
       "default_prebiotic_formula": {
         "total_g": 5.5,
-        "total_fodmap_g": 3,
+        "total_fodmap_g": 2,
         "components": [
           {
-            "substance": "Pure Inulin",
-            "dose_g": 3,
-            "fodmap": true
+            "substance": "PHGG",
+            "dose_g": 2.0,
+            "fodmap": false,
+            "rationale": "Gentle barrier-repair base — SCFA-driven epithelial support without gas risk"
           },
           {
-            "substance": "PHGG",
-            "dose_g": 2,
-            "fodmap": false
+            "substance": "Beta-Glucans",
+            "dose_g": 1.5,
+            "fodmap": false,
+            "rationale": "SCFA substrate for tight-junction repair; non-FODMAP"
+          },
+          {
+            "substance": "GOS",
+            "dose_g": 1.0,
+            "fodmap": true,
+            "rationale": "Must-include (v2) — preferred substrate for Bifido-heavy mix (BB-12, HN019, 35624, BR03+B632)"
+          },
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — minimum dose for SCFA trophic chain signalling"
+          },
+          {
+            "substance": "FOS",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — short-chain substrate diversity"
           }
         ],
-        "rationale": "Base formula — polyphenol selection depends on Akkermansia status."
+        "rationale": "Offline gentle-first formula: PHGG + Beta-glucans carry 3.5/5.5g (non-FODMAP). GOS prioritised as must-include (v2 Bifido-heavy composition). Must-include FODMAP substrates at minimum effective doses. Treats all offline clients as sensitive."
       }
     },
     "6": {
@@ -446,7 +570,7 @@
       "mix_name": "Maintenance Gold Standard",
       "clinical_purpose": "Sustain eubiosis in healthy or recovering gut; chronic GI support",
       "ecological_rationale": {
-        "scientific": "All functional guilds at Monitor priority — no critical ecological imbalances detected. High-diversity 8-strain De Simone-based formulation maintains ecosystem stability via phylogenetic breadth (4 Lactobacillus spp., 3 Bifidobacterium spp., 1 Streptococcus thermophilus). Minimal prebiotic load (4g) avoids unnecessary perturbation of a balanced ecosystem; client dietary fiber provides the majority of substrate.",
+        "scientific": "All functional guilds at Monitor priority — no critical ecological imbalances detected. 6-strain formulation (4 Lactobacillus/Streptococcus spp., 2 Bifidobacterium entries) maintains ecosystem stability via phylogenetic breadth. S. thermophilus UASt-09™ is unique — lactase-positive, operates in the small intestine, produces folate, formate, and thermophilin. Minimal prebiotic load (4g) avoids unnecessary perturbation of a balanced ecosystem; client dietary fiber provides the majority of substrate.",
         "client_friendly": "The gut ecosystem is well-balanced — no major imbalances were detected. This maintenance formula provides a broad spectrum of beneficial bacteria to preserve this healthy state, with a gentle amount of fiber to complement an already healthy diet.",
         "selection_scenarios": [
           {
@@ -459,62 +583,84 @@
       },
       "strains": [
         {
-          "name": "Lactobacillus acidophilus DSM 24735",
+          "name": "Lactobacillus acidophilus LA-5",
+          "supplier": "Novonesis",
+          "cfu_billions": 8.3,
           "evidence": "WGO_L2",
-          "role": "Lactate producer in De Simone system"
+          "role": "CLA production, lactose metabolism, general saccharolytic activity"
         },
         {
-          "name": "Lactobacillus paracasei DSM 24733",
+          "name": "Lactobacillus paracasei UALpc-04",
+          "supplier": "Novonesis",
+          "cfu_billions": 8.3,
           "evidence": "WGO_L2",
-          "role": "Cross-feeding support"
+          "role": "Immune modulation, pathogen competitive exclusion"
         },
         {
-          "name": "Lactobacillus delbrueckii subsp. bulgaricus DSM 24734",
+          "name": "Lactobacillus plantarum Lpla33",
+          "supplier": "Novonesis",
+          "cfu_billions": 8.3,
           "evidence": "WGO_L2",
-          "role": "Fermentation support"
+          "role": "Broad carbohydrate utilisation, barrier support, metabolic versatility"
         },
         {
-          "name": "Lactobacillus plantarum DSM 24730",
+          "name": "Streptococcus thermophilus UASt-09",
+          "supplier": "Novonesis",
+          "cfu_billions": 8.3,
           "evidence": "WGO_L2",
-          "role": "Metabolic versatility"
+          "role": "Small intestine activity; lactase (β-galactosidase) production; folate and formate biosynthesis; thermophilin (bacteriocin)"
         },
         {
-          "name": "Bifidobacterium longum DSM 24736",
+          "name": "Bifidobacterium longum Bl-05",
+          "supplier": "IFF",
+          "cfu_billions": 8.3,
           "evidence": "WGO_L2",
-          "role": "Bifido guild anchor"
+          "role": "Acetate production, cross-feeding with butyrate producers, Bifido guild anchor"
         },
         {
-          "name": "Bifidobacterium infantis DSM 24737",
-          "evidence": "WGO_L2",
-          "role": "Immune regulation"
-        },
-        {
-          "name": "Bifidobacterium breve DSM 24732",
-          "evidence": "WGO_L2",
-          "role": "Bifido guild diversity"
-        },
-        {
-          "name": "Streptococcus thermophilus DSM 24731",
-          "evidence": "WGO_L2",
-          "role": "Fermentation support"
+          "name": "Bifidobacterium breve BR03 + Bifidobacterium breve B632 (premix)",
+          "supplier": "Probiotical",
+          "cfu_billions": 8.3,
+          "evidence": "CAN_I",
+          "role": "Protease inhibition via serpin capacity, immune balance, Bifido guild diversity"
         }
       ],
       "default_prebiotic_formula": {
         "total_g": 4,
-        "total_fodmap_g": 2,
+        "total_fodmap_g": 1.5,
         "components": [
           {
-            "substance": "Pure Inulin",
-            "dose_g": 2,
-            "fodmap": true
+            "substance": "PHGG",
+            "dose_g": 1.5,
+            "fodmap": false,
+            "rationale": "Gentle base — majority of fiber load; non-FODMAP; client diet provides additional substrate"
           },
           {
-            "substance": "PHGG",
-            "dose_g": 2,
-            "fodmap": false
+            "substance": "Beta-Glucans",
+            "dose_g": 1.0,
+            "fodmap": false,
+            "rationale": "Must-include — immune maintenance + SCFA support; non-FODMAP"
+          },
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — minimum dose for Bifido substrate signalling"
+          },
+          {
+            "substance": "GOS",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — minimum dose for BR03+B632 Bifido substrate"
+          },
+          {
+            "substance": "FOS",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — minimum dose for ecosystem diversity maintenance"
           }
         ],
-        "rationale": "Only 4g appropriate for long-term use. Client diet provides additional fiber (>20g/day)."
+        "rationale": "Offline gentle-first formula: PHGG + Beta-glucans carry 2.5/4g (non-FODMAP). Low total load appropriate for maintenance — client diet provides majority of fiber. Must-include substrates (GOS, Inulin, FOS, Beta-glucans) present at minimum doses. Treats all offline clients as sensitive."
       }
     },
     "7": {
@@ -523,44 +669,53 @@
       "clinical_purpose": "Support gut-brain axis in dysbiosis with mood/anxiety/stress component (adjunct, not standalone)",
       "strains": [
         {
-          "name": "Limosilactobacillus fermentum LF16",
+          "name": "Bifidobacterium longum 04 + Lactobacillus fermentum LF16 + Lactobacillus plantarum LP01 + Lactobacillus rhamnosus LR06 (premix)",
+          "supplier": "Probiotical",
+          "cfu_billions": 40,
           "evidence": "CAN_II",
-          "role": "GABA-producing strain; anxiety modulation"
-        },
-        {
-          "name": "Lacticaseibacillus rhamnosus LR06",
-          "evidence": "CAN_II",
-          "role": "Serotonin-pathway support; mood modulation"
-        },
-        {
-          "name": "Lactiplantibacillus plantarum LP01",
-          "evidence": "CAN_II",
-          "role": "Gut-brain axis signaling bridge"
-        },
-        {
-          "name": "Bifidobacterium longum 04",
-          "evidence": "Mechanistic",
-          "role": "Metabolic backbone; SCFA-driven HPA axis support"
+          "role": "Psychobiotic 4-strain premix — GABA production, HPA axis modulation, serotonin-pathway support, gut-brain axis signalling bridge. L. rhamnosus LR06 induces region-dependent GABA receptor expression changes; B. longum 04 modulates brain activity during social stress."
         },
         {
           "name": "Lactiplantibacillus plantarum LP815",
+          "supplier": "Verb Biotics",
+          "cfu_billions": 10,
           "evidence": "Mechanistic",
-          "role": "High-potency GABA producer (5B CFU → 50mg GABA)"
+          "role": "High-potency GABA producer (10B CFU → ~100mg GABA); core psychobiotic strain — always included in Mix 7"
         }
       ],
       "default_prebiotic_formula": {
         "total_g": 5,
-        "total_fodmap_g": 5,
+        "total_fodmap_g": 2,
         "components": [
           {
+            "substance": "PHGG",
+            "dose_g": 2.0,
+            "fodmap": false,
+            "rationale": "Gentle base — bulk fermentation load; non-FODMAP; well tolerated in stress-gut clients"
+          },
+          {
             "substance": "Pure Inulin",
-            "dose_g": 3,
-            "fodmap": true
+            "dose_g": 1.0,
+            "fodmap": true,
+            "rationale": "Must-include — SCFA substrate supporting GABA precursor environment"
+          },
+          {
+            "substance": "Resistant Starch",
+            "dose_g": 1.0,
+            "fodmap": false,
+            "rationale": "Must-include — specifically required for L. fermentum LF16 GABA production pathway"
           },
           {
             "substance": "GOS",
-            "dose_g": 2,
-            "fodmap": true
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — minimum Bifido substrate; B. longum 04 cross-feeding support"
+          },
+          {
+            "substance": "FOS",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Must-include — short-chain serotonin-pathway substrate diversity"
           }
         ],
         "polyphenols": [
@@ -580,7 +735,7 @@
             "rationale": "Anxiolytic; mast-cell modulation"
           }
         ],
-        "rationale": "Inulin + GOS = Bifido + SCFA production. Polyphenols = multi-target neuroprotection."
+        "rationale": "Offline gentle-first formula: PHGG + RS carry 3/5g (non-FODMAP). RS is clinically obligatory for LF16 GABA precursor environment. Must-include FODMAP substrates (Inulin, GOS, FOS) present at minimum doses. Treats all offline clients as sensitive."
       },
       "fodmap_sensitive_formula": {
         "total_g": 2.5,
@@ -611,7 +766,7 @@
             "dose_mg": 250
           }
         ],
-        "rationale": "Reduced FODMAP for sensitive clients while maintaining polyphenol neuroprotection."
+        "rationale": "Reduced FODMAP for sensitive clients while maintaining polyphenol neuroprotection. Resistant starch substrate maintained via beta-glucans if available."
       }
     },
     "8": {
@@ -619,7 +774,7 @@
       "mix_name": "Fiber Expansion & Competitive Displacement",
       "clinical_purpose": "Competitive displacement of Akkermansia overgrowth via Fiber guild expansion when MDR >+0.5",
       "ecological_rationale": {
-        "scientific": "Akkermansia overgrowth (>10%) with positive MDR (>+0.5) and fiber degrader depletion indicates mucus-dependent metabolism — Akkermansia is consuming the mucus layer because the Fiber guild can't provide sufficient carbohydrate competition. Strategy: competitive displacement via niche expansion, NOT direct suppression. Complex polysaccharides (Beta-Glucans, Psyllium/Arabinoxylan, Resistant Starch) that Bacteroidetes/Firmicutes excel at but Akkermansia doesn't preferentially use. As fiber guild expands, Akkermansia pressure naturally reduces through substrate competition.",
+        "scientific": "Akkermansia overgrowth (>10%) with positive MDR (>+0.5) and fiber degrader depletion indicates mucus-dependent metabolism — Akkermansia is consuming the mucus layer because the Fiber guild can't provide sufficient carbohydrate competition. Strategy: competitive displacement via niche expansion, NOT direct suppression. Complex polysaccharides (Beta-Glucans, Psyllium/Arabinoxylan, Resistant Starch) that Bacteroidetes/Firmicutes excel at but Akkermansia doesn't preferentially use. L. plantarum UALp-05™ and 299v provide dual saccharolytic dominance. As fiber guild expands, Akkermansia pressure naturally reduces through substrate competition.",
         "client_friendly": "A specific bacterium (Akkermansia) has overgrown because the fiber-digesting bacteria aren't providing enough competition. Rather than trying to kill the overgrown organism, this mix feeds and strengthens the fiber-digesting bacteria so they naturally crowd out the problematic one — like growing grass to crowd out weeds, rather than using herbicide.",
         "selection_scenarios": [
           {
@@ -632,29 +787,39 @@
       },
       "strains": [
         {
-          "name": "Lactobacillus plantarum 299v (DSM 9843)",
+          "name": "Lactobacillus plantarum 299v",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Versatile fermenter; carbohydrate competition"
-        },
-        {
-          "name": "Bifidobacterium animalis subsp. lactis BB-12",
-          "evidence": "WGO_L1",
-          "role": "Acetate production for cross-feeding"
+          "role": "Versatile saccharolytic fermenter; competitive carbohydrate utilisation; p40/p75 epithelial-protective proteins"
         },
         {
           "name": "Lactobacillus rhamnosus GG",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Barrier support during transition"
+          "role": "Barrier support during Akkermansia displacement transition; secretes p40/p75 proteins protecting epithelial cells"
         },
         {
-          "name": "Bifidobacterium longum DSM 24736",
+          "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "supplier": "IFF",
+          "cfu_billions": 10,
+          "evidence": "WGO_L1",
+          "role": "Acetate production for cross-feeding; mucus adherence blocks pathogen colonisation sites"
+        },
+        {
+          "name": "Bifidobacterium longum Bl-05",
+          "supplier": "IFF",
+          "cfu_billions": 10,
           "evidence": "WGO_L2",
-          "role": "Cross-feeding hub for ecosystem rebalancing"
+          "role": "Cross-feeding hub for ecosystem rebalancing; acetate donor for butyrate producers"
         },
         {
-          "name": "Lactobacillus plantarum CECT 7484 (KABP022)",
+          "name": "Lactobacillus plantarum UALp-05",
+          "supplier": "Novonesis",
+          "cfu_billions": 10,
           "evidence": "Mechanistic",
-          "role": "Fiber fermentation specialist"
+          "role": "Fiber fermentation specialist; dual plantarum strategy for maximum saccharolytic dominance and niche competitive pressure"
         }
       ],
       "selection_criteria": {
@@ -725,14 +890,16 @@
   },
   "lp815_enhancement": {
     "strain": "Lactiplantibacillus plantarum LP815",
+    "supplier": "Verb Biotics",
     "cfu_billions": 5,
     "weight_mg": 50,
-    "mechanism": "5B CFU produces 50mg GABA — stress, irritability, and sleep benefits",
+    "mechanism": "5B CFU produces 50mg GABA — stress, irritability, and sleep benefits. Applied as cross-mix enhancement (not as core mix strain).",
+    "note": "Mix 7 includes LP815 at 10B as a named core strain — the enhancement block does NOT add additional LP815 on top of Mix 7. For all other mixes, this enhancement adds 5B LP815 when stress/mood triggers are met.",
     "trigger_rules": [
       "Stress ≥ 6/10 → always add",
       "Stress ≥ 4/10 AND mood/anxiety is a stated goal → always add"
     ],
     "prebiotic_impact": "Add 0.5-1.0g Resistant Starch for GABA substrate support",
-    "applied_to": "Any mix — enhancement, not replacement"
+    "applied_to": "Mixes 1-6, 8 only — enhancement, not replacement. Mix 7 has LP815 built in at 10B."
   }
 }

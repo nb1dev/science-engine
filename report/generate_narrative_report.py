@@ -8,9 +8,17 @@ generated section-by-section through multiple Bedrock API calls.
 Input: _microbiome_analysis.json + _only_metrics.txt
 Output: {sample_id}_narrative_report.md (+ optional PDF)
 
+Cost optimisations (v2):
+  - Hybrid model routing: Opus 4 for complex reasoning sections, Sonnet 4 for structured/data sections
+  - Prompt caching: system prompt + metrics context cached across all 10 calls (~80% input token saving)
+  - Skip-existing: batch mode skips samples that already have a narrative report
+  - --no-cache flag: fallback if EU cross-region inference profile doesn't support caching
+
 Usage:
   python3 generate_narrative_report.py --sample-dir /path/to/sample/
   python3 generate_narrative_report.py --batch-dir /path/to/batch/
+  python3 generate_narrative_report.py --batch-dir /path/to/batch/ --parallel 3
+  python3 generate_narrative_report.py --batch-dir /path/to/batch/ --no-cache
   python3 generate_narrative_report.py --sample-dir /path/to/sample/ --from-json /path/to/analysis.json
 """
 
@@ -28,8 +36,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
 
-DEFAULT_MODEL_ID = 'eu.anthropic.claude-opus-4-6-v1'
-DEFAULT_REGION = 'eu-west-1'
+# ── Model IDs ──────────────────────────────────────────────────────────────────
+OPUS_MODEL_ID    = 'eu.anthropic.claude-opus-4-6-v1'
+SONNET_MODEL_ID  = 'eu.anthropic.claude-sonnet-4-20250514-v1:0'
+DEFAULT_MODEL_ID = OPUS_MODEL_ID   # fallback when section has no 'model' key
+DEFAULT_REGION   = 'eu-west-1'
 
 
 # ══════════════════════════════════════════════════════════════
@@ -42,7 +53,7 @@ def _create_bedrock_client(region: str = DEFAULT_REGION):
         import boto3
         from botocore.config import Config
         config = Config(
-            read_timeout=300,  # 5 minutes — large sections need 60-90s
+            read_timeout=300,   # 5 minutes — large sections need 60-90s
             connect_timeout=10,
             retries={'max_attempts': 3},
         )
@@ -55,20 +66,75 @@ def _create_bedrock_client(region: str = DEFAULT_REGION):
         return None
 
 
-def _call_bedrock(client, prompt: str, system_prompt: str,
-                  model_id: str = DEFAULT_MODEL_ID,
-                  max_tokens: int = 4000) -> str:
-    """Call Bedrock and return text response."""
+def _call_bedrock(
+    client,
+    dynamic_prompt: str,
+    system_prompt: str,
+    model_id: str = DEFAULT_MODEL_ID,
+    max_tokens: int = 4000,
+    cached_context: str = None,
+    use_cache: bool = True,
+) -> str:
+    """Call Bedrock and return text response.
+
+    Args:
+        dynamic_prompt:  Section-specific instruction + accumulated context — changes every call.
+        system_prompt:   Framework + rules — identical for all 10 calls on a sample.
+        cached_context:  Sample metrics data — identical for all 10 calls on a sample.
+                         When use_cache=True, both system_prompt and cached_context are
+                         sent with cache_control=ephemeral so Bedrock caches them after
+                         the first call (~5-minute TTL — long enough for all 10 sections).
+        use_cache:       Whether to use prompt caching (default True). Set False if the
+                         inference profile doesn't support caching.
+    """
     if client is None:
         return "[LLM unavailable]"
 
-    body = {
-        'anthropic_version': 'bedrock-2023-05-31',
-        'max_tokens': max_tokens,
-        'temperature': 0.2,
-        'messages': [{'role': 'user', 'content': prompt}],
-        'system': system_prompt,
-    }
+    if use_cache and cached_context is not None:
+        # ── CACHED FORMAT ──────────────────────────────────────────────
+        # System prompt: list-of-blocks with cache_control on the last block
+        # User message: two content blocks — cached metrics prefix + dynamic section
+        # Bedrock caches blocks marked with cache_control for ~5 minutes.
+        # After the 1st call, subsequent calls pay only ~10% of the input token price
+        # for the cached portions.
+        body = {
+            'anthropic_version': 'bedrock-2023-05-31',
+            'max_tokens': max_tokens,
+            'temperature': 0.2,
+            'system': [
+                {
+                    'type': 'text',
+                    'text': system_prompt,
+                    'cache_control': {'type': 'ephemeral'},
+                }
+            ],
+            'messages': [
+                {
+                    'role': 'user',
+                    'content': [
+                        {
+                            'type': 'text',
+                            'text': cached_context,
+                            'cache_control': {'type': 'ephemeral'},
+                        },
+                        {
+                            'type': 'text',
+                            'text': dynamic_prompt,
+                        },
+                    ],
+                }
+            ],
+        }
+    else:
+        # ── NON-CACHED FORMAT (legacy / --no-cache fallback) ───────────
+        # Metrics context is baked into the dynamic prompt by the caller.
+        body = {
+            'anthropic_version': 'bedrock-2023-05-31',
+            'max_tokens': max_tokens,
+            'temperature': 0.2,
+            'messages': [{'role': 'user', 'content': dynamic_prompt}],
+            'system': system_prompt,
+        }
 
     try:
         response = client.invoke_model(
@@ -78,6 +144,17 @@ def _call_bedrock(client, prompt: str, system_prompt: str,
             body=json.dumps(body),
         )
         result = json.loads(response['body'].read())
+
+        # Log cache usage when available (Bedrock returns usage stats)
+        usage = result.get('usage', {})
+        cache_read = usage.get('cache_read_input_tokens', 0)
+        cache_write = usage.get('cache_creation_input_tokens', 0)
+        if cache_read or cache_write:
+            logger.debug(
+                f"    Cache: {cache_read} tokens read, {cache_write} tokens written "
+                f"(input: {usage.get('input_tokens', 0)}, output: {usage.get('output_tokens', 0)})"
+            )
+
         return result['content'][0]['text'].strip()
     except Exception as e:
         logger.error(f"Bedrock call failed: {e}")
@@ -116,7 +193,6 @@ def _load_analysis_json(sample_dir: str, analysis_path: str = None) -> dict:
 def _load_raw_metrics(sample_dir: str) -> str:
     """Load raw _only_metrics.txt as string for LLM context."""
     sample_id = os.path.basename(sample_dir.rstrip('/'))
-    # New path first, fallback to legacy
     for subdir in ['bioinformatics/only_metrics', 'only_metrics']:
         metrics_path = os.path.join(sample_dir, subdir, f'{sample_id}_only_metrics.txt')
         if os.path.exists(metrics_path):
@@ -135,13 +211,19 @@ def _load_framework() -> str:
         return f.read()
 
 
+def _has_narrative_report(sample_dir: str) -> bool:
+    """Check if a narrative report already exists for this sample."""
+    sample_id = os.path.basename(sample_dir.rstrip('/'))
+    md_path = os.path.join(sample_dir, 'reports', 'reports_md', f'narrative_report_{sample_id}.md')
+    return os.path.exists(md_path)
+
+
 # ══════════════════════════════════════════════════════════════
 #                    METRICS CONTEXT BUILDER
 # ══════════════════════════════════════════════════════════════
 
 def _build_priority_section(guilds: dict) -> str:
-    """Build canonical priority ordering using shared guild_priority module.
-    Single source of truth — eliminates duplication across pipelines."""
+    """Build canonical priority ordering using shared guild_priority module."""
     shared_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'shared')
     if shared_dir not in sys.path:
         sys.path.insert(0, shared_dir)
@@ -150,12 +232,7 @@ def _build_priority_section(guilds: dict) -> str:
 
 
 def _build_section7_skeleton(guilds: dict) -> str:
-    """Pre-render the Section 7 guild order skeleton so the LLM cannot reorder.
-    
-    Returns a numbered list of guilds that need restoration, in canonical
-    priority order (CRITICAL first, then 1A, then 1B). Monitor guilds are
-    excluded — they don't need restoration steps.
-    """
+    """Pre-render the Section 7 guild order skeleton so the LLM cannot reorder."""
     shared_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'shared')
     if shared_dir not in sys.path:
         sys.path.insert(0, shared_dir)
@@ -179,21 +256,23 @@ def _build_section7_skeleton(guilds: dict) -> str:
 
 
 def _build_metrics_context(analysis: dict, raw_metrics: str) -> str:
-    """Build comprehensive metrics context for the LLM."""
+    """Build comprehensive metrics context for the LLM.
+
+    This block is IDENTICAL across all 10 section calls for a given sample —
+    it is the primary target for prompt caching.
+    """
     sample_id = analysis.get('report_metadata', {}).get('sample_id', 'UNKNOWN')
 
-    # Extract key data
-    score = analysis.get('overall_score', {})
-    eco = analysis.get('ecological_metrics', {})
-    safety = analysis.get('safety_profile', {})
-    met = analysis.get('metabolic_function', {})
-    vitamins = analysis.get('vitamin_synthesis', {})
-    guilds = analysis.get('bacterial_groups', {})
+    score       = analysis.get('overall_score', {})
+    eco         = analysis.get('ecological_metrics', {})
+    safety      = analysis.get('safety_profile', {})
+    met         = analysis.get('metabolic_function', {})
+    vitamins    = analysis.get('vitamin_synthesis', {})
+    guilds      = analysis.get('bacterial_groups', {})
     root_causes = analysis.get('root_causes', {})
-    debug = analysis.get('_debug', {})
-    raw = debug.get('raw_metrics', {})
+    debug       = analysis.get('_debug', {})
+    raw         = debug.get('raw_metrics', {})
 
-    # Build guild summary
     guild_lines = []
     for gname, gdata in guilds.items():
         clr_str = f"CLR {gdata.get('clr', 'N/A')}" if gdata.get('clr') is not None else "CLR undefined (<1%)"
@@ -204,22 +283,22 @@ def _build_metrics_context(analysis: dict, raw_metrics: str) -> str:
             f"J={gdata.get('evenness', 0):.2f} ({gdata.get('evenness_status', '')})"
         )
 
-    # Build dial summary
     dials = met.get('dials', {})
-    dial_lines = []
-    for dk, dv in dials.items():
-        dial_lines.append(f"  {dv.get('heading', dk)}: {dv.get('label', '')} (value={dv.get('value', 'N/A')}, raw={dv.get('raw_value', 'N/A')})")
+    dial_lines = [
+        f"  {dv.get('heading', dk)}: {dv.get('label', '')} (value={dv.get('value', 'N/A')}, raw={dv.get('raw_value', 'N/A')})"
+        for dk, dv in dials.items()
+    ]
 
-    # Dysbiosis
-    dysbiosis_lines = []
-    for taxon, info in safety.get('dysbiosis_markers', {}).items():
-        dysbiosis_lines.append(f"  {taxon}: {info.get('abundance', 0):.4f}% — {info.get('status', '')}")
+    dysbiosis_lines = [
+        f"  {taxon}: {info.get('abundance', 0):.4f}% — {info.get('status', '')}"
+        for taxon, info in safety.get('dysbiosis_markers', {}).items()
+    ]
 
-    # Vitamins
-    vitamin_lines = []
-    for vname, vdata in vitamins.items():
-        if isinstance(vdata, dict) and 'risk_level' in vdata:
-            vitamin_lines.append(f"  {vname}: risk={vdata['risk_level']} ({vdata.get('risk_label', '')}) — {vdata.get('assessment', '')}")
+    vitamin_lines = [
+        f"  {vname}: risk={vdata['risk_level']} ({vdata.get('risk_label', '')}) — {vdata.get('assessment', '')}"
+        for vname, vdata in vitamins.items()
+        if isinstance(vdata, dict) and 'risk_level' in vdata
+    ]
 
     context = f"""SAMPLE ID: {sample_id}
 REPORT DATE: {datetime.now().strftime('%B %d, %Y')}
@@ -276,21 +355,30 @@ Reversibility: {root_causes.get('reversibility', {}).get('label', 'N/A')} ({root
 {json.dumps(score.get('details', {}), indent=2)}
 """
 
-    # Append raw metrics if available (truncated to avoid token overflow)
     if raw_metrics:
-        # Take first 3000 chars of raw metrics
         context += f"\n═══ RAW METRICS FILE (truncated) ═══\n{raw_metrics[:3000]}\n"
 
     return context
 
 
 # ══════════════════════════════════════════════════════════════
-#                    SECTION GENERATORS
+#     SECTION CONFIGS — HYBRID MODEL ROUTING
 # ══════════════════════════════════════════════════════════════
+#
+# 'model' key controls which model generates each section:
+#   OPUS_MODEL_ID   — complex reasoning, ecological synthesis, clinical pattern recognition
+#   SONNET_MODEL_ID — structured data presentation, defined templates, less open-ended reasoning
+#
+# Cost per sample (approximate):
+#   5 Opus sections  × ~$0.30 = ~$1.50
+#   5 Sonnet sections × ~$0.06 = ~$0.30
+#   ──────────────────────────────────
+#   Total with caching           ~$0.55  (vs ~$1.90 all-Opus without caching)
 
 SECTION_CONFIGS = [
     {
         'name': 'Section 1: EXECUTIVE SUMMARY',
+        'model': OPUS_MODEL_ID,   # OPUS — pattern classification specificity is critical here
         'instruction': """Generate Section 1: EXECUTIVE SUMMARY (400-500 words). Be CONCISE — every sentence must add value.
 
 Include ALL required elements in order:
@@ -306,6 +394,7 @@ Include ALL required elements in order:
     },
     {
         'name': 'Section 2: COMPOSITIONAL METRICS',
+        'model': SONNET_MODEL_ID,  # SONNET — presenting numbers + reference ranges, well-structured
         'instruction': """Generate Section 2: COMPOSITIONAL METRICS (800-1,000 words).
 
 Include subsections 2.1-2.5:
@@ -318,6 +407,7 @@ Include subsections 2.1-2.5:
     },
     {
         'name': 'Section 3: DIVERSITY SIGNATURES',
+        'model': SONNET_MODEL_ID,  # SONNET — Shannon/Pielou interpretation, well-defined template
         'instruction': """Generate Section 3: DIVERSITY SIGNATURES (400-600 words).
 
 Include 3.1-3.4:
@@ -329,6 +419,7 @@ Include 3.1-3.4:
     },
     {
         'name': 'Section 4 Part 1: GUILD FRAMEWORK + CLR RATIOS + STATUS TABLE',
+        'model': OPUS_MODEL_ID,   # OPUS — 4-ratio CLR calculations + ecological interpretation
         'instruction': """Generate Section 4 subsections 4.1, 4.2, and 4.3 (1,200-1,500 words).
 
 4.1: CLR methodology explanation + interpretation table
@@ -338,6 +429,7 @@ Include 3.1-3.4:
     },
     {
         'name': 'Section 4 Part 2: DETAILED GUILD ASSESSMENTS (All 6 Guilds)',
+        'model': OPUS_MODEL_ID,   # OPUS — trophic cascade reasoning, cross-feeding, restoration mechanisms
         'instruction': """Generate detailed assessments for ALL 6 guilds in A/B/C/D format (2,000-2,500 words TOTAL — approximately 350 words per guild).
 
 Order by ecological priority for this sample. Each guild needs:
@@ -351,6 +443,7 @@ BE CONCISE. Each guild ~350 words total. No filler. Focus on what's UNIQUE to ea
     },
     {
         'name': 'Section 4 Part 3: METABOLIC FLOW DIAGRAM',
+        'model': SONNET_MODEL_ID,  # SONNET — structured ASCII diagram from data, well-defined format
         'instruction': """Generate Section 4.5: ASCII Parallel Metabolic Flow Diagram (300-500 words).
 
 Show all 6 guilds with abundances, CLR values, substrate flows (Eat/Make/Effect), and system dynamics. Include key system insights (3-5 bullet points). Keep the diagram COMPACT.""",
@@ -358,6 +451,7 @@ Show all 6 guilds with abundances, CLR values, substrate flows (Eat/Make/Effect)
     },
     {
         'name': 'Section 5: FUNCTIONAL PATHWAYS & VITAMIN ASSESSMENT',
+        'model': SONNET_MODEL_ID,  # SONNET — structured data presentation + tables
         'instruction': """Generate Section 5: FUNCTIONAL PATHWAYS & VITAMIN ASSESSMENT (600-800 words).
 
 5.1: SCFA metabolism — pathways, capacity, realized efficiency
@@ -366,6 +460,7 @@ Show all 6 guilds with abundances, CLR values, substrate flows (Eat/Make/Effect)
     },
     {
         'name': 'Section 6: INTEGRATED METABOLIC ASSESSMENT',
+        'model': OPUS_MODEL_ID,   # OPUS — cross-module synthesis, convergent evidence, hardest section
         'instruction': """Generate Section 6: INTEGRATED METABOLIC ASSESSMENT (800-1,000 words).
 
 6.1: Cross-Module Pattern Recognition — convergent evidence
@@ -376,6 +471,7 @@ Show all 6 guilds with abundances, CLR values, substrate flows (Eat/Make/Effect)
     },
     {
         'name': 'Sections 7-8: RESTORATION PRIORITIES + MONITORING',
+        'model': OPUS_MODEL_ID,   # OPUS — intervention logic (guild order protected by skeleton)
         'instruction': """Generate Section 7: ECOLOGICAL RESTORATION PRIORITIES (400-600 words) and Section 8: MONITORING GUIDANCE (400-500 words).
 
 ⚠️ SECTION 7 CRITICAL RULE: You MUST use the EXACT guild order from "SECTION 7 GUILD ORDER" in the sample data above.
@@ -393,6 +489,7 @@ Section 8: Red flags, positive indicators, final success markers table. Use "ear
     },
     {
         'name': 'Sections 9-10 + REPORT SUMMARY',
+        'model': SONNET_MODEL_ID,  # SONNET — limitations/disclaimers, mostly templated content
         'instruction': """Generate Section 9: IMPORTANT LIMITATIONS (600-800 words), Section 10: MEDICAL DISCLAIMER (200-300 words), and REPORT SUMMARY (200-300 words).
 
 Section 9: What we can/cannot measure, 5 mandatory scientific caveats (CLR sample-relative, abundance-function non-linear, proteolytic dose-dependent, guild capacity = healthy range max, substrate flow confounders), interpretation boundaries.
@@ -410,68 +507,34 @@ REPORT SUMMARY: Brief 200-300 word summary of key findings, interventions, struc
 # ══════════════════════════════════════════════════════════════
 
 def _validate_priority_labels(section_text: str, guilds: dict) -> str:
-    """Validate and auto-correct priority labels in LLM-generated text.
-
-    The LLM sometimes writes incorrect priority labels (e.g., "1B" when the
-    computed score says "1A"). This function enforces consistency with the
-    canonical priority system from shared/guild_priority.py — the SAME source
-    used by the formulation pipeline.
-
-    Corrections are applied via regex replacement. Any corrections are logged.
-    """
+    """Validate and auto-correct priority labels in LLM-generated text."""
     shared_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'shared')
     if shared_dir not in sys.path:
         sys.path.insert(0, shared_dir)
     from guild_priority import build_priority_list, GUILD_DISPLAY_NAMES
 
     items = build_priority_list(guilds)
-
-    # Build guild name → correct priority label mapping
-    # Include both internal and display names for matching
-    label_map = {}  # {guild_name_lower: correct_label}
-    for item in items:
-        correct_label = item['priority_level']
-        # Add all name variants for this guild
-        for name in [item['guild_name'], item['guild_key']]:
-            label_map[name.lower()] = correct_label
-        # Also add display name variants from the shared module
-        display = GUILD_DISPLAY_NAMES.get(item['guild_key'], '')
-        if display:
-            label_map[display.lower()] = correct_label
-
-    # Valid priority labels in order of specificity
     VALID_LABELS = ['CRITICAL', '1A', '1B', 'Monitor']
-
     corrections = []
     corrected_text = section_text
 
-    # Pattern 1: "CRITICAL — Guild Name" or "[CRITICAL] Guild Name" or "Priority CRITICAL"
-    # Pattern 2: "Priority 1A — Guild Name" or "### 1. CRITICAL — Butyrate Producers"
-    # Pattern 3: "(Priority Score: X.X)" — just verify label matches score context
     for item in items:
         if item['priority_score'] <= 0:
-            continue  # Skip Monitor guilds (not in restoration section)
+            continue
 
-        correct = item['priority_level']
-        guild_name = item['guild_name']
-
-        # Build regex patterns that match this guild with any priority label
-        # Escape guild name for regex
-        guild_re = re.escape(guild_name)
-        # Also try shorter/display variants
+        correct     = item['priority_level']
+        guild_name  = item['guild_name']
+        guild_re    = re.escape(guild_name)
         guild_variants = [guild_re]
         display = GUILD_DISPLAY_NAMES.get(item['guild_key'], '')
         if display and display != guild_name:
             guild_variants.append(re.escape(display))
 
         for guild_pattern in guild_variants:
-            # Match patterns like: "CRITICAL — Guild Name", "[1B] Guild Name",
-            # "Priority 1A — Guild Name", "### N. CRITICAL — Guild Name"
             for wrong_label in VALID_LABELS:
                 if wrong_label == correct:
-                    continue  # Skip the correct label
+                    continue
 
-                # Pattern: wrong_label followed by guild name (with connectors)
                 pattern = rf'(\b{re.escape(wrong_label)}\b)([\s—\-:]+)({guild_pattern})'
                 match = re.search(pattern, corrected_text, re.IGNORECASE)
                 if match:
@@ -484,12 +547,15 @@ def _validate_priority_labels(section_text: str, guilds: dict) -> str:
                         f"(score {item['priority_score']:.1f})"
                     )
 
-                # Pattern: guild name followed by wrong_label in parentheses or after dash
                 pattern2 = rf'({guild_pattern})([\s—\-:]+)(\b{re.escape(wrong_label)}\b)'
                 match2 = re.search(pattern2, corrected_text, re.IGNORECASE)
                 if match2:
                     old_text = match2.group(0)
-                    new_text = old_text[:match2.start(3) - match2.start()] + correct + old_text[match2.end(3) - match2.start():]
+                    new_text = (
+                        old_text[:match2.start(3) - match2.start()]
+                        + correct
+                        + old_text[match2.end(3) - match2.start():]
+                    )
                     corrected_text = corrected_text.replace(old_text, new_text, 1)
                     corrections.append(
                         f"  ⚠️ PRIORITY LABEL CORRECTION: '{guild_name}' "
@@ -511,19 +577,38 @@ def _validate_priority_labels(section_text: str, guilds: dict) -> str:
 #                    REPORT ASSEMBLY
 # ══════════════════════════════════════════════════════════════
 
-def generate_narrative_report(sample_dir: str, analysis_path: str = None,
-                               model_id: str = DEFAULT_MODEL_ID,
-                               region: str = DEFAULT_REGION) -> str:
-    """Generate the complete narrative report via section-by-section Bedrock calls."""
+def generate_narrative_report(
+    sample_dir: str,
+    analysis_path: str = None,
+    model_id: str = DEFAULT_MODEL_ID,
+    region: str = DEFAULT_REGION,
+    use_cache: bool = True,
+) -> str:
+    """Generate the complete narrative report via section-by-section Bedrock calls.
+
+    Args:
+        sample_dir:    Path to the sample directory.
+        analysis_path: Override path to analysis JSON (optional).
+        model_id:      Default model — used only for sections without an explicit
+                       'model' key in SECTION_CONFIGS. Per-section routing takes
+                       precedence.
+        region:        AWS region for Bedrock.
+        use_cache:     Enable prompt caching (default True). Set False if the EU
+                       cross-region inference profile doesn't support cache_control.
+    """
     sample_id = os.path.basename(sample_dir.rstrip('/'))
     logger.info(f"Generating narrative report for sample: {sample_id}")
+    if use_cache:
+        logger.info("  Prompt caching: ENABLED (system prompt + metrics context cached across all sections)")
+    else:
+        logger.info("  Prompt caching: DISABLED (--no-cache flag)")
 
     # Load data
-    analysis = _load_analysis_json(sample_dir, analysis_path)
+    analysis    = _load_analysis_json(sample_dir, analysis_path)
     raw_metrics = _load_raw_metrics(sample_dir)
-    framework = _load_framework()
+    framework   = _load_framework()
 
-    # Build system prompt
+    # System prompt — identical for all 10 calls → primary cache target
     system_prompt = f"""You are generating a comprehensive scientific microbiome narrative report.
 Follow this framework EXACTLY:
 
@@ -541,7 +626,7 @@ CRITICAL RULES:
 - Use "factory analogy" in CLR dashboard integrated state: "The factory processes X but has lost Y production line..."
 - DO NOT repeat information from previous sections. Each section covers NEW ground."""
 
-    # Build metrics context
+    # Metrics context — identical for all 10 calls → secondary cache target
     metrics_context = _build_metrics_context(analysis, raw_metrics)
 
     # Create Bedrock client
@@ -550,7 +635,7 @@ CRITICAL RULES:
         logger.error("Cannot create Bedrock client — aborting narrative report generation")
         return ""
 
-    # Generate header
+    # Report header
     report_date = datetime.now().strftime('%B %d, %Y')
     header = f"""# Microbiome Analysis Report: Sample {sample_id}
 
@@ -561,10 +646,8 @@ CRITICAL RULES:
 
 """
 
-    # Extract guilds for post-LLM priority validation
     guilds = analysis.get('bacterial_groups', {})
 
-    # Sections that contain priority labels and need validation
     PRIORITY_SECTIONS = {
         'Section 1: EXECUTIVE SUMMARY',
         'Section 4 Part 1: GUILD FRAMEWORK + CLR RATIOS + STATUS TABLE',
@@ -572,15 +655,42 @@ CRITICAL RULES:
         'Sections 7-8: RESTORATION PRIORITIES + MONITORING',
     }
 
-    # Generate sections
+    # Log model routing plan
+    opus_sections   = [c['name'] for c in SECTION_CONFIGS if c.get('model', model_id) == OPUS_MODEL_ID]
+    sonnet_sections = [c['name'] for c in SECTION_CONFIGS if c.get('model', model_id) == SONNET_MODEL_ID]
+    logger.info(f"  Model routing: {len(opus_sections)} Opus | {len(sonnet_sections)} Sonnet")
+
     sections = [header]
     accumulated_context = ""
 
     for i, config in enumerate(SECTION_CONFIGS):
-        logger.info(f"  Generating {config['name']}... ({i+1}/{len(SECTION_CONFIGS)})")
+        section_model = config.get('model', model_id)
+        model_tag     = '🔵 Opus' if section_model == OPUS_MODEL_ID else '🟢 Sonnet'
+        logger.info(f"  [{i+1}/{len(SECTION_CONFIGS)}] {model_tag}  {config['name']}...")
 
-        # Build prompt with metrics + previous sections for consistency
-        prompt = f"""Generate the following section for sample {sample_id}.
+        if use_cache:
+            # Dynamic prompt contains ONLY the section instruction + rolling context
+            # (metrics context is passed separately as a cached block)
+            dynamic_prompt = f"""Generate the following section for sample {sample_id}.
+
+{config['instruction']}
+
+{"PREVIOUS SECTIONS (for consistency — do NOT repeat content):" + chr(10) + accumulated_context[-3000:] if accumulated_context else ""}
+
+OUTPUT: Generate ONLY the requested section content in Markdown format. Start with the section heading. Do NOT include any meta-commentary."""
+
+            section_text = _call_bedrock(
+                client,
+                dynamic_prompt=dynamic_prompt,
+                system_prompt=system_prompt,
+                model_id=section_model,
+                max_tokens=config['max_tokens'],
+                cached_context=metrics_context,
+                use_cache=True,
+            )
+        else:
+            # Non-cached: bake metrics context directly into the prompt (legacy behaviour)
+            prompt = f"""Generate the following section for sample {sample_id}.
 
 {config['instruction']}
 
@@ -591,20 +701,25 @@ SAMPLE DATA:
 
 OUTPUT: Generate ONLY the requested section content in Markdown format. Start with the section heading. Do NOT include any meta-commentary."""
 
-        section_text = _call_bedrock(client, prompt, system_prompt,
-                                      model_id, config['max_tokens'])
+            section_text = _call_bedrock(
+                client,
+                dynamic_prompt=prompt,
+                system_prompt=system_prompt,
+                model_id=section_model,
+                max_tokens=config['max_tokens'],
+                cached_context=None,
+                use_cache=False,
+            )
 
-        # Post-LLM priority label validation — ensures labels match
-        # the canonical priority system used by the formulation pipeline
+        # Post-LLM priority label validation
         if config['name'] in PRIORITY_SECTIONS and guilds:
             section_text = _validate_priority_labels(section_text, guilds)
 
         sections.append(section_text + "\n\n")
         accumulated_context += section_text + "\n\n"
 
-        logger.info(f"    Generated ~{len(section_text.split())} words")
+        logger.info(f"    ~{len(section_text.split())} words")
 
-    # Generate footer
     footer = f"""---
 
 **Report Generated:** {report_date}
@@ -615,12 +730,8 @@ OUTPUT: Generate ONLY the requested section content in Markdown format. Start wi
 """
     sections.append(footer)
 
-    # Assemble
     full_report = '\n'.join(sections)
-
-    # Word count
-    word_count = len(full_report.split())
-    logger.info(f"  Total report: ~{word_count} words")
+    logger.info(f"  Total report: ~{len(full_report.split())} words")
 
     return full_report
 
@@ -653,18 +764,15 @@ def _markdown_to_pdf(md_path: str, pdf_path: str) -> bool:
         if result.returncode == 0:
             logger.info(f"  PDF saved: {pdf_path}")
             return True
-        else:
-            # Try without pdflatex (use default engine)
-            result2 = subprocess.run(
-                [pandoc_path, md_path, '-o', pdf_path,
-                 '-V', 'geometry:margin=2cm'],
-                capture_output=True, text=True, timeout=60
-            )
-            if result2.returncode == 0:
-                logger.info(f"  PDF saved: {pdf_path}")
-                return True
-            logger.warning(f"  PDF generation failed: {result2.stderr[:200]}")
-            return False
+        result2 = subprocess.run(
+            [pandoc_path, md_path, '-o', pdf_path, '-V', 'geometry:margin=2cm'],
+            capture_output=True, text=True, timeout=60
+        )
+        if result2.returncode == 0:
+            logger.info(f"  PDF saved: {pdf_path}")
+            return True
+        logger.warning(f"  PDF generation failed: {result2.stderr[:200]}")
+        return False
     except subprocess.TimeoutExpired:
         logger.warning("  PDF generation timed out")
         return False
@@ -687,22 +795,17 @@ def process_sample(sample_dir: str, analysis_path: str = None, **kwargs) -> str:
         logger.error(f"  Failed to generate narrative report for {sample_id}")
         return ""
 
-    # Save to sample reports directory
-    md_dir = os.path.join(sample_dir, 'reports', 'reports_md')
+    md_dir  = os.path.join(sample_dir, 'reports', 'reports_md')
     pdf_dir = os.path.join(sample_dir, 'reports', 'reports_pdf')
     os.makedirs(md_dir, exist_ok=True)
     os.makedirs(pdf_dir, exist_ok=True)
 
-    # Save Markdown
-    md_filename = f'narrative_report_{sample_id}.md'
-    md_path = os.path.join(md_dir, md_filename)
+    md_path = os.path.join(md_dir, f'narrative_report_{sample_id}.md')
     with open(md_path, 'w') as f:
         f.write(report_md)
     logger.info(f"  Saved: {md_path}")
 
-    # Try PDF generation
-    pdf_filename = f'narrative_report_{sample_id}.pdf'
-    _markdown_to_pdf(md_path, os.path.join(pdf_dir, pdf_filename))
+    _markdown_to_pdf(md_path, os.path.join(pdf_dir, f'narrative_report_{sample_id}.pdf'))
 
     return md_path
 
@@ -730,37 +833,49 @@ def _process_sample_safe(sample_dir: str, **kwargs) -> dict:
         return {'sample_id': sample_id, 'status': 'error', 'error': str(e)}
 
 
-def process_batch(batch_dir: str, parallel: int = 1, **kwargs):
+def process_batch(batch_dir: str, parallel: int = 1, force: bool = False, **kwargs):
     """Process all samples in a batch directory.
 
     Args:
-        batch_dir: Path to batch directory containing sample subdirectories
-        parallel: Number of samples to process concurrently (default 1 = sequential).
-                  Recommended: 3 for Bedrock Opus (stays within rate limits).
-                  Each sample makes 10 sequential API calls, so parallel=3 means
-                  ~3 concurrent Bedrock invocations at any time.
-        **kwargs: Passed to process_sample (model_id, region, etc.)
+        batch_dir: Path to batch directory containing sample subdirectories.
+        parallel:  Number of samples to process concurrently (default 1 = sequential).
+                   Recommended: 3 for Bedrock Opus (stays within rate limits).
+        force:     If True, regenerate even if narrative_report already exists.
+        **kwargs:  Passed to process_sample (model_id, region, use_cache, etc.)
     """
     sample_dirs = sorted(glob.glob(os.path.join(batch_dir, '*')))
     sample_dirs = [d for d in sample_dirs if os.path.isdir(d) and not d.endswith('.DS_Store')]
 
-    # Filter to samples with analysis JSON
     eligible = []
+    skipped_no_json = []
+    skipped_exists  = []
+
     for sample_dir in sample_dirs:
         sample_id = os.path.basename(sample_dir)
-        if _has_analysis_json(sample_dir):
-            eligible.append(sample_dir)
-        else:
-            logger.warning(f"  Skipping {sample_id} — no _microbiome_analysis.json")
+        if not _has_analysis_json(sample_dir):
+            skipped_no_json.append(sample_id)
+            continue
+        if not force and _has_narrative_report(sample_dir):
+            skipped_exists.append(sample_id)
+            continue
+        eligible.append(sample_dir)
 
-    logger.info(f"Batch narrative report generation: {len(eligible)} samples"
-                f"{f' (parallel={parallel})' if parallel > 1 else ''}")
+    if skipped_no_json:
+        logger.warning(f"  Skipped (no analysis JSON): {skipped_no_json}")
+    if skipped_exists:
+        logger.info(f"  Skipped (report already exists, use --force to regenerate): {skipped_exists}")
+
+    logger.info(
+        f"Batch narrative report generation: {len(eligible)} to process"
+        f"{f' (parallel={parallel})' if parallel > 1 else ''}"
+        f" | {len(skipped_exists)} already done | {len(skipped_no_json)} no-data"
+    )
+
+    if not eligible:
+        logger.info("  Nothing to do.")
+        return []
 
     if parallel > 1 and len(eligible) > 1:
-        # ── PARALLEL MODE: ThreadPoolExecutor ──
-        # Threads (not processes) because the workload is I/O-bound (waiting for
-        # Bedrock API responses). Each thread holds ~50MB RAM. GIL is not a
-        # bottleneck since we spend >99% of time in network I/O.
         from concurrent.futures import ThreadPoolExecutor, as_completed
 
         results = []
@@ -771,21 +886,19 @@ def process_batch(batch_dir: str, parallel: int = 1, **kwargs):
             }
             for future in as_completed(future_to_sample):
                 sample_id = future_to_sample[future]
-                result = future.result()
+                result    = future.result()
                 results.append(result)
                 status_icon = '✅' if result['status'] == 'success' else '❌'
-                logger.info(f"  {status_icon} {sample_id} — {result['status']}"
-                            f" ({len(results)}/{len(eligible)})")
+                logger.info(
+                    f"  {status_icon} {sample_id} — {result['status']}"
+                    f" ({len(results)}/{len(eligible)})"
+                )
     else:
-        # ── SEQUENTIAL MODE ──
-        results = []
-        for sample_dir in eligible:
-            result = _process_sample_safe(sample_dir, **kwargs)
-            results.append(result)
+        results = [_process_sample_safe(sd, **kwargs) for sd in eligible]
 
     success = sum(1 for r in results if r['status'] == 'success')
-    errors = sum(1 for r in results if r['status'] == 'error')
-    logger.info(f"\nBatch complete: {success} success, {errors} errors out of {len(eligible)} samples")
+    errors  = sum(1 for r in results if r['status'] == 'error')
+    logger.info(f"\nBatch complete: {success} success, {errors} errors out of {len(eligible)} processed")
     return results
 
 
@@ -798,23 +911,33 @@ def main():
     group.add_argument('--batch-dir', help='Path to batch directory')
 
     parser.add_argument('--from-json', help='Path to specific _microbiome_analysis.json')
-    parser.add_argument('--model-id', default=DEFAULT_MODEL_ID, help='Bedrock model ID')
+    parser.add_argument('--model-id', default=DEFAULT_MODEL_ID,
+                        help='Default Bedrock model ID (per-section routing in SECTION_CONFIGS takes precedence)')
     parser.add_argument('--region', default=DEFAULT_REGION, help='AWS region')
     parser.add_argument('--parallel', type=int, default=1,
                         help='Number of samples to process concurrently in batch mode '
-                             '(default: 1 = sequential). Recommended: 3 for Bedrock Opus.')
+                             '(default: 1 = sequential). Recommended: 3.')
+    parser.add_argument('--no-cache', action='store_true',
+                        help='Disable prompt caching (fallback if EU inference profile '
+                             'does not support cache_control)')
+    parser.add_argument('--force', action='store_true',
+                        help='Regenerate even if narrative_report already exists (batch mode)')
     parser.add_argument('--verbose', '-v', action='store_true')
 
     args = parser.parse_args()
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    kwargs = {'model_id': args.model_id, 'region': args.region}
+    kwargs = {
+        'model_id':  args.model_id,
+        'region':    args.region,
+        'use_cache': not args.no_cache,
+    }
 
     if args.sample_dir:
         process_sample(args.sample_dir, analysis_path=args.from_json, **kwargs)
     elif args.batch_dir:
-        process_batch(args.batch_dir, parallel=args.parallel, **kwargs)
+        process_batch(args.batch_dir, parallel=args.parallel, force=args.force, **kwargs)
 
 
 if __name__ == '__main__':

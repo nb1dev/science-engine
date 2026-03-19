@@ -105,6 +105,7 @@
       "interaction_risk": "Flushing (IR forms); avoid alcohol; ↑uric acid gout",
       "timing_in_protocol": "Extended-release w/ food/bedtime; avoid hot/spicy",
       "notes": "Flushing harmless, tolerance 1wk; >500mg liver risk—supervise; monitor LFTs; pregnant women should not exceed 16 mg/d",
+      "aliases": ["Niacinamide (B3)", "Nicotinamide (B3)", "Niacinamide", "Nicotinamide", "Vitamin B3"],
       "parsed": {
         "dose": {
           "form": "Nicotinamide",

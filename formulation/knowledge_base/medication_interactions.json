@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2026-03-18",
+    "description": "Deterministic medication interaction rules. Each rule is clinician-reviewed and reproducible. Rules fire BEFORE LLM decisions — they are upstream clinical constraints, not downstream corrections.",
+    "tier_definitions": {
+      "A": "Hard medical override — MUST change formulation. Auto-executed, no clinician review needed.",
+      "B": "Caution adjustment — prefer removal or reduction if alternatives exist. Auto-executed with conditions.",
+      "C": "Informational flag — shown for clinician review only. No formulation change."
+    },
+    "resolution_types": {
+      "timing_override": "Move components to specific timing (e.g., all to dinner for T4 spacing)",
+      "conditional_remove": "Remove substance if alternative support already exists in formulation",
+      "unconditional_remove": "Always remove substance regardless of alternatives",
+      "dose_cap": "Limit substance to maximum safe dose",
+      "flag_only": "No auto-action — clinician review flag only"
+    }
+  },
+  "rules": [
+    {
+      "rule_id": "MED_001",
+      "medication": "levothyroxine",
+      "aliases": ["T4", "Τ4", "synthroid", "euthyrox", "eltroxin", "levo-t", "tirosint", "levoxyl", "unithroid", "eutirox", "l-thyroxine", "thyroxine"],
+      "interaction_class": "mineral_absorption_conflict",
+      "tier": "A",
+      "severity": "high",
+      "description": "Levothyroxine dose is calibrated in 12.5mcg increments. Even modest absorption interference from minerals, fibre, or supplements can shift therapeutic response, cause symptom return, and alter TSH values.",
+      "strong_conflicts": {
+        "substances": ["iron", "calcium", "magnesium", "zinc"],
+        "minimum_spacing_hours": 4,
+        "mechanism": "Chelation and competitive absorption — minerals bind T4 in the gut, reducing bioavailability"
+      },
+      "moderate_conflicts": {
+        "substances": ["fibre", "selenium", "iodine"],
+        "minimum_spacing_hours": 2,
+        "mechanism": "Fibre adsorbs T4; selenium/iodine affect thyroid metabolism"
+      },
+      "resolution": {
+        "type": "timing_override",
+        "move_to": "dinner",
+        "affects": ["all_units"],
+        "exclude_from_override": [],
+        "reason": "Maximum spacing from morning T4 dose. All capsules and prebiotics taken with dinner meal. Consistency is prioritized — client always takes supplements at the same time. Absorption with food remains acceptable."
+      },
+      "clinical_note": "T4 should be taken on empty stomach, 30-60min before breakfast. All supplements moved to dinner provides maximum spacing (~10-12h). Consistency of evening intake is clinically safer than complex multi-timing schemes.",
+      "added_by": "clinician_revision",
+      "added_date": "2026-03-18"
+    },
+    {
+      "rule_id": "MED_002",
+      "medication": "ramipril",
+      "aliases": ["altace", "tritace", "ramace", "delix", "cardace", "triatec"],
+      "interaction_class": "hypotension_risk",
+      "tier": "B",
+      "severity": "moderate",
+      "description": "Magnesium bisglycinate has mild blood-pressure-lowering effects. Combined with Ramipril, doses above 400mg may contribute to excessive hypotension. At moderate doses (200-300mg), dizziness or light-headedness may occur.",
+      "conflicting_supplements": [
+        {
+          "substance": "magnesium",
+          "substance_aliases": ["magnesium_bisglycinate", "mg_bisglycinate", "magnesium bisglycinate"],
+          "mechanism": "Additive blood-pressure lowering — Mg bisglycinate has mild antihypertensive effect",
+          "threshold_mg": 400,
+          "resolution": {
+            "type": "conditional_remove",
+            "condition": "alternative_stress_support_exists",
+            "check_alternatives": ["ashwagandha", "LP815", "l-theanine"],
+            "minimum_alternatives_present": 1,
+            "reason": "Magnesium not necessary when stress/relaxation support is already covered by other components"
+          }
+        }
+      ],
+      "clinical_note": "At doses >400mg Mg + Ramipril, risk of excessive hypotension. At 200-300mg: usually not a major clinical issue but dizziness may occur. For safety: remove magnesium entirely when alternative stress support exists.",
+      "added_by": "clinician_revision",
+      "added_date": "2026-03-18"
+    }
+  ]
+}

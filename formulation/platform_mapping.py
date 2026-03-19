@@ -21,6 +21,34 @@ from formatting import format_dose as _format_dose
 from guild_priority import GUILD_CLIENT_NAMES as _GUILD_CLIENT_NAMES
 
 
+def _get_unit_timing(formulation: Dict, delivery_key: str, default: str = "morning") -> str:
+    """Read actual timing from formulation delivery format dict.
+    
+    Respects medication timing override (apply_timing_override rewrites
+    format.timing to "evening (with dinner meal)" for all units).
+    Falls back to default if the key doesn't exist or is None.
+    """
+    unit = formulation.get(delivery_key)
+    if unit is None:
+        return default
+    fmt = unit.get("format") or {}
+    return fmt.get("timing", default)
+
+
+def _get_unit_label(formulation: Dict, delivery_key: str, default: str) -> str:
+    """Read actual label from formulation delivery format dict.
+    
+    Respects medication timing override (apply_timing_override rewrites
+    format.label from "Morning Wellness Capsule" to "Evening Wellness Capsule").
+    Falls back to default if the key doesn't exist, is None, or label is missing.
+    """
+    unit = formulation.get(delivery_key)
+    if unit is None:
+        return default
+    fmt = unit.get("format") or {}
+    return fmt.get("label", default)
+
+
 def _evening_capsule_label(components: list) -> str:
     """Universal label for the evening capsule — contents visible in contents_summary.
     
@@ -186,7 +214,10 @@ def build_platform_json(master: Dict) -> Dict:
 
 
 def _build_delivery_summary(formulation: Dict) -> Dict:
-    """Build simplified delivery unit summary for platform display."""
+    """Build simplified delivery unit summary for platform display.
+    
+    Supports both v2 (sachet) and v3 (powder jar + pooled capsules) architectures.
+    """
     result = {"morning": [], "evening": []}
 
     # Probiotic capsule
@@ -217,21 +248,72 @@ def _build_delivery_summary(formulation: Dict) -> Dict:
             "validation": totals.get("validation"),
         })
 
-    # Sachet
-    sachet = formulation.get("delivery_format_3_daily_sachet", {})
-    if sachet:
-        totals = sachet.get("totals", {})
-        result["morning"].append({
-            "type": "sachet",
-            "label": "Daily Sachet",
+    # v3: Powder Jar (replaces sachet)
+    jar = formulation.get("delivery_format_3_powder_jar")
+    if jar:
+        totals = jar.get("totals", {})
+        phased = totals.get("phased_dosing", {})
+        pb_items = ", ".join(p.get("substance", "") for p in jar.get("prebiotics", {}).get("components", []))
+        bot_items = ", ".join(b.get("substance", "") for b in jar.get("botanicals", {}).get("components", []))
+        contents = pb_items + (f" + {bot_items}" if bot_items else "")
+        summary = {
+            "type": "jar",
+            "label": "Prebiotic & Botanical Powder Jar",
             "count": 1,
-            "contents_summary": f"{totals.get('prebiotic_total_g', 0)}g prebiotics + vitamins + supplements",
+            "contents_summary": contents or f"{totals.get('prebiotic_total_g', 0)}g prebiotics",
             "weight_g": totals.get("total_weight_g"),
-            "validation": totals.get("validation"),
-        })
+            "within_daily_target": totals.get("within_daily_target", True),
+            "validation": totals.get("validation", "PASS"),
+        }
+        if phased:
+            summary["phased_dosing"] = {
+                "weeks_1_2_g": phased.get("weeks_1_2_g"),
+                "weeks_3_plus_g": phased.get("weeks_3_plus_g"),
+                "instruction": phased.get("instruction", ""),
+            }
+        result["morning"].append(summary)
+    else:
+        # v2 fallback: Daily Sachet
+        sachet = formulation.get("delivery_format_3_daily_sachet", {})
+        if sachet:
+            totals = sachet.get("totals", {})
+            result["morning"].append({
+                "type": "sachet",
+                "label": "Daily Sachet",
+                "count": 1,
+                "contents_summary": f"{totals.get('prebiotic_total_g', 0)}g prebiotics + vitamins + supplements",
+                "weight_g": totals.get("total_weight_g"),
+                "validation": totals.get("validation"),
+            })
 
-    # Polyphenol capsule (Tier 2 — Curcumin+Piperine, Bergamot)
-    polyphenol = formulation.get("delivery_format_5_polyphenol_capsule")
+    # v3: Morning Wellness Capsules (pooled vitamins + minerals + light botanicals)
+    mwc = formulation.get("delivery_format_4_morning_wellness_capsules")
+    if mwc:
+        totals = mwc.get("totals", {})
+        count = totals.get("capsule_count", 1)
+        opt = totals.get("optimizer_record", {})
+        components = mwc.get("components", [])
+        # Use pre-formatted 'dose' string (e.g. "40mcg", "250mg") — dose_mg is 0.0 for mcg vitamins
+        contents = ", ".join(
+            f"{c.get('substance', '')} {c.get('dose', str(round(c.get('dose_mg', 0), 1)) + 'mg')}"
+            for c in components[:5]
+        )
+        if len(components) > 5:
+            contents += f" + {len(components)-5} more"
+        summary = {
+            "type": "hard_capsule",
+            "label": "Morning Wellness Capsule",
+            "count": count,
+            "contents_summary": contents,
+            "total_weight_mg": totals.get("total_weight_mg"),
+            "validation": totals.get("validation", "PASS"),
+        }
+        if opt.get("adjustments_made"):
+            summary["optimizer_adjustments"] = opt["adjustments_made"]
+        result["morning"].append(summary)
+
+    # Polyphenol capsule (Tier 2 — Curcumin+Piperine, Bergamot) — both v2 and v3
+    polyphenol = formulation.get("delivery_format_5_polyphenol_capsule") or formulation.get("delivery_format_6_polyphenol_capsule")
     if polyphenol:
         totals = polyphenol.get("totals", {})
         components = polyphenol.get("components", [])
@@ -245,26 +327,53 @@ def _build_delivery_summary(formulation: Dict) -> Dict:
             "validation": totals.get("validation") if totals else "N/A",
         })
 
-    # Evening capsule
-    evening = formulation.get("delivery_format_4_evening_capsule")
-    if evening:
-        totals = evening.get("totals", {})
-        components = evening.get("components", [])
-        contents = ", ".join(c.get("substance", "") for c in components)
-        result["evening"].append({
+    # v3: Evening Wellness Capsules (pooled sleep aids + calming adaptogens)
+    ewc = formulation.get("delivery_format_5_evening_wellness_capsules")
+    if ewc:
+        totals = ewc.get("totals", {})
+        count = totals.get("capsule_count", 1)
+        opt = totals.get("optimizer_record", {})
+        components = ewc.get("components", [])
+        contents = ", ".join(f"{c.get('substance', '')} {c.get('dose_mg', '')}mg" for c in components)
+        summary = {
             "type": "hard_capsule",
-            "label": _evening_capsule_label(components),
-            "count": 1,
+            "label": "Evening Wellness Capsule",
+            "count": count,
             "contents_summary": contents,
-            "weight_mg": totals.get("total_weight_mg") if totals else 0,
-            "validation": totals.get("validation") if totals else "N/A",
-        })
+            "total_weight_mg": totals.get("total_weight_mg"),
+            "validation": totals.get("validation", "PASS"),
+        }
+        if opt.get("adjustments_made"):
+            summary["optimizer_adjustments"] = opt["adjustments_made"]
+        result["evening"].append(summary)
+    else:
+        # v2 fallback: single Evening Capsule
+        evening = formulation.get("delivery_format_4_evening_capsule")
+        if evening:
+            totals = evening.get("totals", {})
+            components = evening.get("components", [])
+            contents = ", ".join(c.get("substance", "") for c in components)
+            result["evening"].append({
+                "type": "hard_capsule",
+                "label": _evening_capsule_label(components),
+                "count": 1,
+                "contents_summary": contents,
+                "weight_mg": totals.get("total_weight_mg") if totals else 0,
+                "validation": totals.get("validation") if totals else "N/A",
+            })
 
     return result
 
 
-def build_decision_trace(master: Dict) -> Dict:
-    """Build board-readable decision trace JSON — linear chain from inputs → decisions → formula."""
+def build_decision_trace(master: Dict, trace_events: list = None) -> Dict:
+    """Build board-readable decision trace JSON — linear chain from inputs → decisions → formula.
+    
+    Args:
+        master: Complete master formulation dict
+        trace_events: Optional list of pipeline decision events (chronological).
+                     When provided, enables HTML decision trace to be generated from
+                     the same source as the terminal pipeline log output.
+    """
     metadata = master.get("metadata", {})
     input_summary = master.get("input_summary", {})
     decisions = master.get("decisions", {})
@@ -405,7 +514,7 @@ def build_decision_trace(master: Dict) -> Dict:
         "components": step7_components,
     })
 
-    # Build delivery summary
+    # Build delivery summary (supports v2 and v3)
     proto = formulation.get("protocol_summary", {})
     delivery = []
     if formulation.get("delivery_format_1_probiotic_capsule"):
@@ -413,27 +522,46 @@ def build_decision_trace(master: Dict) -> Dict:
         delivery.append({"type": "Probiotic Capsule", "timing": "morning", "count": 1, "contents": f"{t.get('total_cfu_billions', 0)}B CFU"})
     if formulation.get("delivery_format_2_omega_softgels"):
         delivery.append({"type": "Omega Softgel", "timing": "morning", "count": 2, "contents": "Omega 712.5mg + D3 + E + Astaxanthin"})
-    if formulation.get("delivery_format_3_daily_sachet"):
+    # v3: Powder Jar
+    if formulation.get("delivery_format_3_powder_jar"):
+        jt = formulation["delivery_format_3_powder_jar"].get("totals", {})
+        phased = jt.get("phased_dosing", {})
+        jar_contents = f"{jt.get('prebiotic_total_g', 0)}g prebiotics"
+        if jt.get("botanical_total_g", 0) > 0:
+            jar_contents += f" + {jt['botanical_total_g']}g botanicals"
+        jar_entry = {"type": "Powder Jar", "timing": "morning", "count": 1, "contents": jar_contents, "weight_g": jt.get("total_weight_g", 0)}
+        if phased:
+            jar_entry["phased_dosing"] = {"weeks_1_2_g": phased.get("weeks_1_2_g"), "weeks_3_plus_g": phased.get("weeks_3_plus_g"), "instruction": phased.get("instruction", "")}
+        delivery.append(jar_entry)
+    elif formulation.get("delivery_format_3_daily_sachet"):
         t = formulation["delivery_format_3_daily_sachet"].get("totals", {})
         delivery.append({"type": "Daily Sachet", "timing": "morning", "count": 1, "contents": f"{t.get('prebiotic_total_g', 0)}g prebiotics + vitamins"})
-    if formulation.get("delivery_format_5_polyphenol_capsule"):
-        pp = formulation["delivery_format_5_polyphenol_capsule"]
+    # v3: Morning Wellness Capsules
+    if formulation.get("delivery_format_4_morning_wellness_capsules"):
+        mwct = formulation["delivery_format_4_morning_wellness_capsules"].get("totals", {})
+        mwc_count = mwct.get("capsule_count", 1)
+        delivery.append({"type": "Morning Wellness Capsule", "timing": "morning", "count": mwc_count, "contents": f"vitamins + minerals + light botanicals", "weight_mg": mwct.get("total_weight_mg", 0)})
+    # Polyphenol capsule
+    pp_key = "delivery_format_5_polyphenol_capsule" if formulation.get("delivery_format_5_polyphenol_capsule") else "delivery_format_6_polyphenol_capsule"
+    if formulation.get(pp_key):
+        pp = formulation[pp_key]
         pp_t = pp.get("totals", {})
         pp_contents = ", ".join(f"{c.get('substance', '')} {c.get('dose_mg', '')}mg" for c in pp.get("components", []))
         delivery.append({"type": "Morning Wellness Capsule", "timing": "morning", "count": 1, "contents": pp_contents, "weight_mg": pp_t.get("total_weight_mg", 0)})
-    # Evening capsule 1
-    if formulation.get("delivery_format_4_evening_capsule"):
+    # v3: Evening Wellness Capsules
+    if formulation.get("delivery_format_5_evening_wellness_capsules"):
+        ewct = formulation["delivery_format_5_evening_wellness_capsules"].get("totals", {})
+        ewc_count = ewct.get("capsule_count", 1)
+        delivery.append({"type": "Evening Wellness Capsule", "timing": "evening", "count": ewc_count, "contents": "sleep aids + calming adaptogens", "weight_mg": ewct.get("total_weight_mg", 0)})
+    # v2 fallback: Evening capsules
+    elif formulation.get("delivery_format_4_evening_capsule"):
         ec = formulation["delivery_format_4_evening_capsule"]
         ec_comps = ec.get("components", [])
         contents = ", ".join(f"{c.get('substance', '')} {c.get('dose_mg', '')}mg" for c in ec_comps)
         delivery.append({"type": "Evening Wellness Capsule", "timing": "evening", "count": 1, "contents": contents, "weight_mg": ec.get("totals", {}).get("total_weight_mg", 0)})
-
-    # Evening capsule 2 (overflow)
-    if formulation.get("delivery_format_4b_evening_capsule_2"):
-        ec2 = formulation["delivery_format_4b_evening_capsule_2"]
-        ec2_comps = ec2.get("components", [])
-        contents = ", ".join(f"{c.get('substance', '')} {c.get('dose_mg', '')}mg" for c in ec2_comps)
-        delivery.append({"type": "Evening Wellness Capsule (2)", "timing": "evening", "count": 1, "contents": contents, "weight_mg": ec2.get("totals", {}).get("total_weight_mg", 0)})
+    # NOTE: delivery_format_4b_evening_capsule_2 was a v2 artifact.
+    # v3 evening overflow is handled inside delivery_format_5_evening_wellness_capsules
+    # (capsule_count ≥ 2 + per-capsule layout from CapsuleStackingOptimizer).
 
     if mg.get("capsules", 0) > 0:
         mg_del_timing = rule_outputs.get("timing", {}).get("timing_assignments", {}).get("magnesium", {}).get("timing", "evening")
@@ -489,13 +617,29 @@ def build_decision_trace(master: Dict) -> Dict:
 
 
 def build_manufacturing_recipe(master: Dict) -> Dict:
-    """Build manufacturing recipe JSON — exact weights, units, ingredients for production."""
+    """Build manufacturing recipe JSON — exact weights, units, ingredients for production.
+    
+    Timing and labels are read from the formulation format dicts (not hardcoded),
+    so medication timing overrides (e.g., all units → dinner) are automatically
+    reflected in the recipe without any post-processing.
+    """
     metadata = master.get("metadata", {})
     formulation = master.get("formulation", {})
     decisions = master.get("decisions", {})
     rule_outputs = decisions.get("rule_outputs", {})
     mix = decisions.get("mix_selection", {})
     proto = formulation.get("protocol_summary", {})
+
+    # Read actual timing from each delivery format (respects medication override)
+    _t1 = _get_unit_timing(formulation, "delivery_format_1_probiotic_capsule", "morning")
+    _t2 = _get_unit_timing(formulation, "delivery_format_2_omega_softgels", "morning")
+    _t3 = _get_unit_timing(formulation, "delivery_format_3_powder_jar", "morning")
+    _t4 = _get_unit_timing(formulation, "delivery_format_4_morning_wellness_capsules", "morning")
+    _l4 = _get_unit_label(formulation, "delivery_format_4_morning_wellness_capsules", "Morning Wellness Capsule")
+    _t6 = _get_unit_timing(formulation, "delivery_format_6_polyphenol_capsule",
+           _get_unit_timing(formulation, "delivery_format_5_polyphenol_capsule", "morning, with food"))
+    _l6 = _get_unit_label(formulation, "delivery_format_6_polyphenol_capsule",
+           _get_unit_label(formulation, "delivery_format_5_polyphenol_capsule", "Morning Wellness Capsule"))
 
     units = []
     unit_num = 0
@@ -515,7 +659,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             "unit_number": unit_num,
             "label": "Probiotic Hard Capsule",
             "format": {"type": "hard_capsule", "size": "00", "material": "vegetarian", "color": "tan/beige opaque"},
-            "timing": "morning",
+            "timing": _t1,
             "quantity": 1,
             "fill_weight_mg": totals.get("total_weight_mg", 0),
             "storage": "With desiccant packet, cool and dry",
@@ -548,7 +692,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             "unit_number": unit_num,
             "label": "Omega + Antioxidant Softgel",
             "format": {"type": "softgel", "size": "0", "material": "vegetarian", "color": "transparent gel"},
-            "timing": "morning",
+            "timing": _t2,
             "quantity": sg_count,
             "fill_weight_per_unit_mg": sg_totals.get("weight_per_softgel_mg", 750),
             "total_weight_mg": sg_totals.get("daily_total_mg", 750 * sg_count),
@@ -562,14 +706,15 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             },
         })
 
-    # Unit 3: Sachet
+    # Unit 3: Powder Jar (v3) or Daily Sachet (v2 fallback)
+    jar = formulation.get("delivery_format_3_powder_jar")
     sachet = formulation.get("delivery_format_3_daily_sachet", {})
-    if sachet:
+    if jar:
         unit_num += 1
         ingredients = []
 
         # Prebiotics
-        for p in sachet.get("prebiotics", {}).get("components", []):
+        for p in jar.get("prebiotics", {}).get("components", []):
             ingredients.append({
                 "component": p["substance"],
                 "amount_g": p["dose_g"],
@@ -577,23 +722,45 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
                 "fodmap": p.get("fodmap", False),
             })
 
-        # Vitamins/minerals
+        # Heavy botanicals
+        for b in jar.get("botanicals", {}).get("components", []):
+            ingredients.append({
+                "component": b["substance"],
+                "amount_g": b.get("dose_g", 0),
+                "category": "botanical_heavy",
+            })
+
+        jar_totals = jar.get("totals", {})
+        phased = jar_totals.get("phased_dosing", {})
+        jar_unit = {
+            "unit_number": unit_num,
+            "label": "Prebiotic & Botanical Powder Jar",
+            "format": {"type": "jar", "mixing": "Mix in 200-300ml water (a large glass). Stir well and drink immediately."},
+            "timing": _t3,
+            "quantity": 1,
+            "ingredients": ingredients,
+            "total_weight_g": jar_totals.get("total_weight_g", 0),
+            "prebiotic_weight_g": jar_totals.get("prebiotic_total_g", 0),
+            "botanical_weight_g": jar_totals.get("botanical_total_g", 0),
+            "total_fodmap_g": jar_totals.get("total_fodmap_g", 0),
+        }
+        if phased:
+            jar_unit["phased_dosing"] = {
+                "weeks_1_2_g": phased.get("weeks_1_2_g"),
+                "weeks_3_plus_g": phased.get("weeks_3_plus_g"),
+                "instruction": phased.get("instruction", ""),
+                "rationale": phased.get("rationale", ""),
+            }
+        units.append(jar_unit)
+    elif sachet:
+        unit_num += 1
+        ingredients = []
+        for p in sachet.get("prebiotics", {}).get("components", []):
+            ingredients.append({"component": p["substance"], "amount_g": p["dose_g"], "category": "prebiotic", "fodmap": p.get("fodmap", False)})
         for v in sachet.get("vitamins_minerals", {}).get("components", []):
-            ingredients.append({
-                "component": v["substance"],
-                "amount": v["dose"],
-                "amount_mg": v["weight_mg"],
-                "category": "vitamin_mineral",
-            })
-
-        # Supplements (amino acids, botanicals, sleep supplements)
+            ingredients.append({"component": v["substance"], "amount": v["dose"], "amount_mg": v["weight_mg"], "category": "vitamin_mineral"})
         for s in sachet.get("supplements", {}).get("components", []):
-            ingredients.append({
-                "component": s["substance"],
-                "amount_mg": s.get("dose_mg", s.get("weight_mg", 0)),
-                "category": "supplement",
-            })
-
+            ingredients.append({"component": s["substance"], "amount_mg": s.get("dose_mg", s.get("weight_mg", 0)), "category": "supplement"})
         s_totals = sachet.get("totals", {})
         units.append({
             "unit_number": unit_num,
@@ -607,8 +774,54 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             "total_fodmap_g": s_totals.get("total_fodmap_g", 0),
         })
 
+    # Unit 3b: Morning Wellness Capsules (v3 — pooled vitamins + minerals + light botanicals)
+    mwc = formulation.get("delivery_format_4_morning_wellness_capsules")
+    if mwc and mwc.get("components"):
+        unit_num += 1
+        ingredients = []
+        for c in mwc["components"]:
+            ing = {
+                "component": c["substance"],
+                "category": c.get("type", "vitamin_mineral"),
+            }
+            dose_mg = c.get("dose_mg", c.get("weight_mg", 0))
+            dose_unit = c.get("dose_unit", "mg")
+            if c.get("weight_note") == "NEGLIGIBLE":
+                ing["amount"] = c.get("dose", "")
+                ing["weight_note"] = "negligible"
+            elif dose_unit.lower() in ("mcg", "ug", "μg"):
+                ing["amount"] = c.get("dose", "")
+            else:
+                ing["amount_mg"] = dose_mg
+            ingredients.append(ing)
+
+        mwc_totals = mwc.get("totals", {})
+        opt = mwc_totals.get("optimizer_record", {})
+        mwc_cap_count = mwc_totals.get("capsule_count", 1)
+        mwc_capsule_layout = mwc_totals.get("capsules", [])
+        # Per-capsule fill: use max fill across capsules (for validation against 650mg spec)
+        _mwc_fills = [c.get("fill_mg", 0) for c in mwc_capsule_layout]
+        mwc_max_fill = round(max(_mwc_fills), 1) if _mwc_fills else mwc_totals.get("total_weight_mg", 0)
+        mwc_unit = {
+            "unit_number": unit_num,
+            "label": _l4,
+            "format": {"type": "hard_capsule", "size": "00", "material": "vegetarian"},
+            "timing": _t4,
+            "quantity": mwc_cap_count,
+            "fill_weight_per_capsule_mg": mwc_max_fill,  # per-capsule max (for capacity validation)
+            "total_fill_weight_mg": mwc_totals.get("total_weight_mg", 0),  # sum across all capsules
+            "ingredients": ingredients,
+            "ingredients_note": f"Total across {mwc_cap_count} capsules — see capsule_layout for per-capsule breakdown" if mwc_cap_count > 1 else None,
+            "total_weight_mg": mwc_totals.get("total_weight_mg", 0),
+            "capsule_layout": mwc_capsule_layout,
+        }
+        if opt.get("adjustments_made"):
+            mwc_unit["optimizer_adjustments"] = opt["adjustments_made"]
+            mwc_unit["optimizer_outcome"] = opt.get("optimization_outcome", "")
+        units.append(mwc_unit)
+
     # Unit 4: Polyphenol capsule (Tier 2 — Curcumin+Piperine, Bergamot)
-    polyphenol_cap = formulation.get("delivery_format_5_polyphenol_capsule")
+    polyphenol_cap = formulation.get("delivery_format_5_polyphenol_capsule") or formulation.get("delivery_format_6_polyphenol_capsule")
     if polyphenol_cap and polyphenol_cap.get("components"):
         unit_num += 1
         ingredients = []
@@ -621,62 +834,92 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
         pp_totals = polyphenol_cap.get("totals", {})
         units.append({
             "unit_number": unit_num,
-            "label": "Morning Wellness Capsule",
+            "label": _l6,
             "format": {"type": "hard_capsule", "size": "00", "material": "vegetarian"},
-            "timing": "morning",
+            "timing": _t6,
+            # Polyphenols (Curcumin+Piperine, Bergamot) require dietary fat for absorption.
+            # Must be taken WITH a meal — not on an empty stomach.
+            "timing_note": "Take with a meal containing fat — required for polyphenol absorption",
             "quantity": 1,
             "fill_weight_mg": pp_totals.get("total_weight_mg", 0),
             "ingredients": ingredients,
             "total_weight_mg": pp_totals.get("total_weight_mg", 0),
         })
 
-    # Unit 5: Evening capsule (adaptogens, sleep aids, Tier 1 polyphenols)
-    evening_cap = formulation.get("delivery_format_4_evening_capsule")
-    if evening_cap and evening_cap.get("components"):
+    # Unit 5: Evening Wellness Capsules (v3) or Evening Capsule (v2 fallback)
+    ewc = formulation.get("delivery_format_5_evening_wellness_capsules")
+    if ewc and ewc.get("components"):
         unit_num += 1
         ingredients = []
-        for c in evening_cap["components"]:
+        for c in ewc["components"]:
             ingredients.append({
                 "component": c["substance"],
                 "amount_mg": c.get("dose_mg", c.get("weight_mg", 0)),
                 "category": "evening_supplement",
             })
-        ec_totals = evening_cap.get("totals", {})
-        ec_label = _evening_capsule_label(evening_cap["components"])
-        units.append({
+        ewc_totals = ewc.get("totals", {})
+        opt = ewc_totals.get("optimizer_record", {})
+        ewc_cap_count = ewc_totals.get("capsule_count", 1)
+        ewc_capsule_layout = ewc_totals.get("capsules", [])
+        _ewc_fills = [c.get("fill_mg", 0) for c in ewc_capsule_layout]
+        ewc_max_fill = round(max(_ewc_fills), 1) if _ewc_fills else ewc_totals.get("total_weight_mg", 0)
+        ewc_unit = {
             "unit_number": unit_num,
-            "label": ec_label,
+            "label": "Evening Wellness Capsule",
             "format": {"type": "hard_capsule", "size": "00", "material": "vegetarian"},
             "timing": "evening (30-60 min before bed)",
-            "quantity": 1,
-            "fill_weight_mg": ec_totals.get("total_weight_mg", 0),
+            "quantity": ewc_cap_count,
+            "fill_weight_per_capsule_mg": ewc_max_fill,  # per-capsule max (for capacity validation)
+            "total_fill_weight_mg": ewc_totals.get("total_weight_mg", 0),
             "ingredients": ingredients,
-            "total_weight_mg": ec_totals.get("total_weight_mg", 0),
-        })
+            "ingredients_note": f"Total across {ewc_cap_count} capsules — see capsule_layout for per-capsule breakdown" if ewc_cap_count > 1 else None,
+            "total_weight_mg": ewc_totals.get("total_weight_mg", 0),
+            "capsule_layout": ewc_capsule_layout,
+        }
+        if opt.get("adjustments_made"):
+            ewc_unit["optimizer_adjustments"] = opt["adjustments_made"]
+            ewc_unit["optimizer_outcome"] = opt.get("optimization_outcome", "")
+        units.append(ewc_unit)
+    else:
+        # v2 fallback: single Evening Capsule
+        evening_cap = formulation.get("delivery_format_4_evening_capsule")
+        if evening_cap and evening_cap.get("components"):
+            unit_num += 1
+            ingredients = []
+            for c in evening_cap["components"]:
+                ingredients.append({"component": c["substance"], "amount_mg": c.get("dose_mg", c.get("weight_mg", 0)), "category": "evening_supplement"})
+            ec_totals = evening_cap.get("totals", {})
+            ec_label = _evening_capsule_label(evening_cap["components"])
+            units.append({
+                "unit_number": unit_num,
+                "label": ec_label,
+                "format": {"type": "hard_capsule", "size": "00", "material": "vegetarian"},
+                "timing": "evening (30-60 min before bed)",
+                "quantity": 1,
+                "fill_weight_mg": ec_totals.get("total_weight_mg", 0),
+                "ingredients": ingredients,
+                "total_weight_mg": ec_totals.get("total_weight_mg", 0),
+            })
 
-    # Unit: Evening capsule 2 (overflow — only present when evening components exceed 650mg)
-    evening_cap2 = formulation.get("delivery_format_4b_evening_capsule_2")
-    if evening_cap2 and evening_cap2.get("components"):
-        unit_num += 1
-        ingredients = []
-        for c in evening_cap2["components"]:
-            ingredients.append({
-                "component": c["substance"],
-                "amount_mg": c.get("dose_mg", c.get("weight_mg", 0)),
-                "category": "evening_supplement",
+        # v2: Evening capsule 2 (overflow)
+        evening_cap2 = formulation.get("delivery_format_4b_evening_capsule_2")
+        if evening_cap2 and evening_cap2.get("components"):
+            unit_num += 1
+            ingredients = []
+            for c in evening_cap2["components"]:
+                ingredients.append({"component": c["substance"], "amount_mg": c.get("dose_mg", c.get("weight_mg", 0)), "category": "evening_supplement"})
+            ec2_totals = evening_cap2.get("totals", {})
+            ec2_label = _evening_capsule_label(evening_cap2["components"])
+            units.append({
+                "unit_number": unit_num,
+                "label": f"{ec2_label} (2)",
+                "format": {"type": "hard_capsule", "size": "00", "material": "vegetarian"},
+                "timing": "evening (30-60 min before bed)",
+                "quantity": 1,
+                "fill_weight_mg": ec2_totals.get("total_weight_mg", 0),
+                "ingredients": ingredients,
+                "total_weight_mg": ec2_totals.get("total_weight_mg", 0),
             })
-        ec2_totals = evening_cap2.get("totals", {})
-        ec2_label = _evening_capsule_label(evening_cap2["components"])
-        units.append({
-            "unit_number": unit_num,
-            "label": f"{ec2_label} (2)",
-            "format": {"type": "hard_capsule", "size": "00", "material": "vegetarian"},
-            "timing": "evening (30-60 min before bed)",
-            "quantity": 1,
-            "fill_weight_mg": ec2_totals.get("total_weight_mg", 0),
-            "ingredients": ingredients,
-            "total_weight_mg": ec2_totals.get("total_weight_mg", 0),
-        })
 
     # Unit: Magnesium capsules (timing determined by timing engine)
     mg = rule_outputs.get("magnesium", {})
@@ -962,24 +1205,6 @@ def _extract_claims_from_rationale(rationale: str, goals: list) -> str:
     return ""
 
 
-def _format_informed_by(informed_by: str) -> str:
-    """Format the 'informed by' field for client display."""
-    if informed_by == "microbiome":
-        return "Microbiome analysis (gut bacteria signals)"
-    elif informed_by == "both":
-        return "Microbiome analysis + health goals"
-    else:
-        return "Health questionnaire (personal goals)"
-
-
-def _map_informed_to_source(informed_by: str) -> str:
-    """Map informed_by to source category."""
-    if informed_by == "microbiome":
-        return "microbiome_primary"
-    elif informed_by == "both":
-        return "microbiome_linked"
-    else:
-        return "questionnaire_only"
 
 
 def _derive_health_axes(guilds: Dict, clr: Dict, goals: list, q: Dict) -> list:

@@ -298,7 +298,9 @@ def compute_score(data: dict) -> dict:
 
     cur_pts = _ratio_score(cur_val, 0.5, -0.5, True)
     fcr_pts = _ratio_score(fcr_val, 0.3, -0.3, True)
-    mdr_pts = _ratio_score(mdr_val, -0.5, 0.5, False)
+    # MDR scoring — recalibrated 2026-03-06: favorable threshold moved from -0.5 to -1.0
+    # (matching the dial classification change; diet_fed now requires MDR < -1.0)
+    mdr_pts = _ratio_score(mdr_val, -1.0, 0.2, False)
     ppr_pts = _ratio_score(ppr_val, -0.5, 0.5, False)
 
     scores['P3_metabolic'] = min(cur_pts + fcr_pts + mdr_pts + ppr_pts, 20.0)

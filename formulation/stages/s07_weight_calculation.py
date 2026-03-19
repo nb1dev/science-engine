@@ -1,0 +1,613 @@
+#!/usr/bin/env python3
+"""
+Stage 7: Weight Calculation — Build FormulationCalculator and generate formulation.
+
+Input:  PipelineContext with mix, supplements, prebiotics (post-filtered)
+Output: PipelineContext with calc, formulation, component_registry populated
+
+This stage populates the FormulationCalculator with all components from the
+previous stages and runs generate() to produce validated weights.
+"""
+
+import json
+from pathlib import Path
+from typing import Dict, List, Optional
+
+from ..models import PipelineContext
+from formulation.weight_calculator import FormulationCalculator, distribute_cfu_evenly, EVENING_CAPSULE_CAPACITY_MG
+from formulation.dose_optimizer import DoseOptimizer
+
+KB_DIR = Path(__file__).parent.parent / "knowledge_base"
+
+
+# ─── Supplement KB lookup (cached) ────────────────────────────────────────────
+
+_SUPPLEMENT_KB_CACHE: Optional[Dict] = None
+
+
+def _load_supplement_kb_lookup() -> Dict:
+    """Build normalized lookup from supplements_nonvitamins.json for dose + timing info.
+
+    Returns dict: {normalized_name: {min_dose_mg, timing_restriction, rank_priority, ...}}
+    """
+    import re as _re
+    global _SUPPLEMENT_KB_CACHE
+    if _SUPPLEMENT_KB_CACHE is not None:
+        return _SUPPLEMENT_KB_CACHE
+
+    kb_path = KB_DIR / "supplements_nonvitamins.json"
+    with open(kb_path, 'r', encoding='utf-8') as f:
+        kb = json.load(f)
+
+    lookup = {}
+    for entry in kb.get("supplements_flat", []):
+        substance = entry.get("substance", "")
+        parsed = entry.get("parsed", {})
+        dose = parsed.get("dose", {})
+
+        min_dose_mg = None
+        if "min" in dose:
+            unit = dose.get("unit", "mg")
+            min_dose_mg = dose["min"] * 1000 if unit == "g" else dose["min"]
+        elif "value" in dose:
+            unit = dose.get("unit", "mg")
+            min_dose_mg = dose["value"] * 1000 if unit == "g" else dose["value"]
+
+        timing = entry.get("timing_restriction", "any")
+        rank = parsed.get("rank_priority", 3)
+
+        info = {
+            "min_dose_mg": min_dose_mg,
+            "timing_restriction": timing,
+            "rank_priority": rank,
+            "substance_full": substance,
+        }
+
+        # Build multiple name variants for fuzzy matching
+        names = set()
+        names.add(substance.lower().strip())
+        base = _re.sub(r'\s*\(.*?\)\s*', '', substance).strip().lower()
+        if base:
+            names.add(base)
+        paren = _re.search(r'\(([^)]+)\)', substance)
+        if paren:
+            names.add(paren.group(1).strip().lower())
+        names.add(entry.get("id", "").lower())
+
+        for n in names:
+            if n:
+                lookup[n] = info
+
+    _SUPPLEMENT_KB_CACHE = lookup
+    return lookup
+
+
+def _find_kb_entry(substance_name: str) -> Optional[Dict]:
+    """Fuzzy match substance name against KB lookup."""
+    lookup = _load_supplement_kb_lookup()
+    name_lower = substance_name.lower().strip()
+    if name_lower in lookup:
+        return lookup[name_lower]
+    for kb_key, kb_val in lookup.items():
+        if kb_key in name_lower or name_lower in kb_key:
+            return kb_val
+    return None
+
+
+def run(ctx: PipelineContext) -> PipelineContext:
+    """Build FormulationCalculator, add all components, generate formulation."""
+    print("\n─── E. WEIGHTS & VALIDATION ────────────────────────────────")
+
+    calc = FormulationCalculator(sample_id=ctx.sample_id)
+
+    # ── Probiotics ───────────────────────────────────────────────────────
+    _add_probiotics(calc, ctx.mix)
+
+    # ── Softgels ─────────────────────────────────────────────────────────
+    softgel_decision = ctx.rule_outputs.get("softgel", {})
+    if softgel_decision.get("include_softgel", False):
+        calc.add_fixed_softgels(daily_count=softgel_decision["daily_count"])
+        print(f"  Softgels: {softgel_decision['daily_count']}× (needs: {softgel_decision['needs_identified']})")
+    else:
+        print(f"  Softgels: NONE")
+
+    # ── Prebiotics ───────────────────────────────────────────────────────
+    calc.set_prebiotic_strategy(ctx.prebiotics.get("strategy", ""))
+    for pb in ctx.prebiotics.get("prebiotics", []):
+        calc.add_prebiotic(pb["substance"], pb["dose_g"],
+                           fodmap=pb.get("fodmap", False), rationale=pb.get("rationale", ""))
+
+    # ── Vitamins/Minerals → morning pooled capsules ──────────────────────
+    for vm in ctx.supplements.get("vitamins_minerals", []):
+        delivery = vm.get("delivery", "morning_wellness_capsule")
+        if delivery in ("sachet", "morning_wellness_capsule"):
+            calc.add_morning_pooled_component(
+                substance=vm["substance"],
+                dose_value=vm.get("dose_value", 0),
+                dose_unit=vm.get("dose_unit", "mg"),
+                therapeutic=vm.get("therapeutic", False),
+                standard_dose=vm.get("standard_dose", ""),
+                rationale=vm.get("rationale", ""),
+                clinical_note=vm.get("interaction_note", ""),
+                informed_by=vm.get("informed_by", "questionnaire"),
+                source_type="vitamin_mineral",
+            )
+
+    # ── Supplements → route by delivery ──────────────────────────────────
+    for supp in ctx.supplements.get("supplements", []):
+        delivery = supp.get("delivery", "morning_wellness_capsule")
+        dose_mg = supp.get("dose_mg", 0)
+        if delivery == "jar":
+            calc.add_jar_botanical(supp["substance"], round(dose_mg / 1000, 3),
+                                   rationale=supp.get("rationale", ""))
+        elif delivery in ("sachet", "morning_wellness_capsule"):
+            # Heavy botanicals (>650mg) can't fit in a capsule — reroute to powder jar
+            if dose_mg > calc._heavy_threshold:
+                calc.add_jar_botanical(supp["substance"], round(dose_mg / 1000, 3),
+                                       rationale=supp.get("rationale", ""))
+                print(f"  ⚠️ {supp['substance']} ({dose_mg}mg) exceeds capsule capacity — rerouted to powder jar")
+            else:
+                calc.add_light_botanical_to_morning(supp["substance"], dose_mg,
+                                                     rationale=supp.get("rationale", ""))
+        elif delivery == "evening_capsule":
+            calc.add_evening_component(supp["substance"], dose_mg,
+                                        rationale=supp.get("rationale", ""))
+        elif delivery == "polyphenol_capsule":
+            calc.add_polyphenol_capsule(supp["substance"], dose_mg,
+                                         rationale=supp.get("rationale", ""), timing="morning")
+
+    # ── Sleep supplements ────────────────────────────────────────────────
+    _add_sleep_supplements(calc, ctx)
+
+    # ── Magnesium ────────────────────────────────────────────────────────
+    mg = ctx.rule_outputs.get("magnesium", {})
+    if ctx.medication.magnesium_removed:
+        print(f"  💊 Mg capsules: SUPPRESSED by medication rule")
+        ctx.rule_outputs["magnesium"]["capsules"] = 0
+    elif mg.get("capsules", 0) > 0:
+        mg_timing = ctx.rule_outputs.get("timing", {}).get("timing_assignments", {}).get("magnesium", {}).get("timing", "evening")
+        calc.add_magnesium_capsules(mg["capsules"], needs=mg.get("needs_identified", []),
+                                     reasoning=mg.get("reasoning", []), timing=mg_timing)
+        print(f"  Mg capsules: {mg['capsules']}× {mg_timing}")
+
+    # ── Evening capsule capacity guard ───────────────────────────────────
+    # After ALL evening components are added (LLM supplements + sleep),
+    # enforce 650mg capacity: reduce doses → split into 2 capsules → clamp.
+    _enforce_evening_capacity(calc, ctx)
+
+    # ── Dose optimizer (JSON-driven rules) ───────────────────────────────
+    _run_dose_optimizer(calc, ctx)
+
+    # ── Generate formulation ─────────────────────────────────────────────
+    formulation = calc.generate()
+    validation = formulation["metadata"]["validation_status"]
+    print(f"  {'✅' if validation == 'PASS' else '❌'} Validation: {validation}")
+    print(f"  Total daily weight: {formulation['protocol_summary']['total_daily_weight_g']}g")
+    print(f"  Total units: {formulation['protocol_summary']['total_daily_units']}")
+
+    # ── Build component registry — single source of truth ────────────────
+    ctx.component_registry = _build_component_registry(calc, ctx)
+
+    ctx.calc = calc
+    ctx.formulation = formulation
+    return ctx
+
+
+def _add_probiotics(calc, mix: Dict):
+    """Add probiotic strains to calculator with capacity guard."""
+    MAX_CAPSULE_CFU = 65
+    strains = mix.get("strains", [])
+    if strains:
+        total_cfu = sum(s.get("cfu_billions", 10) for s in strains)
+        if total_cfu * 10 > 650:
+            cfu_per = distribute_cfu_evenly(MAX_CAPSULE_CFU, len(strains))
+            for strain in strains:
+                calc.add_probiotic(strain["name"], cfu_per, mix_id=mix["mix_id"], mix_name=mix["mix_name"])
+        else:
+            for strain in strains:
+                calc.add_probiotic(strain["name"], strain.get("cfu_billions", 10),
+                                    mix_id=mix["mix_id"], mix_name=mix["mix_name"],
+                                    rationale=strain.get("role", ""))
+
+
+def _add_sleep_supplements(calc, ctx: PipelineContext):
+    """Add deterministic sleep supplements with correct timing."""
+    sleep_supps = ctx.rule_outputs.get("sleep_supplements", {})
+    timing_assignments = ctx.rule_outputs.get("timing", {}).get("timing_assignments", {})
+
+    if not sleep_supps.get("supplements"):
+        return
+
+    for ss in sleep_supps["supplements"]:
+        substance_key = ss["substance"].lower().replace("-", "_").replace(" ", "_")
+        timing_info = timing_assignments.get(substance_key, {})
+        assigned_timing = timing_info.get("timing", "morning")
+
+        if assigned_timing == "evening":
+            calc.add_evening_component(ss["substance"], ss["dose_mg"], rationale=ss.get("rationale", ""))
+        else:
+            calc.add_light_botanical_to_morning(ss["substance"], ss["dose_mg"], rationale=ss.get("rationale", ""))
+
+
+def _enforce_evening_capacity(calc, ctx: PipelineContext):
+    """Enforce 650mg evening capsule capacity — reduce doses → split → clamp.
+
+    Runs AFTER all evening components are added (LLM supplements + sleep).
+    Algorithm:
+      1. Check total — if ≤ 650mg, done
+      2. Try reducing doses to KB minimums (single capsule attempt)
+      3. If still over: revert reductions, split into 2 capsules with original doses
+      4. Per-capsule clamp: reduce lowest-priority components in any over-capacity capsule
+      5. Cross-capsule deduplication
+      6. Consolidate capsule 2 back into evening_pooled_components for calc.generate()
+    """
+    import copy
+
+    capacity = EVENING_CAPSULE_CAPACITY_MG
+    evening_total = sum(c.get("dose_mg", 0) for c in calc.evening_pooled_components)
+
+    if evening_total <= capacity:
+        return  # No overflow
+
+    print(f"  ⚠️ Evening capsule overflow: {evening_total}mg > {capacity}mg — resolving...")
+
+    # ── Step 1: Try reducing to KB minimums (single capsule attempt) ─────
+    original_evening = copy.deepcopy(calc.evening_pooled_components)
+    step1_saved = 0
+    for comp in calc.evening_pooled_components:
+        kb = _find_kb_entry(comp["substance"])
+        if kb and kb.get("min_dose_mg") is not None and comp["dose_mg"] > kb["min_dose_mg"]:
+            saved = comp["dose_mg"] - kb["min_dose_mg"]
+            step1_saved += saved
+            print(f"    → {comp['substance']}: {comp['dose_mg']}mg → {kb['min_dose_mg']}mg (KB min, saved {saved}mg)")
+            comp["dose_mg"] = kb["min_dose_mg"]
+            comp["weight_mg"] = kb["min_dose_mg"]
+
+    evening_total = sum(c.get("dose_mg", 0) for c in calc.evening_pooled_components)
+    if evening_total <= capacity:
+        print(f"    ✅ Resolved by dose reduction: {evening_total}mg ≤ {capacity}mg")
+        return
+
+    # ── Step 2: Can't fit in 1 capsule — revert to original doses and split ──
+    print(f"    Still {evening_total}mg after reduction — splitting into 2 capsules (restoring original doses)...")
+    calc.evening_pooled_components = original_evening
+    evening_total = sum(c.get("dose_mg", 0) for c in calc.evening_pooled_components)
+
+    # Balanced bin-pack: largest-first, assign to capsule with more headroom
+    all_evening = sorted(calc.evening_pooled_components, key=lambda c: -c.get("dose_mg", 0))
+    cap1, cap2 = [], []
+    cap1_mg, cap2_mg = 0, 0
+    for comp in all_evening:
+        dose = comp.get("dose_mg", 0)
+        if cap1_mg + dose <= capacity:
+            cap1.append(comp)
+            cap1_mg += dose
+        elif cap2_mg + dose <= capacity:
+            cap2.append(comp)
+            cap2_mg += dose
+        elif cap1_mg <= cap2_mg:
+            cap1.append(comp)
+            cap1_mg += dose
+        else:
+            cap2.append(comp)
+            cap2_mg += dose
+
+    # ── Step 3: Per-capsule clamp (reduce lowest-priority if still over) ──
+    for cap_name, cap_list in [("cap1", cap1), ("cap2", cap2)]:
+        cap_total = sum(c.get("dose_mg", 0) for c in cap_list)
+        if cap_total > capacity:
+            overage = cap_total - capacity
+            # Sort by priority: highest rank number = lowest priority = reduce first
+            for comp in sorted(cap_list, key=lambda c: -(_find_kb_entry(c["substance"]) or {}).get("rank_priority", 3)):
+                if overage <= 0:
+                    break
+                kb = _find_kb_entry(comp["substance"])
+                if kb and kb.get("min_dose_mg") is not None and comp["dose_mg"] > kb["min_dose_mg"]:
+                    can_save = comp["dose_mg"] - kb["min_dose_mg"]
+                    reduce_by = min(overage, can_save)
+                    old = comp["dose_mg"]
+                    comp["dose_mg"] -= reduce_by
+                    comp["weight_mg"] = comp["dose_mg"]
+                    overage -= reduce_by
+                    print(f"    → Clamp {cap_name}: {comp['substance']} {old}mg → {comp['dose_mg']}mg")
+
+            # If still over after reduction, drop lowest-priority component
+            if overage > 0:
+                cap_list_sorted = sorted(cap_list, key=lambda c: -(_find_kb_entry(c["substance"]) or {}).get("rank_priority", 3))
+                while overage > 0 and cap_list_sorted:
+                    drop = cap_list_sorted.pop(0)
+                    cap_list.remove(drop)
+                    overage -= drop["dose_mg"]
+                    ctx.removal_log.add(drop["substance"], f"Evening capsule overflow ({cap_name})", "evening_overflow")
+                    print(f"    → Dropped: {drop['substance']} ({drop['dose_mg']}mg) — evening {cap_name} overflow")
+
+    # ── Step 4: Cross-capsule deduplication ──────────────────────────────
+    all_components = cap1 + cap2
+    seen = {}
+    deduped = []
+    for comp in all_components:
+        key = comp["substance"].lower().strip()
+        if key in seen:
+            existing = seen[key]
+            if comp["dose_mg"] > existing["dose_mg"]:
+                deduped.remove(existing)
+                deduped.append(comp)
+                seen[key] = comp
+                print(f"    🔄 Dedup: {comp['substance']} — kept {comp['dose_mg']}mg, dropped {existing['dose_mg']}mg")
+            else:
+                print(f"    🔄 Dedup: {comp['substance']} — kept {existing['dose_mg']}mg, dropped {comp['dose_mg']}mg")
+        else:
+            seen[key] = comp
+            deduped.append(comp)
+
+    # ── Step 5: Consolidate back into evening_pooled_components ──────────
+    # calc.generate() → _calc_pooled_evening_totals() → CapsuleStackingOptimizer
+    # will correctly pack all components into N capsules.
+    calc.evening_pooled_components = deduped
+
+    final_total = sum(c.get("dose_mg", 0) for c in deduped)
+    n_caps = 1 if final_total <= capacity else 2
+    print(f"    ✅ Evening resolved: {final_total}mg → {n_caps} capsule(s)")
+
+
+def _run_dose_optimizer(calc, ctx: PipelineContext):
+    """Run the JSON-driven DoseOptimizer on evening components.
+
+    The DoseOptimizer is the ONLY layer allowed to change upstream-selected doses
+    based on clinical policy rules in knowledge_base/dose_optimization_rules.json.
+    """
+    if not calc.evening_pooled_components:
+        return
+
+    optimizer = DoseOptimizer()
+    opt_result = optimizer.optimize(calc.evening_pooled_components)
+
+    for log_line in opt_result.get("log", []):
+        print(log_line)
+
+    if opt_result.get("applied_rules"):
+        print(f"  ✅ Dose optimizer rules applied: {opt_result['applied_rules']}")
+        calc.evening_pooled_components = opt_result["components"]
+
+        for rule_name in opt_result["applied_rules"]:
+            ctx.add_trace("optimizer", "", f"Dose optimizer — {rule_name}", rule_id=rule_name)
+
+
+def _build_component_registry(calc, ctx: PipelineContext) -> List[Dict]:
+    """Build component registry — single source of truth for ALL components.
+
+    Built from the ACTUAL calculator state (post-dedup, post-trim).
+    Each entry has: substance, dose, delivery, category, source, health_claims,
+    based_on, what_it_targets, informed_by.
+
+    This registry is consumed by:
+    - build_component_rationale() for the health table
+    - build_decision_trace() Step 7 (Supplement Selection)
+    - generate_dashboards.py for the board dashboard
+    - Source attribution % calculation
+    """
+    registry = []
+    mix = ctx.mix
+    mix_name = mix.get("mix_name", "")
+    mix_trigger = mix.get("primary_trigger", "")
+    q = ctx.unified_input.get("questionnaire", {})
+    stress = q.get("lifestyle", {}).get("stress_level", "?")
+    sleep = q.get("lifestyle", {}).get("sleep_quality", "?")
+    rule_outputs = ctx.rule_outputs
+    supplements = ctx.supplements
+    sg_decision = rule_outputs.get("softgel", {})
+
+    # 1. Probiotics (from calc.probiotic_components)
+    non_lp815 = [p for p in calc.probiotic_components if "LP815" not in p.get("substance", "")]
+    if non_lp815:
+        per_strain_cfu = non_lp815[0].get("cfu_billions", 0)
+        total_base_cfu = sum(p.get("cfu_billions", 0) for p in non_lp815)
+        dose_str = f"{total_base_cfu}B CFU ({per_strain_cfu}B each)" if per_strain_cfu else f"{total_base_cfu}B CFU"
+        registry.append({
+            "substance": f"{len(non_lp815)} base strains ({mix_name})",
+            "dose": dose_str,
+            "delivery": "probiotic capsule",
+            "category": "probiotic",
+            "source": "microbiome_primary",
+            "health_claims": [mix_name, mix_trigger.split("(")[0].strip() if "(" in mix_trigger else mix_trigger],
+            "based_on": f"Microbiome analysis ({mix_trigger})",
+            "what_it_targets": mix_name,
+            "informed_by": "microbiome",
+        })
+
+    # LP815 separately
+    lp815_strains = [p for p in calc.probiotic_components if "LP815" in p.get("substance", "")]
+    if lp815_strains:
+        mix_id = mix.get("mix_id")
+        lp815_label = "LP815 psychobiotic strain" if mix_id == 7 else "LP815 gut-brain enhancement strain"
+        registry.append({
+            "substance": f"{lp815_label} (5B CFU)",
+            "dose": "5B CFU",
+            "delivery": "probiotic capsule",
+            "category": "probiotic",
+            "source": "microbiome_linked",
+            "health_claims": ["Stress/Anxiety", "Sleep Quality", "Gut-Brain"],
+            "based_on": f"Microbiome gut-brain pattern + stress {stress}/10",
+            "what_it_targets": "Stress, anxiety, mood, sleep (produces calming GABA)",
+            "informed_by": "microbiome + questionnaire",
+        })
+
+    # 2. Softgels
+    if calc.softgel_count > 0:
+        registry.append({
+            "substance": f"Omega-3 DHA & EPA ({712.5 * calc.softgel_count}mg)",
+            "dose": f"{712.5 * calc.softgel_count}mg",
+            "delivery": "softgel",
+            "category": "omega",
+            "source": "questionnaire_only",
+            "health_claims": ["Brain Health", "Anti-inflammatory"],
+            "based_on": "Mood/brain health goals",
+            "what_it_targets": "Brain health, mood support, anti-inflammatory",
+            "informed_by": "questionnaire",
+        })
+        registry.append({
+            "substance": f"Vitamin D3 ({10 * calc.softgel_count}mcg / {400 * calc.softgel_count} IU)",
+            "dose": f"{10 * calc.softgel_count}mcg",
+            "delivery": "softgel",
+            "category": "vitamin",
+            "source": "questionnaire_only",
+            "health_claims": ["Immune System"],
+            "based_on": "Immune health claim",
+            "what_it_targets": "Immune support, bone health",
+            "informed_by": "questionnaire",
+        })
+        registry.append({
+            "substance": f"Vitamin E ({7.5 * calc.softgel_count}mg)",
+            "dose": f"{7.5 * calc.softgel_count}mg",
+            "delivery": "softgel",
+            "category": "vitamin",
+            "source": "questionnaire_only",
+            "health_claims": ["Antioxidant Protection"],
+            "based_on": "General wellness (bundled with omega softgel)",
+            "what_it_targets": "Antioxidant protection, skin health",
+            "informed_by": "questionnaire",
+        })
+        registry.append({
+            "substance": f"Astaxanthin ({3 * calc.softgel_count}mg active)",
+            "dose": f"{3 * calc.softgel_count}mg",
+            "delivery": "softgel",
+            "category": "antioxidant",
+            "source": "questionnaire_only",
+            "health_claims": ["Antioxidant Protection"],
+            "based_on": "General wellness (bundled with omega softgel)",
+            "what_it_targets": "Antioxidant, UV protection, muscle recovery",
+            "informed_by": "questionnaire",
+        })
+
+    # 3. Prebiotics (from calc — post-dedup)
+    for pb in getattr(calc, 'jar_prebiotics', getattr(calc, 'sachet_prebiotics', [])):
+        registry.append({
+            "substance": f"{pb['substance']} ({pb['dose_g']}g)",
+            "dose": f"{pb['dose_g']}g",
+            "delivery": "sachet",
+            "category": "prebiotic",
+            "source": "microbiome_primary",
+            "health_claims": [f"{mix_name} substrate"],
+            "based_on": f"Microbiome pattern ({pb.get('rationale', mix_name)})",
+            "what_it_targets": f"Substrate for {mix_name} strains",
+            "informed_by": "microbiome",
+        })
+
+    # 4. Vitamins/Minerals + light botanicals (from calc.morning_pooled_components — post-dedup)
+    supp_claims_map = {}
+    for sp in supplements.get("supplements", []):
+        supp_claims_map[sp.get("substance", "").lower()] = sp.get("health_claim", "")
+
+    for vm in calc.morning_pooled_components:
+        substance = vm["substance"]
+        dose_str = vm.get("dose", f"{vm.get('weight_mg', 0)}mg")
+        informed = vm.get("informed_by", "questionnaire")
+        rationale = vm.get("rationale", "")
+        source_type = vm.get("_source", "")
+
+        if informed == "microbiome":
+            source = "microbiome_primary"
+        elif informed == "both":
+            source = "microbiome_linked"
+        else:
+            source = "questionnaire_only"
+
+        category = "vitamin_mineral" if source_type == "vitamin_mineral" else "supplement"
+        claim = supp_claims_map.get(substance.lower(), "")
+        health_claims = [claim] if claim else []
+
+        registry.append({
+            "substance": f"{substance} ({dose_str})",
+            "dose": dose_str,
+            "delivery": "morning wellness capsule",
+            "category": category,
+            "source": source,
+            "health_claims": health_claims,
+            "based_on": f"{'Microbiome + ' if informed in ('microbiome', 'both') else ''}Questionnaire" + (f" ({claim})" if claim else ""),
+            "what_it_targets": rationale or claim or "General wellness",
+            "informed_by": informed,
+        })
+
+    # 4b. Jar botanicals (heavy non-bitter botanicals routed to powder jar)
+    for jb in getattr(calc, 'jar_botanicals', []):
+        substance = jb["substance"]
+        claim = supp_claims_map.get(substance.lower(), "")
+        rationale = jb.get("rationale", "")
+        health_claims = [claim] if claim else []
+
+        registry.append({
+            "substance": f"{substance} ({jb['dose_g']}g)",
+            "dose": f"{jb['dose_g']}g",
+            "delivery": "sachet",
+            "category": "supplement",
+            "source": "questionnaire_only",
+            "health_claims": health_claims,
+            "based_on": f"Questionnaire ({claim})" if claim else "Health questionnaire",
+            "what_it_targets": rationale or claim or "General wellness",
+            "informed_by": "questionnaire",
+        })
+
+    # 5. Evening capsule components
+    for ec in calc.evening_pooled_components:
+        registry.append({
+            "substance": f"{ec['substance']} ({ec['dose_mg']}mg)",
+            "dose": f"{ec['dose_mg']}mg",
+            "delivery": "evening capsule",
+            "category": "sleep_supplement",
+            "source": "questionnaire_only",
+            "health_claims": ["Sleep Quality"],
+            "based_on": f"Questionnaire (sleep quality {sleep}/10)",
+            "what_it_targets": ec.get("rationale", "Sleep/relaxation support"),
+            "informed_by": "questionnaire",
+        })
+
+    # 6. Polyphenol capsule components
+    for pc in calc.polyphenol_capsules:
+        substance = pc["substance"]
+        claim = supp_claims_map.get(substance.lower(), "")
+        if not claim:
+            for k, v in supp_claims_map.items():
+                if "curcumin" in k and "curcumin" in substance.lower():
+                    claim = v
+                    break
+                elif "bergamot" in k and "bergamot" in substance.lower():
+                    claim = v
+                    break
+        registry.append({
+            "substance": f"{substance} ({pc['dose_mg']}mg)",
+            "dose": f"{pc['dose_mg']}mg",
+            "delivery": "polyphenol capsule",
+            "category": "polyphenol",
+            "source": "questionnaire_only",
+            "health_claims": [claim] if claim else ["Anti-inflammatory"],
+            "based_on": f"Questionnaire ({claim})" if claim else "Anti-inflammatory support",
+            "what_it_targets": pc.get("rationale", claim or "Anti-inflammatory, microbiome modulation"),
+            "informed_by": "questionnaire",
+        })
+
+    # 7. Magnesium capsules
+    mg = rule_outputs.get("magnesium", {})
+    if mg.get("capsules", 0) > 0:
+        mg_needs = mg.get("needs_identified", [])
+        registry.append({
+            "substance": f"Magnesium Bisglycinate ({mg['mg_bisglycinate_total_mg']}mg / {mg['elemental_mg_total_mg']}mg elemental)",
+            "dose": f"{mg['elemental_mg_total_mg']}mg elemental",
+            "delivery": "magnesium capsule",
+            "category": "mineral",
+            "source": "questionnaire_only",
+            "health_claims": [n.title() for n in mg_needs],
+            "based_on": f"Questionnaire ({'; '.join(mg.get('reasoning', []))})",
+            "what_it_targets": ", ".join(n.title() for n in mg_needs) if mg_needs else "Magnesium support",
+            "informed_by": "questionnaire",
+        })
+
+    # ── Dedup registry by substance name ─────────────────────────────────
+    seen = set()
+    deduped = []
+    for entry in registry:
+        key = entry.get("substance", "").lower()
+        if key not in seen:
+            seen.add(key)
+            deduped.append(entry)
+
+    return deduped

@@ -1951,14 +1951,16 @@ def calculate_clr_diagnostic_ratios(guild_summary: pd.DataFrame, guild_clr_data:
                 return "Moderate efficiency"
     
     def interpret_mdr(val):
+        # Recalibrated 2026-03-06: diet_fed threshold moved from -0.5 to -1.0
+        # matching compute_metabolic_dials() in overview_fields.py
         if pd.isna(val):
             return "Undefined (key guilds absent)"
-        elif val > 0.5:
+        elif val > 0.2:
             return "Host-substrate dependent"
-        elif val < -0.5:
+        elif val < -1.0:
             return "Diet-fed"
         else:
-            return "Balanced"
+            return "Partial mucus reliance"
     
     def interpret_ppr(val):
         if pd.isna(val):

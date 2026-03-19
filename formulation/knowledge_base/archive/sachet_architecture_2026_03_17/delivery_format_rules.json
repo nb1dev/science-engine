@@ -1,0 +1,377 @@
+{
+  "metadata": {
+    "version": "2.0.0",
+    "source": "Supplement_Formulation_Generation_Framework_v3.0.md + production specs (Feb 2026)",
+    "description": "Delivery format rules — FIXED softgel composition, Mg bisglycinate capsule, probiotic capsule, sachet."
+  },
+  "delivery_formats": {
+    "hard_capsule_probiotic": {
+      "type": "hard_capsule",
+      "label": "Probiotic Capsule",
+      "size": "00",
+      "color": "tan_beige_opaque",
+      "capacity_mg": 650,
+      "daily_count": 1,
+      "timing": "morning",
+      "suitable_for": [
+        "probiotics"
+      ],
+      "description": "Probiotic strains in vegetarian hard capsule"
+    },
+    "softgel": {
+      "type": "softgel",
+      "label": "Omega + Antioxidant Softgel",
+      "size": "0",
+      "color": "transparent_gel",
+      "capacity_mg": 750,
+      "daily_count": 2,
+      "timing": "morning",
+      "fixed_composition": true,
+      "description": "FIXED composition — everyone who needs any component gets the whole softgel",
+      "components_per_softgel": [
+        {
+          "substance": "Omega-3 (EPA + DHA)",
+          "dose_mg": 712.5,
+          "type": "omega_fatty_acid"
+        },
+        {
+          "substance": "Vitamin D3",
+          "dose_mcg": 10,
+          "dose_iu": 400,
+          "type": "fat_soluble_vitamin",
+          "weight_note": "NEGLIGIBLE"
+        },
+        {
+          "substance": "Vitamin E",
+          "dose_mg": 7.5,
+          "type": "fat_soluble_vitamin"
+        },
+        {
+          "substance": "Astaxanthin (H. pluvialis 10% oleoresin)",
+          "dose_mg_active": 3,
+          "dose_mg_oleoresin": 30,
+          "type": "carotenoid_antioxidant"
+        }
+      ],
+      "daily_totals": {
+        "omega3_mg": 1425,
+        "vitamin_d_mcg": 20,
+        "vitamin_d_iu": 800,
+        "vitamin_e_mg": 15,
+        "astaxanthin_mg": 6
+      },
+      "contraindications_to_check": [
+        "blood_thinners_anticoagulants",
+        "chemotherapy",
+        "fish_allergy"
+      ],
+      "note": "This is a pre-mixed softgel. Cannot add/remove individual components. Check contraindications from questionnaire but mix is generally safe."
+    },
+    "magnesium_capsule": {
+      "type": "hard_capsule",
+      "label": "Magnesium Bisglycinate Capsule",
+      "size": "00",
+      "capacity_mg": 750,
+      "timing": "always_evening",
+      "timing_note": "Magnesium is ALWAYS evening (1-2h before bed) regardless of sleep goal. Timing does not vary — only dosing (1 vs 2 capsules) depends on need scoring.",
+      "description": "Magnesium bisglycinate for sleep, sport recovery, and stress",
+      "per_capsule": {
+        "magnesium_bisglycinate_mg": 750,
+        "elemental_magnesium_mg": 105,
+        "nrv_pct": 14
+      },
+      "dosing_logic": {
+        "needs": [
+          "sleep",
+          "sport",
+          "stress"
+        ],
+        "2_capsules": "≥2 needs out of 3 (e.g., sleep+sport, sleep+stress, sport+stress, all 3)",
+        "1_capsule": "only 1 need",
+        "0_capsules": "no needs identified"
+      },
+      "need_assessment": {
+        "sleep": {
+          "triggers": [
+            {
+              "field": "sleep_quality",
+              "operator": "<=",
+              "value": 7
+            },
+            {
+              "field": "goals",
+              "operator": "contains",
+              "value": "improve_sleep"
+            }
+          ],
+          "description": "Sleep quality ≤7/10 OR sleep improvement is a stated goal"
+        },
+        "sport": {
+          "triggers": [
+            {
+              "field": "exercise_frequency",
+              "operator": ">=",
+              "value": "moderate"
+            },
+            {
+              "field": "exercise_types",
+              "operator": "contains_any",
+              "value": [
+                "strength_training",
+                "vigorous_sports",
+                "moderate_cardio"
+              ]
+            }
+          ],
+          "description": "Regular exercise (moderate+) or active sport goals"
+        },
+        "stress": {
+          "triggers": [
+            {
+              "field": "stress_level",
+              "operator": ">=",
+              "value": 6
+            },
+            {
+              "field": "goals",
+              "operator": "contains_any",
+              "value": [
+                "reduce_stress_anxiety",
+                "improve_mood_reduce_anxiety"
+              ]
+            }
+          ],
+          "description": "Stress ≥6/10 OR stress/mood is a stated goal"
+        }
+      },
+      "label_format": "{total_mg}mg Magnesium Bisglycinate ({elemental_mg}mg elemental Mg)",
+      "exclusivity": "Only Mg delivery — no Mg in sachet or other capsules",
+      "max_daily_capsules": 2
+    },
+    "sachet": {
+      "type": "sachet",
+      "capacity_g": 19,
+      "daily_count": 1,
+      "timing": "morning",
+      "mixing_instructions": "Mix in 6-8oz water",
+      "suitable_for": [
+        "prebiotics",
+        "water_soluble_vitamins",
+        "minerals_except_magnesium",
+        "amino_acids",
+        "botanicals"
+      ],
+      "description": "Prebiotic fiber + water-soluble vitamins + amino acids/botanicals. NO magnesium (goes in separate capsule)."
+    },
+    "evening_capsule": {
+      "type": "hard_capsule",
+      "label": "Evening Capsule",
+      "size": "00",
+      "capacity_mg": 650,
+      "daily_count": 1,
+      "timing": "evening",
+      "suitable_for": [
+        "sleep_supplements",
+        "calming_botanicals",
+        "amino_acids"
+      ],
+      "description": "Evening capsule for sleep aids, calming adaptogens, and LLM-assigned evening supplements"
+    }
+  },
+  "unit_count_limits": {
+    "preferred_max": 6,
+    "absolute_max": 8,
+    "note": "People who receive Mg capsules may have up to 8 total units. 6 preferred."
+  },
+  "assignment_rules": [
+    {
+      "component_type": "probiotic_strain",
+      "delivery": "hard_capsule_probiotic",
+      "rule": "All probiotics go in hard capsule. If total weight >650mg, split or redistribute CFU."
+    },
+    {
+      "component_type": "omega_fatty_acid",
+      "delivery": "softgel",
+      "rule": "FIXED softgel composition. Not customizable per client."
+    },
+    {
+      "component_type": "fat_soluble_vitamin",
+      "delivery": "softgel",
+      "rule": "Vitamin D and E are already in fixed softgel. NO additional doses in sachet."
+    },
+    {
+      "component_type": "magnesium",
+      "delivery": "magnesium_capsule",
+      "rule": "Magnesium ONLY in bisglycinate capsule (evening). Never in sachet. 1 or 2 capsules based on need scoring."
+    },
+    {
+      "component_type": "prebiotic",
+      "delivery": "sachet",
+      "rule": "All prebiotics go in sachet."
+    },
+    {
+      "component_type": "water_soluble_vitamin",
+      "delivery": "sachet",
+      "rule": "B-complex, Vitamin C, folate, B12 etc. go in sachet."
+    },
+    {
+      "component_type": "mineral_non_magnesium",
+      "delivery": "sachet",
+      "rule": "Iron, Zinc, Calcium, etc. go in sachet."
+    },
+    {
+      "component_type": "amino_acid",
+      "delivery": "sachet",
+      "rule": "L-Theanine, L-Glutamine, etc. go in sachet."
+    },
+    {
+      "component_type": "botanical",
+      "delivery": "sachet",
+      "rule": "Ashwagandha, adaptogens, etc. go in sachet."
+    }
+  ],
+  "weight_calculation_formulas": {
+    "probiotics": {
+      "formula": "weight_mg = cfu_billions × 10",
+      "example": "50B CFU = 500mg"
+    },
+    "softgel": {
+      "formula": "FIXED at ~750mg per softgel — no calculation needed"
+    },
+    "magnesium_capsule": {
+      "formula": "FIXED at 750mg per capsule — no calculation needed"
+    },
+    "vitamins_mg": {
+      "formula": "weight_mg = dose_mg",
+      "example": "250mg Vitamin C = 250mg"
+    },
+    "prebiotics": {
+      "formula": "weight_g = dose_g",
+      "example": "3.25g PHGG = 3.25g"
+    },
+    "amino_acids_botanicals": {
+      "formula": "weight_mg = dose_mg",
+      "example": "200mg L-Theanine = 200mg"
+    }
+  },
+  "capacity_validation": {
+    "hard_capsule_probiotic": {
+      "max_mg": 650
+    },
+    "softgel": {
+      "fixed": true,
+      "no_validation_needed": true
+    },
+    "magnesium_capsule": {
+      "fixed": true,
+      "no_validation_needed": true
+    },
+    "sachet": {
+      "max_g": 19
+    }
+  },
+  "capsule_only_substances": {
+    "description": "Substances that must remain in capsule form (not sachet) due to taste, stability, or bioavailability",
+    "substances": [
+      "ashwagandha",
+      "propolis",
+      "valerian",
+      "curcumin",
+      "royal jelly",
+      "bacopa monnieri",
+      "rhodiola",
+      "ginger root",
+      "star anise",
+      "astragalus",
+      "gynostemma pentaphyllum",
+      "quercetin",
+      "bergamot polyphenolic fraction",
+      "capsicum extract"
+    ],
+    "reason": "Bitter, pungent, or resinous taste makes sachet (dissolved in water) unpalatable. Must be encapsulated."
+  },
+  "polyphenol_delivery_classification": {
+    "description": "Polyphenol-specific delivery routing for the polyphenol diversity rule. Polyphenols are bitter/irritating and need capsule delivery, except sachet-safe ones.",
+    "total_polyphenol_mass_cap_mg": 1000,
+    "capsule_only_tier_1": {
+      "description": "Bitter polyphenols that can share evening capsule headroom (small enough)",
+      "substances": {
+        "quercetin": {
+          "min_dose_mg": 300,
+          "max_dose_mg": 500,
+          "typical_dose_mg": 300
+        },
+        "propolis": {
+          "min_dose_mg": 300,
+          "max_dose_mg": 300,
+          "typical_dose_mg": 300
+        },
+        "royal_jelly": {
+          "min_dose_mg": 150,
+          "max_dose_mg": 150,
+          "typical_dose_mg": 150
+        },
+        "capsicum_extract": {
+          "min_dose_mg": 2,
+          "max_dose_mg": 6,
+          "typical_dose_mg": 4
+        }
+      },
+      "routing": "evening_capsule_headroom"
+    },
+    "capsule_only_tier_2": {
+      "description": "Large polyphenols that need their own dedicated capsule (too big to share)",
+      "substances": {
+        "curcumin_piperine": {
+          "min_dose_mg": 505,
+          "max_dose_mg": 1010,
+          "typical_dose_mg": 505,
+          "note": "Curcumin 500mg + Piperine 5mg bundled",
+          "piperine_rule": {
+            "mandatory": true,
+            "ratio": "1:100 (curcumin:piperine)",
+            "description": "Whenever curcumin is added, piperine MUST be added at 1:100 ratio. Piperine enhances curcumin bioavailability by 2000%. This is enforced deterministically in Stage D.1c.",
+            "example": "Curcumin 500mg → Piperine 5mg auto-added → total 505mg"
+          }
+        },
+        "bergamot_polyphenolic_fraction": {
+          "min_dose_mg": 1000,
+          "max_dose_mg": 1000,
+          "typical_dose_mg": 1000,
+          "note": "Needs size 00 capsule at near-capacity"
+        }
+      },
+      "routing": "dedicated_morning_capsule"
+    },
+    "sachet_safe": {
+      "description": "Mild-tasting polyphenols that can go in the sachet",
+      "substances": {
+        "apple_polyphenol_extract": {
+          "min_dose_mg": 300,
+          "max_dose_mg": 600,
+          "long_term_cap_mg": 600,
+          "note": "Up to 1200mg safe in 12-week studies, 600mg for long-term. >1000mg may benefit athletes."
+        },
+        "fermented_pomegranate": {
+          "min_dose_mg": 500,
+          "max_dose_mg": 700,
+          "typical_dose_mg": 500
+        }
+      },
+      "routing": "sachet",
+      "budget_rule": "Remaining polyphenol budget = 1000mg - total_capsule_polyphenols. If budget is 0, no sachet polyphenols."
+    }
+  },
+  "polyphenol_dedicated_capsule": {
+    "type": "hard_capsule",
+    "label": "Polyphenol Capsule (Dedicated)",
+    "size": "00",
+    "capacity_mg": 650,
+    "daily_count": 1,
+    "timing": "morning",
+    "suitable_for": [
+      "tier_2_polyphenols"
+    ],
+    "description": "Dedicated capsule for Tier 2 polyphenols (Curcumin+Piperine or Bergamot) that are too large to share with evening capsule"
+  }
+}

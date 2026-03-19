@@ -114,28 +114,38 @@ def classify_diversity_resilience(data: dict) -> dict:
 # ══════════════════════════════════════════════════════════════
 
 # Descriptions and labels per state — from reference document EXACTLY
+# ── DIAL FRAMING NOTE ──────────────────────────────────────────────────────
+# CLR ratios describe the ECOLOGICAL STATE of the microbiome — which guild
+# is winning the substrate competition at the time of sampling. They are NOT
+# direct readouts of what the client eats. Diet influences these ratios over
+# weeks/months, but a single measurement also reflects gut history, antibiotic
+# exposure, host physiology, and competitive dynamics between bacterial groups.
+# Labels and descriptions are therefore framed as ecological observations,
+# not dietary diagnoses.
+# ───────────────────────────────────────────────────────────────────────────
+
 DIAL_CONFIG = {
     'main_fuel': {
-        'heading': 'Main fuel: carbs or protein?',
+        'heading': 'Fermentation fuel balance',
         'metric': 'CUR',
         'states': {
             'carb_driven': {
-                'label': 'Mainly runs on plant fiber',
+                'label': 'Carbohydrate fermentation dominant',
                 'threshold': 'CUR > +0.3',
-                'description': 'Your bacteria prefer dietary fiber and carbohydrates, with minimal protein fermentation.',
-                'context': 'This is generally the healthiest pattern. Carbohydrate-driven fermentation produces beneficial short-chain fatty acids that nourish your gut lining, support your immune system, and reduce inflammation. Your gut is running on its preferred fuel.',
+                'description': 'Your carbohydrate-fermenting bacteria are currently outcompeting protein-fermenting bacteria for ecological dominance.',
+                'context': 'This is the healthiest fermentation pattern. Carbohydrate-driven fermentation produces short-chain fatty acids that nourish your gut lining, regulate inflammation, and support your immune system. This balance is shaped by dietary fiber availability, fiber-degrading guild abundance, and competitive dynamics — all of which can be supported through targeted microbiome intervention.',
             },
             'balanced': {
-                'label': 'Balanced',
+                'label': 'Mixed substrate activity',
                 'threshold': 'CUR -0.3 to +0.3',
-                'description': 'Your bacteria process both carbohydrates and proteins in roughly equal proportions.',
-                'context': 'A slight lean toward carbohydrate processing is ideal for gut health, as it produces more beneficial compounds. Your balanced state means your bacteria are versatile, but strengthening the carbohydrate-processing side could boost production of protective short-chain fatty acids.',
+                'description': 'Your microbiome is processing carbohydrate and protein substrates in roughly equal balance.',
+                'context': 'A slight lean toward carbohydrate fermentation is ideal for gut health. The current mixed state means your bacteria are versatile — supporting the carbohydrate-fermenting guild would shift the balance toward more protective short-chain fatty acid production.',
             },
             'protein_driven': {
-                'label': 'Leans on protein',
+                'label': 'Protein fermentation elevated',
                 'threshold': 'CUR < -0.3',
-                'description': 'Your bacteria are processing more protein than carbohydrates, indicating elevated protein fermentation.',
-                'context': 'When bacteria ferment protein instead of fiber, they produce harsher byproducts like ammonia and hydrogen sulfide that can irritate the gut lining. This pattern suggests your fiber-processing bacteria need support to shift the balance back toward gentler, carbohydrate-based fermentation.',
+                'description': 'Your fermentation balance is shifted toward protein-substrate pathways — protein-fermenting bacteria are currently outcompeting carbohydrate-fermenting bacteria.',
+                'context': 'When protein fermentation dominates, bacteria produce harsher byproducts like ammonia and hydrogen sulfide that can irritate the gut lining. This ecological balance is shaped by dietary fiber availability, Fiber Degrader guild abundance, and microbial competition — not exclusively by diet. Supporting your fiber-processing bacteria is the primary lever to shift this balance.',
             },
         },
     },
@@ -146,68 +156,68 @@ DIAL_CONFIG = {
             'efficient': {
                 'label': 'Efficient assembly line',
                 'threshold': 'FCR > +0.3',
-                'description': 'Your bacteria efficiently convert intermediate compounds into beneficial short-chain fatty acids.',
-                'context': 'This means your bacterial teams are working well together — raw materials from fiber breakdown are being smoothly converted into butyrate and other compounds that protect your gut lining and support your immune system. The assembly line is running at full speed.',
+                'description': 'Your bacterial guilds are efficiently converting intermediate fermentation compounds into beneficial short-chain fatty acids.',
+                'context': 'Your bacterial teams are working well together — raw materials from early fermentation steps are being smoothly converted into butyrate and other protective compounds. This reflects good ecological coordination between your Bifidobacteria, Cross-Feeders, and Butyrate Producers.',
             },
             'ok': {
                 'label': 'OK but can improve',
                 'threshold': 'FCR -0.3 to +0.3',
-                'description': 'Your fermentation pathway works adequately but could be more efficient.',
-                'context': 'Your bacteria are producing beneficial compounds, but some intermediate products are not being fully converted. Think of it as an assembly line where some half-finished products pile up instead of being completed. Strengthening the connector bacteria teams could improve this flow.',
+                'description': 'Your fermentation cascade is functioning adequately but intermediate compounds are not being fully converted.',
+                'context': 'Your bacteria are producing beneficial compounds, but some intermediate products are accumulating instead of being completed. Think of it as an assembly line where some half-finished products pile up. Strengthening the connector bacteria teams — particularly Bifidobacteria and Cross-Feeders — could improve this flow.',
             },
             'sluggish': {
-                'label': 'Sluggish—too many intermediates',
+                'label': 'Sluggish — intermediates accumulating',
                 'threshold': 'FCR < -0.3',
-                'description': 'Without {bottleneck}, your fermentation assembly line has to use backup routes that are less efficient.',
-                'context': 'Your gut\'s production line has a bottleneck — intermediate compounds are building up instead of being converted into the beneficial end products your body needs. This means less butyrate (your gut lining\'s primary energy source) is being produced, which may affect gut barrier strength over time.',
+                'description': 'Without {bottleneck}, your fermentation assembly line is using backup routes that are less efficient.',
+                'context': 'Your gut\'s fermentation cascade has a bottleneck — intermediate compounds are building up instead of being converted into the beneficial end products your body needs. This means less butyrate (your gut lining\'s primary energy source) is being produced. This is an ecological state that can be improved by restoring the missing guild.',
             },
         },
     },
     'mucus_dependency': {
-        'heading': 'Dependence on your gut lining',
+        'heading': 'Bacterial fuel source',
         'metric': 'MDR',
         'states': {
             'diet_fed': {
-                'label': 'Mainly fed by your diet',
-                'threshold': 'MDR < -0.2',
-                'description': 'Your bacteria primarily use dietary fiber for fuel—this is ideal and sustainable.',
-                'context': 'Your gut bacteria get their energy from what you eat rather than consuming your gut\'s protective mucus layer. This is the healthiest pattern — your mucus barrier stays intact, protecting you from inflammation and keeping harmful substances out of your bloodstream.',
+                'label': 'Diet-substrate driven',
+                'threshold': 'MDR < -1.0',
+                'description': 'Your microbial community is drawing fuel primarily from dietary substrates rather than from your gut\'s mucus layer.',
+                'context': 'This is the ecologically stable pattern — your gut lining stays protected because bacteria are fuelled by what reaches them from food, not by eroding your protective mucus barrier. This balance is maintained when there is adequate substrate availability in the colon, and can be supported by ensuring consistent dietary fiber intake.',
             },
             'backup': {
-                'label': 'Using some mucus as backup',
-                'threshold': 'MDR -0.2 to +0.2',
-                'description': 'When dietary fiber is limited, your bacteria turn to the mucus layer for fuel—this works short-term but puts stress on your gut barrier.',
-                'context': 'Your mucus-layer bacteria are more active than ideal, nibbling at your gut\'s protective coating as a backup fuel source. While this is a normal adaptive response, sustained reliance on mucus can thin your gut barrier over time, potentially allowing irritants to pass through more easily.',
+                'label': 'Partial mucus-substrate reliance',
+                'threshold': 'MDR -1.0 to +0.2',
+                'description': 'Your Mucin Degraders are more active than usual, supplementing dietary substrate with mucus-layer material.',
+                'context': 'Your mucus-layer bacteria are nibbling at your gut\'s protective coating as a supplementary fuel source. While this is a normal adaptive ecological response, sustained reliance on mucus can thin your gut barrier over time. Increasing available dietary substrate supports the shift back to a purely diet-fed pattern.',
             },
             'heavy_mucus': {
-                'label': 'Heavily leaning on mucus',
+                'label': 'Elevated mucus-substrate reliance',
                 'threshold': 'MDR > +0.2',
-                'description': 'Your bacteria rely heavily on the gut mucus layer due to insufficient dietary fiber—this creates barrier stress risk.',
-                'context': 'Your gut bacteria are significantly eroding your protective mucus layer because there isn\'t enough dietary fiber reaching them. This is like a city consuming its flood defenses — the barrier that keeps harmful substances out is being thinned. Restoring fiber-processing bacteria is a priority to protect your gut lining.',
+                'description': 'Your Mucin Degraders are ecologically dominant, indicating significant reliance on the gut mucus layer for bacterial fuel.',
+                'context': 'Your bacteria are drawing heavily on your gut\'s protective mucus layer. This is like a city consuming its flood defenses — the barrier that keeps harmful substances out is being thinned. Restoring fiber-processing bacteria and increasing colonic substrate availability is the priority to shift this ecological balance.',
             },
         },
     },
     'putrefaction_pressure': {
-        'heading': 'Smelly / harsh byproducts',
+        'heading': 'Fermentation byproduct profile',
         'metric': 'PPR',
         'states': {
             'scfa_dominant': {
-                'label': 'Mostly gentle, SCFA-dominant',
+                'label': 'SCFA-dominant — gentle byproducts',
                 'threshold': 'PPR < -0.2',
-                'description': 'Your beneficial bacteria dominate, producing primarily gentle short-chain fatty acids with minimal harsh byproducts.',
-                'context': 'Your gut produces mostly beneficial compounds — butyrate, propionate, and acetate — which nourish your gut lining, regulate inflammation, and even support brain function. The protein-fermenting bacteria that produce harsher chemicals are well contained. This is the ideal metabolic state.',
+                'description': 'Your Butyrate Producers are ecologically dominant over protein-fermenting bacteria, resulting in a gentle, anti-inflammatory byproduct profile.',
+                'context': 'Your gut is producing mostly beneficial compounds — butyrate, propionate, and acetate — which nourish your gut lining, regulate inflammation, and support brain function. The protein-fermenting bacteria that produce harsher chemicals are well contained. This is the ideal ecological state for long-term gut health.',
             },
             'balanced': {
-                'label': 'Balanced',
+                'label': 'Balanced byproduct activity',
                 'threshold': 'PPR -0.2 to +0.2',
-                'description': 'Some protein fermentation is happening alongside beneficial compound production.',
-                'context': 'Protein fermentation in the gut produces compounds like ammonia and hydrogen sulfide that can irritate the gut lining in excess. In your case, your butyrate-producing bacteria are keeping these harsher byproducts in check — this is a manageable balance, but strengthening the beneficial side would provide more protection.',
+                'description': 'Protein fermentation byproducts and beneficial short-chain fatty acids are produced in comparable amounts.',
+                'context': 'Protein fermentation produces compounds like ammonia and hydrogen sulfide that can irritate the gut lining in excess. Your Butyrate Producers are currently keeping these in check — this is a manageable ecological balance, but strengthening the SCFA-producing side would provide more long-term protection.',
             },
             'protein_pressure': {
-                'label': 'More pressure from protein breakdown',
+                'label': 'Elevated protein fermentation pressure',
                 'threshold': 'PPR > +0.2',
-                'description': 'Elevated protein fermentation is generating ammonia, hydrogen sulfide, and other harsh metabolites.',
-                'context': 'Your gut has shifted toward protein fermentation, producing compounds that can damage the gut lining and promote inflammation. Ammonia raises gut pH (making it less hospitable for beneficial bacteria), while hydrogen sulfide directly irritates cells. Reducing protein-fermenting bacteria and boosting fiber processors is important for long-term gut health.',
+                'description': 'Protein-fermenting bacteria are ecologically dominant, generating elevated levels of ammonia, hydrogen sulfide, and other harsh metabolites.',
+                'context': 'Your gut\'s fermentation balance has shifted toward protein fermentation byproducts. These compounds can damage the gut lining and promote inflammation — ammonia raises gut pH (less hospitable for beneficial bacteria) and hydrogen sulfide directly irritates cells. Restoring Butyrate Producer competitive advantage is the ecological priority.',
             },
         },
     },
@@ -271,7 +281,7 @@ def compute_metabolic_dials(data: dict) -> dict:
     CORRECTED thresholds per How_your_gut_is_processing_food.md:
       CUR: >+0.3 carb-driven (favorable), -0.3 to +0.3 balanced, <-0.3 protein-driven (unfavorable)
       FCR: >+0.3 efficient, -0.3 to +0.3 ok, <-0.3 sluggish
-      MDR: <-0.2 diet-fed, -0.2 to +0.2 backup, >+0.2 heavy mucus
+      MDR: <-1.0 diet-fed (recalibrated 2026-03-06), -1.0 to +0.2 backup, >+0.2 heavy mucus
       PPR: <-0.2 SCFA-dominant, -0.2 to +0.2 balanced, >+0.2 protein pressure
     """
     guilds = data.get('guilds', {})
@@ -299,8 +309,12 @@ def compute_metabolic_dials(data: dict) -> dict:
     else:
         ferm_state = 'ok'
 
-    # MDR thresholds: ±0.2
-    if mdr < -0.2:
+    # MDR thresholds — empirically recalibrated 2026-03-06:
+    #   Old: ±0.2 (94% of cohort always scored diet_fed — non-discriminating)
+    #   New: diet_fed < -1.0 | backup -1.0 to +0.2 | heavy_mucus > +0.2
+    #   Basis: Youden's J sweep across n=21 unconfounded samples; optimal threshold
+    #          at −1.94, conservative first step set at −1.0.
+    if mdr < -1.0:
         lining_state = 'diet_fed'
     elif mdr > 0.2:
         lining_state = 'heavy_mucus'
@@ -629,10 +643,10 @@ def identify_key_strengths(data: dict) -> list:
             'scientific': f"Efficient fermentation (FCR {fcr:+.2f}) — intermediate conversion operating well",
             'non_expert': "Your gut's fermentation assembly line is running efficiently — converting raw materials into beneficial compounds smoothly",
         })
-    if mdr is not None and mdr < -0.2:
+    if mdr is not None and mdr < -1.0:
         strengths.append({
-            'scientific': f"Diet-fed ecosystem (MDR {mdr:+.2f}) — minimal host-substrate dependency",
-            'non_expert': "Your bacteria get their fuel from what you eat, not from your gut's protective lining — this is the ideal pattern",
+            'scientific': f"Diet-substrate driven ecosystem (MDR {mdr:+.2f}) — bacterial fuel from dietary substrates, not mucus layer",
+            'non_expert': "Your bacteria are getting their fuel from what you eat, not from your gut's protective lining — this is the ecologically stable pattern",
         })
     elif mdr is None:
         for gname, gdata in guilds.items():

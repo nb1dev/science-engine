@@ -90,11 +90,16 @@ def generate_dashboard(platform_json_path, output_path, analysis_json_path=None)
     h.append('</div></div>')
 
     # Dials with visual range indicators
+    # dial_ranges: keys must match compute_metabolic_dials() output keys exactly.
+    # MDR range widened to -3.5→+1.5 (population median ~-1.83; ±1.5 clips most values).
+    # MDR lower boundary shifted left to reflect recalibrated diet_fed threshold at -1.0
+    # (old threshold was -0.2 — gauge marker now correctly sits in the amber zone for
+    # most clients rather than clustering at the far green edge).
     dial_ranges = {
-        'main_fuel': {'min': -1.5, 'max': 1.5, 'left': 'Protein-driven', 'right': 'Carb-driven', 'good': 'right'},
-        'fermentation_efficiency': {'min': -1.5, 'max': 1.5, 'left': 'Sluggish', 'right': 'Efficient', 'good': 'right'},
-        'gut_lining_dependence': {'min': -1.5, 'max': 1.5, 'left': 'Diet-fed', 'right': 'Mucus-dependent', 'good': 'left'},
-        'harsh_byproducts': {'min': -1.5, 'max': 1.5, 'left': 'SCFA-dominant', 'right': 'Protein pressure', 'good': 'left'},
+        'main_fuel':              {'min': -2.0, 'max': 2.0, 'left': 'Protein fermentation elevated', 'right': 'Carb fermentation dominant', 'good': 'right'},
+        'fermentation_efficiency':{'min': -1.5, 'max': 5.0, 'left': 'Sluggish', 'right': 'Efficient', 'good': 'right'},
+        'mucus_dependency':       {'min': -3.5, 'max': 1.5, 'left': 'Diet-substrate driven', 'right': 'Elevated mucus reliance', 'good': 'left'},
+        'putrefaction_pressure':  {'min': -3.0, 'max': 1.5, 'left': 'SCFA-dominant', 'right': 'Protein fermentation pressure', 'good': 'left'},
     }
     h.append('<div class="card"><h2>How Your Gut Is Processing Food</h2>')
     h.append('<p class="text">' + ov['metabolic_dials'].get('intro_text','') + '</p><div class="dial-grid">')
@@ -189,11 +194,15 @@ def generate_dashboard(platform_json_path, output_path, analysis_json_path=None)
         h.append('<h2>Part 2: What This Means for How Your Gut Works</h2>')
         h.append('<p class="text">Your metabolic readings tell us how well your gut processes food (see <a href="#" onclick="showTab(0);return false" style="color:#1e3799">Overview → Processing Food</a> for the full picture).</p>')
 
-        # Split into positive/neutral vs concerning
-        # Green = clearly good. Neutral = ok/balanced (acceptable). Red = needs attention.
-        green_states = {'carb_driven','efficient','diet_fed','scfa_dominant'}
-        neutral_states = {'ok','balanced'}
-        red_states = {'protein_driven','sluggish','heavy_mucus','protein_pressure','backup'}
+        # Split into positive/neutral vs concerning.
+        # Green = clearly good ecological state.
+        # Neutral = acceptable middle zone (ok/balanced/backup — shown as info, not warning).
+        #   'backup' = MDR -1.0 to +0.2 (partial mucus-substrate reliance — normal for ~34%
+        #              of clients after MDR threshold recalibration 2026-03-06; amber info only).
+        # Red = needs attention.
+        green_states  = {'carb_driven','efficient','diet_fed','scfa_dominant'}
+        neutral_states = {'ok','balanced','backup'}   # backup is amber info, not a red concern
+        red_states    = {'protein_driven','sluggish','heavy_mucus','protein_pressure'}
         good_items = [ev for ev in met_ev if ev.get('state','') in green_states or ev.get('state','') in neutral_states]
         concern_items = [ev for ev in met_ev if ev.get('state','') in red_states]
 

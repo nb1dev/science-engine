@@ -1,0 +1,738 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "source": "synbiotic_mix_selection_llm_database.json + Framework v3.0 (Mix 8)",
+    "description": "Consolidated synbiotic mix reference — 8 mixes with strains, default prebiotic formulas, and clinical triggers.",
+    "note": "LP815 enhancement is applied separately by the pipeline (not baked into mixes)."
+  },
+  "mixes": {
+    "1": {
+      "mix_id": 1,
+      "mix_name": "Dysbiosis Recovery",
+      "clinical_purpose": "Restore microbiota after severe depletion (post-antibiotic, very low abundance, severe dysbiosis)",
+      "ecological_rationale": {
+        "scientific": "Broad ecosystem dysfunction with ≥3 beneficial guilds depleted indicates systemic trophic chain collapse. Selective feeding of individual guilds is insufficient when cross-feeding networks are severed. This mix uses phylogenetically diverse strains (Bifidobacterium, Lactobacillus, Streptococcus) to re-seed multiple metabolic niches simultaneously, combined with mixed-fermentation prebiotics (inulin + PHGG + FOS) to provide substrate across the saccharolytic → acetogenic → butyrogenic chain.",
+        "client_friendly": "Multiple groups of beneficial bacteria are depleted at once. Rather than trying to fix one at a time, this mix provides a broad foundation of diverse bacteria along with a mix of fiber types, giving the ecosystem the raw materials to rebuild itself naturally.",
+        "selection_scenarios": [
+          {
+            "trigger": "broad_dysbiosis",
+            "condition": "≥3 beneficial guilds below range",
+            "scientific": "Multi-guild depletion exceeds single-target intervention capacity. Trophic chain is broken at multiple points — requires ecosystem-level reset with phylogenetically diverse inoculants.",
+            "client_friendly": "More than half of the beneficial bacteria groups are depleted. The gut needs a comprehensive restart rather than targeted support for one specific group."
+          },
+          {
+            "trigger": "fiber_degraders_below_negative_clr",
+            "condition": "Fiber degraders below range + negative CLR (<-0.3)",
+            "scientific": "Negative CLR indicates fiber degraders are losing competitive fitness — they're being outcompeted for ecological niches. Substrate supplementation alone won't work because competitors will intercept the substrates. Broad-spectrum ecosystem reset is needed to reduce competitive pressure before fiber-specific support can succeed.",
+            "client_friendly": "The fiber-digesting bacteria aren't just low — they're actively losing ground to other bacteria. Simply providing more fiber won't help because other organisms will consume it first. A broader ecosystem reset is needed to rebalance the playing field."
+          },
+          {
+            "trigger": "cross_feeders_below",
+            "condition": "Cross-feeders below range",
+            "scientific": "Cross-feeders (acetogenic bridge organisms) connect the fiber degradation and butyrate production pathways. When this bridge guild is depleted, the entire SCFA trophic chain is severed regardless of upstream/downstream guild health. Ecosystem-level restoration is required to rebuild the metabolic linkages.",
+            "client_friendly": "Cross-feeding bacteria act as a bridge between different bacterial groups. When this bridge is broken, nutrients can't flow properly through the ecosystem — a broad restoration is needed to rebuild these connections."
+          }
+        ]
+      },
+      "strains": [
+        {
+          "name": "Bifidobacterium longum DSM 24736",
+          "evidence": "WGO_L2",
+          "role": "Cross-feeding hub for guild restoration"
+        },
+        {
+          "name": "Lactobacillus plantarum 299v (DSM 9843)",
+          "evidence": "WGO_L1",
+          "role": "SCFA protection and IBS support"
+        },
+        {
+          "name": "Lactobacillus rhamnosus GG",
+          "evidence": "WGO_L1",
+          "role": "AAD/CDAD prevention and barrier support"
+        },
+        {
+          "name": "Lactobacillus acidophilus CL1285",
+          "evidence": "WGO_L1",
+          "role": "Pathogen exclusion and C. difficile suppression"
+        },
+        {
+          "name": "Lactobacillus reuteri DSM 17938",
+          "evidence": "WGO_L1",
+          "role": "Antimicrobial protection and motility support"
+        }
+      ],
+      "default_prebiotic_formula": {
+        "total_g": 7,
+        "total_fodmap_g": 4,
+        "components": [
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 3,
+            "fodmap": true
+          },
+          {
+            "substance": "PHGG",
+            "dose_g": 3,
+            "fodmap": false
+          },
+          {
+            "substance": "FOS",
+            "dose_g": 1,
+            "fodmap": true
+          }
+        ],
+        "rationale": "3:3:1 ratio (inulin:PHGG:FOS) prioritizes tolerability. PHGG spreads fermentation load distally."
+      }
+    },
+    "2": {
+      "mix_id": 2,
+      "mix_name": "Bifidogenic Restore",
+      "clinical_purpose": "Selectively enrich Bifidobacterium when depleted (IBS, constipation, low Bifido guild)",
+      "ecological_rationale": {
+        "scientific": "Selective Bifidobacterium depletion without broader dysbiosis indicates a guild-specific deficit in the acetogenic/lactate-producing niche. Bifidobacteria are keystone organisms for lactate cross-feeding, immune modulation (Treg induction), and barrier-protective signaling. This mix uses 3 complementary Bifidobacterium species (B. infantis, B. lactis, B. breve) alongside Bifido-selective prebiotics (GOS, Lactulose, Inulin) to selectively enrich this guild without disturbing other functional groups.",
+        "client_friendly": "One specific group of beneficial bacteria — Bifidobacteria — is depleted while the rest of the gut ecosystem is healthy. This mix focuses specifically on rebuilding this important group using targeted probiotic strains and prebiotics that preferentially feed Bifidobacteria.",
+        "selection_scenarios": [
+          {
+            "trigger": "bifidobacteria_below_or_absent",
+            "condition": "Bifidobacteria below range or absent",
+            "scientific": "Guild-specific depletion of Bifidobacterium spp. with preserved broader ecosystem integrity. Selective Bifido restoration via conspecific strains + highly Bifido-selective oligosaccharides (GOS, lactulose) avoids unnecessary perturbation of stable guilds.",
+            "client_friendly": "Bifidobacteria levels are low but other bacterial groups are fine. A targeted approach restores this specific group without disrupting the rest of the gut balance."
+          }
+        ]
+      },
+      "strains": [
+        {
+          "name": "Bifidobacterium infantis/longum 35624",
+          "evidence": "WGO_L1",
+          "role": "Primary IBS anchor and Bifido restoration"
+        },
+        {
+          "name": "Bifidobacterium animalis subsp. lactis B420",
+          "evidence": "CAN_I",
+          "role": "Metabolic Bifido (acetate/propionate)"
+        },
+        {
+          "name": "Bifidobacterium breve BR03",
+          "evidence": "CAN_I",
+          "role": "Complementary Bifido for guild diversity"
+        },
+        {
+          "name": "Lactobacillus acidophilus CL1285",
+          "evidence": "WGO_L1",
+          "role": "IBS support and gas reduction"
+        },
+        {
+          "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "evidence": "WGO_L1",
+          "role": "Constipation + Bifido enrichment"
+        }
+      ],
+      "default_prebiotic_formula": {
+        "total_g": 5.5,
+        "total_fodmap_g": 5.5,
+        "components": [
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 2,
+            "fodmap": true
+          },
+          {
+            "substance": "GOS",
+            "dose_g": 2,
+            "fodmap": true
+          },
+          {
+            "substance": "Lactulose",
+            "dose_g": 1.5,
+            "fodmap": true
+          }
+        ],
+        "rationale": "Inulin + GOS + Lactulose = Bifido-dominant environment. All three are strong Bifido selectors."
+      }
+    },
+    "3": {
+      "mix_id": 3,
+      "mix_name": "Fiber & SCFA Restoration",
+      "clinical_purpose": "Restore SCFA-producing guild when fiber fermenters / butyrate producers are low",
+      "ecological_rationale": {
+        "scientific": "Restores the complete SCFA trophic chain: fiber degradation → acetate/lactate production → butyrate conversion. Uses Lactobacillus plantarum KABP strains (mechanistic cross-feeders for Clostridiales butyrate producers) + BB-12 (acetate donor) + complex polysaccharide prebiotics (Beta-Glucans, PHGG) that preferentially feed Bacteroidetes/Firmicutes fiber degraders. The therapeutic endpoint is restored butyrate production — the primary fuel for colonocytes and barrier integrity.",
+        "client_friendly": "Your fiber-processing bacteria need reinforcement — they are below the healthy range. This mix restores the complete chain from fiber digestion to short-chain fatty acid (SCFA) production, which feeds your gut lining and reduces inflammation. The prebiotic fiber blend in your sachet (PHGG, Beta-Glucans) works together with these probiotics — a dual intervention targeting the same guild from both the bacterial and substrate sides.",
+        "selection_scenarios": [
+          {
+            "trigger": "butyrate_producers_below",
+            "condition": "Butyrate producers below range",
+            "scientific": "Direct butyrogenic guild depletion — insufficient Faecalibacterium/Roseburia abundance for adequate colonocyte fuel supply. Cross-feeding Lactobacillus strains provide lactate/acetate substrates that Clostridiales convert to butyrate.",
+            "client_friendly": "Butyrate-producing bacteria are low. This mix provides helper bacteria that produce the raw materials butyrate producers need, along with specialized fiber to fuel the whole process."
+          },
+          {
+            "trigger": "fiber_degraders_below_positive_clr",
+            "condition": "Fiber degraders below range + positive CLR (>+0.3)",
+            "scientific": "Positive CLR = fiber degraders are competitively fit (winning their niche) but substrate-limited. The guild has the organisms — it lacks the food. Complex polysaccharide supplementation (Beta-Glucans, PHGG, Inulin) directly addresses the bottleneck. Butyrate strains ensure downstream conversion is ready when upstream expansion occurs.",
+            "client_friendly": "The fiber-digesting bacteria are capable and growing — they just don't have enough of the right food. This mix provides the specific types of fiber they prefer, along with support bacteria to ensure the whole digestion chain works efficiently."
+          },
+          {
+            "trigger": "fiber_degraders_below_neutral_clr",
+            "condition": "Fiber degraders below range + neutral CLR (between -0.3 and +0.3)",
+            "scientific": "Neutral CLR is indeterminate — no clear competitive advantage or disadvantage. Default to substrate support (Mix 3) rather than ecosystem reset (Mix 1), as substrate limitation is the more common and less invasive explanation.",
+            "client_friendly": "The fiber-digesting bacteria are low, but there's no clear sign they're being outcompeted. We provide additional fiber substrate as the most likely and gentlest solution."
+          }
+        ]
+      },
+      "strains": [
+        {
+          "name": "Lactobacillus plantarum CECT 7484 (KABP022)",
+          "evidence": "Mechanistic",
+          "role": "Cross-feeding substrate for Clostridiales butyrate producers"
+        },
+        {
+          "name": "Lactobacillus plantarum CECT 7485 (KABP023)",
+          "evidence": "Mechanistic",
+          "role": "Redundant cross-feeding strain"
+        },
+        {
+          "name": "Lactobacillus plantarum 299v (DSM 9843)",
+          "evidence": "WGO_L1",
+          "role": "Evidence-based IBS support + butyrate protection"
+        },
+        {
+          "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "evidence": "WGO_L1",
+          "role": "Acetate producer feeding butyrate producers"
+        }
+      ],
+      "default_prebiotic_formula": {
+        "total_g": 8,
+        "total_fodmap_g": 3,
+        "components": [
+          {
+            "substance": "Beta-Glucans",
+            "dose_g": 3,
+            "fodmap": false
+          },
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 3,
+            "fodmap": true
+          },
+          {
+            "substance": "PHGG",
+            "dose_g": 2,
+            "fodmap": false
+          }
+        ],
+        "rationale": "Beta-glucans best substrate for butyrate production. 3:3:2 ratio balances Bifido specificity with PHGG tolerance."
+      },
+      "gassy_client_formula": {
+        "total_g": 8,
+        "total_fodmap_g": 1,
+        "components": [
+          {
+            "substance": "Beta-Glucans",
+            "dose_g": 3,
+            "fodmap": false
+          },
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 1,
+            "fodmap": true
+          },
+          {
+            "substance": "PHGG",
+            "dose_g": 4,
+            "fodmap": false
+          }
+        ],
+        "rationale": "3:1:4 ratio heavily weights PHGG for gas-prone clients."
+      }
+    },
+    "4": {
+      "mix_id": 4,
+      "mix_name": "Proteolytic Suppression",
+      "clinical_purpose": "Suppress proteolytic/pathobiont overgrowth (malodorous stool, high proteolytic markers, food sensitivities)",
+      "ecological_rationale": {
+        "scientific": "Elevated proteolytic guild (Bilophila, Desulfovibrio, Clostridium clusters) indicates excessive protein fermentation producing hydrogen sulfide, ammonia, p-cresol, and indole — cytotoxic metabolites that damage barrier integrity and promote inflammation. Intervention strategy: competitive exclusion via saccharolytic strains (L. plantarum 299v, B. longum) that shift fermentation balance from proteolytic → saccharolytic pathways. Psyllium binds endotoxin; Beta-Glucans provide alternative carbohydrate substrate.",
+        "client_friendly": "Certain bacteria that break down protein into harmful byproducts have become overgrown. This mix introduces beneficial bacteria that compete with these harmful organisms for resources, while providing plant-based fiber that shifts the gut's chemistry away from protein breakdown toward healthier carbohydrate digestion.",
+        "selection_scenarios": [
+          {
+            "trigger": "proteolytic_above",
+            "condition": "Proteolytic guild above range",
+            "scientific": "Proteolytic overgrowth produces cytotoxic metabolites (H₂S, p-cresol, ammonia) via amino acid fermentation. Competitive exclusion strategy: flood the environment with saccharolytic organisms and carbohydrate substrates to outcompete protein fermenters for metabolic niche space.",
+            "client_friendly": "Bacteria that produce harmful chemicals from protein digestion have become overgrown. This mix crowds them out with beneficial bacteria that prefer to digest plant-based fibers instead."
+          }
+        ]
+      },
+      "strains": [
+        {
+          "name": "Lactobacillus plantarum 299v (DSM 9843)",
+          "evidence": "WGO_L1",
+          "role": "Saccharolytic competition and pH acidification"
+        },
+        {
+          "name": "Lactobacillus reuteri ATCC PTA 6475",
+          "evidence": "WGO_L1",
+          "role": "Primary antimicrobial against pathobionts"
+        },
+        {
+          "name": "Lactobacillus rhamnosus GG",
+          "evidence": "WGO_L1",
+          "role": "Barrier protection against pathobiont translocation"
+        },
+        {
+          "name": "Bifidobacterium longum DSM 24736",
+          "evidence": "WGO_L2",
+          "role": "Saccharolytic substrate competition"
+        },
+        {
+          "name": "Lactobacillus reuteri DSM 17938",
+          "evidence": "WGO_L1",
+          "role": "Reinforces pathobiont suppression + motility"
+        }
+      ],
+      "default_prebiotic_formula": {
+        "total_g": 8,
+        "total_fodmap_g": 2,
+        "components": [
+          {
+            "substance": "Beta-Glucans",
+            "dose_g": 3,
+            "fodmap": false
+          },
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 2,
+            "fodmap": true
+          },
+          {
+            "substance": "PHGG",
+            "dose_g": 2,
+            "fodmap": false
+          },
+          {
+            "substance": "Psyllium Husk",
+            "dose_g": 1,
+            "fodmap": false
+          }
+        ],
+        "rationale": "Shift substrate from protein to carbohydrate. Psyllium binds endotoxin and proteolytic metabolites."
+      }
+    },
+    "5": {
+      "mix_id": 5,
+      "mix_name": "Mucus Barrier Restoration",
+      "clinical_purpose": "Restore mucus barrier and support Akkermansia axis (leaky gut, zonulin↑, barrier dysfunction)",
+      "ecological_rationale": {
+        "scientific": "Elevated mucin-degrading organisms (primarily Akkermansia muciniphila) with diet-fed metabolism (MDR <-0.5 or neutral) indicates barrier dysfunction rather than competitive displacement. The mucin degraders are receiving substrate from dietary sources or have indeterminate metabolic patterns. Barrier-protective strains (L. plantarum ECGC, L. paracasei CNCM) restore tight junction signaling. Inulin + PHGG support SCFA-driven barrier repair without feeding Akkermansia overgrowth.",
+        "client_friendly": "Bacteria that thin the gut's protective mucus layer have become overgrown, potentially weakening the gut barrier. This mix provides bacteria that help strengthen and rebuild the gut lining, along with gentle fibers that support healing without feeding the problematic organisms.",
+        "selection_scenarios": [
+          {
+            "trigger": "mucin_degraders_above_negative_mdr",
+            "condition": "Mucin degraders above range + MDR <-0.5 (diet-fed)",
+            "scientific": "Negative MDR indicates mucin degraders are diet-fed (not mucus-dependent) — barrier stress is occurring through dietary substrate rather than direct mucus consumption. Barrier-protective strains restore tight junction integrity; prebiotics support SCFA-driven epithelial repair.",
+            "client_friendly": "Mucus-thinning bacteria are overgrown and being fed by the diet. Barrier-strengthening bacteria and gentle fiber support help rebuild gut lining protection."
+          },
+          {
+            "trigger": "mucin_degraders_above_neutral_mdr",
+            "condition": "Mucin degraders above range + neutral MDR (between -0.5 and +0.5)",
+            "scientific": "Indeterminate mucin metabolism pattern — default to barrier restoration (safer approach) rather than competitive displacement. Conservative strategy avoids aggressive niche competition when metabolic context is unclear.",
+            "client_friendly": "Mucus-thinning bacteria are elevated. We focus on strengthening the gut barrier as the safest and most effective response."
+          }
+        ]
+      },
+      "strains": [
+        {
+          "name": "Lactobacillus plantarum ECGC 13110402",
+          "evidence": "UK_II",
+          "role": "Core barrier strand; lipid-dependent signaling"
+        },
+        {
+          "name": "Lactobacillus paracasei CNCM I-1518",
+          "evidence": "UK_I",
+          "role": "Anchor for barrier-protective signaling"
+        },
+        {
+          "name": "Bifidobacterium breve BR03",
+          "evidence": "CAN_I",
+          "role": "General barrier; can antagonize excess Akkermansia"
+        },
+        {
+          "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "evidence": "WGO_L1",
+          "role": "SCFA-driven tight-junction strengthening"
+        },
+        {
+          "name": "Lactobacillus casei Shirota",
+          "evidence": "Multiple",
+          "role": "Mucosal immunologist; infection-driven barrier protection"
+        }
+      ],
+      "low_akkermansia_formula": {
+        "total_g": 5.5,
+        "total_fodmap_g": 3,
+        "components": [
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 3,
+            "fodmap": true
+          },
+          {
+            "substance": "PHGG",
+            "dose_g": 2,
+            "fodmap": false
+          }
+        ],
+        "polyphenols": [
+          {
+            "substance": "Apple Polyphenol Extract",
+            "dose_mg": 275,
+            "rationale": "Akkermansia enrichment via urolithins"
+          },
+          {
+            "substance": "Fermented Pomegranate Extract",
+            "dose_mg": 275,
+            "rationale": "Barrier tightening via anti-inflammatory signaling"
+          }
+        ],
+        "rationale": "Polyphenol-driven Akkermansia enrichment + SCFA barrier support."
+      },
+      "high_akkermansia_formula": {
+        "total_g": 5.5,
+        "total_fodmap_g": 3,
+        "components": [
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 3,
+            "fodmap": true
+          },
+          {
+            "substance": "PHGG",
+            "dose_g": 2,
+            "fodmap": false
+          }
+        ],
+        "polyphenols": [
+          {
+            "substance": "Curcumin",
+            "dose_mg": 250,
+            "rationale": "Anti-inflammatory; no Akk enrichment. Barrier-tightening."
+          },
+          {
+            "substance": "Quercetin",
+            "dose_mg": 250,
+            "rationale": "Barrier-tightening; no Akk enrichment."
+          }
+        ],
+        "rationale": "Avoid feeding Akkermansia. Curcumin/quercetin support barrier independently."
+      },
+      "default_prebiotic_formula": {
+        "total_g": 5.5,
+        "total_fodmap_g": 3,
+        "components": [
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 3,
+            "fodmap": true
+          },
+          {
+            "substance": "PHGG",
+            "dose_g": 2,
+            "fodmap": false
+          }
+        ],
+        "rationale": "Base formula — polyphenol selection depends on Akkermansia status."
+      }
+    },
+    "6": {
+      "mix_id": 6,
+      "mix_name": "Maintenance Gold Standard",
+      "clinical_purpose": "Sustain eubiosis in healthy or recovering gut; chronic GI support",
+      "ecological_rationale": {
+        "scientific": "All functional guilds at Monitor priority — no critical ecological imbalances detected. High-diversity 8-strain De Simone-based formulation maintains ecosystem stability via phylogenetic breadth (4 Lactobacillus spp., 3 Bifidobacterium spp., 1 Streptococcus thermophilus). Minimal prebiotic load (4g) avoids unnecessary perturbation of a balanced ecosystem; client dietary fiber provides the majority of substrate.",
+        "client_friendly": "The gut ecosystem is well-balanced — no major imbalances were detected. This maintenance formula provides a broad spectrum of beneficial bacteria to preserve this healthy state, with a gentle amount of fiber to complement an already healthy diet.",
+        "selection_scenarios": [
+          {
+            "trigger": "all_guilds_monitor",
+            "condition": "All guilds at Monitor priority — no actionable imbalances",
+            "scientific": "No actionable guild imbalances. Maintenance-level intervention preserves ecosystem resilience without risking perturbation of stable community structures. Low prebiotic dose (4g) supplements but does not override dietary fiber intake.",
+            "client_friendly": "Everything looks good! This gentle maintenance formula keeps the gut balanced while the body's own diet provides most of the beneficial fiber."
+          }
+        ]
+      },
+      "strains": [
+        {
+          "name": "Lactobacillus acidophilus DSM 24735",
+          "evidence": "WGO_L2",
+          "role": "Lactate producer in De Simone system"
+        },
+        {
+          "name": "Lactobacillus paracasei DSM 24733",
+          "evidence": "WGO_L2",
+          "role": "Cross-feeding support"
+        },
+        {
+          "name": "Lactobacillus delbrueckii subsp. bulgaricus DSM 24734",
+          "evidence": "WGO_L2",
+          "role": "Fermentation support"
+        },
+        {
+          "name": "Lactobacillus plantarum DSM 24730",
+          "evidence": "WGO_L2",
+          "role": "Metabolic versatility"
+        },
+        {
+          "name": "Bifidobacterium longum DSM 24736",
+          "evidence": "WGO_L2",
+          "role": "Bifido guild anchor"
+        },
+        {
+          "name": "Bifidobacterium infantis DSM 24737",
+          "evidence": "WGO_L2",
+          "role": "Immune regulation"
+        },
+        {
+          "name": "Bifidobacterium breve DSM 24732",
+          "evidence": "WGO_L2",
+          "role": "Bifido guild diversity"
+        },
+        {
+          "name": "Streptococcus thermophilus DSM 24731",
+          "evidence": "WGO_L2",
+          "role": "Fermentation support"
+        }
+      ],
+      "default_prebiotic_formula": {
+        "total_g": 4,
+        "total_fodmap_g": 2,
+        "components": [
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 2,
+            "fodmap": true
+          },
+          {
+            "substance": "PHGG",
+            "dose_g": 2,
+            "fodmap": false
+          }
+        ],
+        "rationale": "Only 4g appropriate for long-term use. Client diet provides additional fiber (>20g/day)."
+      }
+    },
+    "7": {
+      "mix_id": 7,
+      "mix_name": "Psychobiotic",
+      "clinical_purpose": "Support gut-brain axis in dysbiosis with mood/anxiety/stress component (adjunct, not standalone)",
+      "strains": [
+        {
+          "name": "Limosilactobacillus fermentum LF16",
+          "evidence": "CAN_II",
+          "role": "GABA-producing strain; anxiety modulation"
+        },
+        {
+          "name": "Lacticaseibacillus rhamnosus LR06",
+          "evidence": "CAN_II",
+          "role": "Serotonin-pathway support; mood modulation"
+        },
+        {
+          "name": "Lactiplantibacillus plantarum LP01",
+          "evidence": "CAN_II",
+          "role": "Gut-brain axis signaling bridge"
+        },
+        {
+          "name": "Bifidobacterium longum 04",
+          "evidence": "Mechanistic",
+          "role": "Metabolic backbone; SCFA-driven HPA axis support"
+        },
+        {
+          "name": "Lactiplantibacillus plantarum LP815",
+          "evidence": "Mechanistic",
+          "role": "High-potency GABA producer (5B CFU → 50mg GABA)"
+        }
+      ],
+      "default_prebiotic_formula": {
+        "total_g": 5,
+        "total_fodmap_g": 5,
+        "components": [
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 3,
+            "fodmap": true
+          },
+          {
+            "substance": "GOS",
+            "dose_g": 2,
+            "fodmap": true
+          }
+        ],
+        "polyphenols": [
+          {
+            "substance": "Fermented Pomegranate Extract",
+            "dose_mg": 275,
+            "rationale": "Anti-inflammatory neuroprotection"
+          },
+          {
+            "substance": "Curcumin",
+            "dose_mg": 250,
+            "rationale": "Crosses BBB; supports BDNF"
+          },
+          {
+            "substance": "Quercetin",
+            "dose_mg": 250,
+            "rationale": "Anxiolytic; mast-cell modulation"
+          }
+        ],
+        "rationale": "Inulin + GOS = Bifido + SCFA production. Polyphenols = multi-target neuroprotection."
+      },
+      "fodmap_sensitive_formula": {
+        "total_g": 2.5,
+        "total_fodmap_g": 2.5,
+        "components": [
+          {
+            "substance": "Pure Inulin",
+            "dose_g": 1.5,
+            "fodmap": true
+          },
+          {
+            "substance": "GOS",
+            "dose_g": 1,
+            "fodmap": true
+          }
+        ],
+        "polyphenols": [
+          {
+            "substance": "Fermented Pomegranate Extract",
+            "dose_mg": 275
+          },
+          {
+            "substance": "Curcumin",
+            "dose_mg": 250
+          },
+          {
+            "substance": "Quercetin",
+            "dose_mg": 250
+          }
+        ],
+        "rationale": "Reduced FODMAP for sensitive clients while maintaining polyphenol neuroprotection."
+      }
+    },
+    "8": {
+      "mix_id": 8,
+      "mix_name": "Fiber Expansion & Competitive Displacement",
+      "clinical_purpose": "Competitive displacement of Akkermansia overgrowth via Fiber guild expansion when MDR >+0.5",
+      "ecological_rationale": {
+        "scientific": "Akkermansia overgrowth (>10%) with positive MDR (>+0.5) and fiber degrader depletion indicates mucus-dependent metabolism — Akkermansia is consuming the mucus layer because the Fiber guild can't provide sufficient carbohydrate competition. Strategy: competitive displacement via niche expansion, NOT direct suppression. Complex polysaccharides (Beta-Glucans, Psyllium/Arabinoxylan, Resistant Starch) that Bacteroidetes/Firmicutes excel at but Akkermansia doesn't preferentially use. As fiber guild expands, Akkermansia pressure naturally reduces through substrate competition.",
+        "client_friendly": "A specific bacterium (Akkermansia) has overgrown because the fiber-digesting bacteria aren't providing enough competition. Rather than trying to kill the overgrown organism, this mix feeds and strengthens the fiber-digesting bacteria so they naturally crowd out the problematic one — like growing grass to crowd out weeds, rather than using herbicide.",
+        "selection_scenarios": [
+          {
+            "trigger": "mucin_degraders_above_positive_mdr_fiber_below",
+            "condition": "Mucin degraders above range + MDR >+0.5 (mucus-dependent) + Fiber degraders below range",
+            "scientific": "Mucus-dependent Akkermansia metabolism (MDR >+0.5) with concurrent fiber guild substrate bottleneck. Root cause = insufficient carbohydrate competition forces Akkermansia to rely on mucus as primary carbon source. Competitive displacement via complex polysaccharide loading (Beta-Glucans, RS, Arabinoxylan) expands fiber guild niche, reducing Akkermansia's ecological advantage.",
+            "client_friendly": "Akkermansia is consuming the gut's protective mucus because there aren't enough fiber-digesting bacteria to compete with it. By boosting the fiber bacteria with their preferred food, they naturally push Akkermansia back to healthy levels — addressing the root cause, not just the symptom."
+          }
+        ]
+      },
+      "strains": [
+        {
+          "name": "Lactobacillus plantarum 299v (DSM 9843)",
+          "evidence": "WGO_L1",
+          "role": "Versatile fermenter; carbohydrate competition"
+        },
+        {
+          "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "evidence": "WGO_L1",
+          "role": "Acetate production for cross-feeding"
+        },
+        {
+          "name": "Lactobacillus rhamnosus GG",
+          "evidence": "WGO_L1",
+          "role": "Barrier support during transition"
+        },
+        {
+          "name": "Bifidobacterium longum DSM 24736",
+          "evidence": "WGO_L2",
+          "role": "Cross-feeding hub for ecosystem rebalancing"
+        },
+        {
+          "name": "Lactobacillus plantarum CECT 7484 (KABP022)",
+          "evidence": "Mechanistic",
+          "role": "Fiber fermentation specialist"
+        }
+      ],
+      "selection_criteria": {
+        "ALL_must_be_met": [
+          "Akkermansia >10% (absolute overgrowth)",
+          "MDR >+0.5 (mucus-dependent metabolism)",
+          "Fiber Degraders <30% (substrate bottleneck)"
+        ]
+      },
+      "mechanism": "Competitive displacement via Fiber guild expansion rather than direct Akkermansia suppression. Addresses root cause (substrate insufficiency) not symptom (Akkermansia overgrowth).",
+      "default_prebiotic_formula": {
+        "total_g": 8,
+        "total_fodmap_g": 2,
+        "components": [
+          {
+            "substance": "Beta-Glucans",
+            "dose_g": 2.5,
+            "fodmap": false,
+            "rationale": "Primary Bacteroidetes/Firmicutes substrate"
+          },
+          {
+            "substance": "Psyllium/Arabinoxylan",
+            "dose_g": 1.5,
+            "fodmap": false,
+            "rationale": "Complex polysaccharide Akk doesn't prefer"
+          },
+          {
+            "substance": "Resistant Starch",
+            "dose_g": 1.5,
+            "fodmap": false,
+            "rationale": "Slow fermentation, Fiber guild preferred"
+          },
+          {
+            "substance": "PHGG",
+            "dose_g": 1.0,
+            "fodmap": false,
+            "rationale": "Gentle base fiber"
+          },
+          {
+            "substance": "Inulin",
+            "dose_g": 1.0,
+            "fodmap": true,
+            "rationale": "Moderate dose for Bifido signalling only"
+          },
+          {
+            "substance": "GOS",
+            "dose_g": 0.5,
+            "fodmap": true,
+            "rationale": "Trace only — minimize Akk-accessible substrate"
+          }
+        ],
+        "rationale": "HIGH LOAD complex polysaccharides (beta-glucans, arabinoxylan, RS) that Bacteroidetes/Firmicutes excel at but Akkermansia doesn't preferentially use. Creates competitive displacement via niche expansion."
+      },
+      "akkermansia_safe_notes": [
+        "AVOID high GOS (>1g) — accessible to Akkermansia",
+        "AVOID high FOS — simple oligosaccharides Akk can use",
+        "AVOID Lactulose — Akk-accessible",
+        "PREFER Beta-glucans, Psyllium, RS, PHGG — complex polysaccharides",
+        "Keep Inulin moderate (1-1.5g max) for Bifido signalling only"
+      ],
+      "expected_trajectory": {
+        "weeks_2_4": "Fiber guild expansion begins",
+        "weeks_4_8": "Akkermansia pressure reduces (competitive displacement)",
+        "weeks_8_12": "MDR normalizes (mucus → diet-fed transition)",
+        "weeks_12_16": "Akkermansia stabilizes 1-4%, sustainable equilibrium"
+      }
+    }
+  },
+  "lp815_enhancement": {
+    "strain": "Lactiplantibacillus plantarum LP815",
+    "cfu_billions": 5,
+    "weight_mg": 50,
+    "mechanism": "5B CFU produces 50mg GABA — stress, irritability, and sleep benefits",
+    "trigger_rules": [
+      "Stress ≥ 6/10 → always add",
+      "Stress ≥ 4/10 AND mood/anxiety is a stated goal → always add"
+    ],
+    "prebiotic_impact": "Add 0.5-1.0g Resistant Starch for GABA substrate support",
+    "applied_to": "Any mix — enhancement, not replacement"
+  }
+}
