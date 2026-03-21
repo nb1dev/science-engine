@@ -365,14 +365,88 @@ def _build_delivery_summary(formulation: Dict) -> Dict:
     return result
 
 
-def build_decision_trace(master: Dict, trace_events: list = None) -> Dict:
+def _extract_executive_summary(sample_dir: str, sample_id: str) -> Dict:
+    """Extract 4 executive summary sections from the narrative report markdown.
+
+    Reads Section 1 of the narrative report and extracts:
+    - overall_pattern  (### Overall Pattern Classification)
+    - dysbiosis_markers (### Dysbiosis-Associated Markers)
+    - critical_finding  (### Critical Finding)
+    - health_implications (### Health Implications)
+
+    Returns a dict with those 4 keys. Falls back to empty strings if not found.
+    """
+    import re as _re
+    from pathlib import Path as _Path
+
+    result = {
+        "overall_pattern": "",
+        "dysbiosis_markers": "",
+        "critical_finding": "",
+        "health_implications": "",
+    }
+
+    md_path = _Path(sample_dir) / "reports" / "reports_md" / f"narrative_report_{sample_id}.md"
+    if not md_path.exists():
+        return result
+
+    try:
+        content = md_path.read_text(encoding="utf-8")
+    except Exception:
+        return result
+
+    def _extract_section(heading: str) -> str:
+        """Extract text for a named section, handling two report formats:
+
+        Format A (newer reports): ### heading on its own line
+          ### Overall Pattern Classification
+          text...
+
+        Format B (older reports): **Bold heading** inline or as paragraph title
+          **Overall Pattern Classification: subtitle**
+          text...
+          OR: **Dysbiosis-Associated Markers.** text on same line...
+        """
+        # Format A: ### heading (with optional subtitle after colon or dash)
+        pattern_a = rf"###\s+{_re.escape(heading)}[^\n]*\n(.*?)(?=\n###|\n---|\Z)"
+        m = _re.search(pattern_a, content, _re.DOTALL)
+        if m:
+            return m.group(1).strip()
+
+        # Format B1: **heading** or **heading: subtitle** as a standalone bold line,
+        # followed by text paragraph(s)
+        pattern_b1 = rf"\*\*{_re.escape(heading)}[^*\n]*\*\*\s*\n(.*?)(?=\n\*\*[A-Z]|\n##|\n---|\Z)"
+        m = _re.search(pattern_b1, content, _re.DOTALL)
+        if m:
+            return m.group(1).strip()
+
+        # Format B2: **heading.** text continues on same line (e.g. **Dysbiosis-Associated Markers.** ...)
+        # Captures the bold label line + any following lines until next bold section or heading
+        pattern_b2 = rf"\*\*{_re.escape(heading)}[^*\n]*\*\*\s*(.*?)(?=\n\*\*[A-Z]|\n##|\n---|\Z)"
+        m = _re.search(pattern_b2, content, _re.DOTALL)
+        if m:
+            return m.group(1).strip()
+
+        return ""
+
+    result["overall_pattern"] = _extract_section("Overall Pattern Classification")
+    result["dysbiosis_markers"] = _extract_section("Dysbiosis-Associated Markers")
+    result["critical_finding"] = _extract_section("Critical Finding")
+    result["health_implications"] = _extract_section("Health Implications")
+
+    return result
+
+
+def build_decision_trace(master: Dict, trace_events: list = None, sample_dir: str = None) -> Dict:
     """Build board-readable decision trace JSON — linear chain from inputs → decisions → formula.
-    
+
     Args:
         master: Complete master formulation dict
         trace_events: Optional list of pipeline decision events (chronological).
                      When provided, enables HTML decision trace to be generated from
                      the same source as the terminal pipeline log output.
+        sample_dir: Optional path to sample directory — used to extract executive
+                    summary sections from the narrative report markdown.
     """
     metadata = master.get("metadata", {})
     input_summary = master.get("input_summary", {})
@@ -581,13 +655,22 @@ def build_decision_trace(master: Dict, trace_events: list = None) -> Dict:
     root_causes = mb.get("root_causes", {})
     guild_scenarios = mb.get("guild_scenarios", [])
     formulation_narrative = _build_formulation_narrative(guild_entries, clr_display, mix, root_causes)
+
+    # Extract executive summary from narrative report MD (4 structured sections)
+    sample_id = metadata.get("sample_id", "")
+    exec_summary = _extract_executive_summary(sample_dir, sample_id) if sample_dir and sample_id else {}
+    # Fallback: if extraction failed, put the LLM narrative into overall_pattern
+    if not any(exec_summary.values()):
+        exec_summary = {"overall_pattern": mb_narrative or mb_summary_default}
+
     return {
-        "sample_id": metadata.get("sample_id"),
+        "sample_id": sample_id,
         "generated_at": metadata.get("generated_at"),
         "validation": metadata.get("validation_status"),
         "inputs": {
             "microbiome": {
-                "summary": mb_narrative or mb_summary_default,
+                "executive_summary": exec_summary,
+                "summary": exec_summary.get("overall_pattern") or mb_narrative or mb_summary_default,
                 "guilds": guild_entries,
                 "clr_ratios": clr_display,
                 "formulation_narrative": formulation_narrative,
@@ -949,13 +1032,13 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
     return {
         "sample_id": metadata.get("sample_id"),
         "generated_at": metadata.get("generated_at"),
-        "protocol_summary": f"{proto.get('morning_solid_units', 0)} morning solid units + {proto.get('morning_drinks', 0)} drink + {proto.get('evening_solid_units', 0)} evening units",
+        "protocol_summary": f"{proto.get('morning_solid_units', 0)} morning solid units + {proto.get('morning_jar_units', 0)} drink + {proto.get('evening_solid_units', 0)} evening units",
         "protocol_duration_weeks": 16,
         "units": units,
         "grand_total": {
             "total_units": proto.get("total_daily_units", 0),
             "total_daily_weight_g": proto.get("total_daily_weight_g", 0),
-            "morning_units": proto.get("morning_solid_units", 0) + proto.get("morning_drinks", 0),
+            "morning_units": proto.get("morning_solid_units", 0) + proto.get("morning_jar_units", 0),
             "evening_units": proto.get("evening_solid_units", 0),
         },
         "validation": metadata.get("validation_status"),

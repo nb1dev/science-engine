@@ -70,9 +70,11 @@ def classify_sensitivity(digestive: Dict) -> Dict:
         }
 
     # Check LOW sensitivity (AND conditions)
+    # bloating_severity=None means not reported — treated same as ≤3 (no distress)
     low_triggered = True
-    if bloating_severity is not None and bloating_severity <= 3:
-        reasoning.append(f"Bloating severity {bloating_severity}/10 (≤3 — low)")
+    bloating_ok = bloating_severity is None or bloating_severity <= 3
+    if bloating_ok:
+        reasoning.append(f"Bloating severity {bloating_severity if bloating_severity is not None else 'not reported'}/10 (≤3 or N/R — low)")
     else:
         low_triggered = False
 
@@ -398,14 +400,24 @@ def assess_softgel_needs(health_claims: Dict, medical: Dict, lifestyle: Dict, go
     ranked_goals = goals.get("ranked", [])
 
     # Omega-3 needs (broadly indicated)
+    # NOTE: weight_management included — omega-3 supports metabolic health and satiety signalling
     omega_triggers = {"improve_mood_reduce_anxiety", "reduce_stress_anxiety", "improve_skin_health",
                       "longevity_healthy_aging", "support_heart_health", "boost_energy_reduce_fatigue",
-                      "improve_focus_concentration"}
+                      "improve_focus_concentration", "weight_management", "manage_weight",
+                      "improve_sleep_quality", "sleep_quality"}
     omega_goal = any(g in omega_triggers for g in ranked_goals)
     omega_claim = any(c in health_claims.get("supplement_claims", []) for c in
                       ["Stress/Anxiety", "Skin Quality", "Anti-inflammatory", "Memory & Cognition",
-                       "Fatigue", "Triglycerides", "Blood Cholesterol"])
-    if omega_goal or omega_claim:
+                       "Fatigue", "Triglycerides", "Blood Cholesterol", "Fullness/Satiety"])
+
+    # Fallback: if questionnaire coverage is incomplete (goals_ranked empty) and any
+    # health claims exist, default to including the softgel — it is safe and broadly beneficial
+    incomplete_questionnaire_fallback = (
+        len(ranked_goals) == 0
+        and len(health_claims.get("supplement_claims", [])) > 0
+    )
+
+    if omega_goal or omega_claim or incomplete_questionnaire_fallback:
         needs.append("omega3")
         reasoning.append(f"Omega-3: {'goal match' if omega_goal else 'health claim match'}")
 
@@ -1092,6 +1104,224 @@ def apply_medication_rules(unified_input: Dict) -> Dict:
         "clinical_flags": clinical_flags,
         "unmatched_medications": unmatched_medications,
     }
+
+
+# ─── CAPSULE UNDERFILL COMPANION SELECTION ────────────────────────────────────
+
+CAPSULE_MAX_MG = 650
+UNDERFILL_THRESHOLD = 0.10  # 10% of capsule capacity
+
+# Labels that are EXCLUDED from underfill check (fixed composition)
+_SKIP_LABELS = {"probiotic hard capsule", "magnesium bisglycinate capsule"}
+
+
+def assess_capsule_underfill(
+    recipe_units: List[Dict],
+    active_health_claims: List[str],
+    substances_to_remove: set = None,
+    existing_components: List[str] = None,
+) -> List[Dict]:
+    """Check all hard capsule units for underfill and propose companion components.
+
+    Runs AFTER capsule layout is built. For any capsule with fill < 10% of
+    capacity (65mg in size 00), searches the supplement KB for a compatible
+    companion component from the same or related health claim category.
+
+    Companion selection rules:
+      1. Same health claim category as primary substance, next KB rank
+      2. If exhausted, expand to other active health claims for this client
+      3. Filter candidates by:
+         a. delivery_constraint allows capsule ("any" or "capsule_only")
+         b. timing_restriction compatible with capsule timing
+         c. Not already present in any formulation unit
+         d. Not in substances_to_remove (medication rules)
+         e. interaction_risk is not "medium" or "high" (conservative)
+         f. Min KB dose fits within remaining capsule space
+      4. If valid candidate found → return as companion proposal
+      5. If no candidate → log warning, leave capsule as-is
+
+    Args:
+        recipe_units:       List of unit dicts from manufacturing recipe
+        active_health_claims: Client's active supplement_claims list
+        substances_to_remove: Set of substance names removed by medication rules
+        existing_components:  List of all component names already in the formula
+
+    Returns:
+        List of companion proposals, each:
+        {
+            "unit_number": int,
+            "unit_label": str,
+            "primary_substance": str,
+            "companion_substance": str,
+            "companion_dose_mg": float,
+            "companion_health_claim": str,
+            "companion_rank": str,
+            "rationale": str,
+        }
+        Empty list if no underfills found or no valid companions available.
+    """
+    substances_to_remove = substances_to_remove or set()
+    existing_components = existing_components or []
+
+    # Normalize existing components for duplicate checking
+    existing_lower = {c.lower().strip() for c in existing_components}
+    removed_lower = {s.lower().strip() for s in substances_to_remove}
+
+    # Load supplement KB
+    kb = _load_kb("supplements_nonvitamins.json")
+    supplements_flat = kb.get("supplements_flat", [])
+
+    proposals = []
+
+    for unit in recipe_units:
+        label = (unit.get("label") or "").lower()
+
+        # Skip non-capsule units and fixed-composition capsules
+        fmt = unit.get("format", {})
+        if fmt.get("type") not in ("hard_capsule",):
+            continue
+        if any(skip in label for skip in _SKIP_LABELS):
+            continue
+
+        # Determine fill weight
+        fill_mg = (
+            unit.get("fill_weight_mg")
+            or unit.get("fill_weight_per_capsule_mg")
+            or unit.get("total_fill_weight_mg")
+            or 0
+        )
+
+        # Check underfill threshold
+        if fill_mg >= UNDERFILL_THRESHOLD * CAPSULE_MAX_MG:
+            continue
+
+        # Identify primary substance(s) and their health claims
+        ingredients = unit.get("ingredients") or []
+        capsule_layout = unit.get("capsule_layout") or []
+
+        primary_substances = []
+        primary_claims = set()
+
+        for ing in ingredients:
+            comp_name = ing.get("component", "")
+            primary_substances.append(comp_name)
+
+            # Look up health claims from KB
+            for supp in supplements_flat:
+                if supp.get("substance", "").lower() == comp_name.lower():
+                    for claim in supp.get("parsed", {}).get("health_claims", []):
+                        primary_claims.add(claim)
+                    break
+
+        # Determine capsule timing context
+        timing = (unit.get("timing") or "morning").lower()
+        is_evening = "evening" in timing
+
+        remaining_mg = CAPSULE_MAX_MG - fill_mg
+
+        # Build candidate list: same claim first, then other active claims
+        claim_search_order = list(primary_claims)
+        for claim in active_health_claims:
+            if claim not in claim_search_order:
+                claim_search_order.append(claim)
+
+        best_candidate = None
+
+        for claim in claim_search_order:
+            # Collect KB supplements for this claim, sorted by rank
+            claim_supps = [
+                s for s in supplements_flat
+                if claim in s.get("parsed", {}).get("health_claims", [])
+            ]
+            claim_supps.sort(key=lambda s: s.get("parsed", {}).get("rank_priority", 99))
+
+            for supp in claim_supps:
+                supp_name = supp.get("substance", "")
+                supp_id = supp.get("id", "")
+                supp_lower = supp_name.lower()
+
+                # Skip if it's the primary substance itself
+                if any(supp_lower == ps.lower() for ps in primary_substances):
+                    continue
+
+                # Skip if already in formula
+                if supp_lower in existing_lower or supp_id.lower() in existing_lower:
+                    continue
+
+                # Skip if removed by medication rules
+                if supp_lower in removed_lower or supp_id in removed_lower:
+                    continue
+
+                # Check delivery constraint
+                delivery = supp.get("delivery_constraint", "any")
+                if delivery not in ("any", "capsule_only"):
+                    continue
+
+                # Check timing compatibility
+                timing_restriction = supp.get("timing_restriction", "any")
+                if is_evening and timing_restriction == "morning_only":
+                    continue
+                if not is_evening and timing_restriction == "evening_only":
+                    continue
+
+                # Check interaction risk (conservative: skip medium+)
+                interaction = supp.get("parsed", {}).get("interaction_level", "low")
+                if interaction in ("medium", "high"):
+                    continue
+
+                # Determine min dose in mg
+                parsed_dose = supp.get("parsed", {}).get("dose", {})
+                dose_unit = parsed_dose.get("unit", "mg")
+                min_dose = parsed_dose.get("min") or parsed_dose.get("value")
+
+                if min_dose is None:
+                    continue
+
+                # Convert g → mg if needed
+                if dose_unit == "g":
+                    min_dose_mg = min_dose * 1000
+                else:
+                    min_dose_mg = min_dose
+
+                # Check if dose fits remaining capsule space
+                if min_dose_mg > remaining_mg:
+                    continue
+
+                # Valid candidate found
+                best_candidate = {
+                    "unit_number": unit.get("unit_number"),
+                    "unit_label": unit.get("label"),
+                    "primary_substance": ", ".join(primary_substances),
+                    "primary_fill_mg": fill_mg,
+                    "companion_substance": supp_name,
+                    "companion_id": supp_id,
+                    "companion_dose_mg": min_dose_mg,
+                    "companion_health_claim": claim,
+                    "companion_rank": supp.get("rank", "?"),
+                    "companion_interaction_risk": supp.get("interaction_risk", "?"),
+                    "rationale": (
+                        f"Capsule under-filled ({fill_mg}mg / {CAPSULE_MAX_MG}mg = "
+                        f"{fill_mg/CAPSULE_MAX_MG*100:.1f}%). "
+                        f"Added {supp_name} ({min_dose_mg}mg) from '{claim}' category "
+                        f"({supp.get('rank', '?')}) to improve capsule utilisation."
+                    ),
+                }
+                break  # Take first valid candidate per claim
+
+            if best_candidate:
+                break  # Stop searching claims once a companion is found
+
+        if best_candidate:
+            proposals.append(best_candidate)
+        elif fill_mg < UNDERFILL_THRESHOLD * CAPSULE_MAX_MG:
+            # Log warning for capsules where no companion could be found
+            print(
+                f"  ⚠️ UNDERFILL WARNING: Unit {unit.get('unit_number')} "
+                f"'{unit.get('label')}' fill={fill_mg}mg ({fill_mg/CAPSULE_MAX_MG*100:.1f}%) — "
+                f"no valid companion found for [{', '.join(primary_substances)}]"
+            )
+
+    return proposals
 
 
 # ─── MAIN RULES ENGINE ───────────────────────────────────────────────────────

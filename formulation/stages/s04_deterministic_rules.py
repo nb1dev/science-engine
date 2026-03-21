@@ -11,7 +11,24 @@ Delegates to rules_engine.py (already clean).
 from pathlib import Path
 
 from ..models import PipelineContext
-from formulation.rules_engine import apply_rules, apply_timing_rules
+from formulation.rules_engine import apply_rules, apply_timing_rules, assess_softgel_needs
+
+# Inferred signal → KB health-claim category name (for supplement_claims merge)
+# These MUST match the category names in supplements_nonvitamins.json exactly.
+INFERRED_SIGNAL_TO_HEALTH_CLAIM = {
+    "stress_anxiety": "Stress/Anxiety",
+    "sleep_quality": "Sleep Quality",
+    "fatigue": "Fatigue",
+    "bowel_function": "Bowel Function",
+    "skin_quality": "Skin Quality",
+    "immune_system": "Infection Susceptibility",
+    "infection_susceptibility": "Infection Susceptibility",
+    "heart_health": "Blood Cholesterol",
+    "weight_management": "Fullness/Satiety",
+    "anti_inflammatory": "Anti-inflammatory",
+    "hormone_balance": None,   # no direct KB category
+    "bone_health": None,       # no direct KB category
+}
 
 # Inferred signal → goal key mapping (for timing engine)
 INFERRED_SIGNAL_TO_GOAL = {
@@ -37,16 +54,20 @@ def run(ctx: PipelineContext) -> PipelineContext:
     rule_outputs = apply_rules(ctx.unified_input)
 
     # Merge inferred health signals into supplement claims
+    # Map raw signal names → KB health-claim category names so the LLM
+    # supplement selection and underfill companion search can match them.
     hc = rule_outputs["health_claims"]
     existing_claims = set(hc.get("supplement_claims", []))
     inferred_to_merge = []
     for sig in ctx.clinical_summary.get("inferred_health_signals", []):
         sig_str = sig.get("signal", sig) if isinstance(sig, dict) else sig
-        if sig_str and sig_str not in existing_claims:
-            inferred_to_merge.append(sig_str)
+        mapped_claim = INFERRED_SIGNAL_TO_HEALTH_CLAIM.get(sig_str)
+        if mapped_claim and mapped_claim not in existing_claims:
+            inferred_to_merge.append(mapped_claim)
+            existing_claims.add(mapped_claim)  # prevent duplicates within inferred set
     if inferred_to_merge:
         hc["supplement_claims"] = hc.get("supplement_claims", []) + inferred_to_merge
-        print(f"  ✅ Merged inferred signals: {inferred_to_merge}")
+        print(f"  ✅ Merged inferred signals → KB claims: {inferred_to_merge}")
 
     # Build effective goals (explicit + inferred)
     q_goals = list(ctx.unified_input["questionnaire"]["goals"].get("ranked", []))
@@ -62,6 +83,24 @@ def run(ctx: PipelineContext) -> PipelineContext:
         "ranked": q_goals,
         "top_goal": ctx.unified_input["questionnaire"]["goals"].get("top_goal", ""),
     }
+
+    # Re-evaluate softgel decision AFTER inferred signals are merged into claims
+    # and effective goals are built. The initial apply_rules() call runs before
+    # inferred signals are available, so softgel can be a false-negative for
+    # clients with incomplete questionnaires whose goals come entirely from inference.
+    updated_softgel = assess_softgel_needs(
+        health_claims=rule_outputs["health_claims"],  # now includes inferred signals
+        medical=ctx.unified_input["questionnaire"]["medical"],
+        lifestyle=ctx.unified_input["questionnaire"]["lifestyle"],
+        goals=ctx.effective_goals,  # now includes inferred goals
+    )
+    if updated_softgel["include_softgel"] != rule_outputs["softgel"]["include_softgel"]:
+        print(
+            f"  🔄 Softgel decision updated after inferred signals merge: "
+            f"{rule_outputs['softgel']['include_softgel']} → {updated_softgel['include_softgel']} "
+            f"(triggers: {updated_softgel['needs_identified']})"
+        )
+        rule_outputs["softgel"] = updated_softgel
 
     # Print summary
     sens = rule_outputs["sensitivity"]

@@ -12,6 +12,7 @@ from typing import Dict
 
 from ..models import PipelineContext
 from formulation.platform_mapping import build_platform_json, build_decision_trace, build_manufacturing_recipe, build_component_rationale
+from formulation.rules_engine import assess_capsule_underfill
 from shared.guild_priority import build_priority_list
 from shared.formatting import sleep_label as _sleep_label
 
@@ -96,11 +97,46 @@ def run(ctx: PipelineContext) -> Dict:
     _save_json(output_dir / f"formulation_master_{ctx.sample_id}.json", master)
     _save_json(output_dir / f"formulation_platform_{ctx.sample_id}.json", platform)
 
-    trace = build_decision_trace(master, trace_events=ctx.trace_events)
+    trace = build_decision_trace(master, trace_events=ctx.trace_events, sample_dir=str(sample_dir))
     _save_json(output_dir / f"decision_trace_{ctx.sample_id}.json", trace)
 
     recipe = build_manufacturing_recipe(master)
+
+    # ── Capsule underfill companion check ────────────────────────────────
+    # Runs after recipe is built. Proposes companions for any capsule with
+    # fill < 10% capacity. Results stored in recipe for downstream review.
+    try:
+        active_claims = ctx.rule_outputs.get("health_claims", {}).get("supplement_claims", [])
+        existing_comps = [
+            comp["substance"]
+            for comp in ctx.component_registry
+        ] if ctx.component_registry else []
+        removed_subs = ctx.medication.substances_to_remove if ctx.medication else set()
+
+        underfill_proposals = assess_capsule_underfill(
+            recipe_units=recipe.get("units", []),
+            active_health_claims=active_claims,
+            substances_to_remove=removed_subs,
+            existing_components=existing_comps,
+        )
+        if underfill_proposals:
+            recipe["underfill_companion_proposals"] = underfill_proposals
+            print(f"  ℹ️  Underfill companions proposed for {len(underfill_proposals)} capsule(s)")
+            for p in underfill_proposals:
+                print(f"      Unit {p['unit_number']} ({p['unit_label']}): "
+                      f"add {p['companion_substance']} {p['companion_dose_mg']}mg")
+    except Exception as e:
+        print(f"  ⚠️ Underfill check failed: {e}")
+
     _save_json(output_dir / f"manufacturing_recipe_{ctx.sample_id}.json", recipe)
+
+    # ── Render manufacturing recipe to MD + PDF ──────────────────────────
+    try:
+        from formulation.recipe_renderer import render_and_save as _render_recipe
+        q_coverage = master.get("questionnaire_coverage")
+        _render_recipe(recipe, ctx.sample_id, str(sample_dir), q_coverage=q_coverage)
+    except Exception as e:
+        print(f"  ⚠️ Recipe MD/PDF render failed: {e}")
 
     rationale = build_component_rationale(master)
     _save_json(output_dir / f"component_rationale_{ctx.sample_id}.json", rationale)
@@ -113,7 +149,7 @@ def run(ctx: PipelineContext) -> Dict:
 
     # ── Generate dashboards ──────────────────────────────────────────────
     try:
-        from formulation.generate_dashboards import generate_dashboards
+        from formulation.dashboard_renderer import generate_dashboards
         generate_dashboards(ctx.sample_id, str(output_dir), str(sample_dir))
     except Exception as e:
         print(f"  ⚠️ Dashboard generation failed: {e}")

@@ -75,9 +75,25 @@ def save_interpretations_json(data: dict, sample_dir: str) -> str:
     # Build a serialisable snapshot — exclude raw analysis/formulation/questionnaire
     # objects (those already live in their own master JSONs).  We store only the
     # derived / LLM-generated layer so the file stays compact.
+    #
+    # Schema v3.0: also persist flat microbiome fields so the cached JSON is
+    # self-contained and generate_html() can render without loading raw files.
     snapshot = {
+        # ── Identity ──────────────────────────────────────────────────────────
         'sample_id': sample_id,
         'generated_at': datetime.now().isoformat(),
+        'schema_version': '3.0',
+        'report_date': data.get('report_date', ''),
+        # ── Microbiome flat fields (v3.0) ─────────────────────────────────────
+        'overall_score': data.get('overall_score', {}),
+        'score_summary': data.get('score_summary', ''),
+        'bacterial_groups': data.get('bacterial_groups', {}),
+        'metabolic_dials': data.get('metabolic_dials', {}),
+        'ecological_metrics': data.get('ecological_metrics', {}),
+        'safety_profile': data.get('safety_profile', {}),
+        'guild_timepoints': data.get('guild_timepoints', []),
+        'protocol_summary': data.get('protocol_summary', {}),
+        # ── LLM / derived layer ───────────────────────────────────────────────
         'profile': data.get('profile', {}),
         'circle_scores': data.get('circle_scores', {}),
         'strengths_challenges': data.get('strengths_challenges', {}),
@@ -88,7 +104,12 @@ def save_interpretations_json(data: dict, sample_dir: str) -> str:
         'root_cause_data': data.get('root_cause_data', {}),
         'cited_papers': data.get('cited_papers', []),
         'lifestyle_recommendations': data.get('lifestyle_recommendations', []),
+        'supplement_why_texts': data.get('supplement_why_texts', {}),
     }
+    # Also snapshot factor-first fields if present in root_cause_data
+    rcd = snapshot.get('root_cause_data', {})
+    if rcd and not rcd.get('factor_cards') and data.get('root_cause_data', {}).get('factor_cards'):
+        snapshot['root_cause_data'] = data['root_cause_data']  # include full rcd with factor_cards
 
     with open(out_path, 'w', encoding='utf-8') as f:
         json.dump(snapshot, f, indent=2, ensure_ascii=False)
@@ -397,8 +418,9 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
     avg_j = score_data.get('details', {}).get('P2', {}).get('avg_guild_J', 0.5)
 
     # Population thresholds (matching thresholds.py fallbacks)
-    SHANNON_HIGH = 3.44  # Q75
-    SHANNON_LOW = 2.79   # Q25
+    SHANNON_HIGH = 3.44  # Q75 — high diversity (strength)
+    SHANNON_MED  = 3.29  # Q50 — median; below this = moderate diversity (challenge)
+    SHANNON_LOW  = 2.79  # Q25 — below this = low diversity (challenge)
     PIELOU_HIGH = 0.76   # Q75
     PIELOU_LOW = 0.66    # Q25
 
@@ -440,11 +462,11 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
             'title': 'High diversity and ecosystem resilience',
             'text': f'Your gut has a rich variety of bacterial species (Shannon {shannon:.2f}, top 25% of population) with strong community balance (Pielou {pielou:.2f}). A diverse, even ecosystem bounces back faster from disruption.',
         })
-    elif shannon >= SHANNON_LOW:
+    elif shannon >= SHANNON_MED:
         strengths.append({
             'icon': '🌱',
             'title': 'Good diversity',
-            'text': f'Your gut shows moderate-to-good species diversity (Shannon {shannon:.2f}). A varied bacterial community provides a more stable and adaptable foundation for gut health.',
+            'text': f'Your gut shows good species diversity (Shannon {shannon:.2f}, above the population median of 3.29). A varied bacterial community provides a more stable and adaptable foundation for gut health.',
         })
 
     # 4. Strong butyrate support
@@ -689,15 +711,27 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
         })
         flagged_area_keys.add('resilience')
 
-    # 8. Low diversity (specifically low state)
-    if div_state == 'low':
+    # 8a. Moderate diversity (Q25–Q50) — new challenge band
+    if SHANNON_LOW <= shannon < SHANNON_MED and 'diversity' not in flagged_area_keys:
+        challenges.append({
+            'icon': '🌿',
+            'title': 'Moderate diversity',
+            'area_key': 'diversity',
+            'area_label': 'microbial diversity',
+            'severity': 'moderate',
+            'text': f'Your species diversity (Shannon {shannon:.2f}) is in the lower half of the normal range — below the population median of 3.29 but above the 25th percentile. Building more diversity over time is a worthwhile goal and one of the indirect benefits of your prebiotic protocol.',
+        })
+        flagged_area_keys.add('diversity')
+
+    # 8b. Low diversity (below Q25)
+    elif shannon < SHANNON_LOW and 'diversity' not in flagged_area_keys:
         challenges.append({
             'icon': '🌵',
             'title': 'Low microbial diversity',
             'area_key': 'diversity',
             'area_label': 'microbial diversity',
             'severity': 'moderate',
-            'text': f'Your species diversity score (Shannon {shannon:.2f}) places you below the 25th percentile. Limited diversity means fewer types of bacteria available to handle different tasks — building diversity is a key long-term goal.',
+            'text': f'Your species diversity score (Shannon {shannon:.2f}) places you below the 25th percentile of the reference population. Limited diversity means fewer types of bacteria available to handle different tasks — building diversity is a key long-term goal.',
         })
         flagged_area_keys.add('diversity')
 
@@ -1041,7 +1075,7 @@ def _check_diversity_match(analysis: dict, match_requires: str) -> bool:
     debug = analysis.get('_debug', {})
     if shannon == 0:
         shannon = debug.get('raw_metrics', {}).get('Shannon', 0) or 0
-    return shannon < 2.8  # Q25 approximate
+    return shannon < 2.79  # Q25 cutoff (matches SHANNON_LOW)
 
 
 # ── Guild client-facing names (for deviation display) ────────────────────────
@@ -1131,9 +1165,9 @@ def _detect_microbiome_deviations(analysis: dict) -> list:
                     ),
                 })
 
-    # Diversity deviation
+    # Diversity deviations — Q25 (low) and Q25–Q50 (moderate)
     shannon = eco.get('diversity', {}).get('shannon', {}).get('value') or raw.get('Shannon') or 0
-    if shannon > 0 and shannon < 2.8:
+    if shannon > 0 and shannon < 2.79:
         deviations.append({
             'key': 'diversity__low',
             'type': 'low_diversity',
@@ -1145,6 +1179,21 @@ def _detect_microbiome_deviations(analysis: dict) -> list:
             'description': (
                 f'Your gut microbial diversity is low (Shannon {shannon:.2f}), '
                 f'placing you below the 25th percentile of the reference population.'
+            ),
+        })
+    elif shannon > 0 and shannon < 3.29:
+        # Moderate diversity: between Q25 and Q50 — below the population median
+        deviations.append({
+            'key': 'diversity__moderate',
+            'type': 'moderate_diversity',
+            'guild_key': None,
+            'client_label': 'Microbial Diversity',
+            'icon': '🌿',
+            'value_str': f'Shannon {shannon:.2f}',
+            'range_str': '> 3.29 (population median)',
+            'description': (
+                f'Your gut microbial diversity (Shannon {shannon:.2f}) is in the lower half of '
+                f'the reference population — below the population median of 3.29.'
             ),
         })
 
@@ -1399,7 +1448,7 @@ def _query_elicit(question: str, api_key: str, n_results: int = 3) -> list:
             headers={
                 'Authorization': f'Bearer {api_key}',
                 'Content-Type': 'application/json',
-                'User-Agent': 'Prebiomics-Report/1.0',
+                'User-Agent': 'NB1Health-Report/1.0',
             },
             method='POST',
         )
@@ -1966,6 +2015,167 @@ Return ONLY the JSON array, no markdown fences or explanation."""
         return _lifestyle_fallback(), []
 
 
+def _call_factor_first_llm(
+    relevant_triggered: list,
+    active_deviations: list,
+    questionnaire_context: dict,
+    factor_guild_impacts: dict,
+    evidence_kb: dict,
+    elicit_papers_flat: list,
+    model_id: str = 'eu.anthropic.claude-sonnet-4-20250514-v1:0',
+    region: str = 'eu-west-1',
+) -> dict:
+    """
+    Generate one focused explanation per contributing factor using Elicit papers.
+
+    Rules:
+    - One paragraph (3-5 sentences) per factor — NOT per guild
+    - Reference client's relevant score where applicable (stress 7/10, sleep 6/10, etc.)
+    - Explain the causal mechanism from the FACTOR's own logic, not from each guild separately
+    - Factor-specific framing:
+        bloating/IBS: frame as the root of the fermentation cascade affecting ALL guilds
+        stress/anxiety: explain gut-brain bidirectionality
+        sleep: explain the SCFA → sleep architecture mechanism
+        low activity: frame as the ONE independent lever that doesn't require breaking other loops
+        antibiotics: one-time disruption with lasting ecology
+        alcohol/smoking/diet: exposure → ecosystem shift
+    - Nuanced but plain language — no jargon, no Latin names, no technical terms
+    - Grounded in Elicit papers where available
+    """
+    try:
+        import boto3
+    except ImportError:
+        return {}
+
+    ctx = questionnaire_context
+    first_name = ctx.get('first_name', 'the client')
+
+    # Build factor blocks — one per relevant triggered domain
+    factor_blocks = []
+    for domain_key, conf in relevant_triggered[:6]:
+        domain_data = evidence_kb.get('domains', {}).get(domain_key, {})
+        label = domain_data.get('domain_label', domain_key)
+        icon = domain_data.get('icon', '🔍')
+        evidence_strength = max(
+            (s.get('evidence_strength', 'weak') for s in domain_data.get('signals', [])),
+            key=lambda x: {'strong': 4, 'moderate': 3, 'weak_to_moderate': 2, 'weak': 1}.get(x, 1),
+            default='weak'
+        )
+
+        # Guilds this factor affects
+        guild_impacts = factor_guild_impacts.get(domain_key, [])
+        guild_summary = '; '.join(
+            f"{g['client_label']} ({g['value_str']}, {g['impact']})"
+            for g in guild_impacts
+        ) if guild_impacts else 'various bacterial imbalances'
+
+        # Best KB text for grounding
+        best_kb = ''
+        for sig in domain_data.get('signals', [])[:2]:
+            t = sig.get('section3_text', {}).get('non_expert', '') or sig.get('mechanism', {}).get('non_expert', '')
+            if t and len(t) > len(best_kb):
+                best_kb = t
+
+        # Relevant Elicit paper abstracts for this domain
+        paper_lines = []
+        for p in elicit_papers_flat[:12]:
+            abstract = p.get('abstract', '')
+            citation = p.get('citation', '')
+            if abstract and len(paper_lines) < 3:
+                paper_lines.append(f"[{citation}]: {abstract[:400]}")
+
+        block = (
+            f"FACTOR: {icon} {label}\n"
+            f"Evidence level: {evidence_strength}\n"
+            f"Guilds affected: {guild_summary}\n"
+            f"KB mechanism: {best_kb[:300]}"
+        )
+        if paper_lines:
+            block += '\nElicit abstracts:\n' + '\n'.join(paper_lines[:2])
+        factor_blocks.append({'domain_key': domain_key, 'block': block, 'label': label, 'icon': icon})
+
+    if not factor_blocks:
+        return {}
+
+    # Client context
+    context_lines = [
+        f"Client: {first_name}, {ctx.get('age', '?')}y, stress {ctx.get('stress_level', '?')}/10, sleep {ctx.get('sleep_quality', '?')}/10",
+        f"Activity: {ctx.get('activity_level', '?')}, vigorous {ctx.get('vigorous_days_per_week', '?')} days/week",
+        f"Diet: {ctx.get('diet_pattern', '?')}, fiber intake: {ctx.get('fiber_intake', '?')}",
+        f"Antibiotics: {', '.join(ctx.get('antibiotics', [])) or 'none'}",
+        f"Alcohol: {ctx.get('alcohol_frequency', '?')}, tobacco: {ctx.get('tobacco_use', '?')}",
+    ]
+    context_str = '\n'.join(context_lines)
+
+    factors_text = '\n\n'.join(b['block'] for b in factor_blocks)
+
+    # Factor-specific framing rules injected into prompt
+    framing_rules = """FRAMING RULES — apply these to the specific factor type:
+- Bloating / IBS / digestive discomfort: Frame as the ROOT of the fermentation cascade. The bloating is both a symptom AND a perpetuating cause. Explain how fermentation disruption suppresses fiber-processing bacteria and creates a substrate vacuum that mucin-degraders fill. All 4 imbalances trace back to this.
+- Chronic stress / anxiety: Explain the gut-brain BIDIRECTIONALITY — stress hormones alter gut pH and motility disadvantaging beneficial bacteria, AND depleted beneficial bacteria reduce the compounds that support brain chemistry. Mention the client's actual stress score.
+- Poor sleep: Explain that short-chain fatty acids (the compounds your beneficial bacteria make) directly cross into the brain and regulate sleep architecture — when butyrate producers are low, this signal drops. Poor sleep then feeds back to suppress the same bacteria overnight. Mention the client's actual sleep score.
+- Low physical activity: Frame this as the ONE INDEPENDENT LEVER that doesn't require breaking the bloating-stress-sleep loop first. Exercise directly increases butyrate producers and diversity via intestinal transit and bile acid changes, working in parallel with other interventions.
+- Antibiotics: Frame as a one-time ecological disruption with long-lasting effects — like a reset that removed the keystone species, allowing opportunistic bacteria to fill the space.
+- Alcohol / smoking / processed foods: Frame as chronic exposure shifting the bacterial ecosystem toward less beneficial communities."""
+
+    prompt = f"""You are writing Section 3 of a personalised gut health report for {first_name}.
+
+The section is called "What is behind this imbalance?" and is now organised by CONTRIBUTING FACTOR rather than by individual bacterial guild.
+
+Your task: Write ONE explanation paragraph (3-5 sentences) for EACH contributing factor listed below.
+
+Each paragraph must:
+1. Reference {first_name}'s relevant score where applicable (e.g. "your stress level of 7/10", "your sleep score of 6/10")
+2. Explain the causal mechanism linking this factor to the SPECIFIC guilds it affects — from the FACTOR'S OWN LOGIC, not guild by guild
+3. Be warm, plain English — no jargon, no Latin, no "microbiota", "dysbiosis", "SCFA" (say "protective compounds your gut makes"), "Lachnospiraceae", etc.
+4. Be grounded in the Elicit research provided — do not invent connections
+5. Be nuanced: the explanation should feel specific to {first_name}, not generic
+
+{framing_rules}
+
+CLIENT CONTEXT:
+{context_str}
+
+CONTRIBUTING FACTORS AND THEIR EVIDENCE:
+{factors_text}
+
+Return ONLY valid JSON, no other text:
+{{
+  "factor_explanations": [
+    {{
+      "domain_key": "<exact domain_key>",
+      "explanation": "<3-5 sentence paragraph for this factor. Plain English. References client's actual scores. Explains causal mechanism covering all guilds this factor affects. Grounded in research. Warm but specific.>"
+    }}
+  ],
+  "section_summary": "<2-3 sentences: the overall causal story across all factors for {first_name}. What converged to create this pattern? What does this mean for recovery? Warm, forward-looking.>",
+  "cited_paper_keys": ["<citation string used>", ...]
+}}"""
+
+    try:
+        client = boto3.client('bedrock-runtime', region_name=region)
+        response = client.invoke_model(
+            modelId=model_id,
+            body=json.dumps({
+                'anthropic_version': 'bedrock-2023-05-31',
+                'max_tokens': 2500,
+                'temperature': 0.5,
+                'messages': [{'role': 'user', 'content': prompt}]
+            }),
+            contentType='application/json',
+            accept='application/json',
+        )
+        result_body = json.loads(response['body'].read())
+        raw_text = result_body['content'][0]['text'].strip()
+        if raw_text.startswith('```'):
+            raw_text = raw_text.split('\n', 1)[1] if '\n' in raw_text else raw_text[3:]
+            if raw_text.endswith('```'):
+                raw_text = raw_text[:-3]
+        return json.loads(raw_text)
+    except Exception as e:
+        logger.warning(f"Factor-first LLM call failed: {e}")
+        return {}
+
+
 def build_root_cause_section(questionnaire: dict, analysis: dict,
                               no_llm: bool = False,
                               model_id: str = 'eu.anthropic.claude-sonnet-4-20250514-v1:0',
@@ -2242,11 +2452,178 @@ def build_root_cause_section(questionnaire: dict, analysis: dict,
             'summary_text': domain_data.get('root_cause_summary', {}).get('non_expert', ''),
         })
 
+    # ── Step 8: Factor-first data (new Section 3 layout) ─────────────────
+    # Per-guild severity — replaces flat _impact_map.
+    # Logic mirrors the severity already used in compute_strengths_challenges():
+    #   - Mucin Degraders elevated (above range) → crit  (barrier erosion — worst)
+    #   - Proteolytic elevated (above range)     → high  (inflammatory pressure)
+    #   - Beneficial guild absent (0%)           → crit  (complete functional gap)
+    #   - Beneficial guild below range           → low   (reduced, recoverable)
+    #   - Low diversity                          → crit  (ecosystem fragility)
+    #   - Metabolic dial deviation (sluggish / heavy_mucus / protein_pressure)
+    #       heavy_mucus  → crit  (barrier under active pressure)
+    #       protein_pressure → high
+    #       sluggish_fermentation → high
+    def _deviation_severity(dev: dict) -> str:
+        guild = dev.get('guild_key', '') or ''
+        dtype = dev.get('type', '')
+        val_str = dev.get('value_str', '')
+        dev_key = dev.get('key', '')
+
+        if dtype == 'low_diversity':
+            return 'crit'
+
+        if dtype == 'above_range':
+            g = guild.lower()
+            if 'mucin' in g or 'mucus' in dev_key.lower():
+                return 'crit'   # Mucin Degraders elevated → worst
+            if 'heavy_mucus' in dev_key:
+                return 'crit'
+            if 'protein_pressure' in dev_key:
+                return 'high'
+            if 'proteolytic' in g:
+                return 'high'
+            return 'high'       # any other above-range → amber
+
+        if dtype == 'below_range':
+            if val_str == 'Absent' or val_str == '0.0%' or val_str == '0%':
+                return 'crit'   # complete absence → dark red
+            if 'sluggish' in dev_key:
+                return 'high'
+            return 'low'        # below range but present → red
+
+        return 'low'
+
+    factor_guild_impacts = {}
+    for domain_key, _ in relevant_triggered:
+        impacts = []
+        for dev in active_deviations:
+            dev_key_full = dev.get('key', '')
+            if dev_key_full in domain_explains.get(domain_key, set()):
+                impacts.append({
+                    'client_label': dev.get('client_label', ''),
+                    'value_str': dev.get('value_str', ''),
+                    'impact': _deviation_severity(dev),
+                })
+        factor_guild_impacts[domain_key] = impacts
+
+    # Sort relevant_triggered by guilds_affected_count DESC (breadth ordering)
+    relevant_triggered_sorted = sorted(
+        relevant_triggered,
+        key=lambda x: -len(factor_guild_impacts.get(x[0], [])),
+    )
+
+    # Call factor-first LLM (Elicit-enriched, one paragraph per factor)
+    factor_llm_result = {}
+    if not no_llm and relevant_triggered_sorted and elicit_papers_flat:
+        logger.info(f"  Calling factor-first LLM ({len(relevant_triggered_sorted)} factors)...")
+        factor_llm_result = _call_factor_first_llm(
+            relevant_triggered=relevant_triggered_sorted,
+            active_deviations=active_deviations,
+            questionnaire_context=questionnaire_context,
+            factor_guild_impacts=factor_guild_impacts,
+            evidence_kb=evidence_kb,
+            elicit_papers_flat=elicit_papers_flat,
+            model_id=model_id,
+            region=region,
+        )
+        if factor_llm_result:
+            logger.info(f"  Factor-first LLM: {len(factor_llm_result.get('factor_explanations', []))} factor explanations")
+
+    # Update section_summary from factor-first if richer
+    if factor_llm_result.get('section_summary'):
+        section_summary = factor_llm_result['section_summary']
+
+    # Merge factor_llm_result into cited_paper_keys
+    for ck in factor_llm_result.get('cited_paper_keys', []):
+        if ck not in cited_paper_keys:
+            cited_paper_keys.append(ck)
+
+    # Build factor_cards (one per relevant factor, sorted breadth-first)
+    _ev_str_map = {'strong': 'Well established', 'moderate': 'Research supported',
+                   'weak_to_moderate': 'Emerging research', 'weak': 'Emerging research'}
+    factor_expl_lookup = {
+        fe['domain_key']: fe['explanation']
+        for fe in factor_llm_result.get('factor_explanations', [])
+        if fe.get('domain_key') and fe.get('explanation')
+    }
+    factor_cards = []
+    for domain_key, conf in relevant_triggered_sorted:
+        domain_data = domains_evidence.get(domain_key, {})
+        best_strength = max(
+            (_ev_strength_scores.get(s.get('evidence_strength', 'weak'), 1)
+             for s in domain_data.get('signals', [])),
+            default=1
+        )
+        ev_key = {4: 'strong', 3: 'moderate', 2: 'weak_to_moderate', 1: 'weak'}.get(best_strength, 'weak')
+        guild_impacts = factor_guild_impacts.get(domain_key, [])
+        explanation = factor_expl_lookup.get(domain_key, '')
+        if not explanation:
+            # Fall back to KB text
+            for sig in domain_data.get('signals', [])[:1]:
+                explanation = sig.get('section3_text', {}).get('non_expert', '') or sig.get('mechanism', {}).get('non_expert', '')
+        factor_cards.append({
+            'domain_key': domain_key,
+            'icon': domain_data.get('icon', '🔍'),
+            'label': domain_data.get('domain_label', domain_key),
+            'subtitle': f"Affects {len(guild_impacts)} bacterial imbalance{'s' if len(guild_impacts) != 1 else ''}",
+            'evidence_label': _ev_str_map.get(ev_key, 'Emerging research'),
+            'evidence_strength': ev_key,
+            'guilds_affected_count': len(guild_impacts),
+            'guild_impacts': guild_impacts,
+            'explanation': explanation,
+            'directionality': domain_data.get('directionality', 'driver'),
+        })
+
+    # Build cascade_guilds (guild → driving factors emoji shorthand)
+    # Invert factor_guild_impacts: guild_client_label → [factor emojis]
+    guild_factor_map: dict = {}
+    for domain_key, impacts in factor_guild_impacts.items():
+        domain_data = domains_evidence.get(domain_key, {})
+        icon = domain_data.get('icon', '🔍')
+        for g in impacts:
+            lbl = g['client_label']
+            if lbl not in guild_factor_map:
+                guild_factor_map[lbl] = {'value_str': g['value_str'], 'impact': g['impact'], 'icons': []}
+            guild_factor_map[lbl]['icons'].append(icon)
+
+    cascade_guilds = [
+        {
+            'client_label': lbl,
+            'value_str': info['value_str'],
+            'impact': info['impact'],
+            'driving_factor_emojis': info['icons'],
+        }
+        for lbl, info in guild_factor_map.items()
+    ]
+
+    # Build metrics_strip — top N active deviations for the metrics strip at top of section
+    # Sort by severity so the worst always appear first
+    _sev_order = {'crit': 0, 'high': 1, 'low': 2}
+    sorted_devs = sorted(active_deviations, key=lambda d: _sev_order.get(_deviation_severity(d), 2))
+    metrics_strip = []
+    for dev in sorted_devs[:4]:
+        metrics_strip.append({
+            'client_label': dev.get('client_label', ''),
+            'value_str': dev.get('value_str', ''),
+            'range_str': dev.get('range_str', ''),
+            'impact': _deviation_severity(dev),
+            'icon': dev.get('icon', '🔬'),
+        })
+
+    # Update cited_papers with factor-first keys
+    all_paper_keys = set(cited_paper_keys)
+    cited_papers = [p for p in elicit_papers_flat if p.get('citation') in all_paper_keys]
+
     return {
         'deviation_cards': deviation_cards,
         'awareness_chips': awareness_chips[:6],
         'section_summary': section_summary,
         'cited_papers': cited_papers,
+        # Factor-first data (new Section 3 layout)
+        'factor_cards': factor_cards,
+        'cascade_guilds': cascade_guilds,
+        'metrics_strip': metrics_strip,
     }
 
 
@@ -2363,6 +2740,194 @@ def build_timeline_phases(analysis: dict, formulation: dict) -> list:
     ]
 
     return phases
+
+
+# ════════════════════════════════════════════════════════════════════════════════
+#  LLM — SUPPLEMENT WHY TEXTS (per delivery unit, from decision trace)
+# ════════════════════════════════════════════════════════════════════════════════
+
+def _generate_supplement_why_texts(
+    formulation: dict,
+    profile: dict,
+    active_deviations: list,
+    model_id: str = 'eu.anthropic.claude-sonnet-4-20250514-v1:0',
+    region: str = 'eu-west-1',
+) -> dict:
+    """
+    Generate personalised "Why you're taking it" text for each delivery unit.
+
+    Reads the decision trace from component_registry (substance + what_it_targets +
+    based_on per component, grouped by delivery unit) and asks Claude to write
+    one 2-sentence plain-English summary per unit.
+
+    Returns dict: {delivery_format_key: "text"} — empty dict on any failure.
+    Stored in interpretations JSON and read by build_supplement_cards().
+    """
+    if not formulation:
+        return {}
+
+    try:
+        import boto3
+    except ImportError:
+        logger.warning("boto3 not available — skipping supplement why-text generation")
+        return {}
+
+    # ── Step 1: Group component_registry by delivery unit ─────────────────
+    from collections import defaultdict
+    registry = formulation.get('component_registry', [])
+    f = formulation.get('formulation', {})
+    unit_keys = sorted(
+        [k for k in f.keys() if k.startswith('delivery_format_') and isinstance(f[k], dict)],
+        key=lambda k: k
+    )
+
+    # Map delivery label → format key (component_registry uses short labels like "probiotic capsule")
+    DELIVERY_LABEL_TO_KEY = {
+        'probiotic capsule': 'delivery_format_1_probiotic_capsule',
+        'softgel': 'delivery_format_2_omega_softgels',
+        'sachet': 'delivery_format_3_daily_sachet',
+        'powder': 'delivery_format_3_powder_jar',
+        'morning wellness capsule': 'delivery_format_4_morning_wellness_capsules',
+        'morning capsule': 'delivery_format_4_morning_wellness_capsules',
+        'evening wellness capsule': 'delivery_format_5_evening_wellness_capsules',
+        'evening capsule': 'delivery_format_4_evening_capsule',
+        'polyphenol capsule': 'delivery_format_6_polyphenol_capsule',
+        'polyphenol': 'delivery_format_6_polyphenol_capsule',
+    }
+
+    # Build reverse map: actual unit key → display name
+    DISPLAY_NAMES = {
+        'delivery_format_1_probiotic_capsule': 'Probiotic Capsule',
+        'delivery_format_2_omega_softgels': 'Omega & Antioxidant Softgel',
+        'delivery_format_3_daily_sachet': 'Daily Prebiotic Sachet',
+        'delivery_format_3_powder_jar': 'Daily Prebiotic Powder',
+        'delivery_format_4_morning_wellness_capsules': 'Morning Wellness Capsule',
+        'delivery_format_4_evening_capsule': 'Evening Wellness Capsule',
+        'delivery_format_5_evening_wellness_capsules': 'Evening Wellness Capsule',
+        'delivery_format_5_polyphenol_capsule': 'Polyphenol Capsule',
+        'delivery_format_6_polyphenol_capsule': 'Polyphenol Capsule',
+    }
+
+    # Group components by unit key
+    by_unit: dict = defaultdict(list)
+    for comp in registry:
+        delivery_raw = (comp.get('delivery', '') or '').lower().strip()
+        # Try exact and partial match to delivery label map
+        matched_key = None
+        for label, key in DELIVERY_LABEL_TO_KEY.items():
+            if label in delivery_raw or delivery_raw in label:
+                matched_key = key
+                break
+        if matched_key and matched_key in unit_keys:
+            by_unit[matched_key].append(comp)
+
+    # Ensure all unit keys are represented (even if no registry match)
+    for uk in unit_keys:
+        if uk not in by_unit:
+            by_unit[uk] = []
+
+    # ── Step 2: Build ingredient table per unit ───────────────────────────
+    first_name = profile.get('first_name', 'the client')
+    goals = ', '.join(profile.get('goals', [])) or 'general wellbeing'
+    dev_summary = '; '.join(
+        f"{d.get('client_label','')} ({d.get('value_str','')})"
+        for d in active_deviations[:4]
+        if isinstance(d, dict) and d.get('client_label')
+    ) or 'no specific deviations'
+
+    unit_blocks = []
+    for uk in unit_keys:
+        comps = by_unit.get(uk, [])
+        unit_name = DISPLAY_NAMES.get(uk, uk.replace('_', ' ').title())
+
+        # Also pull from unit components directly if registry match was sparse
+        unit_data = f.get(uk, {})
+        direct_comps = unit_data.get('components', unit_data.get('components_per_softgel', []))
+
+        lines = []
+        for c in comps[:10]:
+            substance = c.get('substance', '')
+            targets = c.get('what_it_targets', '') or ', '.join(c.get('health_claims', []))
+            based_on = c.get('based_on', '')
+            if substance:
+                lines.append(f"  - {substance}: targets={targets} | reason={based_on[:80]}")
+
+        # Fallback: use direct component rationales if registry was empty
+        if not lines and direct_comps:
+            for c in direct_comps[:8]:
+                substance = c.get('substance', '')
+                rationale = c.get('rationale', '')
+                if substance and rationale:
+                    lines.append(f"  - {substance}: {rationale[:100]}")
+
+        if lines:
+            block = f"{unit_name} (key: {uk}):\n" + '\n'.join(lines)
+        else:
+            block = f"{unit_name} (key: {uk}): [no component detail available]"
+        unit_blocks.append(block)
+
+    if not unit_blocks:
+        return {}
+
+    # ── Step 3: Single LLM call ───────────────────────────────────────────
+    prompt = f"""You are writing the "Why you're taking it" text for each supplement unit in a personalised health report.
+
+Client: {first_name}
+Health goals: {goals}
+Key microbiome findings: {dev_summary}
+
+For EACH supplement unit below, write exactly 2 warm, plain-English sentences explaining:
+1. What this unit collectively does (not ingredient by ingredient)
+2. Why it's specifically relevant for this client given their goals and microbiome findings
+
+Rules:
+- No Latin names, no ingredient names unless they are very familiar (e.g. "Omega-3", "Vitamin C")
+- No jargon — say "gut bacteria" not "microbiota", "protective compounds" not "SCFAs"
+- Start with the collective purpose of the unit, not "This unit contains..."
+- Reference the client's specific goal or finding where relevant
+- Keep each answer to 2 sentences, max 50 words total per unit
+
+SUPPLEMENT UNITS:
+{chr(10).join(unit_blocks)}
+
+Return ONLY valid JSON, no other text:
+{{
+  "delivery_format_1_probiotic_capsule": "<2 sentences>",
+  "delivery_format_2_omega_softgels": "<2 sentences>",
+  "<other_unit_key>": "<2 sentences>",
+  ...
+}}
+
+Include exactly the keys listed in SUPPLEMENT UNITS above (use the exact key string in parentheses).
+If a unit has no component detail, write a brief generic sentence about what that type of unit typically does."""
+
+    try:
+        client = boto3.client('bedrock-runtime', region_name=region)
+        response = client.invoke_model(
+            modelId=model_id,
+            body=json.dumps({
+                'anthropic_version': 'bedrock-2023-05-31',
+                'max_tokens': 800,
+                'temperature': 0.4,
+                'messages': [{'role': 'user', 'content': prompt}]
+            }),
+            contentType='application/json',
+            accept='application/json',
+        )
+        result_body = json.loads(response['body'].read())
+        raw_text = result_body['content'][0]['text'].strip()
+        if raw_text.startswith('```'):
+            raw_text = raw_text.split('\n', 1)[1] if '\n' in raw_text else raw_text[3:]
+            if raw_text.endswith('```'):
+                raw_text = raw_text[:-3]
+        parsed = json.loads(raw_text)
+        if isinstance(parsed, dict):
+            # Filter to only valid unit keys
+            return {k: v for k, v in parsed.items() if k in unit_keys and isinstance(v, str) and v.strip()}
+        return {}
+    except Exception as e:
+        logger.warning(f"Supplement why-text LLM call failed: {e}")
+        return {}
 
 
 # ════════════════════════════════════════════════════════════════════════════════
@@ -2500,6 +3065,43 @@ def build_supplement_cards(formulation: dict, analysis: dict) -> list:
                 if r:
                     reasons.append(r)
             why_text = ' '.join(reasons[:2]) if reasons else 'Evening botanical support targets the specific areas flagged in your lifestyle questionnaire, timed to work with your body\'s natural rest-and-repair cycle.'
+        elif uk == 'delivery_format_3_powder_jar':
+            strat = formulation.get('decisions', {}).get('prebiotic_design', {}).get('strategy', '')
+            if strat:
+                sentences = strat.split('. ')
+                why_text = '. '.join(sentences[:2]) + '.'
+            else:
+                why_text = 'The prebiotic powder selectively feeds the beneficial bacteria your microbiome analysis identified as needing support, while delivering the micronutrients flagged in your questionnaire.'
+        elif uk == 'delivery_format_4_morning_wellness_capsules':
+            reasons = []
+            for c in unit.get('components', []):
+                r = c.get('rationale', '')
+                if r:
+                    reasons.append(r)
+            why_text = ' '.join(reasons[:2]) if reasons else 'Morning botanical and micronutrient support is targeted to the specific immune, energy, and metabolic needs identified in your profile and microbiome results.'
+        elif uk == 'delivery_format_5_evening_wellness_capsules':
+            reasons = []
+            for c in unit.get('components', []):
+                r = c.get('rationale', '')
+                if r:
+                    reasons.append(r)
+            why_text = ' '.join(reasons[:2]) if reasons else 'Evening botanical support targets the specific areas flagged in your lifestyle questionnaire, timed to work with your body\'s natural rest-and-repair cycle.'
+        elif uk == 'delivery_format_6_polyphenol_capsule':
+            reasons = []
+            for c in unit.get('components', []):
+                r = c.get('rationale', '')
+                if r:
+                    reasons.append(r)
+            why_text = ' '.join(reasons[:2]) if reasons else 'Concentrated plant compounds that selectively modulate the gut bacteria flagged in your analysis, reducing inflammatory byproducts and supporting ecosystem rebalancing.'
+
+        # ── Universal fallback: any unrecognised unit key ──────────────────────
+        if not why_text:
+            reasons = []
+            for c in unit.get('components', []):
+                r = c.get('rationale', '')
+                if r:
+                    reasons.append(r)
+            why_text = ' '.join(reasons[:2]) if reasons else f'{DISPLAY_NAMES.get(uk, "This supplement unit")} is included based on your specific microbiome results and health questionnaire.'
 
         # What it supports — derive from component health claims
         supports = set()
@@ -2600,6 +3202,24 @@ def build_goal_cards(questionnaire: dict, formulation: dict, analysis: dict) -> 
             'mechanism': 'Bowel regularity is closely regulated by the gut microbiome through motility signalling, butyrate effects on colon muscle tone, and serotonin production by gut bacteria. A more balanced bacterial community usually produces more consistent bowel patterns.',
             'formula_link': 'Your formula targets this through resistant starch and PHGG in the sachet (proven effects on bowel regularity and stool consistency), the probiotic mix (strains selected for motility support), and the overall shift toward a more butyrate-rich fermentation environment.',
         },
+        'boost_energy_reduce_fatigue': {
+            'emoji': '⚡',
+            'title': 'Boost energy and reduce fatigue',
+            'mechanism': 'The gut microbiome influences energy through multiple pathways: butyrate fuels colonocytes and regulates metabolism, B-vitamins produced by gut bacteria support cellular energy production, and inflammatory load from a disrupted microbiome creates systemic fatigue. A well-balanced gut is the foundation of sustained energy.',
+            'formula_link': 'Your formula targets this through B12 and Folate (essential for energy metabolism), Omega-3 (mitochondrial membrane support), the probiotic and prebiotic blend (restores butyrate production and reduces inflammatory drain on energy), and adaptogenic support to address the stress-fatigue axis.',
+        },
+        'general_wellness_healthy_aging': {
+            'emoji': '🌿',
+            'title': 'General wellness and healthy ageing',
+            'mechanism': 'A balanced, resilient gut microbiome is one of the most consistent predictors of healthy ageing across populations. Gut bacteria influence inflammation, metabolic function, immune competence, and even cognitive health — all of which are central to long-term vitality.',
+            'formula_link': 'Your formula is designed holistically — the probiotic mix, prebiotic blend, Omega-3, antioxidant support, and targeted nutrients all work together to create the conditions your gut needs to support systemic health over the long term.',
+        },
+        'longevity_healthy_aging': {
+            'emoji': '🌿',
+            'title': 'Longevity and healthy ageing',
+            'mechanism': 'A balanced, resilient gut microbiome is one of the most consistent predictors of healthy ageing across populations. Gut bacteria influence inflammation, metabolic function, immune competence, and even cognitive health — all of which are central to long-term vitality.',
+            'formula_link': 'Your formula is designed holistically — the probiotic mix, prebiotic blend, Omega-3, antioxidant support, and targeted nutrients all work together to create the conditions your gut needs to support systemic health over the long term.',
+        },
         'other': {
             'emoji': '🎯',
             'title': 'Your personal health goal',
@@ -2615,21 +3235,65 @@ def build_goal_cards(questionnaire: dict, formulation: dict, analysis: dict) -> 
     goals_raw = qdata.get('step_1', {}).get('goals', {}).get('main_goals_ranked', [])
     other_detail = qdata.get('step_1', {}).get('goals', {}).get('other_goal_details', '')
 
+    stated_goal_keys = set(goals_raw[:4])
     cards = []
-    for g in goals_raw[:4]:  # max 4 goals
+    for g in goals_raw[:4]:  # max 4 stated goals
         details = GOAL_DETAILS.get(g, GOAL_DETAILS['other']).copy()
         if g == 'other' and other_detail:
             details['title'] = other_detail
-
-        # Check if formula has relevant components
-        formula_link = details['formula_link']
 
         cards.append({
             'emoji': details['emoji'],
             'title': details['title'],
             'mechanism': details['mechanism'],
-            'formula_link': formula_link,
+            'formula_link': details['formula_link'],
+            'inferred': False,
         })
+
+    # ── Inferred goals from formulation health claims ────────────────────────
+    # Scan all components in the registry for health_claims strings
+    # and map them to goal keys not already stated by the client.
+    CLAIM_TO_GOAL = {
+        'Stress/Anxiety':    'improve_mood_reduce_anxiety',
+        'Sleep Quality':     'improve_sleep_quality',
+        'Immune Resilience': 'strengthen_immune_resilience',
+        'Fatigue':           'boost_energy_reduce_fatigue',
+        'Digestive Comfort': 'improve_digestive_comfort',
+        'Mood':              'improve_mood_reduce_anxiety',
+        'Energy':            'improve_energy_levels',
+        'Bowel Regularity':  'improve_bowel_regularity',
+        'Metabolic Health':  'metabolic_support',
+    }
+
+    if formulation and len(cards) < 4:
+        inferred_claims: set = set()
+        for comp in formulation.get('component_registry', []):
+            for hc in comp.get('health_claims', []):
+                inferred_claims.add(hc)
+
+        for claim, gkey in CLAIM_TO_GOAL.items():
+            if len(cards) >= 4:
+                break
+            if claim not in inferred_claims:
+                continue
+            if gkey in stated_goal_keys:
+                continue
+            # Avoid duplicating already-inferred keys
+            if any(c.get('_goal_key') == gkey for c in cards):
+                continue
+            details = GOAL_DETAILS.get(gkey, GOAL_DETAILS['other']).copy()
+            cards.append({
+                'emoji': details['emoji'],
+                'title': details['title'],
+                'mechanism': details['mechanism'],
+                'formula_link': details['formula_link'],
+                'inferred': True,         # renders a subtle tag in HTML
+                '_goal_key': gkey,        # internal dedup key (stripped before render)
+            })
+
+    # Strip internal dedup key before returning
+    for c in cards:
+        c.pop('_goal_key', None)
 
     return cards
 
@@ -2878,14 +3542,11 @@ def generate_html(data: dict) -> str:
                 break
 
         if gtype == 'beneficial':
-            if abund == 0 or ('Below range' in status and abund < r_min * 0.5):
+            if abund == 0 or 'Below range' in status:
+                # All below-range beneficial guilds → red (critical), not blue
                 bar_class = 'critical'
                 badge_class = 'badge-critical'
-                badge_text = f'⚠ Critical · {abund:.1f}%'
-            elif 'Below range' in status:
-                bar_class = 'below'
-                badge_class = 'badge-below'
-                badge_text = f'↓ Low · {abund:.1f}%'
+                badge_text = 'Absent' if abund == 0 else f'⚠ Below range · {abund:.1f}%'
             elif 'Above range' in status:
                 bar_class = 'above'
                 badge_class = 'badge-above'
@@ -3328,6 +3989,57 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
 .gbar-note {{ font-size:12px; color:var(--mid); line-height:1.5; }}
 .pathway-svg-wrap {{ position:relative; }}
 .callout {{ padding:14px 18px; border-radius:10px; border-left:3px solid var(--blue); font-size:13px; line-height:1.7; color:var(--mid); }}
+
+/* ── SECTION 3: FACTOR-FIRST layout ── */
+/* Metrics strip */
+.metrics-strip {{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:32px; }}
+.ms-card {{ flex:1; min-width:160px; background:var(--warm); border:1px solid var(--rule); border-radius:10px; padding:14px 16px; display:flex; gap:12px; align-items:center; }}
+.ms-card.ms-low {{ background:var(--red-lt); border-color:rgba(194,75,58,.25); }}
+.ms-card.ms-high {{ background:var(--amber-lt); border-color:rgba(201,124,42,.25); }}
+.ms-card.ms-crit {{ background:var(--red-lt); border-color:rgba(194,75,58,.35); }}
+.ms-icon {{ font-size:22px; flex-shrink:0; }}
+.ms-meta {{ min-width:0; }}
+.ms-label {{ font-size:11px; font-weight:600; color:var(--dark); }}
+.ms-value {{ font-size:13px; font-weight:700; color:var(--red); margin:2px 0; }}
+.ms-card.ms-high .ms-value {{ color:var(--amber); }}
+.ms-range {{ font-size:10px; color:var(--soft); }}
+/* Factor cards */
+.fc-cards {{ display:flex; flex-direction:column; gap:14px; margin-bottom:36px; }}
+.fc-card {{ background:var(--warm); border:1px solid var(--rule); border-radius:12px; overflow:hidden; animation:fadeUp .5s ease both; }}
+.fc-card:nth-child(1){{animation-delay:.05s}} .fc-card:nth-child(2){{animation-delay:.1s}}
+.fc-card:nth-child(3){{animation-delay:.15s}} .fc-card:nth-child(4){{animation-delay:.2s}}
+.fc-header {{ display:flex; align-items:flex-start; gap:12px; padding:16px 18px 14px; }}
+.fc-icon {{ font-size:24px; flex-shrink:0; margin-top:2px; }}
+.fc-meta {{ flex:1; min-width:0; }}
+.fc-label {{ font-size:14px; font-weight:700; color:var(--dark); line-height:1.3; }}
+.fc-subtitle {{ font-size:11px; color:var(--soft); margin-top:2px; }}
+.fc-ev-badge {{ font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:white; padding:3px 9px; border-radius:20px; white-space:nowrap; flex-shrink:0; margin-top:3px; }}
+.fc-guild-dots {{ display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }}
+.fc-dot {{ font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px; white-space:nowrap; color:white; }}
+.fc-dot-low {{ background:var(--red); }}
+.fc-dot-high {{ background:var(--amber); }}
+.fc-dot-crit {{ background:var(--red); }}
+.fc-body {{ padding:4px 18px 16px; border-top:1px solid var(--rule); }}
+.fc-text {{ font-size:13px; color:var(--mid); line-height:1.8; margin-top:12px; }}
+.fc-scope {{ display:inline-block; font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); margin-top:10px; }}
+/* Cascade diagram */
+.cascade-section {{ margin-bottom:32px; }}
+.cascade-label {{ font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:var(--soft); margin-bottom:16px; display:flex; align-items:center; gap:10px; }}
+.cascade-label::after {{ content:''; flex:1; height:1px; background:var(--rule); }}
+.cascade-diag {{ display:flex; gap:0; align-items:stretch; }}
+.casc-left {{ display:flex; flex-direction:column; gap:8px; min-width:180px; padding-right:16px; }}
+.casc-right {{ display:flex; flex-direction:column; gap:8px; flex:1; padding-left:16px; border-left:1px solid var(--rule); }}
+.casc-arrow {{ display:flex; align-items:center; padding:0 8px; color:var(--soft); font-size:20px; align-self:center; }}
+.casc-factor-pill {{ background:var(--sand); border:1px solid var(--rule); border-radius:8px; padding:8px 12px; display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--mid); }}
+.casc-guild-pill {{ border-radius:8px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px; }}
+.casc-guild-pill.gp-low {{ background:var(--red-lt); border:1px solid rgba(194,75,58,.2); }}
+.casc-guild-pill.gp-high {{ background:var(--amber-lt); border:1px solid rgba(201,124,42,.2); }}
+.casc-guild-pill.gp-crit {{ background:var(--red-lt); border:1px solid rgba(194,75,58,.3); }}
+.cgp-label {{ font-size:12px; font-weight:600; color:var(--dark); }}
+.cgp-value {{ font-size:11px; color:var(--soft); }}
+.cgp-emojis {{ font-size:14px; }}
+/* Goal card — inferred tag */
+.goal-inferred-tag {{ display:inline-block; font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--purple); background:var(--purple-lt); border:1px solid rgba(107,94,168,.2); border-radius:20px; padding:2px 9px; margin-bottom:10px; }}
 </style>
 </head>
 <body>
@@ -3348,7 +4060,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
   <div class="cover-blob2"></div>
 
   <div class="cover-top">
-    <div class="cover-brand">Prebiomics · Microbiome Health</div>
+    <div class="cover-brand">NB1 Health · Microbiome Health</div>
     <div class="cover-tag">Personalised Report · {_esc(report_date_display)}</div>
   </div>
 
@@ -3862,17 +4574,111 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
 
     has_any = bool(deviation_cards or awareness_chips)
 
-    # ── Deviation cards ───────────────────────────────────────────────────────
-    if deviation_cards:
-        # Section summary (above all cards) — from LLM narrative path
-        section_summary_html = root_cause_data.get('section_summary', '')
+    # ── Factor-first layout (new Section 3 design) ────────────────────────────
+    factor_cards = root_cause_data.get('factor_cards', [])
+    metrics_strip = root_cause_data.get('metrics_strip', [])
+    cascade_guilds = root_cause_data.get('cascade_guilds', [])
+    section_summary_html = root_cause_data.get('section_summary', '')
+
+    def _ev_label_css(evidence_label: str) -> str:
+        if evidence_label == 'Well established': return 'ev-label-established'
+        if evidence_label == 'Research supported': return 'ev-label-supported'
+        return 'ev-label-emerging'
+
+    if factor_cards:
+        # ── Section summary ────────────────────────────────────────────────
         if section_summary_html:
             parts.append(f'''  <div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:16px 22px;margin-bottom:32px;font-size:14px;color:var(--mid);line-height:1.8;">
     {_esc(section_summary_html)}
   </div>
 ''')
+        # ── Metrics strip ───────────────────────────────────────────────────
+        if metrics_strip:
+            parts.append('  <div class="metrics-strip">\n')
+            for ms in metrics_strip:
+                ms_cls = {'low': 'ms-low', 'high': 'ms-high', 'crit': 'ms-crit'}.get(ms.get('impact', 'low'), 'ms-low')
+                parts.append(f'''    <div class="ms-card {ms_cls}">
+      <span class="ms-icon">{ms.get("icon", "🔬")}</span>
+      <div class="ms-meta">
+        <div class="ms-label">{_esc(ms.get("client_label", ""))}</div>
+        <div class="ms-value">{_esc(ms.get("value_str", ""))}</div>
+        <div class="ms-range">Target: {_esc(ms.get("range_str", ""))}</div>
+      </div>
+    </div>
+''')
+            parts.append('  </div>\n')
 
+        # ── Factor cards ────────────────────────────────────────────────────
+        parts.append('  <div class="fc-cards">\n')
+        for fc in factor_cards:
+            ev_css = _ev_label_css(fc.get('evidence_label', 'Emerging research'))
+            guild_impacts = fc.get('guild_impacts', [])
+            explanation = fc.get('explanation', '')
+            n_guilds = fc.get('guilds_affected_count', len(guild_impacts))
+            parts.append(f'''    <div class="fc-card">
+      <div class="fc-header">
+        <span class="fc-icon">{fc.get("icon", "🔍")}</span>
+        <div class="fc-meta">
+          <div class="fc-label">{_esc(fc.get("label", ""))}</div>
+          <div class="fc-subtitle">{_esc(fc.get("subtitle", ""))}</div>
+          <div class="fc-guild-dots">
+''')
+            for gi in guild_impacts:
+                dot_cls = {'low': 'fc-dot-low', 'high': 'fc-dot-high', 'crit': 'fc-dot-crit'}.get(gi.get('impact', 'low'), 'fc-dot-low')
+                parts.append(f'            <span class="fc-dot {dot_cls}">{_esc(gi.get("client_label", ""))}</span>\n')
+            parts.append(f'''          </div>
+        </div>
+        <span class="fc-ev-badge {ev_css}">{_esc(fc.get("evidence_label", "Emerging research"))}</span>
+      </div>
+''')
+            if explanation:
+                parts.append(f'''      <div class="fc-body">
+        <div class="fc-text">{_esc(explanation)}</div>
+        <span class="fc-scope">{n_guilds} / 4 guilds affected</span>
+      </div>
+''')
+            parts.append('    </div>\n')
+        parts.append('  </div>\n')
+
+        # ── Cascade diagram ─────────────────────────────────────────────────
+        if cascade_guilds and factor_cards:
+            parts.append('  <div class="cascade-section">\n')
+            parts.append('    <div class="cascade-label">How these factors connect to your results</div>\n')
+            parts.append('    <p style="font-size:11px;color:var(--soft);margin-bottom:14px;">Each factor pill shows the direction of scientific evidence: <strong style="color:var(--dark);">→</strong> factor influences your gut &nbsp;|&nbsp; <strong style="color:var(--dark);">↔</strong> bidirectional — your gut also influences this factor back</p>\n')
+            parts.append('    <div class="cascade-diag">\n')
+            parts.append('      <div class="casc-left">\n')
+            for fc in factor_cards:
+                fc_dir = fc.get('directionality', 'driver')
+                arrow = '↔' if fc_dir == 'bidirectional' else '→'
+                parts.append(f'        <div class="casc-factor-pill"><span style="font-size:18px">{fc.get("icon","🔍")}</span> {_esc(fc.get("label",""))}<span style="font-size:11px;color:var(--soft);margin-left:6px;">{arrow}</span></div>\n')
+            parts.append('      </div>\n')
+            parts.append('      <div class="casc-arrow" style="font-size:14px;color:var(--soft);">factors</div>\n')
+            parts.append('      <div class="casc-right">\n')
+            for cg in cascade_guilds:
+                gp_cls = {'low': 'gp-low', 'high': 'gp-high', 'crit': 'gp-crit'}.get(cg.get('impact', 'low'), 'gp-low')
+                emojis = ' '.join(cg.get('driving_factor_emojis', []))
+                parts.append(f'''        <div class="casc-guild-pill {gp_cls}">
+          <span class="cgp-label">{_esc(cg.get("client_label",""))}</span>
+          <span class="cgp-value">{_esc(cg.get("value_str",""))}</span>
+          <span class="cgp-emojis">{emojis}</span>
+        </div>
+''')
+            parts.append('      </div>\n    </div>\n  </div>\n')
+
+        # ── Deviation cards as hidden fallback (backward compat) ───────────
+        parts.append('  <div style="display:none">\n')
+        parts.append('    <div class="rc-grid">\n')
+
+    elif deviation_cards:
+        # ── Old layout: no factor_cards available, show deviation cards directly ──
+        if section_summary_html:
+            parts.append(f'''  <div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:16px 22px;margin-bottom:32px;font-size:14px;color:var(--mid);line-height:1.8;">
+    {_esc(section_summary_html)}
+  </div>
+''')
         parts.append('  <div class="rc-grid">\n')
+
+    if deviation_cards:
         for rc_item in deviation_cards:
             deviation = rc_item.get('deviation', {})
             narrative = rc_item.get('narrative', '')
@@ -3967,6 +4773,9 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
             parts.append('    </div>\n')
 
         parts.append('  </div>\n')
+        # Close the display:none hidden wrapper (only opened when factor_cards layout is active)
+        if factor_cards:
+            parts.append('  </div>\n')
 
     # ── Awareness chips — triggered lifestyle factors with no active deviation ──
     if awareness_chips:
@@ -4091,7 +4900,8 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
                 for cap in card['capsules']:
                     cap_label = _esc(cap.get('label', ''))
                     cap_weight = _esc(cap.get('weight', ''))
-                    parts.append(f'      <div style="padding:4px 24px 0;"><span style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);">{cap_label}</span>{"&nbsp;·&nbsp;<span style=\"font-size:11px;color:var(--soft);\">" + cap_weight + "</span>" if cap_weight else ""}</div>\n')
+                    _cap_weight_html = ('&nbsp;·&nbsp;<span style="font-size:11px;color:var(--soft);">' + cap_weight + '</span>') if cap_weight else ''
+                    parts.append(f'      <div style="padding:4px 24px 0;"><span style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);">{cap_label}</span>{_cap_weight_html}</div>\n')
                     parts.append('      <div class="supp-pills" style="padding-top:8px;padding-bottom:16px;">\n')
                     for comp in cap.get('components', []):
                         parts.append(f'        <div class="pill"><strong>{_esc(comp["name"])}</strong> · {_esc(str(comp["dose"]))}</div>\n')
@@ -4136,8 +4946,10 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
 ''')
 
         for gc in goal_cards:
+            inferred_tag = '<div class="goal-inferred-tag">Also addressed by your formula</div>' if gc.get('inferred') else ''
             parts.append(f'''    <div class="goal-card">
       <span class="goal-emoji">{_esc(gc["emoji"])}</span>
+      {inferred_tag}
       <div class="goal-title">{_esc(gc["title"])}</div>
       <div class="goal-mechanism">{_esc(gc["mechanism"])}</div>
       <div class="goal-formula"><strong>Your formula:</strong> {_esc(gc["formula_link"])}</div>
@@ -4188,7 +5000,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
     # ════════════════════ FOOTER ════════════════════
     parts.append(f'''
 <div class="footer">
-  <div class="footer-brand">Prebiomics</div>
+  <div class="footer-brand">NB1 Health</div>
   <div style="max-width:440px;text-align:center">This report is for informational purposes only and does not constitute medical advice. Please consult a healthcare professional before beginning any supplement protocol.</div>
   <div>{_esc(report_date_display)}</div>
 </div>
@@ -4222,8 +5034,15 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
     import json as _json
     _hr_tps_json = _json.dumps(_hr_tps)
 
+    # Inject score_summary as JS-safe string for updateCoverScore()
+    import json as _json2
+    _score_summary_js = _json2.dumps(score_summary)  # JSON-encoded → safe JS string literal
+
     parts.append(f'''
 <script>
+// ── Score summary (pre-computed, injected from JSON) ─────────────────────────────────────────────
+const SCORE_SUMMARY = {_score_summary_js};
+
 // ── Scroll animation ─────────────────────────────────────────────────────────────────────────────────
 const observer = new IntersectionObserver((entries) => {{
   entries.forEach(e => {{ if (e.isIntersecting) e.target.style.animationPlayState = 'running'; }});
@@ -4305,13 +5124,15 @@ function updateSVG(guilds, prevGuilds) {{
   ['fd','bb','cf','bp','pg','md'].forEach(key => {{
     const val = guilds[key];
     const status = getStatus(key, val);
-    const colors = sc(key, status);
+    // For non-inverted (beneficial) guilds, remap 'below' → 'critical' (red) to match bars
+    const displayStatus = (!GCFG[key]?.invert && status === 'below') ? 'critical' : status;
+    const colors = sc(key, displayStatus);
 
     const nr = svgEl('nr-'+key);
-    if (nr && key !== 'md') {{ nr.setAttribute('fill', colors.fill); nr.setAttribute('stroke', colors.stroke); }}
+    if (nr) {{ nr.setAttribute('fill', colors.fill); nr.setAttribute('stroke', colors.stroke); }}
 
     const ns = svgEl('ns-'+key);
-    if (ns) {{ ns.textContent = statusLabel(key, status, val); ns.setAttribute('fill', colors.tf); }}
+    if (ns) {{ ns.textContent = statusLabel(key, displayStatus, val); ns.setAttribute('fill', colors.tf); }}
   }});
 
   ['cf','bp','pg','md'].forEach(key => {{
@@ -4392,12 +5213,15 @@ function updateBars(guilds) {{
 
     const bar = document.getElementById('gbar-'+key);
     if (bar) {{
-      bar.className = 'gbar ' + (status === 'ok' ? 'ok' : status === 'below' ? 'below' : status === 'critical' ? 'critical' : 'above');
+      // For non-inverted (beneficial) guilds, treat 'below' same as 'critical' (red) to match Python render
+      const barStatus = (!GCFG[key]?.invert && status === 'below') ? 'critical' : status;
+      const barColors = sc(key, barStatus);
+      bar.className = 'gbar ' + (barStatus === 'ok' ? 'ok' : barStatus === 'below' ? 'below' : barStatus === 'critical' ? 'critical' : 'above');
     }}
     const badge = document.getElementById('gbadge-'+key);
     if (badge) {{
-      badge.className = 'gbar-badge ' + colors.badge;
-      badge.textContent = statusLabel(key, status, val);
+      badge.className = 'gbar-badge ' + barColors.badge;
+      badge.textContent = statusLabel(key, barStatus, val);
     }}
     const fill = document.getElementById('gfill-'+key);
     if (fill) {{
@@ -4501,7 +5325,7 @@ function updateCoverScore() {{
     dialFill.setAttribute('stroke', score >= 65 ? '#2E8B6E' : score >= 40 ? '#C97C2A' : '#C24B3A');
   }}
   if (scoreNum) scoreNum.textContent = score;
-  if (scoreText) scoreText.innerHTML = `Your overall score is <strong>${{score}}</strong> out of 100. The main area to focus on is <strong>fiber processing</strong>.<br><span style="font-size:12px;opacity:.7;margin-top:4px;display:block">Your most recent result — ${{HR_TPS[latestIdx].label}}</span>`;
+  if (scoreText) scoreText.innerHTML = SCORE_SUMMARY + `<br><span style="font-size:12px;opacity:.7;margin-top:4px;display:block">Your most recent result — ${{HR_TPS[latestIdx].label}}</span>`;
 }}
 
 // ── Question pill data ────────────────────────────────────────────────────────────────────────────
@@ -4966,6 +5790,23 @@ def process_sample(sample_dir: str, no_llm: bool = False,
         n_aw = len(root_cause_data.get('awareness_chips', []))
         logger.info(f"  Section 3: {n_dev} deviation card(s), {n_aw} awareness chip(s)")
 
+        # Generate LLM-personalised "Why you're taking it" texts for each supplement unit
+        supplement_why_texts = {}
+        if not no_llm and raw['formulation']:
+            logger.info("  Generating supplement why-texts (LLM)...")
+            # Collect active deviations for context
+            _active_devs = _detect_microbiome_deviations(raw['analysis'])
+            supplement_why_texts = _generate_supplement_why_texts(
+                raw['formulation'], profile, _active_devs,
+                model_id=model_id, region=region,
+            )
+            logger.info(f"  Supplement why-texts: {len(supplement_why_texts)} units covered")
+            # Apply LLM texts to supplement cards (override deterministic fallback)
+            for card in supplement_cards:
+                uk = card.get('key', '')
+                if uk in supplement_why_texts and supplement_why_texts[uk].strip():
+                    card['why'] = supplement_why_texts[uk].strip()
+
         # Generate lifestyle recommendations (Elicit-powered + LLM)
         lifestyle_recs = []
         lifestyle_cited_papers = []
@@ -4990,9 +5831,41 @@ def process_sample(sample_dir: str, no_llm: bool = False,
                 all_cited_papers.append(p)
                 seen_titles.add(p['title'])
 
+        # ── Extract v3.0 flat microbiome fields from analysis ─────────────────
+        from assemble_interpretations import (
+            extract_overall_score, extract_bacterial_groups,
+            extract_metabolic_dials, extract_ecological_metrics,
+            extract_safety_profile, build_guild_timepoints,
+            extract_report_date, compute_score_summary,
+            extract_protocol_summary,
+        )
+        report_date = extract_report_date(raw['analysis'])
+        overall_score = extract_overall_score(raw['analysis'])
+        bacterial_groups = extract_bacterial_groups(raw['analysis'])
+        metabolic_dials = extract_metabolic_dials(raw['analysis'])
+        ecological_metrics = extract_ecological_metrics(raw['analysis'])
+        safety_profile = extract_safety_profile(raw['analysis'])
+        guild_timepoints = build_guild_timepoints(raw['analysis'], report_date)
+        score_summary = compute_score_summary(
+            overall_score.get('total', 0), sw.get('distinct_areas', [])
+        )
+        protocol_summary = extract_protocol_summary(raw['formulation']) if raw['formulation'] else {}
+
         # Assemble full data bundle
         data = {
             **raw,
+            # v3.0 flat microbiome fields
+            'schema_version': '3.0',
+            'report_date': report_date,
+            'overall_score': overall_score,
+            'score_summary': score_summary,
+            'bacterial_groups': bacterial_groups,
+            'metabolic_dials': metabolic_dials,
+            'ecological_metrics': ecological_metrics,
+            'safety_profile': safety_profile,
+            'guild_timepoints': guild_timepoints,
+            'protocol_summary': protocol_summary,
+            # LLM / derived layer
             'profile': profile,
             'circle_scores': circle_scores,
             'strengths_challenges': sw,

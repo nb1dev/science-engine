@@ -901,6 +901,10 @@ class FormulationCalculator:
                     "type": "hard_capsule", "size": "00",
                     "capacity_mg": HARD_CAPSULE_CAPACITY_MG,
                     "daily_count": 1, "timing": "morning",
+                    # Label defaults to "Morning Wellness Capsule" for standard timing.
+                    # When a medication timing override is active (e.g., MED_001),
+                    # apply_medication_timing_override.py automatically renames this
+                    # to "Evening Wellness Capsule" — no manual relabeling needed.
                     "label": "Morning Wellness Capsule",
                 },
                 "components": self.polyphenol_capsules,

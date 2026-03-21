@@ -65,6 +65,16 @@ def call_bedrock(system_prompt: str, user_prompt: str, max_tokens: int = MAX_TOK
     return result["content"][0]["text"]
 
 
+def _strip_html_tags(text: str) -> str:
+    """Remove any HTML tags from LLM response text.
+
+    LLM sometimes outputs inline HTML (e.g. <span style="font-weight:600">)
+    in rationale strings. This strips them before JSON parsing so downstream
+    JSON values stay clean.
+    """
+    return re.sub(r'<[^>]+>', '', text)
+
+
 def extract_json_from_response(text: str) -> Dict:
     """Extract JSON from LLM response (handles markdown code blocks).
 
@@ -76,6 +86,9 @@ def extract_json_from_response(text: str) -> Dict:
     Raises:
         ValueError: If no valid JSON can be extracted.
     """
+    # Strip any HTML tags that the LLM may have injected into response text
+    text = _strip_html_tags(text)
+
     # Try to find JSON in code blocks
     json_match = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', text, re.DOTALL)
     if json_match:

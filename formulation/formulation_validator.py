@@ -718,6 +718,9 @@ def check_decision_consistency(master: Dict) -> List[CheckResult]:
     # Substances that have their own dedicated delivery unit (not evening wellness capsule)
     DEDICATED_DELIVERY_KEYS = {"magnesium"}
 
+    # Check if magnesium was removed by medication rule (used to guard timing check)
+    mg_removed_by_med = master.get("medication_rules", {}).get("magnesium_removed", False)
+
     if ewc and not med_override_active:
         # Build the set of all prescribed substances (from component registry)
         # so we only check timing for substances that were actually selected
@@ -731,8 +734,14 @@ def check_decision_consistency(master: Dict) -> List[CheckResult]:
             if info.get("timing") == "evening":
                 # Skip substances with their own dedicated unit (e.g., magnesium capsules)
                 if substance_key.lower() in DEDICATED_DELIVERY_KEYS:
-                    results.append(_pass("decision", f"timing_{substance_key}",
-                        f"'{substance_key}' has dedicated delivery unit"))
+                    # Guard: if magnesium was removed by medication rule, don't claim
+                    # it has a dedicated delivery unit — it was correctly excluded
+                    if substance_key.lower() == "magnesium" and mg_removed_by_med:
+                        results.append(_pass("decision", f"timing_{substance_key}",
+                            f"'{substance_key}' removed by medication rule — timing check skipped"))
+                    else:
+                        results.append(_pass("decision", f"timing_{substance_key}",
+                            f"'{substance_key}' has dedicated delivery unit"))
                     continue
 
                 # v1.2.0: Skip if this substance was not selected for this client

@@ -49,6 +49,11 @@ def shannon_low() -> float:
     return load_thresholds().get('shannon', {}).get('q25', 2.79)
 
 
+def shannon_medium() -> float:
+    """Shannon Q50 — population median. Below this = moderate diversity (challenge)."""
+    return load_thresholds().get('shannon', {}).get('q50', 3.29)
+
+
 def shannon_high() -> float:
     """Shannon Q75 — above this = high diversity."""
     return load_thresholds().get('shannon', {}).get('q75', 3.44)

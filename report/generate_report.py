@@ -32,7 +32,7 @@ from overview_fields import compute_overview_fields
 from narratives import generate_all_narratives, generate_placeholder_narratives
 from root_causes_fields import compute_root_causes_fields
 from action_plan_fields import compute_action_plan_fields
-from platform_mapping import build_platform_json
+# from platform_mapping import build_platform_json  # ARCHIVED 2026-03-20 — microbiome_platform.json no longer used; health report uses health_report_interpretations.json
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
@@ -300,39 +300,11 @@ def build_all(sample_dir: str, no_llm: bool = False,
         },
     }
 
-    # ── Step 7: Build _platform.json ──
-    logger.info("  Building platform JSON...")
-
-    # Build the overview-format structure the platform mapper expects
-    analysis_for_platform = {
-        'report_metadata': microbiome_analysis['report_metadata'],
-        'overview': {
-            'gut_health_glance': {
-                'summary_sentence': narratives.get('summary_sentence', ''),
-                'overall_score': microbiome_analysis['overall_score'],
-            },
-            'whats_happening': {
-                'overall_balance': fields['overall_balance'],
-                'diversity_resilience': fields['diversity_resilience'],
-                'key_strengths': fields['key_strengths'],
-                'key_opportunities': fields['key_opportunities'],
-                'summary_sentence': narratives.get('whats_happening_summary', ''),
-            },
-            'metabolic_dials': microbiome_analysis['metabolic_function']['dials'],
-            'what_this_means': microbiome_analysis['key_messages'],
-        },
-        'bacterial_groups': microbiome_analysis['bacterial_groups'],
-        'vitamin_synthesis': microbiome_analysis['vitamin_synthesis'],
-        'key_messages': microbiome_analysis['key_messages'],
-    }
-
-    platform_json = build_platform_json(
-        analysis_for_platform,
-        data=data,
-        root_causes=root_causes,
-        action_plan=action_plan,
-        narratives=narratives,
-    )
+    # ── Step 7: Build _platform.json — ARCHIVED 2026-03-20 ──
+    # microbiome_platform.json is no longer used by any downstream process.
+    # The health report HTML now reads from health_report_interpretations.json (schema v3.0).
+    # platform_mapping.py has been moved to archive/. Keeping this stub for git history.
+    platform_json = {}  # stub — no longer generated
 
     logger.info(f"  Done! Score: {score_result['total']}/100 [{score_result['band']}]")
     return microbiome_analysis, platform_json, data
@@ -357,13 +329,8 @@ def process_sample(sample_dir: str, output_path: str = None, **kwargs) -> str:
         json.dump(microbiome_analysis, f, indent=2)
     logger.info(f"  Saved: {output_path}")
 
-    # Save _platform.json in same directory
-    platform_path = os.path.join(
-        os.path.dirname(output_path), f'microbiome_platform_{sample_id}.json'
-    )
-    with open(platform_path, 'w') as f:
-        json.dump(platform_json, f, indent=2)
-    logger.info(f"  Saved: {platform_path}")
+    # NOTE 2026-03-20: microbiome_platform.json no longer saved — platform_mapping.py archived.
+    # The health report reads from health_report_interpretations.json (schema v3.0) instead.
 
     # Generate client-facing health report HTML
     try:

@@ -202,8 +202,12 @@ def build_guild_timepoints(analysis: dict, report_date: str) -> list:
     except Exception:
         label = f'Baseline — {report_date}'
 
+    # Extract overall score to include in timepoint (used by banner slider — avoids guild approximation)
+    overall_score = analysis.get('overall_score', {}).get('total')
+
     return [{
         'label': label,
+        'score': overall_score,  # actual overall score — JS uses this, not computeBannerScore()
         'guilds': {
             'fd': _guild_val('fiber'),
             'bb': _guild_val('bifidobacter') or _guild_val('hmo'),

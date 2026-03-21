@@ -23,6 +23,7 @@ KB_DIR = Path(__file__).parent.parent / "knowledge_base"
 # ─── Supplement KB lookup (cached) ────────────────────────────────────────────
 
 _SUPPLEMENT_KB_CACHE: Optional[Dict] = None
+_KNOWN_PREBIOTIC_SUBSTANCES_CACHE: Optional[set] = None
 
 
 def _load_supplement_kb_lookup() -> Dict:
@@ -94,6 +95,93 @@ def _find_kb_entry(substance_name: str) -> Optional[Dict]:
     return None
 
 
+def _load_known_prebiotic_substances() -> set:
+    """Build a normalized set of all prebiotic substances from prebiotic_rules.json.
+
+    Collects every substance listed under must_include, highly_recommended, and optional
+    across all 8 per-mix prebiotic entries. Used to classify condition_specific_additions
+    as microbiome_primary prebiotics vs questionnaire_only botanicals.
+
+    A CSA substance that appears in any mix's prebiotic lists is a prebiotic substrate
+    chosen for microbiome reasons (even if at trace dose due to sensitivity override).
+    A CSA substance NOT in any mix list (e.g. Safflower, Bergamot, Capsicum) is a
+    condition-specific botanical driven by questionnaire goals.
+
+    Result is cached for the lifetime of the process.
+    """
+    global _KNOWN_PREBIOTIC_SUBSTANCES_CACHE
+    if _KNOWN_PREBIOTIC_SUBSTANCES_CACHE is not None:
+        return _KNOWN_PREBIOTIC_SUBSTANCES_CACHE
+
+    kb_path = KB_DIR / "prebiotic_rules.json"
+    with open(kb_path, 'r', encoding='utf-8') as f:
+        kb = json.load(f)
+
+    substances: set = set()
+    for mix_key, mix_data in kb.get("per_mix_prebiotics", {}).items():
+        for field in ("must_include", "highly_recommended", "optional"):
+            for item in mix_data.get(field, []):
+                # Normalize: lowercase, strip whitespace, strip trailing notes like "(min 1.0g)"
+                normalized = item.lower().strip()
+                # Strip parenthetical suffixes e.g. "psyllium/arabinoxylan" → keep as-is,
+                # "beta-glucans (oats)" → also add "beta-glucans"
+                substances.add(normalized)
+                if "(" in normalized:
+                    base = normalized[:normalized.index("(")].strip()
+                    if base:
+                        substances.add(base)
+                # Handle slash variants e.g. "psyllium/arabinoxylan"
+                if "/" in normalized:
+                    for part in normalized.split("/"):
+                        part = part.strip()
+                        if part:
+                            substances.add(part)
+
+    _KNOWN_PREBIOTIC_SUBSTANCES_CACHE = substances
+    return substances
+
+
+# Substances that are FODMAP-positive among known prebiotic fibers.
+# Used to set fodmap=True when routing CSA prebiotics.
+_CSA_FODMAP_SUBSTANCES = {"lactulose", "gos", "galactooligosaccharides", "fos",
+                           "oligofructose", "inulin", "pure inulin"}
+
+
+def _parse_csa_dose_to_g(dose_str: str) -> Optional[float]:
+    """Parse a condition_specific_addition dose string to grams.
+
+    Handles formats like:
+      "0.2g", "200mg", "300-500mg" (uses lower bound), "200"
+    Returns None if unparseable.
+    """
+    import re as _re
+    dose_str = dose_str.strip().lower()
+
+    # e.g. "0.2g" or "1.0 g"
+    m = _re.match(r'^([\d.]+)\s*g$', dose_str)
+    if m:
+        return float(m.group(1))
+
+    # e.g. "200mg" or "300 mg"
+    m = _re.match(r'^([\d.]+)\s*mg$', dose_str)
+    if m:
+        return round(float(m.group(1)) / 1000, 4)
+
+    # e.g. "300-500mg" — use lower bound
+    m = _re.match(r'^([\d.]+)[\-–]([\d.]+)\s*mg$', dose_str)
+    if m:
+        return round(float(m.group(1)) / 1000, 4)
+
+    # bare number — assume mg
+    m = _re.match(r'^([\d.]+)$', dose_str)
+    if m:
+        val = float(m.group(1))
+        # heuristic: values < 10 are likely already grams
+        return val if val < 10 else round(val / 1000, 4)
+
+    return None
+
+
 def run(ctx: PipelineContext) -> PipelineContext:
     """Build FormulationCalculator, add all components, generate formulation."""
     print("\n─── E. WEIGHTS & VALIDATION ────────────────────────────────")
@@ -116,6 +204,50 @@ def run(ctx: PipelineContext) -> PipelineContext:
     for pb in ctx.prebiotics.get("prebiotics", []):
         calc.add_prebiotic(pb["substance"], pb["dose_g"],
                            fodmap=pb.get("fodmap", False), rationale=pb.get("rationale", ""))
+
+    # ── Condition-specific additions from prebiotic design ───────────────
+    # These are optional layers returned by the LLM prebiotic designer in
+    # condition_specific_additions[]. Two types:
+    #
+    #   1. Prebiotic fibers — substances listed in per_mix_prebiotics (must_include,
+    #      highly_recommended, optional) across any mix. These are mix-driven substrates
+    #      placed here at trace dose because sensitivity overrides reduced their bulk
+    #      amounts. They belong in jar_prebiotics → microbiome_primary source.
+    #      Examples: GOS, Inulin, FOS, Quercetin, Apple polyphenols.
+    #
+    #   2. Condition-specific botanicals — substances NOT in any mix's prebiotic list,
+    #      chosen purely from questionnaire goals (skin, metabolic, etc.).
+    #      Examples: Safflower, Bergamot, Capsicum extract, Plant sterols.
+    #      These stay as jar_botanicals → questionnaire_only source.
+    #
+    # BUG FIX (20 Mar 2026): this list was silently dropped after the monolith
+    # was split into modular stages — s07 only processed prebiotics[], not CSAs.
+    # CLASSIFICATION FIX (20 Mar 2026): prebiotic-type CSAs now routed as
+    # prebiotics (microbiome_primary), not botanicals (questionnaire_only).
+    _known_prebiotics = _load_known_prebiotic_substances()
+    for csa in ctx.prebiotics.get("condition_specific_additions", []):
+        substance = csa.get("substance", "")
+        dose_raw = str(csa.get("dose_g_or_mg", "")).strip()
+        if not substance or not dose_raw:
+            continue
+        dose_g = _parse_csa_dose_to_g(dose_raw)
+        if dose_g and dose_g > 0:
+            substance_normalized = substance.lower().strip()
+            # Check against all KB prebiotic variants (exact and partial)
+            is_prebiotic = (
+                substance_normalized in _known_prebiotics
+                or any(kp in substance_normalized for kp in _known_prebiotics if len(kp) > 3)
+            )
+            if is_prebiotic:
+                is_fodmap = substance_normalized in _CSA_FODMAP_SUBSTANCES
+                calc.add_prebiotic(substance, dose_g,
+                                   fodmap=is_fodmap, rationale=csa.get("rationale", ""))
+                print(f"  + CSA prebiotic: {substance} {dose_g}g → jar prebiotics"
+                      f" [fodmap={is_fodmap}] ({csa.get('condition', 'condition-specific')})")
+            else:
+                calc.add_jar_botanical(substance, dose_g, rationale=csa.get("rationale", ""))
+                print(f"  + CSA botanical: {substance} {dose_g}g → jar botanicals"
+                      f" ({csa.get('condition', 'condition-specific')})")
 
     # ── Vitamins/Minerals → morning pooled capsules ──────────────────────
     for vm in ctx.supplements.get("vitamins_minerals", []):
@@ -383,7 +515,7 @@ def _build_component_registry(calc, ctx: PipelineContext) -> List[Dict]:
     This registry is consumed by:
     - build_component_rationale() for the health table
     - build_decision_trace() Step 7 (Supplement Selection)
-    - generate_dashboards.py for the board dashboard
+    - dashboard_renderer.py for the board dashboard
     - Source attribution % calculation
     """
     registry = []

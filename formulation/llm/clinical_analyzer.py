@@ -97,7 +97,7 @@ Valid signals: ["infection_susceptibility", "skin_quality", "bowel_function", "f
 Severity: "high" | "medium" | "low"."""
 
     user_prompt = f"""DEMOGRAPHICS: Sex: {demographics.get('biological_sex', '?')} | Age: {demographics.get('age', '?')}
-Weight: {demographics.get('weight_kg', '?')}kg | BMI: {demographics.get('bmi', '?')}
+Weight: {demographics.get('weight_kg', '?')}kg | BMI: {demographics.get('bmi_context') or demographics.get('bmi', '?')}
 
 GOALS: {chr(10).join(f"  {i+1}. {g.replace('_',' ')}" for i, g in enumerate(goals))}
 

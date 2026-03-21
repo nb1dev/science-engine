@@ -639,6 +639,37 @@ def extract_questionnaire_data(questionnaire: Dict, use_bedrock: bool = True) ->
     if height_cm and weight_kg and height_cm > 0:
         bmi = round(weight_kg / ((height_cm / 100) ** 2), 1)
 
+    # ── BMI context — athletic override ──────────────────────────────────────
+    # Standard BMI thresholds misclassify lean, highly muscular athletes as
+    # "overweight". This derived field passes contextual information to the
+    # clinical analyzer so it does not flag fit clients incorrectly.
+    # Rule: BMI 25–29.9 + (vigorous ≥4×/week ≥45min OR moderate ≥6×/week ≥60min)
+    # → override label to avoid overweight classification.
+    exercise_step5 = step5  # step5 is available in this scope
+    _vigorous_days = exercise_step5.get("vigorous_days_per_week") or 0
+    _vigorous_mins = exercise_step5.get("vigorous_minutes_per_session") or 0
+    _moderate_days = exercise_step5.get("moderate_days_per_week") or 0
+    _moderate_mins = exercise_step5.get("moderate_minutes_per_session") or 0
+    _is_highly_athletic = (
+        (_vigorous_days >= 4 and _vigorous_mins >= 45) or
+        (_moderate_days >= 6 and _moderate_mins >= 60)
+    )
+    bmi_context = None
+    if bmi is not None:
+        if 25.0 <= bmi < 30.0 and _is_highly_athletic:
+            bmi_context = (
+                f"BMI {bmi} — likely elevated due to lean muscle mass "
+                f"(highly athletic: {_vigorous_days}× vigorous/week, "
+                f"{_vigorous_mins}min/session). "
+                f"Do NOT classify as overweight — muscle mass inflation expected."
+            )
+        elif bmi >= 30.0:
+            bmi_context = f"BMI {bmi} — obese range"
+        elif 25.0 <= bmi < 30.0:
+            bmi_context = f"BMI {bmi} — overweight range"
+        else:
+            bmi_context = f"BMI {bmi} — normal range"
+
     # ── Medications — CORRECT source is other_medications (not medications) ──
     # step3.medications is always [] in practice; prescriptions live in
     # step3.other_medications as [{name, dosage, how_long}] objects.
@@ -685,6 +716,7 @@ def extract_questionnaire_data(questionnaire: Dict, use_bedrock: bool = True) ->
             "height_cm": height_cm,
             "weight_kg": weight_kg,
             "bmi": bmi,
+            "bmi_context": bmi_context,
             "country": basic.get("country_of_residence"),
             "occupation_environment": basic.get("occupation_work_environment", ""),
         },

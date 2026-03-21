@@ -185,7 +185,7 @@ def generate_formulation(
 
     # ── Patch dashboard HTML files with evening labels ───────────────────
     # The standard pipeline generates dashboards from the post-override master
-    # JSON, but generate_dashboards.py uses hardcoded "Morning" strings in
+    # JSON, but dashboard_renderer.py uses hardcoded "Morning" strings in
     # HTML templates and grouping logic. Patch those in-place.
     html_dir = sample_dir / "reports" / "reports_html"
     _html_patch_count = 0
