@@ -678,8 +678,32 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
 
     # ── CLINICAL REVIEW FLAGS ────────────────────────────────────────────
     flags_html = ""
+    # Extract medications from master JSON for display in flags section
+    _q_driven = master.get("input_summary", {}).get("questionnaire_driven", {})
+    _medications_list = _q_driven.get("medications", [])
     if _cs_flags:
         flag_cards = ""
+        # Medication summary bar — show which medications the patient is taking
+        med_bar_html = ""
+        if _medications_list:
+            med_pills = ""
+            for _med in _medications_list:
+                if isinstance(_med, dict):
+                    _med_name = _med.get("name", "")
+                    _med_dosage = _med.get("dosage", "")
+                    _med_display = f"{_esc(_med_name)}"
+                    if _med_dosage:
+                        _med_display += f" <span style='color:rgba(255,255,255,.5);font-size:10px'>{_esc(_med_dosage)}</span>"
+                elif isinstance(_med, str) and _med.strip():
+                    _med_display = _esc(_med.strip())
+                else:
+                    continue
+                med_pills += f'<span style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 12px;font-size:12px;color:white;display:inline-block;margin:2px 4px 2px 0">{_med_display}</span>'
+            if med_pills:
+                med_bar_html = f'''<div style="margin-bottom:16px;padding:14px 18px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid rgba(255,255,255,.15)">
+                  <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:8px">💊 Reported Medications</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:4px">{med_pills}</div>
+                </div>'''
         for fl in _cs_flags:
             sev = fl.get("severity", "medium").lower()
             flag_cards += f'''<div style="background:transparent;border:2px solid var(--dark);border-radius:10px;padding:16px 20px;margin-bottom:10px">
@@ -698,6 +722,7 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
               </div>
               <span style="background:rgba(255,255,255,.2);color:white;padding:8px 18px;border-radius:24px;font-size:13px;font-weight:700">{len(_cs_flags)} flag{"s" if len(_cs_flags) != 1 else ""}</span>
             </div>
+            {med_bar_html}
             {flag_cards}
           </div>'''
 
@@ -779,12 +804,90 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
     if q_narrative or inputs.get("questionnaire", {}).get("summary", ""):
         q_narrative_html = f'<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);font-size:13px;color:var(--mid);line-height:1.8">{_esc(q_narrative or inputs.get("questionnaire",{}).get("summary",""))}</div>'
 
+    # Medications block for Section 0
+    _s0_meds_html = ""
+    if _medications_list:
+        _s0_med_rows = ""
+        for _med in _medications_list:
+            if isinstance(_med, dict):
+                _med_name = _med.get("name", "")
+                _med_dosage = _med.get("dosage", "")
+                _med_how_long = _med.get("how_long", "")
+                if not _med_name:
+                    continue
+                dosage_str = f'<span style="color:var(--mid);font-size:12px">{_esc(_med_dosage)}</span>' if _med_dosage else '<span style="color:var(--soft);font-size:12px">—</span>'
+                duration_str = f'<span style="color:var(--mid);font-size:12px">{_esc(_med_how_long)}</span>' if _med_how_long else '<span style="color:var(--soft);font-size:12px">—</span>'
+                _s0_med_rows += f'''<tr style="border-bottom:1px solid var(--rule)">
+                  <td style="padding:6px 10px;font-weight:600;color:var(--dark);font-size:13px">💊 {_esc(_med_name)}</td>
+                  <td style="padding:6px 10px">{dosage_str}</td>
+                  <td style="padding:6px 10px">{duration_str}</td>
+                </tr>'''
+            elif isinstance(_med, str) and _med.strip():
+                _s0_med_rows += f'''<tr style="border-bottom:1px solid var(--rule)">
+                  <td style="padding:6px 10px;font-weight:600;color:var(--dark);font-size:13px">💊 {_esc(_med.strip())}</td>
+                  <td style="padding:6px 10px"><span style="color:var(--soft);font-size:12px">—</span></td>
+                  <td style="padding:6px 10px"><span style="color:var(--soft);font-size:12px">—</span></td>
+                </tr>'''
+        if _s0_med_rows:
+            _s0_meds_html = f'''<div style="margin-top:14px">
+              <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--soft);margin-bottom:8px;font-weight:700">Medications</div>
+              <div style="border:1px solid var(--rule);border-radius:8px;overflow:hidden">
+                <table style="width:100%;border-collapse:collapse">
+                  <thead style="background:var(--sand)"><tr>
+                    <th style="padding:5px 10px;text-align:left;color:var(--soft);font-size:10px;letter-spacing:.1em;text-transform:uppercase">Name</th>
+                    <th style="padding:5px 10px;text-align:left;color:var(--soft);font-size:10px;letter-spacing:.1em;text-transform:uppercase">Dosage</th>
+                    <th style="padding:5px 10px;text-align:left;color:var(--soft);font-size:10px;letter-spacing:.1em;text-transform:uppercase">Duration</th>
+                  </tr></thead>
+                  <tbody style="background:var(--warm)">{_s0_med_rows}</tbody>
+                </table>
+              </div>
+            </div>'''
+    else:
+        _s0_meds_html = '''<div style="margin-top:14px">
+          <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--soft);margin-bottom:8px;font-weight:700">Medications</div>
+          <div style="font-size:13px;color:var(--soft);font-style:italic">None reported</div>
+        </div>'''
+
+    # Excluded substances block for Section 0 (right column, above goals)
+    _exclusion_reasons = master.get("medication_rules", {}).get("exclusion_reasons", [])
+    _s0_exclusions_html = ""
+    if _exclusion_reasons:
+        _excl_rows = ""
+        for _excl in _exclusion_reasons:
+            if not isinstance(_excl, dict):
+                continue
+            _excl_substance = _excl.get("substance", "")
+            _excl_medication = _excl.get("medication", "")
+            _excl_mechanism = _excl.get("mechanism", "")
+            if not _excl_substance:
+                continue
+            _excl_rows += f'''<tr style="border-bottom:1px solid rgba(194,75,58,.15)">
+              <td style="padding:6px 10px;font-weight:600;color:var(--red);font-size:12px">🚫 {_esc(_excl_substance)}</td>
+              <td style="padding:6px 10px;font-size:11px;color:var(--mid)">{_esc(_excl_medication)}</td>
+              <td style="padding:6px 10px;font-size:11px;color:var(--mid)">{_esc(_excl_mechanism)}</td>
+            </tr>'''
+        if _excl_rows:
+            _s0_exclusions_html = f'''<div style="margin-bottom:16px">
+              <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:8px;font-weight:700">⚠️ Possible Contradictions Between Client's Medication and Potential Supplements</div>
+              <div style="border:2px solid rgba(194,75,58,.3);border-radius:8px;overflow:hidden;background:var(--red-lt)">
+                <table style="width:100%;border-collapse:collapse">
+                  <thead style="background:rgba(194,75,58,.1)"><tr>
+                    <th style="padding:5px 10px;text-align:left;color:var(--red);font-size:10px;letter-spacing:.1em;text-transform:uppercase">Substance</th>
+                    <th style="padding:5px 10px;text-align:left;color:var(--red);font-size:10px;letter-spacing:.1em;text-transform:uppercase">Medication</th>
+                    <th style="padding:5px 10px;text-align:left;color:var(--red);font-size:10px;letter-spacing:.1em;text-transform:uppercase">Mechanism</th>
+                  </tr></thead>
+                  <tbody>{_excl_rows}</tbody>
+                </table>
+              </div>
+            </div>'''
+
     section0_html = f'''<div style="padding:24px 56px 32px;background:var(--warm);border-bottom:1px solid var(--rule)">
       <div class="sec-label">Section 0 · Clinical Profile</div>
       <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--dark);margin-bottom:16px">Patient Clinical Summary</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start">
-        <div>{bullets_html}</div>
+        <div>{bullets_html}{_s0_meds_html}</div>
         <div>
+          {_s0_exclusions_html}
           <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--soft);margin-bottom:8px">Health Goals</div>
           {goals_list}
           {inferred_goals_html}
@@ -941,7 +1044,9 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
                     <tbody style="background:var(--warm)">{table_rows}</tbody>
                   </table>
                 </div>'''
-            else:
+            elif step.get("decision") != "Prebiotic Design":
+                # Prebiotic Design renders its components via extra_detail below;
+                # rendering step["components"] here would leak raw dict reprs.
                 items = "".join(f'<div style="font-size:12px;color:var(--mid);padding:2px 0;border-bottom:1px solid var(--rule)">→ {_esc(c)}</div>' for c in step["components"])
                 components_html = f'<div style="margin-top:10px;background:var(--sand);border-radius:6px;padding:10px 12px">{items}</div>'
 
@@ -962,11 +1067,11 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
                     csa_label = f'<span style="background:var(--blue-lt);color:var(--blue);padding:1px 6px;border-radius:8px;font-size:9px;font-weight:700;margin-left:4px">sensitivity-adjusted</span>'
                     pb_items += f'<div style="font-size:12px;color:var(--mid);padding:2px 0">→ {_esc(c["substance"])}: {dose_str} {csa_label} <span style="font-size:10px;color:var(--soft)">{condition}</span></div>'
                 extra_detail = f'<div style="margin-top:8px;background:var(--sand);border-radius:6px;padding:10px 12px">{pb_items}</div>'
-            # Strategy & overrides
-            strategy = prebiotic_design.get("strategy", "")
+            # Overrides — rendered here (extra_detail) only; overrides_html below is
+            # suppressed for Prebiotic Design to avoid showing them twice.
+            # Strategy is intentionally omitted — it's identical to step["reasoning"]
+            # already displayed in the Reasoning: field above.
             overrides = prebiotic_design.get("overrides_applied", [])
-            if strategy:
-                extra_detail += f'<div style="margin-top:8px;font-size:12px;color:var(--mid)"><strong>Strategy:</strong> {_esc(strategy)}</div>'
             if overrides:
                 for ov in overrides:
                     extra_detail += f'<div style="font-size:12px;color:var(--amber)">⚠️ Override: {_esc(ov)}</div>'
@@ -983,11 +1088,11 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
                         guard_items += f'<div style="font-size:11px;color:var(--amber)">⚠️ {_esc(warn)}</div>'
                     ceil = sg.get("effective_ceiling_g")
                     tol = sg.get("tolerance_pct", 0)
-                    final = sg.get("final_total_g")
+                    sg_final = sg.get("final_total_g")
                     respected = sg.get("ceiling_respected", True)
-                    if ceil and final:
+                    if ceil and sg_final:
                         icon = "✅" if respected else "⚠️"
-                        guard_items += f'<div style="font-size:11px;color:var(--mid)">{icon} Ceiling: {final}g {"≤" if respected else ">"} {ceil}g (max + {tol}% tolerance)</div>'
+                        guard_items += f'<div style="font-size:11px;color:var(--mid)">{icon} Ceiling: {sg_final}g {"≤" if respected else ">"} {ceil}g (max + {tol}% tolerance)</div>'
                     extra_detail += f'<div style="margin-top:8px;background:#f0f4f0;border-radius:6px;padding:8px 10px">{guard_items}</div>'
                 elif sg.get("reason"):
                     sibo_src = sg.get("sibo_source", "")
@@ -1035,7 +1140,9 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
                     lp815_extra = f'<div style="margin-top:6px;font-size:12px;color:var(--mid)">→ {_esc(s2.get("name","?"))} {s2.get("cfu_billions","?")}B CFU | stress/gut-brain | add-on (separate from base 50B)</div>'
 
         overrides_html = ""
-        if step.get("overrides"):
+        # Prebiotic Design overrides are already rendered inside extra_detail above —
+        # skip here to avoid showing them twice.
+        if step.get("overrides") and step.get("decision") != "Prebiotic Design":
             o_items = "".join(f'<div style="font-size:12px;color:var(--amber)">⚠️ {_esc(o)}</div>' for o in step["overrides"])
             overrides_html = f'<div style="margin-top:8px">{o_items}</div>'
 
@@ -1303,7 +1410,12 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
 # ══════════════════════════════════════════════════════════════════════════════
 
 def generate_dashboards(sample_id: str, output_dir: str = None, sample_dir: str = None):
-    """Generate both dashboards for a sample."""
+    """Generate the scientific board decision trace dashboard for a sample.
+
+    The client-facing supplement guide (supplement_guide_{id}.html) is NOT
+    generated here — it is a separate deliverable produced outside the
+    formulation pipeline. Call build_client_dashboard() directly if needed.
+    """
     if output_dir is None:
         output_dir = str(Path(__file__).parent / "output")
     
@@ -1313,13 +1425,6 @@ def generate_dashboards(sample_id: str, output_dir: str = None, sample_dir: str 
         html_dir = Path(output_dir)
     html_dir.mkdir(parents=True, exist_ok=True)
     
-    print(f"Building client dashboard for {sample_id}...")
-    client_html = build_client_dashboard(sample_id, output_dir)
-    client_path = html_dir / f"supplement_guide_{sample_id}.html"
-    with open(client_path, 'w', encoding='utf-8') as f:
-        f.write(client_html)
-    print(f"  📊 Client: {client_path}")
-    
     print(f"Building board dashboard for {sample_id}...")
     board_html = build_board_dashboard(sample_id, output_dir)
     board_path = html_dir / f"formulation_decision_trace_{sample_id}.html"
@@ -1327,7 +1432,7 @@ def generate_dashboards(sample_id: str, output_dir: str = None, sample_dir: str 
         f.write(board_html)
     print(f"  📊 Board: {board_path}")
     
-    return client_path, board_path
+    return board_path
 
 
 if __name__ == "__main__":

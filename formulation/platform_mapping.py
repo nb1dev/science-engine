@@ -408,7 +408,9 @@ def _extract_executive_summary(sample_dir: str, sample_id: str) -> Dict:
           OR: **Dysbiosis-Associated Markers.** text on same line...
         """
         # Format A: ### heading (with optional subtitle after colon or dash)
-        pattern_a = rf"###\s+{_re.escape(heading)}[^\n]*\n(.*?)(?=\n###|\n---|\Z)"
+        # Match both ## (H2) and ### (H3) headings — report format varies by batch.
+        # Note: {{2,3}} doubles the braces so the f-string produces {2,3} for the regex.
+        pattern_a = rf"#{{2,3}}\s+{_re.escape(heading)}[^\n]*\n(.*?)(?=\n#{{2,3}}\s|\n---|\Z)"
         m = _re.search(pattern_a, content, _re.DOTALL)
         if m:
             return m.group(1).strip()
@@ -706,6 +708,8 @@ def build_decision_trace(master: Dict, trace_events: list = None, sample_dir: st
                 "bloating": q.get("bloating_severity"),
                 "coverage": q_coverage.get("coverage_level", ""),
                 "coverage_pct": q_coverage.get("completion_pct", 0),
+                "medications": q.get("medications", []),
+                "medication_exclusions": master.get("medication_rules", {}).get("exclusion_reasons", []),
             },
         },
         "ecological_rationale": ecological_rationale,

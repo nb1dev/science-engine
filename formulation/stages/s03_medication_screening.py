@@ -98,6 +98,8 @@ def run(ctx: PipelineContext) -> PipelineContext:
                     elif not isinstance(interactions, list):
                         interactions = []
                     for interaction in interactions:
+                        if not isinstance(interaction, dict):
+                            continue  # LLM returned a string instead of structured dict — skip
                         substance = (
                             interaction.get("mineral", "") or interaction.get("substance", "") or
                             interaction.get("nutrient", "") or interaction.get("supplement", "")

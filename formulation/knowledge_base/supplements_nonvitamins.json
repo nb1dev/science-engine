@@ -1117,17 +1117,17 @@
       "supplement_type": "Amino Acid & Precursor",
       "subcategory": "Stress/Anxiety",
       "rank": "2nd Choice",
-      "standard_dose": "50-400mg/kg body mass (5-10g daily)",
+      "standard_dose": "5000-10000mg daily (5-10g)",
       "rationale": "Conditionally essential, immune-critical during stress",
       "interaction_risk": "Very Low",
       "timing_in_protocol": "Continuous",
       "notes": "It helps repair the gut lining while supporting mental calmness.",
       "parsed": {
         "dose": {
-          "min": 50.0,
-          "max": 400.0,
+          "min": 5000.0,
+          "max": 10000.0,
           "unit": "mg",
-          "raw": "50-400mg/kg body mass (5-10g daily)"
+          "raw": "5000-10000mg daily (5-10g)"
         },
         "rank_priority": 2,
         "interaction_level": "very_low",
@@ -2652,17 +2652,17 @@
           "supplement_type": "Amino Acid & Precursor",
           "subcategory": "Stress/Anxiety",
           "rank": "2nd Choice",
-          "standard_dose": "50-400mg/kg body mass (5-10g daily)",
+          "standard_dose": "5000-10000mg daily (5-10g)",
           "rationale": "Conditionally essential, immune-critical during stress",
           "interaction_risk": "Very Low",
           "timing_in_protocol": "Continuous",
           "notes": "It helps repair the gut lining while supporting mental calmness.",
           "parsed": {
             "dose": {
-              "min": 50.0,
-              "max": 400.0,
+              "min": 5000.0,
+              "max": 10000.0,
               "unit": "mg",
-              "raw": "50-400mg/kg body mass (5-10g daily)"
+              "raw": "5000-10000mg daily (5-10g)"
             },
             "rank_priority": 2,
             "interaction_level": "very_low",

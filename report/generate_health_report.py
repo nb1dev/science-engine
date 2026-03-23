@@ -346,7 +346,18 @@ def compute_circle_scores(analysis: dict) -> dict:
     fcr_s = _dial_score_3state(fcr_state, 100, 55, 15,
                                 'efficient', 'ok', 'sluggish')
 
-    fiber_processing = _clamp(fiber_s * 0.35 + cross_s * 0.25 + cur_s * 0.20 + fcr_s * 0.20)
+    fiber_processing_raw = _clamp(fiber_s * 0.35 + cross_s * 0.25 + cur_s * 0.20 + fcr_s * 0.20)
+
+    # Floor penalty: when fiber degraders are critically below range (<15%),
+    # the composite score should not look "healthy" regardless of other components.
+    # The entry-point guild being depleted is a fundamental bottleneck.
+    if fiber_abund < 15.0:
+        # Cap: composite can't exceed 35 + the raw fiber contribution
+        # e.g. fiber at 8.3% → fiber_s ≈ 14 → cap ≈ 35+14 = 49
+        fiber_cap = _clamp(35.0 + fiber_s * 0.35)
+        fiber_processing = min(fiber_processing_raw, fiber_cap)
+    else:
+        fiber_processing = fiber_processing_raw
 
     # ── CIRCLE 4: Bifidobacteria Presence ────────────────────────────────────
     bifido_abund = _guild_abund('bifidobacter')
@@ -817,6 +828,27 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
     # Sort: critical first, then high, then moderate
     sev_order = {'critical': 0, 'high': 1, 'moderate': 2}
     challenges.sort(key=lambda x: sev_order.get(x.get('severity', 'moderate'), 2))
+
+    # ── Mutual exclusion: remove strengths for guilds that appear as challenges ──
+    # If a guild is flagged as a challenge (competitive disadvantage, substrate-starved,
+    # below range, absent, or low), the challenge is the more actionable signal —
+    # listing it simultaneously as a strength creates a contradiction.
+    _challenge_guild_keywords = set()
+    for c in challenges:
+        title_lower = c.get('title', '').lower()
+        # Extract guild-related keywords from challenge titles
+        for kw in ['fiber', 'butyrate', 'cross', 'bifido', 'bifidobacter', 'mucin', 'proteolytic']:
+            if kw in title_lower:
+                _challenge_guild_keywords.add(kw)
+
+    if _challenge_guild_keywords:
+        def _strength_contradicts(s: dict) -> bool:
+            s_title = s.get('title', '').lower()
+            for kw in _challenge_guild_keywords:
+                if kw in s_title:
+                    return True
+            return False
+        strengths = [s for s in strengths if not _strength_contradicts(s)]
 
     # ── Compute distinct areas for cover summary ──────────────────────────────
     seen_areas = {}

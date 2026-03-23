@@ -257,16 +257,34 @@ def check_physical_consistency(master: Dict, recipe: Dict) -> List[CheckResult]:
                 results.append(_pass("physical", f"evening_capsule_{cap_num}_capacity",
                     f"{fill}mg ≤ {HARD_CAPSULE_CAPACITY_MG}mg"))
 
-    # ── 1d. Polyphenol capsule ≤ 650mg ───────────────────────────────────
+    # ── 1d. Polyphenol capsule(s) — per-capsule fill ≤ 650mg ─────────────
+    # Same pattern as morning/evening: the optimizer may split into N capsules
+    # when total polyphenol weight exceeds 650mg (e.g. Curcumin 500 + Bergamot 500).
+    # We must check each capsule individually, not the grand total.
     pp = formulation.get("delivery_format_6_polyphenol_capsule") or formulation.get("delivery_format_5_polyphenol_capsule")
     if pp:
-        pp_mg = pp.get("totals", {}).get("total_weight_mg", 0)
-        if pp_mg > HARD_CAPSULE_CAPACITY_MG + WEIGHT_TOLERANCE_MG:
-            results.append(_fail("physical", "polyphenol_capsule_capacity",
-                f"≤{HARD_CAPSULE_CAPACITY_MG}mg", f"{pp_mg}mg"))
+        pp_capsules = pp.get("totals", {}).get("capsules", [])
+        if pp_capsules:
+            for cap in pp_capsules:
+                cap_num = cap.get("capsule_number", "?")
+                fill = cap.get("fill_mg", 0)
+                if fill > HARD_CAPSULE_CAPACITY_MG + WEIGHT_TOLERANCE_MG:
+                    results.append(_fail("physical", f"polyphenol_capsule_{cap_num}_capacity",
+                        f"≤{HARD_CAPSULE_CAPACITY_MG}mg", f"{fill}mg",
+                        f"Polyphenol capsule {cap_num} exceeds capacity"))
+                else:
+                    results.append(_pass("physical", f"polyphenol_capsule_{cap_num}_capacity",
+                        f"{fill}mg ≤ {HARD_CAPSULE_CAPACITY_MG}mg"))
         else:
-            results.append(_pass("physical", "polyphenol_capsule_capacity",
-                f"{pp_mg}mg ≤ {HARD_CAPSULE_CAPACITY_MG}mg"))
+            # Fallback for older formulations without per-capsule layout:
+            # single capsule — check total_weight_mg directly
+            pp_mg = pp.get("totals", {}).get("total_weight_mg", 0)
+            if pp_mg > HARD_CAPSULE_CAPACITY_MG + WEIGHT_TOLERANCE_MG:
+                results.append(_fail("physical", "polyphenol_capsule_capacity",
+                    f"≤{HARD_CAPSULE_CAPACITY_MG}mg", f"{pp_mg}mg"))
+            else:
+                results.append(_pass("physical", "polyphenol_capsule_capacity",
+                    f"{pp_mg}mg ≤ {HARD_CAPSULE_CAPACITY_MG}mg"))
 
     # ── 1e. Softgel ≤ 750mg ──────────────────────────────────────────────
     sg = formulation.get("delivery_format_2_omega_softgels", {})

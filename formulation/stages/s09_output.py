@@ -75,6 +75,7 @@ def run(ctx: PipelineContext) -> Dict:
             "magnesium_removed": ctx.medication.magnesium_removed,
             "clinical_flags": ctx.medication.clinical_flags,
             "evidence_flags": ctx.medication.elicit_evidence_result.get("evidence_flags", []),
+            "exclusion_reasons": ctx.medication.exclusion_reasons,
         },
         "vitamin_production_disclaimer": VITAMIN_PRODUCTION_DISCLAIMER,
         "version": 1,
@@ -241,6 +242,7 @@ def _build_input_summary(ctx: PipelineContext) -> Dict:
             "bloating_severity": q["digestive"]["bloating_severity"],
             "sensitivity_classification": ctx.rule_outputs["sensitivity"]["classification"],
             "reported_deficiencies": ctx.rule_outputs["therapeutic_triggers"]["reported_deficiencies"],
+            "medications": q["medical"].get("medications", []),
         },
     }
 

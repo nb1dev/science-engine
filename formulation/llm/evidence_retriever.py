@@ -72,6 +72,8 @@ def retrieve_medication_evidence(medication_entries: list, selected_supplements:
                 )
 
                 for interaction in all_interactions:
+                    if not isinstance(interaction, dict):
+                        continue  # LLM returned a string instead of structured dict — skip
                     interacting = (
                         interaction.get("mineral", "") or interaction.get("substance", "") or
                         interaction.get("nutrient", "") or interaction.get("supplement", "")

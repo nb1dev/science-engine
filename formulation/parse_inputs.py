@@ -643,16 +643,17 @@ def extract_questionnaire_data(questionnaire: Dict, use_bedrock: bool = True) ->
     # Standard BMI thresholds misclassify lean, highly muscular athletes as
     # "overweight". This derived field passes contextual information to the
     # clinical analyzer so it does not flag fit clients incorrectly.
-    # Rule: BMI 25–29.9 + (vigorous ≥4×/week ≥45min OR moderate ≥6×/week ≥60min)
-    # → override label to avoid overweight classification.
+    # Rule: BMI 25–29.9 + regularly active (not just elite athletes)
+    # → override label to avoid misclassifying well-muscled clients as overweight.
+    # Threshold lowered to: vigorous ≥3×/week ≥30min OR moderate ≥4×/week ≥45min
     exercise_step5 = step5  # step5 is available in this scope
     _vigorous_days = exercise_step5.get("vigorous_days_per_week") or 0
     _vigorous_mins = exercise_step5.get("vigorous_minutes_per_session") or 0
     _moderate_days = exercise_step5.get("moderate_days_per_week") or 0
     _moderate_mins = exercise_step5.get("moderate_minutes_per_session") or 0
     _is_highly_athletic = (
-        (_vigorous_days >= 4 and _vigorous_mins >= 45) or
-        (_moderate_days >= 6 and _moderate_mins >= 60)
+        (_vigorous_days >= 3 and _vigorous_mins >= 30) or
+        (_moderate_days >= 4 and _moderate_mins >= 45)
     )
     bmi_context = None
     if bmi is not None:
@@ -666,7 +667,7 @@ def extract_questionnaire_data(questionnaire: Dict, use_bedrock: bool = True) ->
         elif bmi >= 30.0:
             bmi_context = f"BMI {bmi} — obese range"
         elif 25.0 <= bmi < 30.0:
-            bmi_context = f"BMI {bmi} — overweight range"
+            bmi_context = f"BMI {bmi} — above standard range (individual context applies — verify body composition)"
         else:
             bmi_context = f"BMI {bmi} — normal range"
 
