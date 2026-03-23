@@ -671,21 +671,56 @@ def extract_questionnaire_data(questionnaire: Dict, use_bedrock: bool = True) ->
         else:
             bmi_context = f"BMI {bmi} — normal range"
 
-    # ── Medications — CORRECT source is other_medications (not medications) ──
-    # step3.medications is always [] in practice; prescriptions live in
-    # step3.other_medications as [{name, dosage, how_long}] objects.
+    # ── Medications — handle BOTH formats ────────────────────────────────
+    # Newer questionnaires (batch 008+): all in other_medications array
+    # Older questionnaires (batch 001-007): structured fields (statin_has, ppi_has, etc.)
     other_medications = step3.get("other_medications", []) or []
-    # Normalise to list of dicts with consistent keys
+    
+    # Normalise array-based medications
     medications_normalised = []
     for m in other_medications:
         if isinstance(m, dict):
-            medications_normalised.append({
-                "name": m.get("name", ""),
-                "dosage": m.get("dosage", ""),
-                "how_long": m.get("how_long", ""),
-            })
+            med_name = m.get("name", "").strip()
+            if med_name:  # Only add if name is not empty
+                medications_normalised.append({
+                    "name": med_name,
+                    "dosage": m.get("dosage", ""),
+                    "how_long": m.get("how_long", ""),
+                })
         elif isinstance(m, str) and m.strip():
             medications_normalised.append({"name": m.strip(), "dosage": "", "how_long": ""})
+    
+    # ── Extract from structured fields (backward compatibility for older questionnaires) ──
+    # Map of structured field → (has_field, which_field, dosage_field, duration_field)
+    structured_meds = [
+        ("statin_has", "statin_which", "statin_dosage", "statin_how_long"),
+        ("ppi_has", "ppi_which", "ppi_dosage", "ppi_how_long"),
+        ("ssri_snri_has", "ssri_snri_drug", "ssri_snri_dosage", "ssri_snri_how_long"),
+        ("metformin_has", "metformin_name", "metformin_dosage", "metformin_how_long"),
+        ("nsaid_use", "nsaid_which", "nsaid_typical_dose", "nsaid_how_long"),
+        ("corticosteroids_has", "corticosteroids_which", "corticosteroids_dosage", "corticosteroids_how_long"),
+        ("immunosuppressants_has", "immunosuppressants_drugs", None, "immunosuppressants_how_long"),
+        ("hrt_has", "hrt_type", "hrt_dosage", "hrt_how_long"),
+        ("hormonal_contraception_has", "hormonal_contraception_brand", None, "hormonal_contraception_how_long"),
+    ]
+    
+    for has_field, which_field, dosage_field, duration_field in structured_meds:
+        has_val = step3.get(has_field, "no")
+        # Check if medication is present (has_field == "yes" or nsaid_use == "yes")
+        if has_val and str(has_val).lower() == "yes":
+            med_name = step3.get(which_field, "").strip()
+            if med_name and med_name.lower() not in ("none", "n/a", ""):
+                # Check if already in array to avoid duplicates
+                already_present = any(
+                    m.get("name", "").lower() == med_name.lower() 
+                    for m in medications_normalised
+                )
+                if not already_present:
+                    medications_normalised.append({
+                        "name": med_name,
+                        "dosage": step3.get(dosage_field, "") if dosage_field else "",
+                        "how_long": step3.get(duration_field, "") if duration_field else "",
+                    })
 
     # ── Skin concerns (step 7) ────────────────────────────────────────────────
     skin_concerns_raw = step7.get("skin_concerns", []) or []
