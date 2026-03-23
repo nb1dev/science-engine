@@ -43,7 +43,7 @@ def _round_clinical(x: float, decimals: int = 1) -> float:
     return math.floor(x * factor + 0.5) / factor
 
 
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -260,7 +260,7 @@ class FormulationCalculator:
 
     def __init__(self, sample_id: str):
         self.sample_id = sample_id
-        self.timestamp = datetime.utcnow().isoformat() + "Z"
+        self.timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
         # ── Jar (powder) ──────────────────────────────────────────────────────
         self.jar_prebiotics: List[Dict] = []
