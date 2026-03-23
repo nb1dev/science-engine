@@ -203,6 +203,68 @@ pytest formulation/tests/
 
 ---
 
+## Optimal Execution Sequence
+
+For cost-optimized execution with minimal LLM calls, follow this phased approach:
+
+### Step-by-step breakdown
+
+```
+Step 0:  distribute_questionnaires.py --token "..."              → 0 LLM
+         (fetches from API → places questionnaire_*.json into each sample dir)
+
+Step 1:  calculate_metrics.py                                → 0 LLM calls
+         (produces only_metrics.txt + functional_guild.txt)
+
+Step 2:  generate_report.py --no-llm                         → 0 LLM calls
+         (produces microbiome_analysis_master.json — ALL structural data, 
+          placeholder narratives. Internal health report call also runs no-llm → bare HTML)
+
+Step 3:  generate_narrative_report.py                        → ~10 LLM calls
+         (independent — reads analysis master + metrics → 
+          produces narrative_report.md + PDF)
+
+Step 4:  generate_formulation.py                             → 4-5 LLM calls
+         (reads microbiome_analysis_master.json ✅ + questionnaire → 
+          produces formulation_master.json)
+
+Step 5:  generate_report.py (full LLM)                       → 1 LLM call
+         (rewrites microbiome_analysis_master.json with real narratives.
+          Uses --reuse-narratives? No — first run was --no-llm so narratives are placeholders.
+          BUT: the internal health report call is the expensive part — see Step 6)
+
+Step 6:  (triggered internally by Step 5)
+         generate_health_report.py                           → ~6 LLM calls
+         (NOW finds formulation_master.json ✅ → 
+          full HTML with supplement sections, Section 3, lifestyle recs, etc.)
+```
+
+### Commands
+
+```bash
+# Step 1: Bioinformatics (0 LLM)
+python science-engine/bioinformatics/calculate_metrics.py \
+  --batch_id nb1_2026_XXX --sample_id SAMPLE_ID
+
+# Step 2: Structural JSON only (0 LLM)
+python science-engine/report/generate_report.py \
+  --sample-dir analysis/nb1_2026_XXX/SAMPLE_ID/ --no-llm
+
+# Step 3: Narrative report (~10 LLM)
+python science-engine/report/generate_narrative_report.py \
+  --sample-dir analysis/nb1_2026_XXX/SAMPLE_ID/
+
+# Step 4: Formulation (4-5 LLM)
+python science-engine/formulation/generate_formulation.py \
+  --sample-dir analysis/nb1_2026_XXX/SAMPLE_ID/
+
+# Step 5: Full report + health report HTML (1 + ~6 = ~7 LLM)
+python science-engine/report/generate_report.py \
+  --sample-dir analysis/nb1_2026_XXX/SAMPLE_ID/
+```
+
+---
+
 ## Setup
 
 ```bash
