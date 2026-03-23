@@ -313,10 +313,21 @@ def run(ctx: PipelineContext) -> PipelineContext:
                                      reasoning=mg.get("reasoning", []), timing=mg_timing)
         print(f"  Mg capsules: {mg['capsules']}× {mg_timing}")
 
-    # ── Evening capsule capacity guard ───────────────────────────────────
-    # After ALL evening components are added (LLM supplements + sleep),
-    # enforce 650mg capacity: reduce doses → split into 2 capsules → clamp.
-    _enforce_evening_capacity(calc, ctx)
+    # ── Capsule capacity guards ───────────────────────────────────────────
+    # Enforce 650mg capacity for each capsule type after all components are
+    # added. Uses the generalised _enforce_capsule_capacity() which:
+    #   • Never touches vitamin_mineral components (protected, therapeutically selected)
+    #   • Reduces botanicals/supplements to KB minimums first
+    #   • Then splits into N capsules if still over
+    #   • Logs a warning if vitamins alone exceed capacity (can't auto-resolve)
+    calc.evening_pooled_components = _enforce_capsule_capacity(
+        calc.evening_pooled_components, EVENING_CAPSULE_CAPACITY_MG, "evening", ctx)
+
+    calc.polyphenol_capsules = _enforce_capsule_capacity(
+        calc.polyphenol_capsules, EVENING_CAPSULE_CAPACITY_MG, "polyphenol", ctx)
+
+    calc.morning_pooled_components = _enforce_capsule_capacity(
+        calc.morning_pooled_components, EVENING_CAPSULE_CAPACITY_MG, "morning", ctx)
 
     # ── Dose optimizer (JSON-driven rules) ───────────────────────────────
     _run_dose_optimizer(calc, ctx)
@@ -372,103 +383,145 @@ def _add_sleep_supplements(calc, ctx: PipelineContext):
             calc.add_light_botanical_to_morning(ss["substance"], ss["dose_mg"], rationale=ss.get("rationale", ""))
 
 
-def _enforce_evening_capacity(calc, ctx: PipelineContext):
-    """Enforce 650mg evening capsule capacity — reduce doses → split → clamp.
+def _enforce_capsule_capacity(
+    components: List[Dict],
+    capacity_mg: int,
+    capsule_label: str,
+    ctx: PipelineContext,
+) -> List[Dict]:
+    """Universal capsule capacity enforcer — works for evening, polyphenol, and morning capsules.
 
-    Runs AFTER all evening components are added (LLM supplements + sleep).
+    Replaces the old _enforce_evening_capacity() (evening-only) with a generic version
+    that handles all capsule types. Called from run() for each pooled capsule group.
+
+    Protection rule:
+      Components with _source == "vitamin_mineral" are NEVER reduced or dropped.
+      They are therapeutically selected, KB-dosed, and clinically justified.
+      If vitamins alone exceed capacity, a warning is logged and the validator catches it.
+
     Algorithm:
-      1. Check total — if ≤ 650mg, done
-      2. Try reducing doses to KB minimums (single capsule attempt)
-      3. If still over: revert reductions, split into 2 capsules with original doses
-      4. Per-capsule clamp: reduce lowest-priority components in any over-capacity capsule
+      1. If total ≤ capacity_mg → return unchanged
+      2. Separate protected (vitamin_mineral) from reducible components
+      3. Step 1: Reduce reducible components to KB min_dose_mg (lowest priority first)
+         — if total (protected + reduced reducible) ≤ capacity → done
+      4. Step 2: Bin-pack all components into N capsules (largest-first greedy)
+         — reducible components that still overflow a single slot get their
+           dose reduced to KB min in the overflow capsule, then dropped if needed
       5. Cross-capsule deduplication
-      6. Consolidate capsule 2 back into evening_pooled_components for calc.generate()
+      6. Return the final flat component list (CapsuleStackingOptimizer in
+         weight_calculator.py will assign them to capsules at generate() time)
+
+    Returns:
+        Modified component list (same objects, possibly mutated doses).
     """
-    import copy
+    import copy as _copy
 
-    capacity = EVENING_CAPSULE_CAPACITY_MG
-    evening_total = sum(c.get("dose_mg", 0) for c in calc.evening_pooled_components)
+    if not components:
+        return components
 
-    if evening_total <= capacity:
-        return  # No overflow
+    total = sum(c.get("dose_mg", 0) for c in components)
+    if total <= capacity_mg:
+        return components
 
-    print(f"  ⚠️ Evening capsule overflow: {evening_total}mg > {capacity}mg — resolving...")
+    print(f"  ⚠️ {capsule_label.capitalize()} capsule overflow: {total}mg > {capacity_mg}mg — resolving...")
 
-    # ── Step 1: Try reducing to KB minimums (single capsule attempt) ─────
-    original_evening = copy.deepcopy(calc.evening_pooled_components)
-    step1_saved = 0
-    for comp in calc.evening_pooled_components:
+    # ── Separate protected (vitamins) from reducible (botanicals/supplements) ─
+    protected = [c for c in components if c.get("_source") == "vitamin_mineral"]
+    reducible = [c for c in components if c.get("_source") != "vitamin_mineral"]
+
+    protected_total = sum(c.get("dose_mg", 0) for c in protected)
+    reducible_total = sum(c.get("dose_mg", 0) for c in reducible)
+
+    # ── Step 1: Try reducing reducible components to KB minimums ──────────
+    original_reducible = _copy.deepcopy(reducible)
+
+    # Sort by rank_priority descending — lowest priority reduced first
+    reducible_sorted = sorted(reducible, key=lambda c: -((_find_kb_entry(c["substance"]) or {}).get("rank_priority", 3)))
+
+    for comp in reducible_sorted:
+        if protected_total + sum(c.get("dose_mg", 0) for c in reducible) <= capacity_mg:
+            break
         kb = _find_kb_entry(comp["substance"])
         if kb and kb.get("min_dose_mg") is not None and comp["dose_mg"] > kb["min_dose_mg"]:
-            saved = comp["dose_mg"] - kb["min_dose_mg"]
-            step1_saved += saved
-            print(f"    → {comp['substance']}: {comp['dose_mg']}mg → {kb['min_dose_mg']}mg (KB min, saved {saved}mg)")
-            comp["dose_mg"] = kb["min_dose_mg"]
-            comp["weight_mg"] = kb["min_dose_mg"]
+            old = comp["dose_mg"]
+            # Single occupant — use capacity as floor, not KB min.
+            # KB min only applies when multiple components compete for space.
+            would_be_alone = len(reducible) == 1
+            target = capacity_mg if would_be_alone else kb["min_dose_mg"]
+            saved = old - target
+            comp["dose_mg"] = target
+            comp["weight_mg"] = target
+            floor_label = f"capacity {capacity_mg}mg" if would_be_alone else f"KB min {target}mg"
+            print(f"    → {comp['substance']}: {old}mg → {target}mg ({floor_label}, saved {saved}mg)")
 
-    evening_total = sum(c.get("dose_mg", 0) for c in calc.evening_pooled_components)
-    if evening_total <= capacity:
-        print(f"    ✅ Resolved by dose reduction: {evening_total}mg ≤ {capacity}mg")
-        return
+    current_total = protected_total + sum(c.get("dose_mg", 0) for c in reducible)
+    if current_total <= capacity_mg:
+        print(f"    ✅ {capsule_label.capitalize()} resolved by dose reduction: {current_total}mg ≤ {capacity_mg}mg")
+        return protected + reducible
 
-    # ── Step 2: Can't fit in 1 capsule — revert to original doses and split ──
-    print(f"    Still {evening_total}mg after reduction — splitting into 2 capsules (restoring original doses)...")
-    calc.evening_pooled_components = original_evening
-    evening_total = sum(c.get("dose_mg", 0) for c in calc.evening_pooled_components)
+    # ── Step 2: Still over — restore original doses and bin-pack into N capsules ──
+    # Only restore reducible; protected stay as-is.
+    reducible = original_reducible
+    all_comps = protected + reducible
 
-    # Balanced bin-pack: largest-first, assign to capsule with more headroom
-    all_evening = sorted(calc.evening_pooled_components, key=lambda c: -c.get("dose_mg", 0))
-    cap1, cap2 = [], []
-    cap1_mg, cap2_mg = 0, 0
-    for comp in all_evening:
+    # Check: if vitamins alone exceed capacity, we cannot auto-resolve
+    if protected_total > capacity_mg:
+        print(f"    ⚠️ WARNING: {capsule_label} vitamin_mineral components alone total {protected_total}mg "
+              f"> {capacity_mg}mg — cannot auto-resolve. Validator will catch this.")
+        return all_comps  # return as-is; validator flags it
+
+    # Greedy largest-first bin-pack
+    all_comps_sorted = sorted(all_comps, key=lambda c: -c.get("dose_mg", 0))
+    bins: List[List] = [[]]
+    bin_totals: List[float] = [0.0]
+
+    for comp in all_comps_sorted:
         dose = comp.get("dose_mg", 0)
-        if cap1_mg + dose <= capacity:
-            cap1.append(comp)
-            cap1_mg += dose
-        elif cap2_mg + dose <= capacity:
-            cap2.append(comp)
-            cap2_mg += dose
-        elif cap1_mg <= cap2_mg:
-            cap1.append(comp)
-            cap1_mg += dose
-        else:
-            cap2.append(comp)
-            cap2_mg += dose
-
-    # ── Step 3: Per-capsule clamp (reduce lowest-priority if still over) ──
-    for cap_name, cap_list in [("cap1", cap1), ("cap2", cap2)]:
-        cap_total = sum(c.get("dose_mg", 0) for c in cap_list)
-        if cap_total > capacity:
-            overage = cap_total - capacity
-            # Sort by priority: highest rank number = lowest priority = reduce first
-            for comp in sorted(cap_list, key=lambda c: -(_find_kb_entry(c["substance"]) or {}).get("rank_priority", 3)):
-                if overage <= 0:
-                    break
+        # Find first bin with enough headroom
+        placed = False
+        for i, (bin_list, bin_total) in enumerate(zip(bins, bin_totals)):
+            if bin_total + dose <= capacity_mg:
+                bin_list.append(comp)
+                bin_totals[i] += dose
+                placed = True
+                break
+        if not placed:
+            # Needs a new bin — but first check if the component itself exceeds capacity
+            if dose > capacity_mg:
+                # Single component too large: reduce to KB min
                 kb = _find_kb_entry(comp["substance"])
-                if kb and kb.get("min_dose_mg") is not None and comp["dose_mg"] > kb["min_dose_mg"]:
-                    can_save = comp["dose_mg"] - kb["min_dose_mg"]
-                    reduce_by = min(overage, can_save)
-                    old = comp["dose_mg"]
-                    comp["dose_mg"] -= reduce_by
-                    comp["weight_mg"] = comp["dose_mg"]
-                    overage -= reduce_by
-                    print(f"    → Clamp {cap_name}: {comp['substance']} {old}mg → {comp['dose_mg']}mg")
+                is_protected = comp.get("_source") == "vitamin_mineral"
+                if not is_protected and kb and kb.get("min_dose_mg") is not None:
+                    old = dose
+                    comp["dose_mg"] = kb["min_dose_mg"]
+                    comp["weight_mg"] = kb["min_dose_mg"]
+                    print(f"    → {comp['substance']}: {old}mg → {kb['min_dose_mg']}mg (single-component overflow, reduced to KB min)")
+                    # Try to fit reduced dose in existing bin
+                    dose = comp["dose_mg"]
+                    for i, (bin_list, bin_total) in enumerate(zip(bins, bin_totals)):
+                        if bin_total + dose <= capacity_mg:
+                            bin_list.append(comp)
+                            bin_totals[i] += dose
+                            placed = True
+                            break
+                if not placed:
+                    # Still can't place — drop if reducible, warn if protected
+                    if is_protected:
+                        print(f"    ⚠️ WARNING: {comp['substance']} ({dose}mg) cannot fit in any {capsule_label} capsule — validator will catch this")
+                        bins[0].append(comp)  # attach to first bin for output
+                    else:
+                        ctx.removal_log.add(comp["substance"], f"{capsule_label} capsule overflow — too large for single capsule", f"{capsule_label}_overflow")
+                        print(f"    → Dropped: {comp['substance']} ({dose}mg) — {capsule_label} overflow (too large for capsule)")
+            else:
+                # Open a new bin
+                bins.append([comp])
+                bin_totals.append(dose)
 
-            # If still over after reduction, drop lowest-priority component
-            if overage > 0:
-                cap_list_sorted = sorted(cap_list, key=lambda c: -(_find_kb_entry(c["substance"]) or {}).get("rank_priority", 3))
-                while overage > 0 and cap_list_sorted:
-                    drop = cap_list_sorted.pop(0)
-                    cap_list.remove(drop)
-                    overage -= drop["dose_mg"]
-                    ctx.removal_log.add(drop["substance"], f"Evening capsule overflow ({cap_name})", "evening_overflow")
-                    print(f"    → Dropped: {drop['substance']} ({drop['dose_mg']}mg) — evening {cap_name} overflow")
-
-    # ── Step 4: Cross-capsule deduplication ──────────────────────────────
-    all_components = cap1 + cap2
-    seen = {}
-    deduped = []
-    for comp in all_components:
+    # ── Cross-bin deduplication ────────────────────────────────────────────
+    all_result = [c for bin_list in bins for c in bin_list]
+    seen: Dict = {}
+    deduped: List[Dict] = []
+    for comp in all_result:
         key = comp["substance"].lower().strip()
         if key in seen:
             existing = seen[key]
@@ -483,14 +536,10 @@ def _enforce_evening_capacity(calc, ctx: PipelineContext):
             seen[key] = comp
             deduped.append(comp)
 
-    # ── Step 5: Consolidate back into evening_pooled_components ──────────
-    # calc.generate() → _calc_pooled_evening_totals() → CapsuleStackingOptimizer
-    # will correctly pack all components into N capsules.
-    calc.evening_pooled_components = deduped
-
+    n_caps = len(bins)
     final_total = sum(c.get("dose_mg", 0) for c in deduped)
-    n_caps = 1 if final_total <= capacity else 2
-    print(f"    ✅ Evening resolved: {final_total}mg → {n_caps} capsule(s)")
+    print(f"    ✅ {capsule_label.capitalize()} resolved: {final_total}mg → {n_caps} capsule(s)")
+    return deduped
 
 
 def _run_dose_optimizer(calc, ctx: PipelineContext):

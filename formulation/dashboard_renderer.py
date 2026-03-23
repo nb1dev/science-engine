@@ -970,6 +970,29 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
             if overrides:
                 for ov in overrides:
                     extra_detail += f'<div style="font-size:12px;color:var(--amber)">⚠️ Override: {_esc(ov)}</div>'
+            # Substrate necessity guard (v2.1)
+            sg = prebiotic_design.get("substrate_guard", {})
+            if sg:
+                if sg.get("applied"):
+                    guard_items = '<div style="font-size:12px;font-weight:600;color:var(--dark)">🛡️ Substrate Guard: Applied</div>'
+                    for corr in sg.get("corrections", []):
+                        guard_items += f'<div style="font-size:11px;color:var(--mid)">→ {_esc(corr.get("substance",""))}: {corr.get("from_g",0)}g → {corr.get("to_g",0)}g (P{corr.get("priority","?")}, {_esc(corr.get("action",""))})</div>'
+                    for rb in sg.get("rebalance_log", []):
+                        guard_items += f'<div style="font-size:11px;color:var(--mid)">→ {_esc(rb.get("substance",""))}: {rb.get("from_g",0)}g → {rb.get("to_g",0)}g (reduced for headroom)</div>'
+                    for warn in sg.get("warnings", []):
+                        guard_items += f'<div style="font-size:11px;color:var(--amber)">⚠️ {_esc(warn)}</div>'
+                    ceil = sg.get("effective_ceiling_g")
+                    tol = sg.get("tolerance_pct", 0)
+                    final = sg.get("final_total_g")
+                    respected = sg.get("ceiling_respected", True)
+                    if ceil and final:
+                        icon = "✅" if respected else "⚠️"
+                        guard_items += f'<div style="font-size:11px;color:var(--mid)">{icon} Ceiling: {final}g {"≤" if respected else ">"} {ceil}g (max + {tol}% tolerance)</div>'
+                    extra_detail += f'<div style="margin-top:8px;background:#f0f4f0;border-radius:6px;padding:8px 10px">{guard_items}</div>'
+                elif sg.get("reason"):
+                    sibo_src = sg.get("sibo_source", "")
+                    src_tag = f' (source: {sibo_src})' if sibo_src else ''
+                    extra_detail += f'<div style="margin-top:8px;font-size:12px;color:var(--mid)">🛡️ Substrate Guard: Skipped — {_esc(sg["reason"])}{src_tag}</div>'
 
         # Mix selection extra detail
         mix_extra = ""

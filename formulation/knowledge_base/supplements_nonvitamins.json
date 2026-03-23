@@ -106,7 +106,7 @@
       "parsed": {
         "dose": {
           "min": 500.0,
-          "max": 1000.0,
+          "max": 1010,
           "unit": "mg",
           "raw": "500-1000mg/day (with piperine 1:100)"
         },
@@ -189,16 +189,17 @@
       "supplement_type": "Fermentable Polyphenol Substrate",
       "subcategory": "Blood Cholesterol",
       "rank": "1st Choice",
-      "standard_dose": "1000 mg/day",
+      "standard_dose": "500-1000 mg/day",
       "rationale": "",
       "interaction_risk": "Low",
       "timing_in_protocol": "3 months, with meals",
       "notes": "",
       "parsed": {
         "dose": {
-          "value": 1000.0,
           "unit": "mg",
-          "raw": "1000 mg/day"
+          "raw": "1000 mg/day",
+          "min": 500,
+          "max": 1000
         },
         "rank_priority": 1,
         "interaction_level": "low",
@@ -207,7 +208,8 @@
         ]
       },
       "timing_restriction": "any",
-      "delivery_constraint": "any"
+      "delivery_constraint": "capsule_only",
+      "polyphenol_tier": 2
     },
     {
       "id": "betaglucans",
@@ -238,7 +240,7 @@
     {
       "id": "plant_sterolsstanols",
       "substance": "Plant Sterols/Stanols",
-      "supplement_type": "Fermentable Polyphenol Substrate",
+      "supplement_type": "Phytosterol",
       "subcategory": "Blood Cholesterol",
       "rank": "3rd Choice",
       "standard_dose": "0.8g daily",
@@ -953,7 +955,7 @@
     {
       "id": "apple_polyphenol_extract",
       "substance": "Apple polyphenol extract",
-      "supplement_type": "Prebiotic, Fermentable Polyphenol Substrate",
+      "supplement_type": "Fermentable Polyphenol Substrate",
       "subcategory": "Skin Quality",
       "rank": "2nd Choice",
       "standard_dose": "300-600 mg/day",
@@ -1352,7 +1354,7 @@
   ],
   "polyphenol_classification": {
     "description": "Polyphenol delivery classification for the polyphenol diversity rule",
-    "total_polyphenol_mass_cap_mg": 1000,
+    "total_polyphenol_mass_cap_mg": 1500,
     "tier_1_capsule_shareable": {
       "description": "Capsule-only (bitter/irritating) — can share evening capsule headroom",
       "substances": [
@@ -1484,7 +1486,8 @@
           "notes": "",
           "parsed": {
             "dose": {
-              "raw": "Varies (enhance with black pepper)"
+              "raw": "Varies (enhance with black pepper)",
+              "max": 1010
             },
             "rank_priority": 1,
             "interaction_level": "low",
@@ -1564,16 +1567,17 @@
           "supplement_type": "Fermentable Polyphenol Substrate",
           "subcategory": "Blood Cholesterol",
           "rank": "1st Choice",
-          "standard_dose": "1000 mg/day",
+          "standard_dose": "500-1000 mg/day",
           "rationale": "",
           "interaction_risk": "Low",
           "timing_in_protocol": "3 months, with meals",
           "notes": "",
           "parsed": {
             "dose": {
-              "value": 1000.0,
               "unit": "mg",
-              "raw": "1000 mg/day"
+              "raw": "1000 mg/day",
+              "min": 500,
+              "max": 1000
             },
             "rank_priority": 1,
             "interaction_level": "low",
@@ -1582,7 +1586,8 @@
             ]
           },
           "timing_restriction": "any",
-          "delivery_constraint": "any"
+          "delivery_constraint": "capsule_only",
+          "polyphenol_tier": 2
         },
         {
           "id": "betaglucans",
@@ -1613,7 +1618,7 @@
         {
           "id": "plant_sterolsstanols",
           "substance": "Plant Sterols/Stanols",
-          "supplement_type": "Fermentable Polyphenol Substrate",
+          "supplement_type": "Phytosterol",
           "subcategory": "Blood Cholesterol",
           "rank": "3rd Choice",
           "standard_dose": "0.8g daily",
@@ -2473,7 +2478,7 @@
         {
           "id": "apple_polyphenol_extract",
           "substance": "Apple polyphenol extract",
-          "supplement_type": "Prebiotic, Fermentable Polyphenol Substrate",
+          "supplement_type": "Fermentable Polyphenol Substrate",
           "subcategory": "Skin Quality",
           "rank": "2nd Choice",
           "standard_dose": "300-600 mg/day",

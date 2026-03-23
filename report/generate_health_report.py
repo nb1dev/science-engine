@@ -4895,6 +4895,13 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
         <span><strong>Why you're taking it:</strong> {_esc(card["why"])}</span>
       </div>
 ''')
+            # Empty stomach warning for morning polyphenol capsules
+            if 'polyphenol' in card.get('key', '') and 'morning' in card.get('timing', '').lower():
+                parts.append('''      <div class="supp-why-band" style="background:#FBF1E4;border-top:none;border-left:3px solid var(--amber);padding-top:12px;padding-bottom:12px;">
+        <span class="why-icon">⚠️</span>
+        <span><strong>Take with breakfast or on full stomach.</strong> Do not take on an empty stomach — polyphenols at this dose may cause nausea if taken without food.</span>
+      </div>
+''')
             # Multi-capsule cards (Morning/Evening Wellness) — render per capsule with sub-headers
             if card.get('capsules'):
                 for cap in card['capsules']:

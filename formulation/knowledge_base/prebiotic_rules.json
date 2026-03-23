@@ -1,48 +1,100 @@
 {
   "metadata": {
-    "version": "2.0.0",
+    "version": "3.0.0",
     "sources": [
       "prebiotics4mixes_v2.md (17 March 2026)",
       "probiotic_mixes_v2.xlsx (17 March 2026)",
       "Prebiotic_Dosing_Design_Rules.md",
-      "Supplement_Formulation_Generation_Framework_v3.0.md"
+      "Supplement_Formulation_Generation_Framework_v3.0.md",
+      "substrate_necessity_model_v1.md (23 March 2026)"
     ],
-    "description": "Complete prebiotic selection and dosing rules. Combines per-mix prebiotic requirements, CFU-based dosing, sensitivity clamps, and contradiction override logic.",
-    "previous_version": "archive/v1_2026_03_17/prebiotic_rules_v1.json"
+    "description": "Complete prebiotic selection and dosing rules. v3 adds substrate_necessity model: per-mix explicit substrate floors with can_be_omitted_if conditions, enabling minimum-viable-substrate logic rather than flat must-retain injection.",
+    "previous_version": "archive/v2_2026_03_17/prebiotic_rules_v2.json"
   },
-
+  "prebiotic_tolerance_pct": 10,
   "dosing_by_cfu_tier": {
-    "50B": {"total_g_range": [4, 6], "high_sensitivity": [3, 4], "moderate": [4, 6], "low_high_tolerance": [6, 8]},
-    "75B": {"total_g_range": [5, 9], "high_sensitivity": [4, 5], "moderate": [5, 7], "low_high_tolerance": [7, 9]},
-    "100B": {"total_g_range": [6, 10], "high_sensitivity": [5, 6], "moderate": [6, 8], "low_high_tolerance": [8, 10]},
-    "50B_mix8": {"total_g_range": [7, 9], "high_sensitivity": [5, 6], "moderate": [6, 7], "low_high_tolerance": [7, 9], "note": "Mix 8 HIGH LOAD strategy for aggressive Fiber guild expansion"}
+    "50B": {
+      "total_g_range": [4, 6],
+      "high_sensitivity": [3, 4],
+      "moderate": [4, 6],
+      "low_high_tolerance": [6, 8]
+    },
+    "75B": {
+      "total_g_range": [5, 9],
+      "high_sensitivity": [4, 5],
+      "moderate": [5, 7],
+      "low_high_tolerance": [7, 9]
+    },
+    "100B": {
+      "total_g_range": [6, 10],
+      "high_sensitivity": [5, 6],
+      "moderate": [6, 8],
+      "low_high_tolerance": [8, 10]
+    },
+    "50B_mix8": {
+      "total_g_range": [7, 9],
+      "high_sensitivity": [5, 6],
+      "moderate": [6, 7],
+      "low_high_tolerance": [7, 9],
+      "note": "Mix 8 HIGH LOAD strategy for aggressive Fiber guild expansion"
+    }
   },
-
   "mix8_titration_protocol": {
     "weeks_1_2": {"g_range": [5, 6], "description": "Adaptation period, assess tolerance"},
     "weeks_3_4": {"g_range": [7, 8], "description": "Competitive pressure begins"},
     "weeks_5_16": {"g_range": [7, 9], "description": "Sustained Fiber guild expansion"}
   },
-
   "prebiotic_threshold_warning": {
     "threshold_g": 10,
     "action": "RAISE WARNING: Extremely high fiber load — Review clinical necessity",
     "assessment": ["Clinical urgency", "Client tolerance", "Adherence impact"],
     "historical_precedent": "Batch 001 includes 9.5g load — used successfully. ≥10g requires heightened scrutiny."
   },
-
   "per_mix_prebiotics": {
     "mix_1": {
       "mix_name": "Dysbiosis Recovery",
       "must_include": ["GOS", "Inulin", "FOS", "Beta-glucans"],
       "highly_recommended": ["Quercetin", "Psyllium"],
       "optional": ["Curcumin", "Apple polyphenols"],
+      "substrate_necessity": {
+        "GOS": {
+          "minimum_g": 0.5,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "Bl-05 (acetate hub) and the reconstituted Bifido niche depend on GOS for selective enrichment. Without it, Bl-05 cross-feeding output is reduced and saccharolytic guild re-seeding loses its Bifidogenic anchor.",
+          "can_be_omitted_if": "Inulin >= 1.0"
+        },
+        "Inulin": {
+          "minimum_g": 0.5,
+          "priority": 1,
+          "fodmap": true,
+          "mechanism": "NCFM degrades inulin-type fructans releasing fructose + lactate, which feeds the acetogenic cross-feeding chain (Bl-05 → butyrate producers). This is the primary trophic chain signal for broad multi-guild recovery. Cannot be omitted.",
+          "can_be_omitted_if": null
+        },
+        "FOS": {
+          "minimum_g": 0.5,
+          "priority": 3,
+          "fodmap": true,
+          "mechanism": "Adds short-chain saccharolytic substrate diversity across the saccharolytic guild. Redundant when Inulin ≥ 0.5g and GOS ≥ 0.5g cover the trophic chain and Bifidogenic anchoring.",
+          "can_be_omitted_if": "Inulin >= 0.5 AND GOS >= 0.5"
+        },
+        "Beta-Glucans": {
+          "minimum_g": 1.0,
+          "priority": 1,
+          "fodmap": false,
+          "mechanism": "Non-FODMAP butyrate substrate across the saccharolytic → acetogenic → butyrogenic chain. Keeps the trophic chain fed even when FODMAP substrates are restricted. Must be present at meaningful dose in any sensitivity override.",
+          "can_be_omitted_if": null
+        }
+      },
       "contradiction_overrides": {
         "gas_bloating_ibs_d_fodmap": {
-          "replace": {"FOS_bulk": "PHGG", "GOS_bulk": "PHGG or beta-glucans", "medium_high_inulin": "PHGG ± psyllium"},
-          "keep": ["beta-glucans"],
-          "must_retain_at_minimum": ["GOS 0.5g", "Inulin 0.5g", "FOS 0.5g"],
-          "note": "MUST keep trace GOS (0.5g), FOS (0.5g), and Inulin (0.5-1.0g) — these are must_include substrates for co-administered strains (NCFM fructan-degradation, Bl-05 Bifidogenic cross-feeding, saccharolytic diversity). Only replace BULK doses above minimum. The pipeline enforces must_include retention deterministically."
+          "replace": {
+            "FOS_bulk": "PHGG",
+            "GOS_bulk": "PHGG or beta-glucans",
+            "medium_high_inulin": "PHGG ± psyllium"
+          },
+          "keep": ["Beta-Glucans"],
+          "note": "Reduce FODMAP bulk; retain trace floors per substrate_necessity. Beta-Glucans floor is mandatory regardless of sensitivity level."
         }
       }
     },
@@ -51,11 +103,37 @@
       "must_include": ["GOS", "Inulin", "FOS"],
       "highly_recommended": ["Lactulose", "Beta-glucans"],
       "optional": ["Apple polyphenols", "Fermented pomegranate polyphenols"],
+      "substrate_necessity": {
+        "GOS": {
+          "minimum_g": 0.5,
+          "priority": 1,
+          "fodmap": true,
+          "mechanism": "Primary Bifido-selective oligosaccharide. All 4 Bifidobacterium strains (35624, B420, BB-12, BR03+B632) preferentially ferment GOS. It drives selective Bifidogenic enrichment that no other substrate replicates. If GOS is absent, the entire Bifidogenic mechanism collapses regardless of other substrates present.",
+          "can_be_omitted_if": null
+        },
+        "Inulin": {
+          "minimum_g": 0.5,
+          "priority": 1,
+          "fodmap": true,
+          "mechanism": "NCFM degrades inulin-type fructans releasing lactate that cross-feeds the Bifidobacterium strains. Without Inulin, the NCFM → Bifido cross-feeding bridge is severed and Bifido restoration depends only on direct GOS fermentation, which is slower and less efficient.",
+          "can_be_omitted_if": null
+        },
+        "FOS": {
+          "minimum_g": 0.5,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "Short-chain fructooligosaccharides provide substrate diversity within the Bifidogenic niche — different chain lengths activate distinct Bifidobacterium transport systems (e.g. BL-05 and BR03 have differential FOS vs GOS preference). Omittable only when GOS and Inulin are both at floor, because the overlap is sufficient for core Bifido enrichment.",
+          "can_be_omitted_if": "GOS >= 0.5 AND Inulin >= 0.5"
+        }
+      },
       "contradiction_overrides": {
         "gas_bloating_ibs_d_fodmap": {
-          "replace": {"GOS_bulk": "PHGG + beta-glucans", "FOS_bulk": "PHGG", "pure_inulin": "PHGG ± psyllium"},
-          "must_retain_at_minimum": ["GOS 0.5g", "Inulin 0.5g", "FOS 0.5g"],
-          "note": "MUST keep trace GOS (0.5g), FOS (0.5g), and Inulin (0.5g) — these are must_include substrates for Bifido-selective enrichment and NCFM cross-feeding. Only replace BULK doses above minimum. The pipeline enforces must_include retention deterministically."
+          "replace": {
+            "GOS_bulk": "PHGG + beta-glucans",
+            "FOS_bulk": "PHGG",
+            "pure_inulin": "PHGG ± psyllium"
+          },
+          "note": "Reduce FODMAP bulk. GOS and Inulin floors are priority-1 and cannot be removed. FOS floor may be omitted if GOS ≥ 0.5 AND Inulin ≥ 0.5 (priority-2 condition met)."
         }
       }
     },
@@ -64,12 +142,46 @@
       "must_include": ["Inulin", "FOS", "GOS", "Beta-glucans"],
       "highly_recommended": ["Resistant starch", "Psyllium"],
       "optional": ["Quercetin", "Curcumin"],
-      "note": "GOS is must-include — L. acidophilus NCFM degrades oligofructose releasing fructose and producing lactate for butyrate producers. Dual plantarum strains (UALp-05 + 299v) need carbohydrate substrate across all fermentation niches.",
+      "note": "NCFM's primary documented mechanism in this mix is fructan degradation → lactate → butyrate producer cross-feeding. Inulin is therefore the single most mechanistically critical substrate. GOS provides oligofructose signalling for NCFM initiation. Beta-Glucans serve UALp-05 and 299v as the non-FODMAP saccharolytic backbone.",
+      "substrate_necessity": {
+        "Inulin": {
+          "minimum_g": 0.5,
+          "priority": 1,
+          "fodmap": true,
+          "mechanism": "NCFM specifically degrades inulin-type fructans releasing free fructose and lactate for butyrate producers (Clostridiales cross-feeding chain). This is the defining trophic mechanism of Mix 3. Without Inulin, NCFM cannot initiate its cross-feeding role and the SCFA restoration rationale is broken.",
+          "can_be_omitted_if": null
+        },
+        "GOS": {
+          "minimum_g": 0.5,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "Provides oligofructose signalling for NCFM fructan-degradation pathway initiation and supports BB-12 acetate production for butyrate cross-feeding. At trace dose (0.5g) it primes the SCFA chain without generating significant gas load.",
+          "can_be_omitted_if": "Inulin >= 1.0"
+        },
+        "FOS": {
+          "minimum_g": 0.5,
+          "priority": 3,
+          "fodmap": true,
+          "mechanism": "Short-chain substrate diversity. Partially overlaps with Inulin in the NCFM fructan-degradation pathway. The gassy_client_formula already omits FOS (keeping only Inulin + Beta-Glucans + PHGG), confirming FOS is the most dispensable FODMAP substrate in this mix.",
+          "can_be_omitted_if": "Inulin >= 0.5"
+        },
+        "Beta-Glucans": {
+          "minimum_g": 1.5,
+          "priority": 1,
+          "fodmap": false,
+          "mechanism": "Primary non-FODMAP butyrate substrate for dual-plantarum strains (UALp-05 + 299v). Beta-glucan fermentation by plantarum produces acetate/lactate that feeds Clostridiales butyrate producers independently of the FODMAP chain. Higher floor than other mixes because it carries the saccharolytic backbone load when FODMAPs are restricted.",
+          "can_be_omitted_if": null
+        }
+      },
       "contradiction_overrides": {
         "gas_histamine_ibs_d_fodmap": {
-          "replace": {"large_inulin": "PHGG + beta-glucans", "large_FOS": "PHGG", "GOS_bulk": "PHGG + beta-glucans"},
-          "keep": ["beta-glucans"],
-          "note": "Glucomannan optional for constipation/weight. Keep minimal inulin/FOS for NCFM fructan-degradation signalling."
+          "replace": {
+            "large_inulin": "PHGG + beta-glucans",
+            "large_FOS": "PHGG",
+            "GOS_bulk": "PHGG + beta-glucans"
+          },
+          "keep": ["Beta-Glucans"],
+          "note": "Inulin floor (0.5g) mandatory — NCFM cannot function without it. GOS may be omitted if Inulin ≥ 1.0g. FOS freely omittable if Inulin ≥ 0.5g. Beta-Glucans floor 1.5g mandatory as SCFA backbone substrate."
         }
       }
     },
@@ -78,10 +190,50 @@
       "must_include": ["GOS", "Inulin", "FOS"],
       "highly_recommended": ["Psyllium", "Beta-glucans"],
       "optional": ["Quercetin", "Apple polyphenols", "Propolis"],
+      "substrate_necessity": {
+        "GOS": {
+          "minimum_g": 0.5,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "Bl-05 substrate for acetate production — lowers luminal pH and inhibits proteolytic Clostridia. Supports the saccharolytic competitive displacement mechanism but is not the primary driver (reuterin and pH from lactate are primary). Omittable under SIBO override or when Inulin ≥ 1.0g provides sufficient Bl-05 cross-feeding.",
+          "can_be_omitted_if": "SIBO_override OR Inulin >= 1.0"
+        },
+        "Inulin": {
+          "minimum_g": 0.5,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "Fermentable substrate for saccharolytic competitive displacement of proteolytic bacteria. Pl-299v and Bl-05 use inulin-type fructans to outcompete Clostridia clusters for fermentation niches. Secondary to reuterin mechanism but important for sustained niche flooding.",
+          "can_be_omitted_if": "SIBO_override"
+        },
+        "FOS": {
+          "minimum_g": 0.5,
+          "priority": 3,
+          "fodmap": true,
+          "mechanism": "Short-chain substrate diversity for competitive niche flooding. Fully redundant when Inulin and GOS are present. Always omittable under any sensitivity override.",
+          "can_be_omitted_if": "Inulin >= 0.5 AND GOS >= 0.5"
+        },
+        "Beta-Glucans": {
+          "minimum_g": 1.0,
+          "priority": 1,
+          "fodmap": false,
+          "mechanism": "Non-FODMAP competitive substrate that outcompetes proteolytic bacteria for fermentation niches without generating FODMAP fermentation gas. Essential under any sensitivity override because it carries the competitive displacement mechanism when all FODMAPs are removed.",
+          "can_be_omitted_if": null
+        }
+      },
+      "sibo_override": {
+        "name": "gas_sibo_fodmap_ibs_d",
+        "description": "When SIBO is suspected (self-reported by client or LLM-assessed from clinical profile): all FODMAP substrates (GOS, Inulin, FOS) may be fully removed. Mix 4 strains operate largely pharmacologically (reuterin from L. reuteri UALre-16, sIgA from L. casei 431, pH acidification from Bl-05) — not via substrate-coupled fermentation chains. PHGG + Beta-Glucans provide the competitive displacement substrate without feeding the SIBO overgrowth. This is the ONLY mix where zero FODMAP is clinically valid.",
+        "replace": {
+          "FOS_GOS_inulin_mass": "PHGG (primary) + beta-glucans"
+        },
+        "zero_fodmap_permitted": true
+      },
       "contradiction_overrides": {
         "gas_sibo_fodmap_ibs_d": {
-          "replace": {"FOS_GOS_inulin_mass": "PHGG (primary) + beta-glucans"},
-          "note": "When SIBO suspected, can temporarily avoid all FOS/GOS/inulin completely and run PHGG-dominant"
+          "replace": {
+            "FOS_GOS_inulin_mass": "PHGG (primary) + beta-glucans"
+          },
+          "note": "See sibo_override block. Zero FODMAP explicitly permitted for this mix when SIBO is active."
         }
       }
     },
@@ -90,12 +242,38 @@
       "must_include": ["GOS", "Inulin", "FOS"],
       "highly_recommended": ["HMOs", "Psyllium", "Beta-glucans", "PHGG"],
       "optional": ["Quercetin", "Apple polyphenols", "Pomegranate polyphenols"],
-      "note": "GOS and HMOs are strongly preferred substrates — the v2 mix is Bifido-heavy (BB-12, HN019, 35624, BR03+B632) and these oligosaccharides are their primary fermentation substrates. Mucin-derived sugars (N-acetylglucosamine, fucose, sialic acid) from HMOs directly support the barrier-protective niche.",
+      "note": "Mix 5 is Bifido-heavy (BB-12, HN019, 35624, BR03+B632) — 4 out of 5 strains are Bifidobacterium. GOS is the preferred substrate for all four. The mucus barrier mechanism requires SCFA production for tight-junction repair; SCFA output depends on adequate substrate reaching these adherent Bifido strains.",
+      "substrate_necessity": {
+        "GOS": {
+          "minimum_g": 0.5,
+          "priority": 1,
+          "fodmap": true,
+          "mechanism": "Primary substrate for the 4 Bifidobacterium strains (BB-12, HN019, 35624, BR03+B632) that carry the barrier-restoration mechanism. GOS drives selective Bifidogenic enrichment → acetate/SCFA production → tight-junction repair signalling. Without GOS, SCFA output from the Bifido strains is substantially reduced and the mucosal repair mechanism is impaired.",
+          "can_be_omitted_if": null
+        },
+        "Inulin": {
+          "minimum_g": 0.5,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "Provides SCFA trophic chain signalling substrate. LP-299v (the Lactobacillus anchor) uses inulin-type fructans for lactate production that cross-feeds the Bifido strains and drives MUC2/MUC3 secretion via SCFA. Omittable if GOS is at 1.0g+ (sufficient Bifido direct substrate) and PHGG/Beta-Glucans carry the bulk SCFA load.",
+          "can_be_omitted_if": "GOS >= 1.0 AND (PHGG >= 1.5 OR Beta-Glucans >= 1.5)"
+        },
+        "FOS": {
+          "minimum_g": 0.5,
+          "priority": 3,
+          "fodmap": true,
+          "mechanism": "Short-chain diversity substrate. Partially redundant with GOS for Bifidogenic enrichment. The lowest-priority FODMAP substrate for this mix — no strain in Mix 5 has a documented FOS-specific mechanism that GOS or Inulin don't cover.",
+          "can_be_omitted_if": "GOS >= 0.5"
+        }
+      },
       "contradiction_overrides": {
         "gas_fodmap_ibs_d_histamine": {
-          "replace": {"GOS_and_larger_FOS": "PHGG + psyllium + beta-glucans", "medium_high_inulin": "PHGG as main, psyllium secondary"},
+          "replace": {
+            "GOS_and_larger_FOS": "PHGG + psyllium + beta-glucans",
+            "medium_high_inulin": "PHGG as main, psyllium secondary"
+          },
           "keep": ["Safflower fiber"],
-          "note": "Safflower fiber is gentle, skin/barrier-oriented, less FODMAP-like"
+          "note": "GOS floor (0.5g) is priority-1 and cannot be removed — Bifido mechanism collapses without it. Inulin may be omitted if GOS ≥ 1.0g and non-FODMAP base is adequate. FOS omittable if GOS ≥ 0.5g. Safflower fiber is gentle and barrier-oriented."
         }
       }
     },
@@ -104,12 +282,46 @@
       "must_include": ["GOS", "Inulin", "FOS", "Beta-glucans"],
       "highly_recommended": ["Psyllium"],
       "optional": ["Quercetin", "Apple polyphenols"],
-      "note": "v2 is a 6-strain mix (Novonesis + IFF + Probiotical). S. thermophilus UASt-09 operates in the small intestine — lactose and dietary fiber adequate substrate; heavy prebiotic loading not required for maintenance.",
+      "note": "Maintenance context: all guilds at Monitor level, no critical imbalances. S. thermophilus UASt-09 operates in the small intestine and doesn't require heavy prebiotic loading. Bl-05 and BR03+B632 maintain the Bifido guild anchor. Substrate floors are lower than therapeutic mixes — this is a maintenance dose, not a restoration dose.",
+      "substrate_necessity": {
+        "GOS": {
+          "minimum_g": 0.5,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "Minimum substrate for Bl-05 and BR03+B632 Bifidogenic maintenance. At maintenance context the Bifido guild is not depleted, so GOS serves niche maintenance rather than restoration. Omittable when Inulin provides adequate cross-feeding signal for Bl-05.",
+          "can_be_omitted_if": "Inulin >= 0.5"
+        },
+        "Inulin": {
+          "minimum_g": 0.5,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "Minimum substrate for Bifido signalling and ecosystem diversity maintenance. Keeps the saccharolytic → acetogenic chain active at low level, consistent with maintenance rather than active restoration. Omittable if GOS provides direct Bifido substrate.",
+          "can_be_omitted_if": "GOS >= 0.5"
+        },
+        "FOS": {
+          "minimum_g": 0.5,
+          "priority": 3,
+          "fodmap": true,
+          "mechanism": "Ecosystem substrate diversity maintenance. The KB note references 'minimal FOS for Akkermansia/Bifido signalling'. At maintenance context, this is the most dispensable FODMAP substrate — its signalling role is modest when the ecosystem is stable.",
+          "can_be_omitted_if": "GOS >= 0.5 OR Inulin >= 0.5"
+        },
+        "Beta-Glucans": {
+          "minimum_g": 0.5,
+          "priority": 1,
+          "fodmap": false,
+          "mechanism": "Non-FODMAP immune maintenance and SCFA support. The KB marks this must-include for immune maintenance function, separate from FODMAP substrates. Mandatory even under full FODMAP restriction.",
+          "can_be_omitted_if": null
+        }
+      },
       "contradiction_overrides": {
         "any_gi_sensitivity_fodmap": {
-          "replace": {"GOS": "PHGG + beta-glucans", "higher_inulin": "PHGG ± psyllium", "FOS_bulk": "PHGG"},
-          "keep": ["beta-glucans"],
-          "note": "Keep minimal FOS for Akkermansia/Bifido signalling"
+          "replace": {
+            "GOS": "PHGG + beta-glucans",
+            "higher_inulin": "PHGG ± psyllium",
+            "FOS_bulk": "PHGG"
+          },
+          "keep": ["Beta-Glucans"],
+          "note": "Maintenance context: priority-2 FODMAP substrates (GOS, Inulin) may be reduced to floor or omitted based on can_be_omitted_if conditions. FOS (priority-3) freely omittable. Beta-Glucans floor mandatory."
         }
       }
     },
@@ -118,11 +330,44 @@
       "must_include": ["Inulin", "FOS", "Resistant starch", "GOS"],
       "highly_recommended": ["Beta-glucans", "Quercetin"],
       "optional": ["Curcumin", "Omega-3"],
-      "note": "Resistant starch particularly important for L. fermentum LF16 (GABA production). Tryptophan-containing foods (dietary) support the 5-HT serotonin precursor pathway alongside LP815 GABA production — advise dietary tryptophan sources (turkey, eggs, legumes) in addition to prebiotic sachet.",
+      "note": "Resistant starch is uniquely required by L. fermentum LF16 for GABA production — this is not substitutable by any other substrate. Inulin supports SCFA environment for GABA precursor activity. GOS serves B. longum 04 cross-feeding. LP815 is the primary GABA producer and its substrate preference is the primary constraint on this mix.",
+      "substrate_necessity": {
+        "Resistant Starch": {
+          "minimum_g": 0.5,
+          "priority": 1,
+          "fodmap": false,
+          "mechanism": "Specifically required for L. fermentum LF16 GABA production pathway. RS is the preferred substrate for LF16's fermentation that generates GABA precursors. No other substrate in this KB substitutes this function. Non-FODMAP — safe even under high sensitivity. Cannot be omitted regardless of sensitivity level.",
+          "can_be_omitted_if": null
+        },
+        "Inulin": {
+          "minimum_g": 0.5,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "SCFA substrate supporting the GABA precursor fermentation environment. Inulin fermentation produces the colonic pH and SCFA milieu that supports LF16 and LP815 GABA output. Omittable only when GOS provides adequate B. longum 04 cross-feeding and RS covers LF16 directly.",
+          "can_be_omitted_if": "GOS >= 0.5 AND Resistant_Starch >= 0.5"
+        },
+        "GOS": {
+          "minimum_g": 0.5,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "B. longum 04 cross-feeding support. B. longum 04 is part of the 4-strain premix and contributes to HPA axis modulation — its substrate support maintains the psychobiotic ecosystem. Omittable if Inulin covers the cross-feeding environment.",
+          "can_be_omitted_if": "Inulin >= 0.5 AND Resistant_Starch >= 0.5"
+        },
+        "FOS": {
+          "minimum_g": 0.5,
+          "priority": 3,
+          "fodmap": true,
+          "mechanism": "Short-chain serotonin-pathway substrate diversity. Loosely referenced in the KB as supporting the 5-HT pathway alongside the GABA strains. The least mechanistically specific substrate in this mix — no strain has a documented FOS-exclusive pathway that RS/Inulin/GOS don't already cover.",
+          "can_be_omitted_if": "Inulin >= 0.5 OR GOS >= 0.5"
+        }
+      },
       "contradiction_overrides": {
         "gas_fodmap_sibo_stress_sensitivity": {
-          "replace": {"most_inulin_and_FOS": "PHGG + beta-glucans", "GOS": "PHGG"},
-          "note": "Keep tiny amounts of RS-like substrate via beta-glucans + PHGG to maintain GABA precursor environment"
+          "replace": {
+            "most_inulin_and_FOS": "PHGG + beta-glucans",
+            "GOS": "PHGG"
+          },
+          "note": "Resistant Starch floor (0.5g) is priority-1 and cannot be removed — LF16 GABA production depends on it and it is non-FODMAP so carries no gas risk. Inulin and GOS floors may be omitted based on can_be_omitted_if conditions. FOS freely omittable."
         }
       }
     },
@@ -135,16 +380,59 @@
       "optional": ["Quercetin", "Beta-carotene"],
       "optional_doses": {"Quercetin": "200-400mg (not antimicrobial dose)"},
       "strategy": "HIGH LOAD — complex polysaccharides that Bacteroidetes/Firmicutes excel at but Akkermansia doesn't preferentially use",
+      "note": "Mix 8 is an inverted substrate logic compared to other mixes: the goal is to provide substrate that the target organisms (Fiber guild, plantarum, Bifido) can use but that Akkermansia cannot preferentially consume. FODMAPs are kept at trace doses to minimise Akkermansia-accessible substrate while still providing Bifido signalling. Beta-Glucans, Arabinoxylan, and RS are the primary competitive displacement fibers.",
+      "substrate_necessity": {
+        "Beta-Glucans": {
+          "minimum_g": 1.5,
+          "priority": 1,
+          "fodmap": false,
+          "mechanism": "Primary competitive displacement substrate. Beta-glucans are preferentially fermented by Bacteroidetes/Firmicutes over Akkermansia, giving the Fiber guild the substrate advantage needed for competitive displacement. Highest floor of any mix. Cannot be substituted.",
+          "can_be_omitted_if": null
+        },
+        "Resistant Starch": {
+          "minimum_g": 1.0,
+          "priority": 1,
+          "fodmap": false,
+          "mechanism": "Slow-fermentation complex carbohydrate that Fiber guild organisms prefer over Akkermansia. Works synergistically with Beta-glucans for multi-substrate competitive pressure. Non-FODMAP — safe under sensitivity constraints.",
+          "can_be_omitted_if": null
+        },
+        "Psyllium": {
+          "minimum_g": 1.0,
+          "priority": 1,
+          "fodmap": false,
+          "mechanism": "Arabinoxylan-rich complex polysaccharide. Akkermansia doesn't preferentially ferment arabinoxylan — it's a Bacteroidetes/Ruminococcus substrate. Maintains the competitive substrate complexity. Non-FODMAP.",
+          "can_be_omitted_if": null
+        },
+        "Inulin": {
+          "minimum_g": 1.0,
+          "priority": 2,
+          "fodmap": true,
+          "mechanism": "Moderate-dose Bifido signalling substrate. Inulin is kept at 1.0-1.5g (higher than other mixes) because Bl-05 and BB-12 need cross-feeding substrate for the ecosystem rebalancing role. Kept below the dose where it becomes significant Akkermansia substrate. Omittable under bloating/FODMAP override but with acknowledged Bifido signalling loss.",
+          "can_be_omitted_if": "GOS >= 0.5 AND bloating_override"
+        },
+        "GOS": {
+          "minimum_g": 0.5,
+          "priority": 3,
+          "fodmap": true,
+          "mechanism": "Trace Bifido substrate to minimise Akkermansia-accessible oligosaccharide while still providing BB-12/Bl-05 Bifidogenic signalling. Intentionally trace — increasing GOS risks feeding Akkermansia (which can ferment short oligosaccharides). Freely omittable under sensitivity override.",
+          "can_be_omitted_if": "Inulin >= 1.0"
+        }
+      },
       "contradiction_overrides": {
         "bloating_fodmap_gas": {
-          "replace": {"beta_glucan_bulk": "PHGG (2.5-3.0g as primary gentle fiber)"},
+          "replace": {
+            "beta_glucan_bulk": "PHGG (2.5-3.0g as primary gentle fiber)"
+          },
           "keep": ["Psyllium (min 1.0g)", "RS (1.0-1.5g)"],
-          "reduce": {"GOS_inulin": "trace only (0.5g each max)", "FOS": "replace with PHGG"}
+          "reduce": {
+            "GOS_inulin": "trace only (0.5g each max)",
+            "FOS": "replace with PHGG"
+          },
+          "note": "Under bloating override: Beta-Glucans may be replaced by PHGG as gentle analog. Psyllium and RS floors are priority-1 and mandatory. Inulin reduced to 0.5g trace minimum (priority-2 floor) or omitted if GOS present. PHGG can substitute Beta-Glucans for gentle competitive displacement."
         }
       }
     }
   },
-
   "condition_specific_additions": {
     "description": "Optional layers that can be added on top of core prebiotic pairing, within total gram budget",
     "metabolic": {
@@ -166,13 +454,18 @@
     },
     "integration_rule": "Condition-specific additions must fit within CFU-based total gram range, clamped by sensitivity band. Core + additions = one total prebiotic load."
   },
-
   "polyphenol_antimicrobial_thresholds": {
     "description": "Doses above these ranges have documented antimicrobial activity — use supplement doses below these",
-    "quercetin": {"antimicrobial_range_mg": [500, 1000], "note": "New nutritionist-confirmed dose 300-500mg is at lower bound of antimicrobial range. 300-400mg is safe for microbiome modulation; avoid >500mg."},
+    "quercetin": {
+      "antimicrobial_range_mg": [500, 1000],
+      "note": "New nutritionist-confirmed dose 300-500mg is at lower bound of antimicrobial range. 300-400mg is safe for microbiome modulation; avoid >500mg."
+    },
     "curcumin": {"antimicrobial_range_mg": [500, 2000]},
     "fermented_pomegranate": {"antimicrobial_range_mg": [500, 1000]},
-    "apple_polyphenol_extract": {"prebiotic_range_mg": [300, 600], "antimicrobial_range_mg": [1000, null]},
+    "apple_polyphenol_extract": {
+      "prebiotic_range_mg": [300, 600],
+      "antimicrobial_range_mg": [1000, null]
+    },
     "propolis": {"antimicrobial_range_mg": [300, 1000]},
     "royal_jelly": {"antimicrobial_range_mg": [150, 1000]}
   }

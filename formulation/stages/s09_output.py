@@ -185,12 +185,14 @@ def run(ctx: PipelineContext) -> Dict:
         validation_report = validate_formulation(str(sample_dir), save_report=True)
         # Surface validator results in pipeline log
         if validation_report:
-            v_status = validation_report.get("status", "?")
-            v_issues = validation_report.get("issues", [])
+            # Keys from formulation_validator.py: overall_status (not "status"),
+            # checks (not "issues") — filtered to FAIL status for display
+            v_status = validation_report.get("overall_status", "?")
+            v_issues = [c for c in validation_report.get("checks", []) if c.get("status") == "FAIL"]
             v_icon = "✅" if v_status == "PASS" else "❌"
             print(f"  {v_icon} Validator: {v_status} ({len(v_issues)} issue(s))")
             for issue in v_issues[:5]:  # Show up to 5 issues
-                print(f"      → [{issue.get('severity', '?')}] {issue.get('message', '?')}")
+                print(f"      → [{issue.get('severity', '?')}] {issue.get('check', issue.get('message', '?'))}: {issue.get('actual', '')}")
             if len(v_issues) > 5:
                 print(f"      ... and {len(v_issues) - 5} more")
             # Add to master JSON for downstream consumption

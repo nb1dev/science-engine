@@ -175,6 +175,16 @@ Goals (ranked): {json.dumps(questionnaire["goals"]["ranked"])}
 ## Non-Vitamin Supplement Database (by health category)
 {json.dumps(supplements_kb["health_categories"], indent=2)}
 
+## Polyphenol Daily Cap (STRICT — 1,500mg/day)
+Total daily dose across ALL substances where supplement_type == "Fermentable Polyphenol Substrate"
+must not exceed 1,500mg/day (1% tolerance = 1,515mg). Substances in this class:
+  Curcumin, Bergamot Polyphenolic Fraction (dose range 500–1000mg), Quercetin,
+  Fermented Pomegranate Polyphenols, Apple Polyphenol Extract, Capsicum Extract.
+If multiple are clinically indicated, prioritise by rank (1st Choice > 2nd Choice > 3rd Choice).
+Reduce lower-ranked doses to their KB minimum before dropping them entirely.
+Note: Piperine is auto-added by the pipeline at 1:100 with Curcumin — do NOT include piperine
+in dose_mg for Curcumin. The pipeline adds it automatically.
+
 Select vitamins, minerals, and supplements. Use exact doses from databases.
 Return ONLY the JSON response."""
 

@@ -555,13 +555,34 @@ def build_decision_trace(master: Dict, trace_events: list = None, sample_dir: st
         })
 
     # Step 6: Prebiotic Design
-    steps.append({
+    # Include substrate_guard data (v2.1) — corrections, rebalancing, SIBO status, ceiling
+    substrate_guard = prebiotics.get("substrate_guard", {})
+    prebiotic_step = {
         "step": len(steps) + 1, "decision": "Prebiotic Design", "method": "deterministic (mix-aware)" if "offline" in str(prebiotics.get("strategy", "")).lower() or "Mix" in str(prebiotics.get("strategy", "")) else "LLM",
         "input": f"Mix {mix.get('mix_id')} default formula, sensitivity={sens.get('classification', '?')}, range={rule_outputs.get('prebiotic_range', {}).get('min_g', '?')}-{rule_outputs.get('prebiotic_range', {}).get('max_g', '?')}g",
         "result": f"{prebiotics.get('total_grams', 0)}g ({len(prebiotics.get('prebiotics', []))} components)",
         "reasoning": prebiotics.get("strategy", ""),
         "overrides": prebiotics.get("overrides_applied", []),
-    })
+        "sensitivity_override_active": prebiotics.get("sensitivity_override_active", False),
+        "components": [
+            {"substance": p.get("substance", ""), "dose_g": p.get("dose_g", 0), "fodmap": p.get("fodmap", False)}
+            for p in prebiotics.get("prebiotics", [])
+        ],
+    }
+    if substrate_guard:
+        prebiotic_step["substrate_guard"] = {
+            "applied": substrate_guard.get("applied", False),
+            "reason": substrate_guard.get("reason", ""),
+            "sibo_source": substrate_guard.get("sibo_source"),
+            "corrections": substrate_guard.get("corrections", []),
+            "rebalance_log": substrate_guard.get("rebalance_log", []),
+            "warnings": substrate_guard.get("warnings", []),
+            "final_total_g": substrate_guard.get("final_total_g"),
+            "effective_ceiling_g": substrate_guard.get("effective_ceiling_g"),
+            "tolerance_pct": substrate_guard.get("tolerance_pct"),
+            "ceiling_respected": substrate_guard.get("ceiling_respected", True),
+        }
+    steps.append(prebiotic_step)
 
     # Step 7: Supplement Selection — uses component_registry as single source of truth
     # This ensures Step 7 lists EXACTLY the same components as Final Formulation

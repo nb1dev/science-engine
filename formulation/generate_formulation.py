@@ -30,9 +30,15 @@ Architecture:
 """
 
 import sys
+import time
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Optional
+
+# Delay between samples in batch mode to avoid Bedrock ServiceUnavailableException.
+# Each sample makes 4-5 concurrent LLM calls; without a delay, batches of 9+ samples
+# can saturate the Bedrock connection pool. Tune this value if throttling persists.
+BATCH_INTER_SAMPLE_DELAY_SEC = 2
 
 # Ensure science-engine/ is on path so formulation is importable as a package
 # (stages use relative imports like "from ..models import PipelineContext")
@@ -143,6 +149,11 @@ def process_batch(batch_dir: str, use_llm: bool = True):
                 f.write(f"TIME: {datetime.now().isoformat()}\n")
                 f.write(f"{'='*60}\n")
                 _tb.print_exc(file=f)
+
+        # Throttle Bedrock calls between samples to avoid ServiceUnavailableException.
+        # bedrock_client.py retries handle transient per-call failures, but this delay
+        # prevents the batch from opening too many concurrent connections across samples.
+        time.sleep(BATCH_INTER_SAMPLE_DELAY_SEC)
 
     if error_log_path.exists():
         print(f"\n  📋 Error details: {error_log_path}")

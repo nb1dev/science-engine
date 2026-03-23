@@ -563,11 +563,20 @@ class FormulationCalculator:
 
     def add_polyphenol_capsule(self, substance: str, dose_mg: float,
                                rationale: str = "", timing: str = "morning"):
-        """Add a Tier 2 polyphenol (Curcumin+Piperine, Bergamot) to dedicated capsule."""
+        """Add a Tier 2 polyphenol (Curcumin+Piperine, Bergamot) to dedicated capsule.
+
+        Components include min_dose_mg/max_dose_mg/adjustable fields for
+        CapsuleStackingOptimizer compatibility. Polyphenol doses are therapeutically
+        fixed (adjustable=False) — the optimizer can only split into N capsules,
+        not reduce doses.
+        """
         self.polyphenol_capsules.append({
             "substance": substance,
             "dose_mg": dose_mg,
             "weight_mg": round(dose_mg, 2),
+            "min_dose_mg": dose_mg,
+            "max_dose_mg": dose_mg,
+            "adjustable": False,
             "timing": timing,
             "rationale": rationale,
         })
@@ -751,19 +760,36 @@ class FormulationCalculator:
         return result
 
     def _calc_polyphenol_capsule_totals(self) -> Optional[Dict]:
+        """Run CapsuleStackingOptimizer on polyphenol_capsules.
+
+        Same pattern as morning/evening capsules — when total exceeds 650mg,
+        the optimizer splits into N capsules (polyphenol doses are adjustable=False
+        so it can only split, not reduce). Fixes the 1000mg overflow bug where
+        Curcumin 500mg + Bergamot 500mg couldn't fit in a single capsule.
+        """
         if not self.polyphenol_capsules:
             return None
-        total_mg = sum(c["weight_mg"] for c in self.polyphenol_capsules)
-        utilization = round((total_mg / HARD_CAPSULE_CAPACITY_MG) * 100, 1)
-        headroom = round(HARD_CAPSULE_CAPACITY_MG - total_mg, 2)
-        validation = "PASS" if total_mg <= HARD_CAPSULE_CAPACITY_MG else "FAIL"
-        if validation == "FAIL":
-            self.warnings.append(f"CRITICAL: Polyphenol capsule exceeds capacity ({total_mg}mg > {HARD_CAPSULE_CAPACITY_MG}mg)")
+
+        optimizer = CapsuleStackingOptimizer(HARD_CAPSULE_CAPACITY_MG)
+        result = optimizer.optimize(self.polyphenol_capsules)
+        self.polyphenol_capsules = result["components"]
+
+        count = result["capsule_count"]
+        final_total = result["adjustment_record"]["final_total_mg"]
+        per_capsule = round(final_total / count, 2) if count > 0 else 0
+        utilization = round((per_capsule / HARD_CAPSULE_CAPACITY_MG) * 100, 1)
+
+        capsules = self._distribute_into_capsules(self.polyphenol_capsules, count)
+
         return {
-            "total_weight_mg": round(total_mg, 2),
-            "utilization_pct": utilization,
-            "headroom_mg": headroom,
-            "validation": validation,
+            "capsule_count": count,
+            "capacity_mg_per_capsule": HARD_CAPSULE_CAPACITY_MG,
+            "total_weight_mg": round(final_total, 2),
+            "avg_fill_per_capsule_mg": per_capsule,
+            "avg_utilization_pct": utilization,
+            "capsules": capsules,
+            "validation": "PASS",
+            "optimizer_record": result["adjustment_record"],
         }
 
     # ─── GENERATE OUTPUT ──────────────────────────────────────────────────────
@@ -796,7 +822,7 @@ class FormulationCalculator:
         has_polyphenol = bool(self.polyphenol_capsules)
         morning_capsule_count = (morning_totals["capsule_count"] if morning_totals else 0)
         evening_capsule_count = (evening_totals["capsule_count"] if evening_totals else 0)
-        polyphenol_count = 1 if has_polyphenol else 0
+        polyphenol_count = polyphenol_totals["capsule_count"] if polyphenol_totals else 0
 
         morning_solid = 1 + (self.softgel_count if has_softgels else 0) + morning_capsule_count + polyphenol_count
         morning_jar = 1  # Always 1 jar
@@ -900,7 +926,7 @@ class FormulationCalculator:
                 "format": {
                     "type": "hard_capsule", "size": "00",
                     "capacity_mg": HARD_CAPSULE_CAPACITY_MG,
-                    "daily_count": 1, "timing": "morning",
+                    "daily_count": polyphenol_count, "timing": "morning",
                     # Label defaults to "Morning Wellness Capsule" for standard timing.
                     # When a medication timing override is active (e.g., MED_001),
                     # apply_medication_timing_override.py automatically renames this

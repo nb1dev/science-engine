@@ -20,7 +20,9 @@
       "capacity_mg": 650,
       "daily_count": 1,
       "timing": "morning",
-      "suitable_for": ["probiotics"],
+      "suitable_for": [
+        "probiotics"
+      ],
       "fixed_composition": false,
       "subject_to_stacking_optimizer": false,
       "description": "Probiotic strains in vegetarian hard capsule. Fixed count = 1. Never stacked."
@@ -37,10 +39,29 @@
       "subject_to_stacking_optimizer": false,
       "description": "FIXED composition — everyone who needs any component gets the whole softgel",
       "components_per_softgel": [
-        {"substance": "Omega-3 (EPA + DHA)", "dose_mg": 712.5, "type": "omega_fatty_acid"},
-        {"substance": "Vitamin D3", "dose_mcg": 10, "dose_iu": 400, "type": "fat_soluble_vitamin", "weight_note": "NEGLIGIBLE"},
-        {"substance": "Vitamin E", "dose_mg": 7.5, "type": "fat_soluble_vitamin"},
-        {"substance": "Astaxanthin (H. pluvialis 10% oleoresin)", "dose_mg_active": 3, "dose_mg_oleoresin": 30, "type": "carotenoid_antioxidant"}
+        {
+          "substance": "Omega-3 (EPA + DHA)",
+          "dose_mg": 712.5,
+          "type": "omega_fatty_acid"
+        },
+        {
+          "substance": "Vitamin D3",
+          "dose_mcg": 10,
+          "dose_iu": 400,
+          "type": "fat_soluble_vitamin",
+          "weight_note": "NEGLIGIBLE"
+        },
+        {
+          "substance": "Vitamin E",
+          "dose_mg": 7.5,
+          "type": "fat_soluble_vitamin"
+        },
+        {
+          "substance": "Astaxanthin (H. pluvialis 10% oleoresin)",
+          "dose_mg_active": 3,
+          "dose_mg_oleoresin": 30,
+          "type": "carotenoid_antioxidant"
+        }
       ],
       "daily_totals": {
         "omega3_mg": 1425,
@@ -49,7 +70,11 @@
         "vitamin_e_mg": 15,
         "astaxanthin_mg": 6
       },
-      "contraindications_to_check": ["blood_thinners_anticoagulants", "chemotherapy", "fish_allergy"],
+      "contraindications_to_check": [
+        "blood_thinners_anticoagulants",
+        "chemotherapy",
+        "fish_allergy"
+      ],
       "note": "Pre-mixed softgel. Cannot add/remove individual components."
     },
     "magnesium_capsule": {
@@ -68,7 +93,11 @@
         "nrv_pct": 14
       },
       "dosing_logic": {
-        "needs": ["sleep", "sport", "stress"],
+        "needs": [
+          "sleep",
+          "sport",
+          "stress"
+        ],
         "2_capsules": "≥2 needs out of 3",
         "1_capsule": "only 1 need",
         "0_capsules": "no needs identified"
@@ -76,22 +105,53 @@
       "need_assessment": {
         "sleep": {
           "triggers": [
-            {"field": "sleep_quality", "operator": "<=", "value": 7},
-            {"field": "goals", "operator": "contains", "value": "improve_sleep"}
+            {
+              "field": "sleep_quality",
+              "operator": "<=",
+              "value": 7
+            },
+            {
+              "field": "goals",
+              "operator": "contains",
+              "value": "improve_sleep"
+            }
           ],
           "description": "Sleep quality ≤7/10 OR sleep improvement is a stated goal"
         },
         "sport": {
           "triggers": [
-            {"field": "exercise_frequency", "operator": ">=", "value": "moderate"},
-            {"field": "exercise_types", "operator": "contains_any", "value": ["strength_training", "vigorous_sports", "moderate_cardio"]}
+            {
+              "field": "exercise_frequency",
+              "operator": ">=",
+              "value": "moderate"
+            },
+            {
+              "field": "exercise_types",
+              "operator": "contains_any",
+              "value": [
+                "strength_training",
+                "vigorous_sports",
+                "moderate_cardio"
+              ]
+            }
           ],
           "description": "Regular exercise (moderate+) or active sport goals"
         },
         "stress": {
           "triggers": [
-            {"field": "stress_level", "operator": ">=", "value": 6},
-            {"field": "goals", "operator": "contains_any", "value": ["reduce_stress_anxiety", "improve_mood_reduce_anxiety"]}
+            {
+              "field": "stress_level",
+              "operator": ">=",
+              "value": 6
+            },
+            {
+              "field": "goals",
+              "operator": "contains_any",
+              "value": [
+                "reduce_stress_anxiety",
+                "improve_mood_reduce_anxiety"
+              ]
+            }
           ],
           "description": "Stress ≥6/10 OR stress/mood is a stated goal"
         }
@@ -163,7 +223,9 @@
       "capacity_mg": 650,
       "daily_count": 1,
       "timing": "morning",
-      "suitable_for": ["tier_2_polyphenols"],
+      "suitable_for": [
+        "tier_2_polyphenols"
+      ],
       "subject_to_stacking_optimizer": false,
       "fixed_composition": false,
       "description": "Dedicated capsule for Tier 2 polyphenols (Curcumin+Piperine or Bergamot) that are too large to share with other capsules."
@@ -182,7 +244,10 @@
   },
   "capsule_stacking_optimizer": {
     "description": "Algorithm that pools eligible ingredients, finds the minimum capsule count via dose adjustment within KB-defined ranges.",
-    "applies_to": ["pooled_morning_capsules", "pooled_evening_capsules"],
+    "applies_to": [
+      "pooled_morning_capsules",
+      "pooled_evening_capsules"
+    ],
     "capsule_capacity_mg": 650,
     "algorithm": {
       "step_1": "Sum target doses of all pooled components → total_pooled_mg",
@@ -206,7 +271,13 @@
       "optimization_outcome (fit_without_adjustment | fit_after_adjustment | used_ceil_count)"
     ],
     "ingredient_requirements": {
-      "required_fields": ["substance", "dose_mg", "min_dose_mg", "max_dose_mg", "adjustable"],
+      "required_fields": [
+        "substance",
+        "dose_mg",
+        "min_dose_mg",
+        "max_dose_mg",
+        "adjustable"
+      ],
       "fixed_ingredients": "min_dose_mg == max_dose_mg == dose_mg (adjustable=false) — never changed",
       "adjustable_ingredients": "min_dose_mg < dose_mg ≤ max_dose_mg (adjustable=true) — can be reduced to min"
     }
@@ -299,13 +370,37 @@
     }
   },
   "capacity_validation": {
-    "hard_capsule_probiotic": {"max_mg": 650, "hard_cap": true},
-    "softgel": {"fixed": true, "no_validation_needed": true},
-    "magnesium_capsule": {"fixed": true, "no_validation_needed": true},
-    "powder_jar": {"target_g": 19, "hard_cap": false, "action_if_exceeded": "warn + trim lowest-priority heavy botanicals first; never trim prebiotics"},
-    "pooled_morning_capsules": {"max_mg_per_capsule": 650, "hard_cap": true, "optimizer": "CapsuleStackingOptimizer"},
-    "pooled_evening_capsules": {"max_mg_per_capsule": 650, "hard_cap": true, "optimizer": "CapsuleStackingOptimizer"},
-    "polyphenol_dedicated_capsule": {"max_mg": 650, "hard_cap": true}
+    "hard_capsule_probiotic": {
+      "max_mg": 650,
+      "hard_cap": true
+    },
+    "softgel": {
+      "fixed": true,
+      "no_validation_needed": true
+    },
+    "magnesium_capsule": {
+      "fixed": true,
+      "no_validation_needed": true
+    },
+    "powder_jar": {
+      "target_g": 19,
+      "hard_cap": false,
+      "action_if_exceeded": "warn + trim lowest-priority heavy botanicals first; never trim prebiotics"
+    },
+    "pooled_morning_capsules": {
+      "max_mg_per_capsule": 650,
+      "hard_cap": true,
+      "optimizer": "CapsuleStackingOptimizer"
+    },
+    "pooled_evening_capsules": {
+      "max_mg_per_capsule": 650,
+      "hard_cap": true,
+      "optimizer": "CapsuleStackingOptimizer"
+    },
+    "polyphenol_dedicated_capsule": {
+      "max_mg": 650,
+      "hard_cap": true
+    }
   },
   "capsule_only_substances": {
     "description": "Substances that must remain in capsule form due to bitter/pungent taste, stability, or bioavailability. These always go to evening capsule (calming) or polyphenol capsule (Tier 2) — never to the jar.",
@@ -329,14 +424,30 @@
   },
   "polyphenol_delivery_classification": {
     "description": "Polyphenol-specific delivery routing. Polyphenols are bitter/irritating and need capsule delivery, except sachet-safe ones (now routed to jar as they are non-bitter).",
-    "total_polyphenol_mass_cap_mg": 1000,
+    "total_polyphenol_mass_cap_mg": 1500,
     "capsule_only_tier_1": {
       "description": "Bitter polyphenols that go in pooled evening capsules (CapsuleStackingOptimizer handles capacity)",
       "substances": {
-        "quercetin": {"min_dose_mg": 300, "max_dose_mg": 500, "typical_dose_mg": 300},
-        "propolis": {"min_dose_mg": 300, "max_dose_mg": 300, "typical_dose_mg": 300},
-        "royal_jelly": {"min_dose_mg": 150, "max_dose_mg": 150, "typical_dose_mg": 150},
-        "capsicum_extract": {"min_dose_mg": 2, "max_dose_mg": 6, "typical_dose_mg": 4}
+        "quercetin": {
+          "min_dose_mg": 300,
+          "max_dose_mg": 500,
+          "typical_dose_mg": 300
+        },
+        "propolis": {
+          "min_dose_mg": 300,
+          "max_dose_mg": 300,
+          "typical_dose_mg": 300
+        },
+        "royal_jelly": {
+          "min_dose_mg": 150,
+          "max_dose_mg": 150,
+          "typical_dose_mg": 150
+        },
+        "capsicum_extract": {
+          "min_dose_mg": 2,
+          "max_dose_mg": 6,
+          "typical_dose_mg": 4
+        }
       },
       "routing": "pooled_evening_capsules"
     },
@@ -356,10 +467,11 @@
           }
         },
         "bergamot_polyphenolic_fraction": {
-          "min_dose_mg": 1000,
+          "min_dose_mg": 500,
           "max_dose_mg": 1000,
           "typical_dose_mg": 1000,
-          "note": "Needs size 00 capsule at near-capacity"
+          "note": "Needs size 00 capsule at near-capacity",
+          "preferred_dose_mg": 1000
         }
       },
       "routing": "polyphenol_dedicated_capsule"
