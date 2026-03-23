@@ -83,9 +83,10 @@ def run(ctx: PipelineContext) -> Dict:
 
     # ── Medication timing override ───────────────────────────────────────
     if ctx.medication.timing_override:
-        from formulation.apply_medication_timing_override import apply_timing_override
+        from formulation.apply_medication_timing_override import apply_timing_override, print_timing_override_summary
         master = apply_timing_override(master, ctx.medication.timing_override)
         formulation = master["formulation"]
+        print_timing_override_summary(ctx.medication.timing_override, formulation)
 
     # ── Build platform JSON ──────────────────────────────────────────────
     platform = build_platform_json(master)
@@ -154,10 +155,46 @@ def run(ctx: PipelineContext) -> Dict:
     except Exception as e:
         print(f"  ⚠️ Dashboard generation failed: {e}")
 
+    # ── Evening label patching (only when timing override is active) ─────
+    if ctx.medication.timing_override:
+        try:
+            from formulation.generate_formulation_evening import EVENING_LABEL_PATCHES, EVENING_HTML_PATCHES
+            html_dir = sample_dir / "reports" / "reports_html"
+            _html_patch_count = 0
+            if html_dir.exists():
+                for html_file in html_dir.glob("*.html"):
+                    try:
+                        html_content = html_file.read_text(encoding='utf-8')
+                        patched = html_content
+                        for old, new in EVENING_LABEL_PATCHES + EVENING_HTML_PATCHES:
+                            patched = patched.replace(old, new)
+                        if patched != html_content:
+                            html_file.write_text(patched, encoding='utf-8')
+                            _html_patch_count += 1
+                    except Exception as _html_err:
+                        print(f"  ⚠️ HTML evening patch failed for {html_file.name}: {_html_err}")
+            if _html_patch_count > 0:
+                print(f"  ✅ Patched {_html_patch_count} dashboard HTML file(s) with evening labels")
+        except Exception as e:
+            print(f"  ⚠️ Evening label patching failed: {e}")
+
     # ── Deterministic validator (authoritative quality gate) ─────────────
+    validation_report = None
     try:
         from formulation.formulation_validator import validate_formulation
         validation_report = validate_formulation(str(sample_dir), save_report=True)
+        # Surface validator results in pipeline log
+        if validation_report:
+            v_status = validation_report.get("status", "?")
+            v_issues = validation_report.get("issues", [])
+            v_icon = "✅" if v_status == "PASS" else "❌"
+            print(f"  {v_icon} Validator: {v_status} ({len(v_issues)} issue(s))")
+            for issue in v_issues[:5]:  # Show up to 5 issues
+                print(f"      → [{issue.get('severity', '?')}] {issue.get('message', '?')}")
+            if len(v_issues) > 5:
+                print(f"      ... and {len(v_issues) - 5} more")
+            # Add to master JSON for downstream consumption
+            master["validation_report"] = validation_report
     except Exception as e:
         print(f"  ⚠️ Deterministic validator failed: {e}")
 

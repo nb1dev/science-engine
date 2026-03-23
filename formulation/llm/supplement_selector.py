@@ -74,12 +74,17 @@ RESPOND WITH ONLY A JSON OBJECT:
 }"""
 
 
-def select_supplements(unified_input: Dict, rule_outputs: Dict) -> Dict:
+def select_supplements(unified_input: Dict, rule_outputs: Dict,
+                       medication_exclusions=None) -> Dict:
     """LLM supplement selection — vitamins, minerals, non-vitamin supplements.
 
     Args:
         unified_input: Parsed pipeline input (from parse_inputs).
         rule_outputs: Deterministic rule outputs (health_claims, therapeutic_triggers, etc.).
+        medication_exclusions: MedicationExclusions object with excluded_substances,
+            evidence_excluded_substances, and exclusion_reasons from Stage 3.
+            Used to build a dynamic exclusion block in the LLM prompt so the LLM
+            avoids selecting interacting substances in the first place.
 
     Returns:
         Dict with vitamins_minerals, supplements, omega3, existing_supplements_advice.
@@ -109,6 +114,35 @@ def select_supplements(unified_input: Dict, rule_outputs: Dict) -> Dict:
     else:
         evening_headroom_note += " (650mg per capsule, no sleep supplements reserved)."
 
+    # Build dynamic medication exclusion block for LLM prompt
+    med_exclusion_block = ""
+    if medication_exclusions:
+        all_excluded = set()
+        exclusion_details = []
+
+        # KB-derived exclusions (from exclusion_reasons)
+        for reason in getattr(medication_exclusions, 'exclusion_reasons', []):
+            substance = reason.get('substance', '')
+            medication = reason.get('medication', '')
+            mechanism = reason.get('mechanism', '')
+            if substance:
+                all_excluded.add(substance.lower())
+                exclusion_details.append(f"- {substance} (interacts with {medication} — {mechanism})")
+
+        # Evidence-derived exclusions (from evidence retrieval in S3)
+        for substance in getattr(medication_exclusions, 'evidence_excluded_substances', set()):
+            if substance.lower() not in all_excluded:
+                all_excluded.add(substance.lower())
+                exclusion_details.append(f"- {substance.title()} (evidence-based medication interaction)")
+
+        if exclusion_details:
+            med_exclusion_block = (
+                "\n## ⚠️ MEDICATION EXCLUSIONS (client-specific — DO NOT SELECT)\n"
+                "The following substances are excluded due to medication interactions.\n"
+                "Select functionally similar safe alternatives where possible.\n"
+                + "\n".join(exclusion_details) + "\n"
+            )
+
     user_prompt = f"""## Health Claim Categories to Address
 Supplement claims: {json.dumps(health_claims["supplement_claims"])}
 Vitamin claims: {json.dumps(health_claims["vitamin_claims"])}
@@ -127,7 +161,7 @@ Goals (ranked): {json.dumps(questionnaire["goals"]["ranked"])}
 
 ## Current Medications (check interactions)
 {json.dumps(questionnaire["medical"].get("medications", []))}
-
+{med_exclusion_block}
 ## EVENING CAPSULE HEADROOM
 {evening_headroom_note}
 

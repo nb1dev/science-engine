@@ -25,7 +25,11 @@ def run(ctx: PipelineContext) -> PipelineContext:
     """Run formulation decisions: deterministic mix + LLM supplements/prebiotics."""
     print(f"\n─── C. DECISIONS (mix=deterministic, supplements={'LLM' if ctx.use_llm else 'offline'}) ───")
 
-    results = _run_formulation_decisions(ctx.unified_input, ctx.rule_outputs, use_bedrock=ctx.use_llm)
+    results = _run_formulation_decisions(
+        ctx.unified_input, ctx.rule_outputs,
+        use_bedrock=ctx.use_llm,
+        medication_exclusions=ctx.medication,
+    )
 
     ctx.mix = results["mix_selection"]
     ctx.supplements = results["supplement_selection"]
@@ -56,6 +60,7 @@ def _run_formulation_decisions(
     unified_input: Dict,
     rule_outputs: Dict,
     use_bedrock: bool = True,
+    medication_exclusions=None,
 ) -> Dict:
     """
     Orchestrate formulation decisions: deterministic mix + 2 LLM calls (or offline fallback).
@@ -65,6 +70,10 @@ def _run_formulation_decisions(
       - Strain lookup: ALWAYS from synbiotic_mixes.json knowledge base
       - Supplement selection: LLM (qualitative clinical judgment) or offline skeleton
       - Prebiotic design: LLM (customization judgment) or offline mix-aware formula
+
+    NOTE: Mutates rule_outputs["prebiotic_range"] in-place with recalculated
+    range based on actual mix CFU. This is intentional — downstream stages
+    (S6 post-processing, S7 weight calculation) depend on the updated range.
 
     Returns: {mix_selection, supplement_selection, prebiotic_design}
     """
@@ -101,7 +110,10 @@ def _run_formulation_decisions(
     # LLM Call 1 (of 2): Supplement selection
     if use_bedrock:
         print("  🧠 LLM Call 1/2: Supplement selection...")
-        supplement_result = select_supplements(unified_input, rule_outputs)
+        supplement_result = select_supplements(
+            unified_input, rule_outputs,
+            medication_exclusions=medication_exclusions,
+        )
     else:
         print("  📋 Offline: Supplement selection (skeleton)...")
         supplement_result = {

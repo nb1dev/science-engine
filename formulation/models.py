@@ -94,6 +94,10 @@ class MedicationExclusions:
     matched_rules: List[Dict] = field(default_factory=list)
     removal_reasons: List[Dict] = field(default_factory=list)
     elicit_evidence_result: Dict = field(default_factory=lambda: {"evidence_flags": [], "evidence_objects": [], "source": "skipped"})
+    # Substances flagged by LLM evidence retrieval (all severities).
+    # Used by S5 LLM prompt as dynamic exclusion context, and merged into
+    # excluded_substances for S6 safety net.
+    evidence_excluded_substances: Set[str] = field(default_factory=set)
 
 
 @dataclass
@@ -108,7 +112,6 @@ class PipelineContext:
     sample_dir: str = ""
     batch_id: str = ""
     use_llm: bool = True
-    force_keep: bool = False
     compact: bool = False
 
     # ── Stage 1: Parsed inputs ───────────────────────────────────────────

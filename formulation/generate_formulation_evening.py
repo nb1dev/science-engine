@@ -100,7 +100,6 @@ def generate_formulation(
     sample_dir: str,
     use_llm: bool = True,
     copy_to_sample: bool = True,
-    force_keep: bool = False,
     compact: bool = False,
 ) -> Optional[Dict]:
     """Generate evening-override formulation for a sample.
@@ -114,7 +113,6 @@ def generate_formulation(
         sample_dir: Path to sample directory
         use_llm: Whether to use Bedrock LLM (False for offline testing)
         copy_to_sample: Whether to copy output to sample's supplement_formulation dir
-        force_keep: If True, high-severity interactions are flagged but NOT auto-removed
         compact: If True, suppress all pipeline detail — only show formulation summary
 
     Returns:
@@ -150,7 +148,6 @@ def generate_formulation(
             str(sample_dir),
             use_llm=use_llm,
             copy_to_sample=copy_to_sample,
-            force_keep=force_keep,
             compact=compact,
             _skip_evening_redirect=True,
         )
@@ -350,7 +347,7 @@ def _print_evening_summary(master: Dict, sample_id: str) -> None:
 
 # ─── BATCH PROCESSING ────────────────────────────────────────────────────────
 
-def process_batch(batch_dir: str, use_llm: bool = True, force_keep: bool = False):
+def process_batch(batch_dir: str, use_llm: bool = True):
     """Process all samples in a batch directory using the evening pipeline.
 
     Only samples with a medication timing override will differ from the
@@ -372,7 +369,7 @@ def process_batch(batch_dir: str, use_llm: bool = True, force_keep: bool = False
     results = {}
     for sample_dir in samples:
         try:
-            result = generate_formulation(str(sample_dir), use_llm=use_llm, force_keep=force_keep)
+            result = generate_formulation(str(sample_dir), use_llm=use_llm)
             if result is None:
                 results[sample_dir.name] = "SKIPPED"
             else:
@@ -402,8 +399,6 @@ if __name__ == "__main__":
     parser.add_argument("--sample-dir", help="Path to single sample directory")
     parser.add_argument("--batch-dir", help="Path to batch directory (process all samples)")
     parser.add_argument("--no-llm", action="store_true", help="Skip LLM calls (offline mode)")
-    parser.add_argument("--force-keep", action="store_true",
-                        help="Keep supplements even if high-severity interactions detected")
     parser.add_argument("--compact", action="store_true",
                         help="Compact output: only show formulation summary")
     args = parser.parse_args()
@@ -413,6 +408,6 @@ if __name__ == "__main__":
 
     if args.sample_dir:
         generate_formulation(args.sample_dir, use_llm=not args.no_llm,
-                             force_keep=args.force_keep, compact=args.compact)
+                             compact=args.compact)
     elif args.batch_dir:
-        process_batch(args.batch_dir, use_llm=not args.no_llm, force_keep=args.force_keep)
+        process_batch(args.batch_dir, use_llm=not args.no_llm)

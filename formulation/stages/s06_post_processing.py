@@ -99,7 +99,7 @@ def _is_medication_excluded(substance_name: str, excluded_set: set) -> bool:
         return False
     name_lower = substance_name.lower().strip()
     for ex in excluded_set:
-        if ex in name_lower or name_lower in ex:
+        if ex in name_lower:
             return True
     return False
 
@@ -239,5 +239,6 @@ def _apply_zinc_dose_guard(ctx: PipelineContext):
             if "zinc" in vm.get("substance", "").lower() and vm.get("dose_value", 0) > 8:
                 vm["dose_value"] = 8
                 vm["dose"] = "8 mg/d"
+                vm["dose_unit"] = "mg"
                 print(f"  🔧 Zinc dose: sex unknown → 8mg (conservative)")
                 break

@@ -93,7 +93,6 @@ class TestPipelineContext:
         ctx = PipelineContext()
         assert ctx.sample_id == ""
         assert ctx.use_llm is True
-        assert ctx.force_keep is False
         assert ctx.compact is False
         assert ctx.unified_input == {}
         assert ctx.clinical_summary["profile_narrative"] == []
@@ -105,11 +104,9 @@ class TestPipelineContext:
         ctx = PipelineContext(
             sample_id="test_123",
             use_llm=False,
-            force_keep=True,
         )
         assert ctx.sample_id == "test_123"
         assert ctx.use_llm is False
-        assert ctx.force_keep is True
 
     def test_guilds_accessor(self):
         ctx = PipelineContext(unified_input={

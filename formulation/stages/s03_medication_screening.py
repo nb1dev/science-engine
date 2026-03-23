@@ -66,6 +66,10 @@ def run(ctx: PipelineContext) -> PipelineContext:
     if med.unmatched_medications and ctx.use_llm:
         try:
             print(f"\n─── A.6b EVIDENCE RETRIEVAL (unmatched medications) ─────────")
+            # selected_supplements=[] is intentional: evidence retrieval runs as
+            # pre-selection enrichment (Stage 3), not post-selection validation.
+            # Extracted substance names feed into ctx.medication.evidence_excluded_substances
+            # which the S5 LLM prompt uses to avoid selecting them in the first place.
             result = retrieve_medication_evidence(
                 medication_entries=med.unmatched_medications,
                 selected_supplements=[],
@@ -77,6 +81,34 @@ def run(ctx: PipelineContext) -> PipelineContext:
                 print(f"  ⚠️ {len(flags)} evidence flag(s) generated (Tier C — no auto-changes)")
             else:
                 print(f"  ✅ No evidence flags")
+
+            # Extract interacting substance names from structured evidence objects
+            # (not from flags, which embed names in title strings).
+            # These feed into the S5 LLM prompt as dynamic exclusions and are
+            # merged into excluded_substances for the S6 safety net.
+            evidence_excluded = set()
+            for eo in result.get("evidence_objects", []):
+                for interaction_key in ("mineral_interactions", "fibre_interactions",
+                                        "micronutrient_interactions", "supplement_contraindications",
+                                        "pharmacokinetic_interactions"):
+                    interactions = eo.get(interaction_key, [])
+                    # Coerce to list — LLM may return dict instead of array
+                    if isinstance(interactions, dict):
+                        interactions = list(interactions.values())
+                    elif not isinstance(interactions, list):
+                        interactions = []
+                    for interaction in interactions:
+                        substance = (
+                            interaction.get("mineral", "") or interaction.get("substance", "") or
+                            interaction.get("nutrient", "") or interaction.get("supplement", "")
+                        ).lower().strip()
+                        if substance:
+                            evidence_excluded.add(substance)
+            if evidence_excluded:
+                med.evidence_excluded_substances = evidence_excluded
+                # Merge into main exclusion set so S6 safety net catches LLM misses
+                med.excluded_substances.update(evidence_excluded)
+                print(f"  📋 Evidence-derived exclusions: {evidence_excluded}")
         except Exception as e:
             print(f"  ⚠️ Evidence retrieval failed: {e}")
 

@@ -26,6 +26,17 @@ _SUPPLEMENT_KB_CACHE: Optional[Dict] = None
 _KNOWN_PREBIOTIC_SUBSTANCES_CACHE: Optional[set] = None
 
 
+def clear_kb_caches():
+    """Reset module-level KB caches.
+
+    Call this between test runs to prevent stale data from leaking across
+    test cases that swap KB files or run multiple formulations in-process.
+    """
+    global _SUPPLEMENT_KB_CACHE, _KNOWN_PREBIOTIC_SUBSTANCES_CACHE
+    _SUPPLEMENT_KB_CACHE = None
+    _KNOWN_PREBIOTIC_SUBSTANCES_CACHE = None
+
+
 def _load_supplement_kb_lookup() -> Dict:
     """Build normalized lookup from supplements_nonvitamins.json for dose + timing info.
 
@@ -612,7 +623,7 @@ def _build_component_registry(calc, ctx: PipelineContext) -> List[Dict]:
         })
 
     # 3. Prebiotics (from calc — post-dedup)
-    for pb in getattr(calc, 'jar_prebiotics', getattr(calc, 'sachet_prebiotics', [])):
+    for pb in calc.jar_prebiotics:
         registry.append({
             "substance": f"{pb['substance']} ({pb['dose_g']}g)",
             "dose": f"{pb['dose_g']}g",

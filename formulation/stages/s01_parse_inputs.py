@@ -15,13 +15,12 @@ from ..models import PipelineContext
 from formulation.parse_inputs import parse_inputs
 
 
-def run(sample_dir: str, use_llm: bool = True, force_keep: bool = False, compact: bool = False) -> Optional[PipelineContext]:
+def run(sample_dir: str, use_llm: bool = True, compact: bool = False) -> Optional[PipelineContext]:
     """Parse all inputs and create initial PipelineContext.
 
     Args:
         sample_dir: Path to sample directory.
         use_llm: Whether to use Bedrock LLM.
-        force_keep: Keep supplements despite high-severity interactions.
         compact: Suppress verbose pipeline output.
 
     Returns:
@@ -57,7 +56,6 @@ def run(sample_dir: str, use_llm: bool = True, force_keep: bool = False, compact
         sample_dir=str(sample_dir),
         batch_id=unified_input.get("batch_id", sample_dir.parent.name),
         use_llm=use_llm,
-        force_keep=force_keep,
         compact=compact,
         unified_input=unified_input,
     )

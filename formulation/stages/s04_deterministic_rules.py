@@ -8,6 +8,7 @@ Output: PipelineContext with rule_outputs + effective_goals populated
 Delegates to rules_engine.py (already clean).
 """
 
+import json
 from pathlib import Path
 
 from ..models import PipelineContext
@@ -51,7 +52,11 @@ def run(ctx: PipelineContext) -> PipelineContext:
     """Apply all deterministic rules."""
     print("\n─── B. RULES ───────────────────────────────────────────────")
 
-    rule_outputs = apply_rules(ctx.unified_input)
+    try:
+        rule_outputs = apply_rules(ctx.unified_input)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"  🚨 Knowledge base loading failed: {e}")
+        raise RuntimeError(f"Stage 4: Knowledge base loading failed — {e}") from e
 
     # Merge inferred health signals into supplement claims
     # Map raw signal names → KB health-claim category names so the LLM

@@ -12,7 +12,7 @@ from ..llm.clinical_analyzer import analyze_questionnaire_clinical
 
 def run(ctx: PipelineContext) -> PipelineContext:
     """Run LLM clinical analysis of questionnaire."""
-    print("\n─── A.5 CLINICAL PROFILE ───────────────────────────────────")
+    print("\n─── A.5a CLINICAL PROFILE ──────────────────────────────────")
 
     if ctx.use_llm:
         try:

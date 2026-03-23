@@ -293,7 +293,6 @@ def make_pipeline_context():
             sample_dir="/tmp/test_sample",
             batch_id=unified_input.get("batch_id", "test_batch") if unified_input else "test_batch",
             use_llm=use_llm,
-            force_keep=False,
             compact=True,
             unified_input=unified_input or {},
         )

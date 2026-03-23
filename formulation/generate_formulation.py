@@ -47,7 +47,6 @@ from formulation.stages import s07_weight_calculation, s08_narratives, s09_outpu
 def generate_formulation(
     sample_dir: str,
     use_llm: bool = True,
-    force_keep: bool = False,
     compact: bool = False,
 ) -> Optional[Dict]:
     """Generate complete formulation for a sample.
@@ -66,7 +65,6 @@ def generate_formulation(
     Args:
         sample_dir: Path to sample directory
         use_llm: Whether to use Bedrock LLM (False for offline testing)
-        force_keep: If True, high-severity interactions flagged but not auto-removed
         compact: If True, suppress pipeline detail
 
     Returns:
@@ -79,7 +77,7 @@ def generate_formulation(
         pass
 
     # ── Stage 1: Parse Inputs ────────────────────────────────────────────
-    ctx = s01_parse_inputs.run(sample_dir, use_llm=use_llm, force_keep=force_keep, compact=compact)
+    ctx = s01_parse_inputs.run(sample_dir, use_llm=use_llm, compact=compact)
     if ctx is None:
         return None  # Questionnaire guard — exit gracefully
 
@@ -110,8 +108,10 @@ def generate_formulation(
     return master
 
 
-def process_batch(batch_dir: str, use_llm: bool = True, force_keep: bool = False):
+def process_batch(batch_dir: str, use_llm: bool = True):
     """Process all samples in a batch directory."""
+    import traceback as _tb
+
     batch_dir = Path(batch_dir)
     if not batch_dir.exists():
         print(f"❌ Batch directory not found: {batch_dir}")
@@ -124,10 +124,11 @@ def process_batch(batch_dir: str, use_llm: bool = True, force_keep: bool = False
 
     print(f"\nBatch: {batch_dir.name} — {len(samples)} samples")
 
+    error_log_path = batch_dir / "formulation_batch_errors.log"
     results = {}
     for sample_dir in samples:
         try:
-            result = generate_formulation(str(sample_dir), use_llm=use_llm, force_keep=force_keep)
+            result = generate_formulation(str(sample_dir), use_llm=use_llm)
             if result is None:
                 results[sample_dir.name] = "SKIPPED (No questionnaire)"
             else:
@@ -135,6 +136,16 @@ def process_batch(batch_dir: str, use_llm: bool = True, force_keep: bool = False
         except Exception as e:
             print(f"\n❌ FAILED: {sample_dir.name} — {e}")
             results[sample_dir.name] = f"ERROR: {e}"
+            # Log full traceback to file for diagnosis
+            with open(error_log_path, 'a', encoding='utf-8') as f:
+                f.write(f"\n{'='*60}\n")
+                f.write(f"SAMPLE: {sample_dir.name}\n")
+                f.write(f"TIME: {datetime.now().isoformat()}\n")
+                f.write(f"{'='*60}\n")
+                _tb.print_exc(file=f)
+
+    if error_log_path.exists():
+        print(f"\n  📋 Error details: {error_log_path}")
 
     # Summary
     print(f"\n{'='*60}")
@@ -154,7 +165,6 @@ if __name__ == "__main__":
     parser.add_argument("--sample-dir", help="Path to single sample directory")
     parser.add_argument("--batch-dir", help="Path to batch directory (process all samples)")
     parser.add_argument("--no-llm", action="store_true", help="Skip LLM calls (offline mode)")
-    parser.add_argument("--force-keep", action="store_true", help="Keep supplements despite high-severity interactions")
     parser.add_argument("--compact", action="store_true", help="Compact output: suppress pipeline detail")
     args = parser.parse_args()
 
@@ -163,6 +173,6 @@ if __name__ == "__main__":
 
     if args.sample_dir:
         generate_formulation(args.sample_dir, use_llm=not args.no_llm,
-                             force_keep=args.force_keep, compact=args.compact)
+                             compact=args.compact)
     elif args.batch_dir:
-        process_batch(args.batch_dir, use_llm=not args.no_llm, force_keep=args.force_keep)
+        process_batch(args.batch_dir, use_llm=not args.no_llm)
