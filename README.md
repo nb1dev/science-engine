@@ -171,36 +171,6 @@ science-engine/
 ├── requirements.txt
 └── .gitignore
 ```
-
----
-
-## Running the pipeline
-
-**Full batch:**
-```bash
-bash pipeline/run_sample_analysis.sh --batch nb1_2026_009
-```
-
-**Single sample:**
-```bash
-bash pipeline/run_sample_analysis.sh --batch nb1_2026_009 --sample 1421504848853
-```
-
-**Report only (existing GMWI2 data):**
-```bash
-python report/generate_report.py --sample-dir /path/to/analysis/nb1_2026_009/1421504848853
-```
-
-**Formulation only:**
-```bash
-python formulation/generate_formulation.py --sample-dir /path/to/analysis/nb1_2026_009/1421504848853
-```
-
-**Run formulation tests:**
-```bash
-pytest formulation/tests/
-```
-
 ---
 
 ## Optimal Execution Sequence
