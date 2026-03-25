@@ -16,7 +16,7 @@ Delivery units:
 Weight Formulas:
   Probiotics:   weight_mg = cfu_billions × 10
   Omega oils:   weight_mg = dose_mg (1:1)
-  Vitamins mcg: NEGLIGIBLE — does NOT reduce capacity
+  Vitamins mcg: weight_mg = dose_value / 1000 (mcg → mg, e.g. 200mcg = 0.2mg)
   Vitamins mg:  weight_mg = dose_mg (1:1)
   Prebiotics:   weight_g = dose_g (1:1)
   Botanicals:   weight_mg = dose_mg (1:1)
@@ -78,12 +78,20 @@ def probiotic_weight_mg(cfu_billions: float) -> float:
 
 
 def vitamin_weight_mg(dose_value: float, dose_unit: str) -> float:
-    """Calculate vitamin weight.
-    mcg doses: NEGLIGIBLE (returns 0)
-    mg doses: 1:1 relationship
+    """Calculate vitamin physical weight in mg.
+
+    All units convert to mg:
+      mcg → mg: divide by 1000 (e.g. 200mcg = 0.2mg — tiny but physically real)
+      mg  → mg: 1:1
+      g   → mg: multiply by 1000
+
+    Note: mcg vitamins (B9, B12, Selenium, etc.) were previously treated as
+    NEGLIGIBLE (0.0mg). They are now converted correctly to mg. Their physical
+    contribution to capsule fill is very small (0.02–0.2mg per dose) but it
+    is non-zero and should be included in accurate fill weight calculations.
     """
     if dose_unit.lower() in ["mcg", "μg", "ug"]:
-        return 0.0
+        return round(dose_value / 1000, 4)  # mcg → mg
     elif dose_unit.lower() in ["mg"]:
         return round(dose_value, 2)
     elif dose_unit.lower() in ["g"]:
@@ -98,8 +106,12 @@ def prebiotic_weight_g(dose_g: float) -> float:
 
 
 def is_negligible_weight(dose_unit: str) -> bool:
-    """Check if a dose unit produces negligible weight (mcg vitamins)."""
-    return dose_unit.lower() in ["mcg", "μg", "ug"]
+    """Check if a dose unit produces negligible weight.
+
+    All units now contribute real weight — mcg vitamins are converted to mg
+    (e.g. 200mcg B9 = 0.2mg), so nothing is negligible anymore.
+    """
+    return False
 
 
 # ─── CAPSULE STACKING OPTIMIZER ───────────────────────────────────────────────
@@ -440,7 +452,7 @@ class FormulationCalculator:
             if val is None:
                 return None
             if unit.lower() in ["mcg", "μg", "ug"]:
-                return 0.0  # negligible
+                return float(val) / 1000  # mcg → mg (e.g. 200mcg = 0.2mg)
             elif unit.lower() == "mg":
                 return float(val)
             elif unit.lower() == "g":
@@ -764,11 +776,36 @@ class FormulationCalculator:
 
         Same pattern as morning/evening capsules — when total exceeds 650mg,
         the optimizer splits into N capsules (polyphenol doses are adjustable=False
-        so it can only split, not reduce). Fixes the 1000mg overflow bug where
-        Curcumin 500mg + Bergamot 500mg couldn't fit in a single capsule.
+        so it can only split, not reduce).
+
+        Pre-pass (24 Mar 2026): Any single ingredient whose dose_mg exceeds the
+        capsule capacity (650mg) is equal-split into ceil(dose/capacity) identical
+        entries BEFORE bin-packing. This ensures production-optimal capsules
+        (identical fill weight per capsule) without truncating the prescribed dose.
+        Example: Curcumin 1010mg → 2 entries × 505mg each → 2 capsules.
         """
         if not self.polyphenol_capsules:
             return None
+
+        # ── Pre-pass: equal-split any oversized ingredients ──────────────
+        import copy as _copy
+        expanded = []
+        for comp in self.polyphenol_capsules:
+            dose = comp.get("dose_mg", 0)
+            if dose > HARD_CAPSULE_CAPACITY_MG:
+                n_caps = math.ceil(dose / HARD_CAPSULE_CAPACITY_MG)
+                split_dose = round(dose / n_caps, 1)
+                print(f"  💊 Polyphenol split: {comp['substance']} {dose}mg → {n_caps} × {split_dose}mg")
+                for i in range(n_caps):
+                    split_comp = _copy.deepcopy(comp)
+                    split_comp["dose_mg"] = split_dose
+                    split_comp["weight_mg"] = split_dose
+                    split_comp["min_dose_mg"] = split_dose
+                    split_comp["max_dose_mg"] = split_dose
+                    expanded.append(split_comp)
+            else:
+                expanded.append(comp)
+        self.polyphenol_capsules = expanded
 
         optimizer = CapsuleStackingOptimizer(HARD_CAPSULE_CAPACITY_MG)
         result = optimizer.optimize(self.polyphenol_capsules)

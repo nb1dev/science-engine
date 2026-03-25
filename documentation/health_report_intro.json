@@ -1,0 +1,254 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-03-25",
+
+  "page": {
+    "eyebrow": "Understanding your report",
+    "title": "Your gut is at the centre of everything",
+    "title_italic_phrase": "centre of everything",
+    "subtitle": "Most people think of the gut as a digestive organ. In reality it's a master communicator — constantly receiving signals from your lifestyle and sending signals back out to your immune system, brain, hormones, heart, and more. Your microbiome report maps this ecosystem.",
+    "subtitle_bold_phrase": "master communicator",
+    "footer": "This is why a microbiome report is more than a snapshot of digestion. It maps an ecosystem with connections throughout your body — showing which pathways are working well, which need support, and what can be done to shift them.",
+    "footer_bold_phrase": "ecosystem with connections throughout your body",
+    "cta": "Your personal results follow ↓"
+  },
+
+  "hub": {
+    "emoji": "🦠",
+    "label": "Your Gut Microbiome",
+    "stat": "~38 trillion bacteria"
+  },
+
+  "columns": {
+    "inputs_label": "What shapes your gut",
+    "outputs_label": "What your gut shapes"
+  },
+
+  "inputs": [
+    {
+      "group": "Daily habits",
+      "nodes": [
+        {
+          "id": "diet",
+          "icon": "🥗",
+          "label": "Diet & Fiber",
+          "desc": "What you eat directly feeds or starves your bacteria",
+          "bidirectional": false
+        },
+        {
+          "id": "hydration",
+          "icon": "💧",
+          "label": "Hydration",
+          "desc": "Affects gut motility and the microbial environment",
+          "bidirectional": false
+        },
+        {
+          "id": "circadian",
+          "icon": "🕐",
+          "label": "Meal Timing & Circadian Rhythm",
+          "desc": "When you eat matters; irregular patterns disrupt microbial cycles",
+          "bidirectional": false
+        },
+        {
+          "id": "activity",
+          "icon": "🏃",
+          "label": "Physical Activity",
+          "desc": "Exercise increases diversity and butyrate-producing bacteria",
+          "bidirectional": false
+        },
+        {
+          "id": "caffeine",
+          "icon": "☕",
+          "label": "Caffeine & Coffee",
+          "desc": "Moderate coffee intake linked to greater diversity and more anti-inflammatory bacteria",
+          "bidirectional": false
+        }
+      ]
+    },
+    {
+      "group": "Stressors & disruptors",
+      "nodes": [
+        {
+          "id": "stress",
+          "icon": "😰",
+          "label": "Stress",
+          "desc": "Depletes beneficial bacteria — which then amplifies the stress response",
+          "bidirectional": true
+        },
+        {
+          "id": "sleep",
+          "icon": "😴",
+          "label": "Sleep Quality",
+          "desc": "Poor sleep disrupts the gut — and a disrupted gut worsens sleep",
+          "bidirectional": true
+        },
+        {
+          "id": "social",
+          "icon": "🤝",
+          "label": "Social Connection",
+          "desc": "Emerging evidence that social environment influences microbial diversity",
+          "bidirectional": false
+        }
+      ]
+    },
+    {
+      "group": "Substances & exposures",
+      "nodes": [
+        {
+          "id": "antibiotics",
+          "icon": "💊",
+          "label": "Antibiotic Use",
+          "desc": "Even a single course can reshape the microbiome for months",
+          "bidirectional": false
+        },
+        {
+          "id": "alcohol",
+          "icon": "🍷",
+          "label": "Alcohol & Smoking",
+          "desc": "Both create a less diverse, less resilient microbial environment",
+          "bidirectional": false
+        },
+        {
+          "id": "recreational",
+          "icon": "💉",
+          "label": "Recreational Drugs",
+          "desc": "Opioids, stimulants, and cannabis each produce distinct microbiome signatures with shared declines in SCFA-producing bacteria",
+          "bidirectional": false
+        },
+        {
+          "id": "sweeteners",
+          "icon": "🧂",
+          "label": "Artificial Sweeteners & Additives",
+          "desc": "Some sweeteners disrupt microbial balance in a dose-dependent manner",
+          "bidirectional": false
+        },
+        {
+          "id": "pollutants",
+          "icon": "🌫️",
+          "label": "Environmental Exposures",
+          "desc": "Toxins and pollutants linked to dysbiosis in recent reviews",
+          "bidirectional": false
+        }
+      ]
+    },
+    {
+      "group": "Life stage",
+      "nodes": [
+        {
+          "id": "birth",
+          "icon": "👶",
+          "label": "Birth Mode & Early Life",
+          "desc": "Vaginal birth and breastfeeding are major early microbiome determinants",
+          "bidirectional": false
+        },
+        {
+          "id": "age",
+          "icon": "⏳",
+          "label": "Age & Life Stage",
+          "desc": "The microbiome shifts significantly from infancy through ageing",
+          "bidirectional": false
+        }
+      ]
+    }
+  ],
+
+  "outputs": [
+    {
+      "id": "immune",
+      "icon": "🛡️",
+      "label": "Immune System",
+      "desc": "~70% of your immune cells live in and around the gut",
+      "bidirectional": false
+    },
+    {
+      "id": "mood",
+      "icon": "🧠",
+      "label": "Brain & Mood",
+      "desc": "~90% of serotonin is made here; vagus nerve carries gut signals to brain",
+      "bidirectional": false
+    },
+    {
+      "id": "metabolism",
+      "icon": "⚡",
+      "label": "Metabolism & Energy",
+      "desc": "Bacteria regulate energy extraction and blood sugar response",
+      "bidirectional": false
+    },
+    {
+      "id": "inflammation",
+      "icon": "🔥",
+      "label": "Inflammation",
+      "desc": "Beneficial bacteria produce SCFAs that keep inflammatory pressure low",
+      "bidirectional": false
+    },
+    {
+      "id": "digestion",
+      "icon": "🌿",
+      "label": "Digestive Comfort",
+      "desc": "Bloating, regularity, and food tolerance are microbiome-dependent",
+      "bidirectional": false
+    },
+    {
+      "id": "cognition",
+      "icon": "💭",
+      "label": "Cognitive Function & Memory",
+      "desc": "Distinct from mood; linked to insulin resistance and neurodegeneration",
+      "bidirectional": false
+    },
+    {
+      "id": "heart",
+      "icon": "❤️",
+      "label": "Heart Health",
+      "desc": "Metabolites like TMAO are tied to cardiovascular risk",
+      "bidirectional": false
+    },
+    {
+      "id": "weight",
+      "icon": "⚖️",
+      "label": "Weight Regulation",
+      "desc": "Influences hunger hormones, fat storage, and caloric extraction",
+      "bidirectional": false
+    },
+    {
+      "id": "nutrients",
+      "icon": "🧬",
+      "label": "Nutrient Absorption",
+      "desc": "Bacteria synthesise vitamins B12, K, and folate and improve uptake",
+      "bidirectional": false
+    },
+    {
+      "id": "sleep_arch",
+      "icon": "🌙",
+      "label": "Sleep Architecture",
+      "desc": "Microbiome influences serotonin, GABA, and sleep cycle quality",
+      "bidirectional": false
+    },
+    {
+      "id": "hormones",
+      "icon": "🌸",
+      "label": "Hormone Regulation",
+      "desc": "Influences estrogen metabolism; linked to PCOS and hormonal balance",
+      "bidirectional": false
+    },
+    {
+      "id": "skin",
+      "icon": "✨",
+      "label": "Skin Health",
+      "desc": "Gut–skin axis linked to acne, eczema, and psoriasis",
+      "bidirectional": false
+    },
+    {
+      "id": "respiratory",
+      "icon": "🫁",
+      "label": "Respiratory & Allergies",
+      "desc": "Gut–lung axis affects asthma risk and allergic response",
+      "bidirectional": false
+    }
+  ],
+
+  "legend": [
+    { "type": "input",         "label": "Lifestyle → gut" },
+    { "type": "output",        "label": "Gut → health outcome" },
+    { "type": "bidirectional", "label": "Bidirectional — each amplifies the other" }
+  ]
+}

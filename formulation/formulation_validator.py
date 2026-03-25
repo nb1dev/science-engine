@@ -116,12 +116,22 @@ _NEGATION_PREFIXES = [
     "excellent resistance", "0-1",
 ]
 
+# Post-keyword negation suffixes — cover cases like "UTIs absent" where the
+# negating word comes AFTER the keyword (v1.2.2).
+_NEGATION_SUFFIXES = [
+    "absent", "not present", "not found", "not detected",
+    "none detected", "0/year", "0 per year",
+]
+
 
 def _narrative_mentions_positively(keyword: str, narrative_text: str) -> bool:
     """Check if *keyword* appears in narrative in a POSITIVE (affirming) context.
 
-    Returns False when the keyword is preceded by a negation phrase within
-    a 60-character look-back window (covers "Excellent resistance (0-1 colds/year, no UTIs)").
+    Returns False when the keyword is:
+    - preceded by a negation phrase within a 60-character look-back window
+      (covers "no UTIs", "0-1 colds/year", "Excellent resistance (..., no UTIs)")
+    - followed by a negation word within a 40-character look-forward window
+      (covers "UTIs absent", "UTIs not present")
 
     Args:
         keyword: lowercase term to search for (e.g. "uti", "infection", "allergy")
@@ -136,9 +146,14 @@ def _narrative_mentions_positively(keyword: str, narrative_text: str) -> bool:
         start = match.start()
         # Look back up to 60 chars for a negation prefix
         window_start = max(0, start - 60)
-        window = narrative_text[window_start:start]
-        negated = any(neg in window for neg in _NEGATION_PREFIXES)
-        if not negated:
+        prefix_window = narrative_text[window_start:start]
+        negated_prefix = any(neg in prefix_window for neg in _NEGATION_PREFIXES)
+
+        # Look forward up to 40 chars for a post-keyword negation suffix
+        forward_window = narrative_text[match.end():match.end() + 40]
+        negated_suffix = any(suf in forward_window for suf in _NEGATION_SUFFIXES)
+
+        if not negated_prefix and not negated_suffix:
             return True  # Found a positive (non-negated) mention
     return False  # All mentions were negated, or keyword absent entirely
 

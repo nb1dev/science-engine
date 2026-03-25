@@ -27,8 +27,9 @@ INFERRED_SIGNAL_TO_HEALTH_CLAIM = {
     "heart_health": "Blood Cholesterol",
     "weight_management": "Fullness/Satiety",
     "anti_inflammatory": "Anti-inflammatory",
-    "hormone_balance": None,   # no direct KB category
+    "hormone_balance": "Hormone Balance",   # added Fix 5b (supplements_nonvitamins.json)
     "bone_health": None,       # no direct KB category
+    "sport_recovery": "Sport/Recovery",    # exercise ≥3x/week → Glutathione
 }
 
 # Inferred signal → goal key mapping (for timing engine)
@@ -57,6 +58,60 @@ def run(ctx: PipelineContext) -> PipelineContext:
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print(f"  🚨 Knowledge base loading failed: {e}")
         raise RuntimeError(f"Stage 4: Knowledge base loading failed — {e}") from e
+
+    # ── Deterministic BMI-based inference ────────────────────────────────
+    # Runs BEFORE the inferred signals merge loop so the injected signal
+    # flows through both the health-claims merge AND effective-goals build.
+    # If BMI ≥ 27.5 and client has not already stated a weight goal, inject
+    # weight_management as a synthetic inferred signal.
+    # Flow:  signal → "Fullness/Satiety" claim (INFERRED_SIGNAL_TO_HEALTH_CLAIM)
+    #               → "manage_weight" goal (INFERRED_SIGNAL_TO_GOAL)
+    # Threshold 27.5 aligns with WHO Asian BMI cut-offs (overweight range).
+    bmi = ctx.unified_input["questionnaire"]["demographics"].get("bmi")
+    if bmi is not None and bmi >= 27.5:
+        existing_goal_str = " ".join(
+            ctx.unified_input["questionnaire"]["goals"].get("ranked", [])
+        ).lower()
+        already_has_weight = "weight" in existing_goal_str or "manage_weight" in existing_goal_str
+        already_inferred = any(
+            (sig.get("signal") if isinstance(sig, dict) else sig) == "weight_management"
+            for sig in ctx.clinical_summary.get("inferred_health_signals", [])
+        )
+        if not already_has_weight and not already_inferred:
+            ctx.clinical_summary.setdefault("inferred_health_signals", []).append({
+                "signal": "weight_management",
+                "reason": f"BMI {bmi} ≥ 27.5 — deterministic weight management inference (overweight range)",
+                "source": "bmi_rule",
+            })
+            print(f"  ⚖️  BMI {bmi} ≥ 27.5 → weight_management injected as inferred signal")
+
+    # ── Deterministic exercise-based inference ───────────────────────────
+    # If client exercises ≥3 days/week (vigorous OR moderate), inject
+    # sport_recovery signal → "Sport/Recovery" claim → Glutathione (1st Choice).
+    # NOTE: exercise fields are nested inside lifestyle["exercise_detail"], not
+    # at the lifestyle root level — see parse_inputs.py extract_questionnaire_data().
+    lifestyle = ctx.unified_input["questionnaire"].get("lifestyle", {})
+    exercise_detail = lifestyle.get("exercise_detail", {})
+    vigorous_days = exercise_detail.get("vigorous_days_per_week") or 0
+    moderate_days = exercise_detail.get("moderate_days_per_week") or 0
+    if vigorous_days >= 3 or moderate_days >= 3:
+        already_inferred_sport = any(
+            (sig.get("signal") if isinstance(sig, dict) else sig) == "sport_recovery"
+            for sig in ctx.clinical_summary.get("inferred_health_signals", [])
+        )
+        if not already_inferred_sport:
+            ctx.clinical_summary.setdefault("inferred_health_signals", []).append({
+                "signal": "sport_recovery",
+                "reason": (
+                    f"Exercise ≥3x/week (vigorous={vigorous_days}d, moderate={moderate_days}d) "
+                    f"→ Sport/Recovery claim → Glutathione"
+                ),
+                "source": "exercise_rule",
+            })
+            print(
+                f"  🏃 Exercise ≥3x/week (vigorous={vigorous_days}d, moderate={moderate_days}d) "
+                f"→ sport_recovery injected as inferred signal"
+            )
 
     # Merge inferred health signals into supplement claims
     # Map raw signal names → KB health-claim category names so the LLM

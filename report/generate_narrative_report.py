@@ -381,15 +381,35 @@ SECTION_CONFIGS = [
         'model': OPUS_MODEL_ID,   # OPUS — pattern classification specificity is critical here
         'instruction': """Generate Section 1: EXECUTIVE SUMMARY (400-500 words). Be CONCISE — every sentence must add value.
 
-Include ALL required elements in order:
-1. Overall Pattern classification — be SPECIFIC (e.g., "Protein-Driven Dysbiosis with Bifidobacteria Depletion" NOT generic "Transitional Pattern"). Name the primary dysfunction.
-2. Dysbiosis-Associated Markers (2-3 sentences, define E-S abbreviation). Include E-S CLR if elevated.
-3. Critical Finding — most urgent single metabolic constraint
-4. Metabolic State Summary — all 4 CLR ratios with values. Use "factory analogy" for clinical translation.
-5. Priority Interventions — clean CRITICAL/1A/1B/Monitor hierarchy
-6. Structural Concerns — bullet list (max 5 items)
-7. Health Implications — ONE paragraph, max 80 words
-8. Functional Pathways & Vitamin Biosynthesis — ONE paragraph, max 60 words""",
+⚠️ STRUCTURE RULE: Each subsection MUST start with a ### heading on its own line. Do NOT use bold text (**...**) as a heading substitute. The exact headings are mandatory — the dashboard parser depends on them.
+
+Use EXACTLY this structure:
+
+## Section 1: Executive Summary
+
+### Overall Pattern Classification
+[Be SPECIFIC — e.g., "Protein-Driven Dysbiosis with Bifidobacteria Depletion" NOT generic "Transitional Pattern". Name the primary dysfunction. 2-3 sentences.]
+
+### Dysbiosis-Associated Markers
+[2-3 sentences. Define E-S abbreviation on first use. Include E-S CLR if elevated.]
+
+### Critical Finding
+[1-2 sentences. Most urgent single metabolic constraint.]
+
+### Metabolic State Summary
+[All 4 CLR ratios with values. Use "factory analogy" for clinical translation. 4-6 sentences.]
+
+### Priority Interventions
+[Clean CRITICAL/1A/1B/Monitor bullet hierarchy.]
+
+### Structural Concerns
+[Bullet list, max 5 items.]
+
+### Health Implications
+[ONE paragraph, max 80 words.]
+
+### Functional Pathways & Vitamin Biosynthesis
+[ONE paragraph, max 60 words.]""",
         'max_tokens': 2500,
     },
     {

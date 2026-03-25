@@ -334,7 +334,12 @@
       {
         "field_path": "questionnaire_data.step_1.goals.main_goals_ranked",
         "operator": "contains_any",
-        "value": ["improve_energy_levels"],
+        "value": [
+          "improve_energy_levels",
+          "boost_energy_reduce_fatigue",
+          "energy",
+          "fatigue"
+        ],
         "confidence_contribution": "possible"
       },
       {

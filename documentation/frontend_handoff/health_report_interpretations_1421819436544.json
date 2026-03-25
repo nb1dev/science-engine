@@ -1,0 +1,736 @@
+{
+  "sample_id": "1421819436544",
+  "generated_at": "2026-03-24T18:19:34.626661",
+  "schema_version": "3.0",
+  "report_date": "2026-03-02",
+  "overall_score": {
+    "total": 76.6,
+    "band": "Good",
+    "pillars": {
+      "health_association": {
+        "score": 17.4,
+        "max": 20,
+        "scientific": "Measures how health-associated your species composition is based on the GMWI2 model of 155 taxa.",
+        "non_expert": "This shows how many of your bacteria are the types typically found in healthy people — think of it as your gut's health fingerprint."
+      },
+      "diversity_resilience": {
+        "score": 13.6,
+        "max": 20,
+        "scientific": "Combined Shannon diversity and guild-level evenness — measures species richness and structural redundancy.",
+        "non_expert": "How many different types of bacteria you have and how well-balanced they are — more variety means your gut can handle stress and recover faster."
+      },
+      "metabolic_function": {
+        "score": 15.8,
+        "max": 20,
+        "scientific": "Composite of 4 CLR diagnostic ratios (CUR, FCR, MDR, PPR) measuring substrate utilization, fermentation efficiency, mucus dependency, and putrefaction pressure.",
+        "non_expert": "This shows how well your bacteria are processing food — are they running on the right fuel, converting it efficiently, and producing gentle rather than harsh byproducts."
+      },
+      "guild_balance": {
+        "score": 19.8,
+        "max": 30,
+        "scientific": "Evaluates 6 functional guilds by abundance position within reference ranges and CLR competitive status, weighted by ecological dependency.",
+        "non_expert": "This checks whether your six bacterial teams are properly staffed — each team has a job, and this score shows if they have enough members to do their work well."
+      },
+      "safety_profile": {
+        "score": 10.0,
+        "max": 10,
+        "scientific": "Absence of dysbiosis-associated taxa (F. nucleatum, S. gallolyticus, P. anaerobius, E-S), extreme guild overgrowth, and BCFA pathway activity.",
+        "non_expert": "This checks for any red flags — harmful bacteria, extreme overgrowth, or signs of unhealthy fermentation. A high score here means your gut has a clean safety record."
+      }
+    },
+    "score_drivers": {
+      "strongest": {
+        "pillar": "safety_profile",
+        "label": "Safety Profile",
+        "pct_of_max": 100
+      },
+      "weakest": {
+        "pillar": "guild_balance",
+        "label": "Bacterial Group Balance",
+        "pct_of_max": 66
+      },
+      "key_note": "Your strongest area is safety profile (100% of its potential)"
+    }
+  },
+  "score_summary": "Your overall score is <strong>76.6</strong> out of 100. The main areas to focus on are <strong>bifidobacteria</strong>, <strong>monoculture risk</strong>, <strong>ecosystem resilience</strong>, and <strong>microbial diversity</strong>.",
+  "bacterial_groups": {
+    "Fiber Degraders": {
+      "abundance": 55.78,
+      "healthy_range": "30-50%",
+      "status": "Above range",
+      "clr": 3.02,
+      "evenness": 0.2,
+      "evenness_status": "Low redundancy — monoculture risk",
+      "client_interpretation": "Your fiber-processing team is working overtime and winning the competition for resources, but it's become dominated by just a few key players. This creates a vulnerability where your system relies heavily on a narrow set of bacteria rather than a diverse, resilient team."
+    },
+    "Butyrate Producers": {
+      "abundance": 16.0,
+      "healthy_range": "10-25%",
+      "status": "Within range",
+      "clr": 1.77,
+      "evenness": 0.64,
+      "evenness_status": "Moderate redundancy",
+      "client_interpretation": "Your butyrate-producing bacteria are in excellent shape - they're thriving in the competitive environment and have good diversity within their team. These bacteria produce energy that directly feeds your gut lining cells."
+    },
+    "Cross-Feeders": {
+      "abundance": 6.49,
+      "healthy_range": "6-12%",
+      "status": "Within range",
+      "clr": 0.87,
+      "evenness": 0.7,
+      "evenness_status": "High redundancy — resilient",
+      "client_interpretation": "Your connector bacteria are performing beautifully - they're the essential bridge that helps different bacterial teams work together efficiently. They have excellent diversity, making this part of your ecosystem very resilient."
+    },
+    "Proteolytic Guild": {
+      "abundance": 1.3,
+      "healthy_range": "1-5%",
+      "status": "Within range",
+      "clr": -0.73,
+      "evenness": 0.68,
+      "evenness_status": "Moderate redundancy",
+      "client_interpretation": "Your protein-fermenting bacteria are present in healthy amounts but aren't winning the competition for resources. This is actually good news - it means they're kept in check and not producing excessive harsh byproducts."
+    },
+    "Mucin Degraders": {
+      "abundance": 0.82,
+      "healthy_range": "1-4%",
+      "status": "Below range",
+      "clr": -1.2,
+      "evenness": 0.66,
+      "evenness_status": "Moderate redundancy",
+      "client_interpretation": "Your mucus-layer bacteria are running low and struggling in the competitive environment. These bacteria help maintain the protective mucus barrier in your gut, so this area needs some ecological support to restore balance."
+    },
+    "Bifidobacteria": {
+      "abundance": 0.01,
+      "healthy_range": "2-10%",
+      "status": "Below range",
+      "clr": -5.71,
+      "evenness": 0.0,
+      "evenness_status": "N/A",
+      "client_interpretation": "Your Bifidobacteria are almost completely missing and losing badly in the competition for resources. This is your biggest opportunity area - these bacteria are like the fuel station for your entire fermentation system, and without them, your gut's energy production pipeline is compromised."
+    }
+  },
+  "metabolic_dials": {
+    "main_fuel": {
+      "state": "protein_driven",
+      "label": "Leans on protein",
+      "value": -0.608
+    },
+    "fermentation_efficiency": {
+      "state": "efficient",
+      "label": "Efficient assembly line",
+      "value": 7.03
+    },
+    "mucus_dependency": {
+      "state": "diet_fed",
+      "label": "Mainly fed by your diet",
+      "value": -4.222
+    },
+    "putrefaction_pressure": {
+      "state": "scfa_dominant",
+      "label": "Mostly gentle, SCFA-dominant",
+      "value": -2.508
+    }
+  },
+  "ecological_metrics": {
+    "shannon": 2.279,
+    "pielou_evenness": 0.519,
+    "diversity_state": "low"
+  },
+  "safety_profile": {
+    "dysbiosis_markers": {
+      "F_nucleatum": 0.0,
+      "S_gallolyticus": 0.0,
+      "P_anaerobius": 0.0,
+      "E_Shigella": 0.0
+    },
+    "any_detected": false
+  },
+  "guild_timepoints": [
+    {
+      "label": "Baseline — Mar 2026",
+      "score": 76.6,
+      "guilds": {
+        "fd": 0.5578,
+        "bb": 0.0001,
+        "cf": 0.0649,
+        "bp": 0.16,
+        "pg": 0.013,
+        "md": 0.0082
+      }
+    }
+  ],
+  "protocol_summary": {
+    "synbiotic_mix": {
+      "mix_id": 2,
+      "mix_name": "Bifidogenic Restore"
+    },
+    "morning_solid_units": 5,
+    "morning_jar_units": 1,
+    "evening_solid_units": 2,
+    "total_daily_units": 8,
+    "total_daily_weight_g": 17.34
+  },
+  "profile": {
+    "first_name": "Danifeld",
+    "age": 38,
+    "sex": "Male",
+    "diet": null,
+    "stress": 5,
+    "sleep": 7,
+    "goals": [
+      "Boost Energy Reduce Fatigue",
+      "Longevity Healthy Aging",
+      "Improve Digestion Gut Comfort"
+    ],
+    "sensitivity": "Moderate"
+  },
+  "circle_scores": {
+    "gut_lining": 90,
+    "inflammation": 92,
+    "fiber_processing": 67,
+    "bifidobacteria": 0
+  },
+  "strengths_challenges": {
+    "strengths": [
+      {
+        "icon": "🛡️",
+        "title": "Low inflammatory pressure",
+        "text": "Your beneficial bacteria are producing mostly gentle, protective short-chain fatty acids with minimal harsh protein-fermentation byproducts. This is an important marker of gut health."
+      },
+      {
+        "icon": "⚡",
+        "title": "Strong butyrate support",
+        "text": "Your butyrate-producing bacteria are at 16.0% — within the healthy 10-25% range. These bacteria produce the primary fuel for your gut lining cells, supporting barrier integrity and reducing inflammation."
+      },
+      {
+        "icon": "🔗",
+        "title": "Healthy cross-feeding ecology",
+        "text": "Your cross-feeding bacteria are at 6.5% (healthy range 6-12%). These connectors convert fermentation intermediates into beneficial compounds, linking the different stages of your gut's production chain."
+      },
+      {
+        "icon": "✅",
+        "title": "Clean safety profile",
+        "text": "None of the key dysbiosis-associated bacteria (Fusobacterium nucleatum, Streptococcus gallolyticus, Peptostreptococcus anaerobius, Escherichia-Shigella) were detected at concerning levels. Your gut has a reassuring safety baseline."
+      },
+      {
+        "icon": "🥗",
+        "title": "Diet-fed ecosystem",
+        "text": "Your bacteria are primarily fuelled by what you eat rather than by eroding your gut's protective mucus layer. This is the ecologically stable pattern and reflects a gut that has adequate dietary substrate."
+      },
+      {
+        "icon": "⚙️",
+        "title": "Efficient fermentation",
+        "text": "Your gut's fermentation assembly line is running well — intermediate fermentation compounds are being fully converted into beneficial short-chain fatty acids rather than accumulating. This means your bacteria are cooperating efficiently."
+      }
+    ],
+    "challenges": [
+      {
+        "icon": "⚠️",
+        "title": "Bifidobacteria — absent or critically low",
+        "area_key": "bifidobacteria",
+        "area_label": "bifidobacteria",
+        "severity": "critical",
+        "text": "Your bifidobacteria are at only 0.0% and is being outcompeted (CLR -5.71). This is a significant gap — this bacterial group plays an essential role in your gut's fermentation network."
+      },
+      {
+        "icon": "🎲",
+        "title": "Monoculture risk — Fiber Degraders",
+        "area_key": "monoculture",
+        "area_label": "monoculture risk",
+        "severity": "moderate",
+        "text": "Your fiber degraders show low internal diversity (evenness score 0.20) — most of the functional capacity is concentrated in a single species. This is fragile: if that species is disrupted, the guild loses its function with little backup."
+      },
+      {
+        "icon": "📉",
+        "title": "Fragile ecosystem",
+        "area_key": "resilience",
+        "area_label": "ecosystem resilience",
+        "severity": "moderate",
+        "text": "Low species diversity (Shannon 2.28) suggest your gut ecosystem is more vulnerable to disruption. A less diverse community has fewer functional backups."
+      },
+      {
+        "icon": "🌵",
+        "title": "Low microbial diversity",
+        "area_key": "diversity",
+        "area_label": "microbial diversity",
+        "severity": "moderate",
+        "text": "Your species diversity score (Shannon 2.28) places you below the 25th percentile of the reference population. Limited diversity means fewer types of bacteria available to handle different tasks — building diversity is a key long-term goal."
+      }
+    ],
+    "all_strengths": [
+      {
+        "icon": "🛡️",
+        "title": "Low inflammatory pressure",
+        "text": "Your beneficial bacteria are producing mostly gentle, protective short-chain fatty acids with minimal harsh protein-fermentation byproducts. This is an important marker of gut health."
+      },
+      {
+        "icon": "⚡",
+        "title": "Strong butyrate support",
+        "text": "Your butyrate-producing bacteria are at 16.0% — within the healthy 10-25% range. These bacteria produce the primary fuel for your gut lining cells, supporting barrier integrity and reducing inflammation."
+      },
+      {
+        "icon": "🔗",
+        "title": "Healthy cross-feeding ecology",
+        "text": "Your cross-feeding bacteria are at 6.5% (healthy range 6-12%). These connectors convert fermentation intermediates into beneficial compounds, linking the different stages of your gut's production chain."
+      },
+      {
+        "icon": "✅",
+        "title": "Clean safety profile",
+        "text": "None of the key dysbiosis-associated bacteria (Fusobacterium nucleatum, Streptococcus gallolyticus, Peptostreptococcus anaerobius, Escherichia-Shigella) were detected at concerning levels. Your gut has a reassuring safety baseline."
+      },
+      {
+        "icon": "🥗",
+        "title": "Diet-fed ecosystem",
+        "text": "Your bacteria are primarily fuelled by what you eat rather than by eroding your gut's protective mucus layer. This is the ecologically stable pattern and reflects a gut that has adequate dietary substrate."
+      },
+      {
+        "icon": "⚙️",
+        "title": "Efficient fermentation",
+        "text": "Your gut's fermentation assembly line is running well — intermediate fermentation compounds are being fully converted into beneficial short-chain fatty acids rather than accumulating. This means your bacteria are cooperating efficiently."
+      },
+      {
+        "icon": "💪",
+        "title": "Strong competitive position — Butyrate Producers",
+        "text": "Your butyrate producers hold a strong competitive position in your gut ecosystem (CLR +1.77), meaning they are winning the competition for ecological space. This is a positive sign for long-term stability."
+      }
+    ],
+    "all_challenges": [
+      {
+        "icon": "⚠️",
+        "title": "Bifidobacteria — absent or critically low",
+        "area_key": "bifidobacteria",
+        "area_label": "bifidobacteria",
+        "severity": "critical",
+        "text": "Your bifidobacteria are at only 0.0% and is being outcompeted (CLR -5.71). This is a significant gap — this bacterial group plays an essential role in your gut's fermentation network."
+      },
+      {
+        "icon": "🎲",
+        "title": "Monoculture risk — Fiber Degraders",
+        "area_key": "monoculture",
+        "area_label": "monoculture risk",
+        "severity": "moderate",
+        "text": "Your fiber degraders show low internal diversity (evenness score 0.20) — most of the functional capacity is concentrated in a single species. This is fragile: if that species is disrupted, the guild loses its function with little backup."
+      },
+      {
+        "icon": "📉",
+        "title": "Fragile ecosystem",
+        "area_key": "resilience",
+        "area_label": "ecosystem resilience",
+        "severity": "moderate",
+        "text": "Low species diversity (Shannon 2.28) suggest your gut ecosystem is more vulnerable to disruption. A less diverse community has fewer functional backups."
+      },
+      {
+        "icon": "🌵",
+        "title": "Low microbial diversity",
+        "area_key": "diversity",
+        "area_label": "microbial diversity",
+        "severity": "moderate",
+        "text": "Your species diversity score (Shannon 2.28) places you below the 25th percentile of the reference population. Limited diversity means fewer types of bacteria available to handle different tasks — building diversity is a key long-term goal."
+      }
+    ],
+    "distinct_areas": [
+      "bifidobacteria",
+      "monoculture risk",
+      "ecosystem resilience",
+      "microbial diversity"
+    ]
+  },
+  "good_news": "Your fiber-processing bacteria are thriving at 56% — well above the healthy minimum and winning the competition for resources.",
+  "timeline_phases": [
+    {
+      "weeks": "1–4",
+      "label": "Settling in",
+      "color": "#3A6EA8",
+      "dot_class": "wk4",
+      "title": "🌱 Settling in",
+      "body": "The probiotic strains in your capsule are adapting to your gut environment — encountering existing bacteria, beginning to colonise, and establishing early positions. Your daily prebiotic sachet is reaching the lower gut, priming the environment before measurable compositional shifts occur. Vitamin C, Zinc, and B-vitamins from your sachet begin supporting immune and energy pathways within days. You may notice small changes in digestion rhythm — this is normal as your gut adjusts."
+    },
+    {
+      "weeks": "5–8",
+      "label": "Early momentum",
+      "color": "#2E8B6E",
+      "dot_class": "wk8",
+      "title": "🔋 Early momentum",
+      "body": "Beneficial bacteria begin expanding as prebiotic fibres consistently supply the substrate they need. Your bifidobacteria start moving toward healthy abundance levels. Short-chain fatty acid production increases as the fermentation chain becomes more active. Omega-3 EPA and DHA from your softgels are building up in cell membranes, typically reaching effective anti-inflammatory concentrations by week 6. Vitamin D3 supports ongoing immune regulation. Many people start noticing improvements in digestion consistency and gut comfort during this window."
+    },
+    {
+      "weeks": "9–12",
+      "label": "Deepening balance",
+      "color": "#C97C2A",
+      "dot_class": "wk12",
+      "title": "🛡️ Deepening balance",
+      "body": "Guild populations move toward their target ranges. Butyrate output increases as the fermentation chain becomes more complete — your gut lining receives more of the protective compounds it needs for repair. Magnesium Bisglycinate supports deeper sleep and stress resilience as tissue saturation builds. Inflammatory metabolite pressure typically decreases during this phase as the SCFA-to-protein fermentation balance shifts."
+    },
+    {
+      "weeks": "13–16",
+      "label": "Consolidation",
+      "color": "#6B5EA8",
+      "dot_class": "wk16",
+      "title": "⚖️ Consolidation",
+      "body": "The ecological shifts from earlier phases become self-sustaining. A more diverse, well-balanced community is better equipped to hold its gains under normal life pressures — stress, travel, or temporary dietary changes. Botanical adaptogens and the full vitamin-mineral stack have reached their most effective tissue concentrations. Weeks 13–16 are the ideal window for a reassessment sample to measure the full compositional shift."
+    }
+  ],
+  "supplement_cards": [
+    {
+      "num": 1,
+      "key": "delivery_format_1_probiotic_capsule",
+      "name": "Probiotic Capsule",
+      "timing": "🌅 Every morning",
+      "timing_group": "morning",
+      "what_it_is": "Live beneficial bacteria, selected specifically for your microbiome pattern.",
+      "why": "This probiotic blend helps restore beneficial gut bacteria that support digestion and overall gut health. It's specifically designed to replenish your missing Bifidobacteria, which are completely absent from your microbiome.",
+      "pills": [
+        {
+          "name": "Bifidobacterium infantis/longum 35624",
+          "dose": "10B CFU"
+        },
+        {
+          "name": "Bifidobacterium animalis subsp. lactis B420",
+          "dose": "10B CFU"
+        },
+        {
+          "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "dose": "10B CFU"
+        },
+        {
+          "name": "Lactobacillus acidophilus NCFM",
+          "dose": "10B CFU"
+        },
+        {
+          "name": "Bifidobacterium breve BR03 + Bifidobacterium breve B632 (premix)",
+          "dose": "10B CFU"
+        }
+      ],
+      "supports": [
+        "Bifidobacteria Below range",
+        "Bifidogenic Restore"
+      ],
+      "color": "#1E1E2A",
+      "emoji": "💊"
+    },
+    {
+      "num": 2,
+      "key": "delivery_format_2_omega_softgels",
+      "name": "Omega & Antioxidant Softgel",
+      "timing": "🌅 Every morning (2×)",
+      "timing_group": "morning",
+      "what_it_is": "Essential fatty acids and antioxidants in an easy-to-absorb softgel form.",
+      "why": "This combination supports brain health, reduces inflammation, and provides powerful antioxidant protection for healthy aging. The Omega-3s and protective compounds work together to combat fatigue while supporting your longevity goals.",
+      "pills": [
+        {
+          "name": "Omega-3 (EPA + DHA)",
+          "dose": "712.5mg"
+        },
+        {
+          "name": "Vitamin D3",
+          "dose": "10mcg (400 IU)"
+        },
+        {
+          "name": "Vitamin E",
+          "dose": "7.5mg"
+        },
+        {
+          "name": "Astaxanthin (H. pluvialis 10% oleoresin)",
+          "dose": "3mg active (30mg oleoresin)"
+        }
+      ],
+      "supports": [
+        "Anti-inflammatory",
+        "Antioxidant Protection",
+        "Brain Health",
+        "Immune System"
+      ],
+      "color": "#C97C2A",
+      "emoji": "🐟"
+    },
+    {
+      "num": 3,
+      "key": "delivery_format_3_powder_jar",
+      "name": "Daily Prebiotic Powder",
+      "timing": "🌅 Every morning",
+      "timing_group": "morning",
+      "what_it_is": "A blend of prebiotic fibres mixed into water — food for your beneficial bacteria, designed for easy daily use.",
+      "why": "This prebiotic powder feeds your beneficial gut bacteria to improve digestion and gut comfort. It works alongside your probiotic to help rebuild a healthier, more diverse microbiome.",
+      "pills": [
+        {
+          "name": "GOS",
+          "dose": "0.5"
+        },
+        {
+          "name": "Inulin",
+          "dose": "0.5"
+        },
+        {
+          "name": "PHGG",
+          "dose": "3"
+        },
+        {
+          "name": "Mentha Piperita (Peppermint)",
+          "dose": "1.0"
+        },
+        {
+          "name": "Foeniculum Vulgare (Fennel)",
+          "dose": "5.0"
+        },
+        {
+          "name": "Carthamus Tinctorius (Safflower)",
+          "dose": "2.7"
+        }
+      ],
+      "supports": [],
+      "color": "#2E8B6E",
+      "emoji": "🌿"
+    },
+    {
+      "num": 4,
+      "key": "delivery_format_4_morning_wellness_capsules",
+      "name": "Morning Wellness Capsule",
+      "timing": "🌅 Every morning (2×)",
+      "timing_group": "morning",
+      "what_it_is": "Targeted vitamins, minerals, and botanical compounds selected for your specific health profile.",
+      "why": "This energy-focused blend combines adaptogenic herbs with essential B vitamins to naturally boost energy and reduce fatigue. The ingredients work together to support your metabolism and stress resilience for sustained daily energy.",
+      "pills": [
+        {
+          "name": "Eleutherococcus Senticosus",
+          "dose": "600mg"
+        },
+        {
+          "name": "Zinc",
+          "dose": "11mg"
+        },
+        {
+          "name": "Pantothenic acid (B5)",
+          "dose": "5mg"
+        },
+        {
+          "name": "Riboflavin (B2)",
+          "dose": "1.1mg"
+        },
+        {
+          "name": "Folate (B9)",
+          "dose": "200mcg"
+        },
+        {
+          "name": "Vitamin B12",
+          "dose": "25mcg"
+        },
+        {
+          "name": "Vitamin C",
+          "dose": "250mg"
+        },
+        {
+          "name": "L-Theanine",
+          "dose": "200mg"
+        },
+        {
+          "name": "Glutathione",
+          "dose": "75mg"
+        }
+      ],
+      "supports": [],
+      "color": "#6B5EA8",
+      "emoji": "🌙"
+    },
+    {
+      "num": 5,
+      "key": "delivery_format_magnesium_capsule",
+      "name": "Magnesium Bisglycinate Capsule",
+      "timing": "🌙 30–60 min before bed",
+      "what_it_is": "Highly absorbable magnesium in bisglycinate form — supports sleep quality, muscle recovery, and stress resilience.",
+      "why": "Questionnaire (Sleep: sleep quality 7/10 ≤ 7; Sport: Active lifestyle (inferred))",
+      "pills": [
+        {
+          "name": "Magnesium Bisglycinate",
+          "dose": "210mg elemental"
+        }
+      ],
+      "supports": [
+        "Sleep",
+        "Sport"
+      ],
+      "color": "#4A5568",
+      "emoji": "🌙"
+    }
+  ],
+  "goal_cards": [
+    {
+      "emoji": "⚡",
+      "title": "Boost energy and reduce fatigue",
+      "mechanism": "The gut microbiome influences energy through multiple pathways: butyrate fuels colonocytes and regulates metabolism, B-vitamins produced by gut bacteria support cellular energy production, and inflammatory load from a disrupted microbiome creates systemic fatigue. A well-balanced gut is the foundation of sustained energy.",
+      "formula_link": "Your formula targets this through B12 and Folate (essential for energy metabolism), Omega-3 (mitochondrial membrane support), the probiotic and prebiotic blend (restores butyrate production and reduces inflammatory drain on energy), and adaptogenic support to address the stress-fatigue axis.",
+      "inferred": false
+    },
+    {
+      "emoji": "🌿",
+      "title": "Longevity and healthy ageing",
+      "mechanism": "A balanced, resilient gut microbiome is one of the most consistent predictors of healthy ageing across populations. Gut bacteria influence inflammation, metabolic function, immune competence, and even cognitive health — all of which are central to long-term vitality.",
+      "formula_link": "Your formula is designed holistically — the probiotic mix, prebiotic blend, Omega-3, antioxidant support, and targeted nutrients all work together to create the conditions your gut needs to support systemic health over the long term.",
+      "inferred": false
+    },
+    {
+      "emoji": "🎯",
+      "title": "Your personal health goal",
+      "mechanism": "A balanced, resilient gut microbiome provides the foundation for many aspects of health — from energy and metabolism to immunity and mental clarity. Supporting your microbiome creates positive ripple effects across multiple systems.",
+      "formula_link": "Your formula is designed holistically — the probiotic mix, prebiotic blend, and targeted nutrients all work together to create the conditions your gut needs to function at its best.",
+      "inferred": false
+    }
+  ],
+  "root_cause_data": {
+    "deviation_cards": [
+      {
+        "deviation": {
+          "key": "Bifidobacteria__below",
+          "type": "below_range",
+          "guild_key": "Bifidobacteria",
+          "client_label": "Bifidobacteria",
+          "icon": "✨",
+          "value_str": "0.0%",
+          "range_str": "2–10%",
+          "description": "Your Bifidobacteria are at 0.0% — below the healthy range of 2–10%."
+        },
+        "narrative": "Bifidobacteria are among your gut's most important protective bacteria. They're like skilled craftsmen who specialize in breaking down fiber and producing compounds that keep your gut lining healthy and strong. When they're thriving, they help maintain the barrier that protects you from harmful substances while supporting your immune system and even influencing your energy levels.\n\nAt 0.0%, your Bifidobacteria population has been significantly depleted. This means your gut has lost some of its key fiber-processing power and protective capacity. For someone like you who's focused on boosting energy and improving digestion, this is particularly relevant because Bifidobacteria play a direct role in both areas.\n\nThe good news is that Bifidobacteria are resilient and respond well to the right support. They're among the first beneficial bacteria to bounce back when given the proper environment to flourish.",
+        "summary_line": "Your Bifidobacteria depletion is likely recoverable with targeted support, and restoring them could directly help with your energy and digestive comfort goals.",
+        "health_meaning": "Your Bifidobacteria are at 0.0% — below the healthy range of 2–10%.",
+        "drivers": [],
+        "personal_synthesis": "",
+        "kb_drivers": [
+          {
+            "icon": "💊",
+            "label": "Antibiotic Use",
+            "text": "Antibiotics are one of the most common causes of the pattern we're seeing. Even a single course can significantly reduce your Bifidobacteria and butyrate-producing bacteria — the two groups most critical for your gut's protection and fermentation capacity.",
+            "kb_text": "Antibiotics are one of the most common causes of the pattern we're seeing. Even a single course can significantly reduce your Bifidobacteria and butyrate-producing bacteria — the two groups most critical for your gut's protection and fermentation capacity.",
+            "is_llm_text": false,
+            "directionality": "driver",
+            "directionality_arrow": "exposure → microbiome",
+            "evidence_label": "Research supported",
+            "evidence_strength": "moderate",
+            "domain_key": "antibiotic_use"
+          }
+        ]
+      },
+      {
+        "deviation": {
+          "key": "diversity__low",
+          "type": "low_diversity",
+          "guild_key": null,
+          "client_label": "Microbial Diversity",
+          "icon": "🌿",
+          "value_str": "Shannon 2.28",
+          "range_str": "> 2.79 (population Q25)",
+          "description": "Your gut microbial diversity is low (Shannon 2.28), placing you below the 25th percentile of the reference population."
+        },
+        "narrative": "Think of gut bacterial diversity like a thriving ecosystem — the more different types of beneficial bacteria you have, the more resilient and functional your gut becomes. Each bacterial group has its own specialty, whether that's processing different types of fiber, producing specific protective compounds, or supporting your immune system in unique ways.\n\nYour diversity score of 2.28 puts you in the bottom 25% of the population, meaning your gut ecosystem is less varied than it could be. This matters for your goals because lower diversity often translates to reduced capacity for energy production, less efficient digestion, and a gut environment that's more vulnerable to disruption.\n\nThe encouraging news is that diversity typically improves alongside the recovery of key bacterial groups. As your gut environment becomes more hospitable to beneficial bacteria, different species tend to establish themselves naturally.",
+        "summary_line": "Your lower bacterial diversity reflects an ecosystem that's been disrupted but has good potential for recovery as conditions improve.",
+        "health_meaning": "Your gut microbial diversity is low (Shannon 2.28), placing you below the 25th percentile of the reference population.",
+        "drivers": [],
+        "personal_synthesis": "",
+        "kb_drivers": [
+          {
+            "icon": "💊",
+            "label": "Antibiotic Use",
+            "text": "One of the most consistent effects of antibiotics is a reduction in gut bacterial variety — and your Shannon diversity score of 2.28 fits this pattern. Antibiotics are like a forest fire: they clear out a wide range of species indiscriminately, and the ecosystem takes time to recover its full richness.",
+            "kb_text": "One of the most consistent effects of antibiotics is a reduction in gut bacterial variety — and your Shannon diversity score of 2.28 fits this pattern. Antibiotics are like a forest fire: they clear out a wide range of species indiscriminately, and the ecosystem takes time to recover its full richness.",
+            "is_llm_text": false,
+            "directionality": "driver",
+            "directionality_arrow": "exposure → microbiome",
+            "evidence_label": "Well established",
+            "evidence_strength": "strong",
+            "domain_key": "antibiotic_use"
+          }
+        ]
+      }
+    ],
+    "awareness_chips": [],
+    "section_summary": "The pattern in your gut suggests a classic case of antibiotic-related disruption that never fully recovered. While your single lifetime antibiotic course was likely necessary at the time, it appears to have created lasting changes in your gut's bacterial community. The good news is that this type of disruption is very treatable with the right approach.",
+    "cited_papers": [],
+    "factor_cards": [
+      {
+        "domain_key": "antibiotic_use",
+        "icon": "💊",
+        "label": "Antibiotic Use",
+        "subtitle": "Affects 2 bacterial imbalances",
+        "evidence_label": "Well established",
+        "evidence_strength": "strong",
+        "guilds_affected_count": 2,
+        "guild_impacts": [
+          {
+            "client_label": "Bifidobacteria",
+            "value_str": "0.0%",
+            "impact": "crit"
+          },
+          {
+            "client_label": "Microbial Diversity",
+            "value_str": "Shannon 2.28",
+            "impact": "crit"
+          }
+        ],
+        "explanation": "Antibiotics are one of the most common causes of the pattern we're seeing. Even a single course can significantly reduce your Bifidobacteria and butyrate-producing bacteria — the two groups most critical for your gut's protection and fermentation capacity.",
+        "kb_text": "Antibiotics are one of the most common causes of the pattern we're seeing. Even a single course can significantly reduce your Bifidobacteria and butyrate-producing bacteria — the two groups most critical for your gut's protection and fermentation capacity.",
+        "directionality": "driver"
+      }
+    ],
+    "cascade_guilds": [
+      {
+        "client_label": "Bifidobacteria",
+        "value_str": "0.0%",
+        "impact": "crit",
+        "driving_factor_emojis": [
+          "💊"
+        ]
+      },
+      {
+        "client_label": "Microbial Diversity",
+        "value_str": "Shannon 2.28",
+        "impact": "crit",
+        "driving_factor_emojis": [
+          "💊"
+        ]
+      }
+    ],
+    "metrics_strip": [
+      {
+        "client_label": "Bifidobacteria",
+        "value_str": "0.0%",
+        "range_str": "2–10%",
+        "impact": "crit",
+        "icon": "✨"
+      },
+      {
+        "client_label": "Microbial Diversity",
+        "value_str": "Shannon 2.28",
+        "range_str": "> 2.79 (population Q25)",
+        "impact": "crit",
+        "icon": "🌿"
+      }
+    ]
+  },
+  "cited_papers": [],
+  "lifestyle_recommendations": [
+    {
+      "emoji": "🌱",
+      "title": "Prioritize diverse prebiotic fiber sources",
+      "text": "Focus on consuming multiple categories of fiber-rich plant foods daily to support your completely absent Bifidobacteria population, which typically thrives on prebiotic compounds and contributes significantly to gut health."
+    },
+    {
+      "emoji": "🍽️",
+      "title": "Incorporate fermented foods strategically",
+      "text": "Add 2-3 servings of different fermented foods daily to your routine, as this dietary pattern has been shown to increase microbial diversity beyond your current Shannon index of 2.28."
+    },
+    {
+      "emoji": "💪",
+      "title": "Optimize post-exercise nutrition timing",
+      "text": "Given your high activity level, consume fiber-rich foods within 2 hours post-workout when your gut is most receptive to beneficial bacterial colonization, potentially helping restore your missing Bifidobacteria."
+    },
+    {
+      "emoji": "😴",
+      "title": "Maintain consistent meal timing",
+      "text": "Leverage your good sleep quality (7/10) by eating your largest, most diverse meal earlier in the day to support circadian rhythm alignment, which directly influences microbial diversity and energy metabolism."
+    },
+    {
+      "emoji": "🧘",
+      "title": "Implement targeted stress-reduction during meals",
+      "text": "Since your moderate stress level (5/10) can impact digestion, practice 2-3 minutes of deep breathing before meals to optimize gut-brain axis function and improve nutrient absorption for better energy levels."
+    }
+  ],
+  "supplement_why_texts": {}
+}

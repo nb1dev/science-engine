@@ -1,6 +1,6 @@
 {
   "sample_id": "1421266404096",
-  "generated_at": "2026-03-20T19:04:25.866124",
+  "generated_at": "2026-03-24T18:15:36.802593",
   "schema_version": "3.0",
   "report_date": "2026-03-06",
   "overall_score": {
@@ -52,7 +52,7 @@
       "key_note": "Your score is mainly held back by bacterial group balance (39% of its potential)"
     }
   },
-  "score_summary": "Your overall score is <strong>68.3</strong> out of 100. The main areas to focus on are <strong>safety profile</strong>, <strong>gut lining protection</strong>, <strong>mucin degradation</strong>, <strong>fiber processing</strong>, and <strong>monoculture risk</strong>.",
+  "score_summary": "Your overall score is <strong>68.3</strong> out of 100. The main areas to focus on are <strong>safety profile</strong>, <strong>gut lining protection</strong>, <strong>mucin degradation</strong>, <strong>fiber processing</strong>, <strong>monoculture risk</strong>, and <strong>microbial diversity</strong>.",
   "bacterial_groups": {
     "Mucin Degraders": {
       "abundance": 38.39,
@@ -148,6 +148,7 @@
   "guild_timepoints": [
     {
       "label": "Baseline — Mar 2026",
+      "score": 68.3,
       "guilds": {
         "fd": 0.131,
         "bb": 0.0513,
@@ -163,11 +164,11 @@
       "mix_id": 8,
       "mix_name": "Fiber Expansion & Competitive Displacement"
     },
-    "morning_solid_units": 6,
+    "morning_solid_units": 8,
     "morning_jar_units": 1,
     "evening_solid_units": 4,
-    "total_daily_units": 11,
-    "total_daily_weight_g": 13.71
+    "total_daily_units": 13,
+    "total_daily_weight_g": 12.28
   },
   "profile": {
     "first_name": "Kaan",
@@ -186,16 +187,11 @@
   "circle_scores": {
     "gut_lining": 9,
     "inflammation": 54,
-    "fiber_processing": 62,
+    "fiber_processing": 43,
     "bifidobacteria": 89
   },
   "strengths_challenges": {
     "strengths": [
-      {
-        "icon": "🌱",
-        "title": "Good diversity",
-        "text": "Your gut shows moderate-to-good species diversity (Shannon 2.79). A varied bacterial community provides a more stable and adaptable foundation for gut health."
-      },
       {
         "icon": "✨",
         "title": "Healthy bifidobacteria presence",
@@ -247,14 +243,17 @@
         "area_label": "monoculture risk",
         "severity": "moderate",
         "text": "Your mucin degraders show low internal diversity (evenness score 0.15) — most of the functional capacity is concentrated in a single species. This is fragile: if that species is disrupted, the guild loses its function with little backup."
+      },
+      {
+        "icon": "🌿",
+        "title": "Moderate diversity",
+        "area_key": "diversity",
+        "area_label": "microbial diversity",
+        "severity": "moderate",
+        "text": "Your species diversity (Shannon 2.79) is in the lower half of the normal range — below the population median of 3.29 but above the 25th percentile. Building more diversity over time is a worthwhile goal and one of the indirect benefits of your prebiotic protocol."
       }
     ],
     "all_strengths": [
-      {
-        "icon": "🌱",
-        "title": "Good diversity",
-        "text": "Your gut shows moderate-to-good species diversity (Shannon 2.79). A varied bacterial community provides a more stable and adaptable foundation for gut health."
-      },
       {
         "icon": "✨",
         "title": "Healthy bifidobacteria presence",
@@ -306,6 +305,14 @@
         "area_label": "monoculture risk",
         "severity": "moderate",
         "text": "Your mucin degraders show low internal diversity (evenness score 0.15) — most of the functional capacity is concentrated in a single species. This is fragile: if that species is disrupted, the guild loses its function with little backup."
+      },
+      {
+        "icon": "🌿",
+        "title": "Moderate diversity",
+        "area_key": "diversity",
+        "area_label": "microbial diversity",
+        "severity": "moderate",
+        "text": "Your species diversity (Shannon 2.79) is in the lower half of the normal range — below the population median of 3.29 but above the 25th percentile. Building more diversity over time is a worthwhile goal and one of the indirect benefits of your prebiotic protocol."
       }
     ],
     "distinct_areas": [
@@ -313,7 +320,8 @@
       "gut lining protection",
       "mucin degradation",
       "fiber processing",
-      "monoculture risk"
+      "monoculture risk",
+      "microbial diversity"
     ]
   },
   "good_news": "Your connector bacteria are thriving at ideal levels, keeping your gut ecosystem well-linked. Your Bifidobacteria team is holding steady in the healthy zone.",
@@ -357,8 +365,9 @@
       "key": "delivery_format_1_probiotic_capsule",
       "name": "Probiotic Capsule",
       "timing": "🌅 Every morning",
+      "timing_group": "morning",
       "what_it_is": "Live beneficial bacteria, selected specifically for your microbiome pattern.",
-      "why": "A specific bacterium (Akkermansia) has overgrown because the fiber-digesting bacteria aren't providing enough competition. Rather than trying to kill the overgrown organism, this mix feeds and strengthens the fiber-digesting bacteria so they naturally crowd out the problematic one — like growing grass to crowd out weeds, rather than using herbicide..",
+      "why": "This probiotic blend helps rebalance your gut bacteria and supports better sleep through calming compounds. It's specifically chosen to address your high mucus-layer bacteria levels and help improve your sleep quality goals.",
       "pills": [
         {
           "name": "Lactobacillus plantarum 299v",
@@ -400,8 +409,9 @@
       "key": "delivery_format_2_omega_softgels",
       "name": "Omega & Antioxidant Softgel",
       "timing": "🌅 Every morning (2×)",
+      "timing_group": "morning",
       "what_it_is": "Essential fatty acids and antioxidants in an easy-to-absorb softgel form.",
-      "why": "Omega-3 EPA and DHA support gut barrier integrity, reduce inflammatory signalling, and support brain and mood function — all directly relevant to your health goals and microbiome pattern.",
+      "why": "This combination supports brain health, mood, and provides antioxidant protection for healthy aging. The Omega-3s and protective compounds work together to boost your energy and support your general wellness goals.",
       "pills": [
         {
           "name": "Omega-3 (EPA + DHA)",
@@ -434,32 +444,29 @@
       "key": "delivery_format_3_powder_jar",
       "name": "Daily Prebiotic Powder",
       "timing": "🌅 Every morning",
+      "timing_group": "morning",
       "what_it_is": "A blend of prebiotic fibres mixed into water — food for your beneficial bacteria, designed for easy daily use.",
-      "why": "",
+      "why": "This prebiotic powder feeds your beneficial gut bacteria to improve digestive health. It helps support your low fiber-processing bacteria levels for better overall gut balance.",
       "pills": [
         {
           "name": "PHGG",
-          "dose": "2.5"
+          "dose": "1.063"
+        },
+        {
+          "name": "Resistant Starch",
+          "dose": "1.0"
         },
         {
           "name": "Psyllium",
           "dose": "1.0"
         },
         {
-          "name": "Resistant Starch",
-          "dose": "0.5"
+          "name": "Beta-Glucans",
+          "dose": "1.5"
         },
         {
           "name": "Inulin",
-          "dose": "0.5"
-        },
-        {
-          "name": "GOS",
-          "dose": "0.5"
-        },
-        {
-          "name": "Quercetin",
-          "dose": "0.3"
+          "dose": "1.0"
         }
       ],
       "supports": [],
@@ -471,9 +478,22 @@
       "key": "delivery_format_4_morning_wellness_capsules",
       "name": "Morning Wellness Capsule",
       "timing": "🌅 Every morning (2×)",
+      "timing_group": "morning",
       "what_it_is": "Targeted vitamins, minerals, and botanical compounds selected for your specific health profile.",
-      "why": "",
+      "why": "This energy-focused blend combines adaptogenic herbs with essential B vitamins to combat fatigue and boost daily energy. It directly targets your primary goal of reducing fatigue while supporting your immune system for healthy aging.",
       "pills": [
+        {
+          "name": "Eleutherococcus Senticosus",
+          "dose": "600mg"
+        },
+        {
+          "name": "Pantothenic acid (B5)",
+          "dose": "5mg"
+        },
+        {
+          "name": "Riboflavin (B2)",
+          "dose": "1.1mg"
+        },
         {
           "name": "Folate (B9)",
           "dose": "200mcg"
@@ -483,28 +503,12 @@
           "dose": "25mcg"
         },
         {
-          "name": "Vitamin C",
-          "dose": "250mg"
-        },
-        {
-          "name": "Riboflavin (B2)",
-          "dose": "1.1mg"
-        },
-        {
-          "name": "Pantothenic acid (B5)",
-          "dose": "5mg"
-        },
-        {
-          "name": "Biotin (B7)",
-          "dose": "300mcg"
-        },
-        {
           "name": "Selenium",
           "dose": "40mcg"
         },
         {
-          "name": "Eleutherococcus Senticosus",
-          "dose": "600mg"
+          "name": "Vitamin C",
+          "dose": "250mg"
         }
       ],
       "supports": [],
@@ -516,8 +520,9 @@
       "key": "delivery_format_5_evening_wellness_capsules",
       "name": "Evening Wellness Capsule",
       "timing": "🌙 30–60 min before bed (2×)",
+      "timing_group": "evening",
       "what_it_is": "Botanical and functional molecules timed to work with your body's evening recovery processes.",
-      "why": "",
+      "why": "This calming blend helps manage stress and promotes better sleep quality through natural relaxation compounds. It addresses your sleep quality goals while supporting your immune system for overall wellness.",
       "pills": [
         {
           "name": "Ashwagandha (Withania somnifera)",
@@ -542,17 +547,46 @@
       "num": 6,
       "key": "delivery_format_6_polyphenol_capsule",
       "name": "Polyphenol Capsule",
-      "timing": "🌅 Every morning",
+      "timing": "🌅 Every morning (3×)",
+      "timing_group": "morning",
       "what_it_is": "Concentrated plant compounds that modulate gut bacteria and reduce inflammatory signals.",
-      "why": "",
+      "why": "This anti-inflammatory combination helps reduce inflammation and supports heart health for healthy aging. The powerful plant compounds work together to support your general wellness and cardiovascular health goals.",
       "pills": [
         {
-          "name": "Curcumin 500mg (+ 5.0mg Piperine)",
+          "name": "Curcumin 1000mg (+ 10.0mg Piperine)",
           "dose": "505.0"
+        },
+        {
+          "name": "Curcumin 1000mg (+ 10.0mg Piperine)",
+          "dose": "505.0"
+        },
+        {
+          "name": "Bergamot Polyphenolic Fraction",
+          "dose": "500"
         }
       ],
       "supports": [],
       "color": "#8B5E3C",
+      "emoji": "🌙"
+    },
+    {
+      "num": 7,
+      "key": "delivery_format_magnesium_capsule",
+      "name": "Magnesium Bisglycinate Capsule",
+      "timing": "🌙 30–60 min before bed",
+      "what_it_is": "Highly absorbable magnesium in bisglycinate form — supports sleep quality, muscle recovery, and stress resilience.",
+      "why": "Questionnaire (Sleep: sleep quality 6/10 ≤ 7 + sleep improvement is a stated goal; Stress: stress 7/10 ≥ 6)",
+      "pills": [
+        {
+          "name": "Magnesium Bisglycinate",
+          "dose": "210mg elemental"
+        }
+      ],
+      "supports": [
+        "Sleep",
+        "Stress"
+      ],
+      "color": "#4A5568",
       "emoji": "🌙"
     }
   ],
@@ -561,19 +595,29 @@
       "emoji": "⚡",
       "title": "Boost energy and reduce fatigue",
       "mechanism": "The gut microbiome influences energy through multiple pathways: butyrate fuels colonocytes and regulates metabolism, B-vitamins produced by gut bacteria support cellular energy production, and inflammatory load from a disrupted microbiome creates systemic fatigue. A well-balanced gut is the foundation of sustained energy.",
-      "formula_link": "Your formula targets this through B12 and Folate (essential for energy metabolism), Omega-3 (mitochondrial membrane support), the probiotic and prebiotic blend (restores butyrate production and reduces inflammatory drain on energy), and adaptogenic support to address the stress-fatigue axis."
+      "formula_link": "Your formula targets this through B12 and Folate (essential for energy metabolism), Omega-3 (mitochondrial membrane support), the probiotic and prebiotic blend (restores butyrate production and reduces inflammatory drain on energy), and adaptogenic support to address the stress-fatigue axis.",
+      "inferred": false
     },
     {
       "emoji": "😴",
       "title": "Better sleep quality",
       "mechanism": "Sleep and the gut microbiome operate in a bidirectional relationship. Gut bacteria influence circadian rhythm signals, serotonin and melatonin precursor availability, and inflammatory mediators that affect sleep architecture.",
-      "formula_link": "Your formula targets this through L-Theanine (promotes relaxation without sedation), Magnesium Bisglycinate (supports deep sleep phases), Ashwagandha (reduces HPA-axis activation that disrupts sleep onset), and the LP815 strain (GABA production supports calm states before sleep)."
+      "formula_link": "Your formula targets this through L-Theanine (promotes relaxation without sedation), Magnesium Bisglycinate (supports deep sleep phases), Ashwagandha (reduces HPA-axis activation that disrupts sleep onset), and the LP815 strain (GABA production supports calm states before sleep).",
+      "inferred": false
     },
     {
       "emoji": "🌿",
       "title": "General wellness and healthy ageing",
       "mechanism": "A balanced, resilient gut microbiome is one of the most consistent predictors of healthy ageing across populations. Gut bacteria influence inflammation, metabolic function, immune competence, and even cognitive health — all of which are central to long-term vitality.",
-      "formula_link": "Your formula is designed holistically — the probiotic mix, prebiotic blend, Omega-3, antioxidant support, and targeted nutrients all work together to create the conditions your gut needs to support systemic health over the long term."
+      "formula_link": "Your formula is designed holistically — the probiotic mix, prebiotic blend, Omega-3, antioxidant support, and targeted nutrients all work together to create the conditions your gut needs to support systemic health over the long term.",
+      "inferred": false
+    },
+    {
+      "emoji": "🧘",
+      "title": "Better mood and reduced anxiety",
+      "mechanism": "Your gut produces about 90% of your body's serotonin and communicates directly with your brain via the vagus nerve. Gut microbiome imbalances — especially disruptions to beneficial bacteria — have been consistently linked to mood and anxiety patterns.",
+      "formula_link": "Your formula targets this through Ashwagandha (clinical evidence for cortisol reduction and anxiety relief), LP815 probiotic strain (produces calming GABA), Omega-3 DHA (brain health and mood regulation), and Magnesium Bisglycinate (supports the nervous system and stress resilience).",
+      "inferred": true
     }
   ],
   "root_cause_data": {
@@ -764,18 +808,18 @@
       },
       {
         "deviation": {
-          "key": "diversity__low",
-          "type": "low_diversity",
+          "key": "diversity__moderate",
+          "type": "moderate_diversity",
           "guild_key": null,
           "client_label": "Microbial Diversity",
           "icon": "🌿",
           "value_str": "Shannon 2.79",
-          "range_str": "> 2.79 (population Q25)",
-          "description": "Your gut microbial diversity is low (Shannon 2.79), placing you below the 25th percentile of the reference population."
+          "range_str": "> 3.29 (population median)",
+          "description": "Your gut microbial diversity (Shannon 2.79) is in the lower half of the reference population — below the population median of 3.29."
         },
         "narrative": "",
         "summary_line": "",
-        "health_meaning": "Your gut microbial diversity is low (Shannon 2.79), placing you below the 25th percentile of the reference population.",
+        "health_meaning": "Your gut microbial diversity (Shannon 2.79) is in the lower half of the reference population — below the population median of 3.29.",
         "drivers": [],
         "personal_synthesis": "",
         "kb_drivers": [
@@ -790,26 +834,226 @@
             "evidence_label": "Well established",
             "evidence_strength": "strong",
             "domain_key": "bloating_ibs"
-          },
-          {
-            "icon": "🏃",
-            "label": "Low Physical Activity",
-            "text": "Physical activity is one of the factors consistently associated with higher gut bacterial diversity. Lower activity levels are linked to a less diverse microbiome — which may be a contributing factor to the pattern we're seeing.",
-            "kb_text": "Physical activity is one of the factors consistently associated with higher gut bacterial diversity. Lower activity levels are linked to a less diverse microbiome — which may be a contributing factor to the pattern we're seeing.",
-            "is_llm_text": false,
-            "directionality": "associative",
-            "directionality_arrow": "activity level ↔ microbiome",
-            "evidence_label": "Research supported",
-            "evidence_strength": "moderate",
-            "domain_key": "low_physical_activity"
           }
         ]
       }
     ],
     "awareness_chips": [],
     "section_summary": "",
-    "cited_papers": []
+    "cited_papers": [],
+    "factor_cards": [
+      {
+        "domain_key": "bloating_ibs",
+        "icon": "🫧",
+        "label": "Bloating & Digestive Discomfort",
+        "subtitle": "Affects 5 bacterial imbalances",
+        "evidence_label": "Well established",
+        "evidence_strength": "strong",
+        "guilds_affected_count": 5,
+        "guild_impacts": [
+          {
+            "client_label": "Mucus-Layer Bacteria",
+            "value_str": "38.4%",
+            "impact": "crit"
+          },
+          {
+            "client_label": "Fiber-Processing Bacteria",
+            "value_str": "13.1%",
+            "impact": "low"
+          },
+          {
+            "client_label": "Gut-Lining Energy Producers",
+            "value_str": "2.5%",
+            "impact": "low"
+          },
+          {
+            "client_label": "Microbial Diversity",
+            "value_str": "Shannon 2.79",
+            "impact": "low"
+          },
+          {
+            "client_label": "Gut Barrier Under Pressure",
+            "value_str": "Mucus-reliant",
+            "impact": "crit"
+          }
+        ],
+        "explanation": "Bloating is a direct symptom of fermentation imbalance — your bacteria are producing more gas than your gut can comfortably handle. This is a functional consequence of the microbiome pattern we're seeing, and it should improve as the fermentation balance shifts.",
+        "kb_text": "Bloating is a direct symptom of fermentation imbalance — your bacteria are producing more gas than your gut can comfortably handle. This is a functional consequence of the microbiome pattern we're seeing, and it should improve as the fermentation balance shifts.",
+        "directionality": "consequence"
+      },
+      {
+        "domain_key": "stress_anxiety",
+        "icon": "😰",
+        "label": "Chronic Stress & Anxiety",
+        "subtitle": "Affects 2 bacterial imbalances",
+        "evidence_label": "Research supported",
+        "evidence_strength": "moderate",
+        "guilds_affected_count": 2,
+        "guild_impacts": [
+          {
+            "client_label": "Fiber-Processing Bacteria",
+            "value_str": "13.1%",
+            "impact": "low"
+          },
+          {
+            "client_label": "Gut-Lining Energy Producers",
+            "value_str": "2.5%",
+            "impact": "low"
+          }
+        ],
+        "explanation": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+        "kb_text": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+        "directionality": "bidirectional"
+      },
+      {
+        "domain_key": "poor_sleep",
+        "icon": "😴",
+        "label": "Poor Sleep Quality",
+        "subtitle": "Affects 2 bacterial imbalances",
+        "evidence_label": "Research supported",
+        "evidence_strength": "moderate",
+        "guilds_affected_count": 2,
+        "guild_impacts": [
+          {
+            "client_label": "Fiber-Processing Bacteria",
+            "value_str": "13.1%",
+            "impact": "low"
+          },
+          {
+            "client_label": "Gut-Lining Energy Producers",
+            "value_str": "2.5%",
+            "impact": "low"
+          }
+        ],
+        "explanation": "Your microbiome has its own daily rhythm. Irregular sleep patterns disrupt this rhythm, affecting bacterial activity and the balance of compounds produced — creating a feedback loop where poor sleep worsens gut health and gut imbalance worsens sleep.",
+        "kb_text": "Your microbiome has its own daily rhythm. Irregular sleep patterns disrupt this rhythm, affecting bacterial activity and the balance of compounds produced — creating a feedback loop where poor sleep worsens gut health and gut imbalance worsens sleep.",
+        "directionality": "bidirectional"
+      },
+      {
+        "domain_key": "low_physical_activity",
+        "icon": "🏃",
+        "label": "Low Physical Activity",
+        "subtitle": "Affects 1 bacterial imbalance",
+        "evidence_label": "Research supported",
+        "evidence_strength": "moderate",
+        "guilds_affected_count": 1,
+        "guild_impacts": [
+          {
+            "client_label": "Gut-Lining Energy Producers",
+            "value_str": "2.5%",
+            "impact": "low"
+          }
+        ],
+        "explanation": "Regular physical activity is directly associated with higher butyrate-producing bacteria — the exact bacterial group that your results show needs support. This suggests that increasing physical activity can meaningfully contribute to improving your gut profile over time.",
+        "kb_text": "Regular physical activity is directly associated with higher butyrate-producing bacteria — the exact bacterial group that your results show needs support. This suggests that increasing physical activity can meaningfully contribute to improving your gut profile over time.",
+        "directionality": "associative"
+      }
+    ],
+    "cascade_guilds": [
+      {
+        "client_label": "Mucus-Layer Bacteria",
+        "value_str": "38.4%",
+        "impact": "crit",
+        "driving_factor_emojis": [
+          "🫧"
+        ]
+      },
+      {
+        "client_label": "Fiber-Processing Bacteria",
+        "value_str": "13.1%",
+        "impact": "low",
+        "driving_factor_emojis": [
+          "🫧",
+          "😰",
+          "😴"
+        ]
+      },
+      {
+        "client_label": "Gut-Lining Energy Producers",
+        "value_str": "2.5%",
+        "impact": "low",
+        "driving_factor_emojis": [
+          "🫧",
+          "😰",
+          "😴",
+          "🏃"
+        ]
+      },
+      {
+        "client_label": "Microbial Diversity",
+        "value_str": "Shannon 2.79",
+        "impact": "low",
+        "driving_factor_emojis": [
+          "🫧"
+        ]
+      },
+      {
+        "client_label": "Gut Barrier Under Pressure",
+        "value_str": "Mucus-reliant",
+        "impact": "crit",
+        "driving_factor_emojis": [
+          "🫧"
+        ]
+      }
+    ],
+    "metrics_strip": [
+      {
+        "client_label": "Mucus-Layer Bacteria",
+        "value_str": "38.4%",
+        "range_str": "1–4%",
+        "impact": "crit",
+        "icon": "🛡️"
+      },
+      {
+        "client_label": "Gut Barrier Under Pressure",
+        "value_str": "Mucus-reliant",
+        "range_str": "Diet-fed (optimal)",
+        "impact": "crit",
+        "icon": "🧱"
+      },
+      {
+        "client_label": "Fiber-Processing Bacteria",
+        "value_str": "13.1%",
+        "range_str": "30–50%",
+        "impact": "low",
+        "icon": "🌾"
+      },
+      {
+        "client_label": "Gut-Lining Energy Producers",
+        "value_str": "2.5%",
+        "range_str": "10–25%",
+        "impact": "low",
+        "icon": "⚡"
+      }
+    ]
   },
   "cited_papers": [],
-  "lifestyle_recommendations": []
+  "lifestyle_recommendations": [
+    {
+      "emoji": "🌾",
+      "title": "Prioritize diverse fiber sources",
+      "text": "Your fiber-processing bacteria are significantly low at 13.1% (optimal 30-50%), which directly impacts energy production. Focus on incorporating 3-4 different types of plant-based fibers daily to rebuild this critical bacterial community."
+    },
+    {
+      "emoji": "🛡️",
+      "title": "Support gut barrier with targeted nutrition",
+      "text": "Your mucus-layer bacteria are extremely elevated at 38.4% (normal 1-4%), indicating your gut barrier is under pressure and relying on mucus rather than dietary support. Include prebiotic-rich foods that nourish beneficial barrier-supporting bacteria."
+    },
+    {
+      "emoji": "🍽️",
+      "title": "Implement structured eating windows",
+      "text": "With your stress level at 7/10 and compromised gut barrier, establish consistent meal timing with 12-14 hour overnight fasting periods to reduce gut inflammation and support barrier repair."
+    },
+    {
+      "emoji": "😴",
+      "title": "Create a gut-sleep optimization routine",
+      "text": "Your low gut-lining energy producers (2.5% vs optimal 10-25%) may be contributing to your 6/10 sleep quality. Establish a consistent bedtime routine and avoid late meals to support beneficial bacteria that produce sleep-promoting compounds."
+    },
+    {
+      "emoji": "🧘",
+      "title": "Address stress-gut connection actively",
+      "text": "Your high stress level (7/10) and low microbial diversity (2.79 vs >3.29 optimal) are interconnected. Incorporate daily stress-reduction practices like deep breathing or meditation, as chronic stress directly depletes beneficial gut bacteria."
+    }
+  ],
+  "supplement_why_texts": {}
 }

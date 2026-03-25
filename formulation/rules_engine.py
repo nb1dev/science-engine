@@ -51,9 +51,9 @@ def classify_sensitivity(digestive: Dict) -> Dict:
     if bloating_severity is not None and bloating_severity >= 7:
         high_triggered = True
         reasoning.append(f"Bloating severity {bloating_severity}/10 (≥7 threshold)")
-    if bloating_frequency and "daily" in str(bloating_frequency).lower():
+    if bloating_frequency and str(bloating_frequency).lower() in ("daily", "most_days"):
         high_triggered = True
-        reasoning.append(f"Daily bloating frequency")
+        reasoning.append(f"Bloating frequency '{bloating_frequency}' (daily/most-days — high)")
     if stool_type is not None and stool_type in [6, 7]:
         high_triggered = True
         reasoning.append(f"Bristol stool type {stool_type} (loose/watery)")
@@ -841,6 +841,22 @@ def assess_goal_triggered_supplements(goals: Dict, lifestyle: Dict) -> Dict:
         })
         reasoning.append("Skin health goal → Niacinamide B3 + Pantothenic Acid B5 standardized")
 
+    # Rule 3: Hormone balance goal → mandatory Ashwagandha (cortisol regulation)
+    # Ashwagandha is the clinician-confirmed 1st choice for hormone balance — cortisol
+    # normalisation is the primary mechanism for HPA-axis hormone regulation.
+    # This is deterministic to guarantee it is always included when hormone_balance is a goal,
+    # even if the LLM selects other Stress/Anxiety supplements first.
+    HORMONE_KEYWORDS = {"hormone", "hormone_balance"}
+    has_hormone = any(any(kw in g for kw in HORMONE_KEYWORDS) for g in ranked_lower)
+    if has_hormone:
+        mandatory_supplements.append({
+            "substance": "Ashwagandha (Withania somnifera)",
+            "dose_mg": 300,
+            "delivery": "evening_capsule",
+            "reason": "Hormone balance goal → mandatory Ashwagandha 300mg (cortisol regulation via HPA-axis modulation)"
+        })
+        reasoning.append("Hormone balance goal → Ashwagandha standardized (deterministic)")
+
     # Note: Glutathione selection is now handled by the LLM supplement selection step
     # based on KB health claims (Anti-inflammatory, Infection Susceptibility, Skin Quality, Sport/Recovery).
     # It is no longer forced deterministically.
@@ -1094,6 +1110,70 @@ def apply_medication_rules(unified_input: Dict) -> Dict:
                 "medication": medication_raw,
                 "auto_executed": False,
             })
+
+    # ── MED_003: Curcumin + any serious prescription medication ──────────
+    # Fires independently of the matched-rules loop above.
+    # Scans ALL medication entries (matched + unmatched) against the OTC whitelist.
+    # If ANY non-OTC medication is present → remove curcumin (Tier A).
+    # If ALL medications are OTC → raise Tier C review flag only.
+    if medication_entries:
+        med_003 = next((r for r in rules if r.get("rule_id") == "MED_003"), None)
+        if med_003:
+            otc_whitelist = [w.lower().strip() for w in med_003.get("otc_whitelist", [])]
+
+            def _is_otc(med_name: str) -> bool:
+                """Return True if medication name matches any OTC whitelist entry."""
+                med_lower = _normalize(med_name)
+                return any(otc in med_lower or med_lower in otc for otc in otc_whitelist)
+
+            non_otc_meds = [m for m in medication_entries if not _is_otc(m["name"])]
+            otc_only_meds = [m for m in medication_entries if _is_otc(m["name"])]
+
+            if non_otc_meds:
+                # Tier A: unconditional remove curcumin
+                substances_to_remove.add("curcumin")
+                for med_entry in non_otc_meds:
+                    # Find a known_affected_medications entry for richer mechanism text
+                    known = next(
+                        (k for k in med_003.get("known_affected_medications", [])
+                         if _normalize(med_entry["name"]) in [_normalize(k["name"])] +
+                         [_normalize(a) for a in k.get("aliases", [])]),
+                        None
+                    )
+                    mechanism = known["mechanism"] if known else med_003["description"]
+                    removal_reasons.append({
+                        "substance": "curcumin",
+                        "medication": med_entry["name"],
+                        "rule_id": "MED_003",
+                        "tier": "A",
+                        "mechanism": mechanism,
+                        "reason": med_003["resolution"]["reason"],
+                        "replace_with_category": med_003["resolution"].get("replace_with_category", "Anti-inflammatory"),
+                    })
+                clinical_flags.append({
+                    "rule_id": "MED_003",
+                    "tier": "A",
+                    "severity": "high",
+                    "title": f"CURCUMIN EXCLUDED: CYP3A4/P-gp interaction with {', '.join(m['name'] for m in non_otc_meds)}",
+                    "detail": med_003["clinical_note"],
+                    "medication": ", ".join(m["name"] for m in non_otc_meds),
+                    "auto_executed": True,
+                    "replacement_note": med_003["resolution"].get("replace_note", ""),
+                })
+                print(f"  🚫 MED_003: Curcumin excluded — CYP3A4/P-gp interaction with: {[m['name'] for m in non_otc_meds]}")
+
+            elif otc_only_meds:
+                # Tier C: flag only — curcumin stays but needs review
+                clinical_flags.append({
+                    "rule_id": "MED_003",
+                    "tier": "C",
+                    "severity": "low",
+                    "title": f"CURCUMIN REVIEW: OTC medication present — low interaction risk but verify",
+                    "detail": f"Client takes OTC medication(s): {', '.join(m['name'] for m in otc_only_meds)}. Curcumin CYP3A4 interaction risk is low at OTC doses but warrants clinician review.",
+                    "medication": ", ".join(m["name"] for m in otc_only_meds),
+                    "auto_executed": False,
+                })
+                print(f"  ⚠️  MED_003: Curcumin flag (Tier C) — OTC meds present: {[m['name'] for m in otc_only_meds]}")
 
     return {
         "matched_rules": matched_rules,

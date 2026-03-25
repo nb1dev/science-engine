@@ -454,6 +454,102 @@
     },
     "integration_rule": "Condition-specific additions must fit within CFU-based total gram range, clamped by sensitivity band. Core + additions = one total prebiotic load."
   },
+  "sibo_clinical_criteria": {
+    "description": "Clinical criteria the LLM must evaluate before suspecting SIBO and applying the Mix 4 zero-FODMAP override. At least 2 inclusion criteria must be met AND zero auto-disqualifiers triggered.",
+    "version": "1.0.0",
+    "added": "25 March 2026",
+    "rationale": "SIBO override was over-triggered on daily-but-mild bloating without other supporting signals (e.g. sample 1421794165663: bloating 4/10, satisfaction 9/10, normal stools, always-good digestion — zero clinical evidence for SIBO). This criteria set prevents pattern-matching on isolated bloating frequency alone.",
+    "min_criteria_required": 2,
+    "inclusion_criteria": [
+      {
+        "id": "C1",
+        "label": "Severe bloating",
+        "field": "bloating_severity",
+        "condition": ">= 7",
+        "rationale": "Mild-moderate bloating (≤6/10) is non-specific and common in high-protein/low-fermented-food diets"
+      },
+      {
+        "id": "C2",
+        "label": "Early post-prandial bloating onset",
+        "field": "bloating_when",
+        "condition": "contains 'within_90min_of_meal' or 'immediately_after_meal'",
+        "rationale": "Rapid onset post-meal bloating is characteristic of small bowel fermentation (SIBO), not colonic gas"
+      },
+      {
+        "id": "C3",
+        "label": "Loose or watery stools",
+        "field": "stool_type",
+        "condition": "Bristol type 6 or 7",
+        "rationale": "Loose stools suggest small bowel osmotic/secretory dysfunction consistent with SIBO"
+      },
+      {
+        "id": "C4",
+        "label": "Malabsorption indicators",
+        "field": "vitamin_deficiencies or nutrient_deficiencies",
+        "condition": "at least one reported deficiency despite adequate dietary intake",
+        "rationale": "Nutrient malabsorption is a hallmark of SIBO-mediated mucosal damage"
+      },
+      {
+        "id": "C5",
+        "label": "Recurrent antibiotic use",
+        "field": "antibiotics_frequency",
+        "condition": ">= 2 courses OR 'frequently'",
+        "rationale": "Repeated antibiotics disrupt small bowel microbiome architecture, predisposing to SIBO"
+      },
+      {
+        "id": "C6",
+        "label": "PPI use",
+        "field": "ppi_has",
+        "condition": "= 'yes'",
+        "rationale": "Acid suppression removes the small bowel's primary anti-SIBO defence mechanism"
+      },
+      {
+        "id": "C7",
+        "label": "Prior GI surgery or structural risk",
+        "field": "digestive_surgeries or other_relevant_surgeries",
+        "condition": "any GI surgery reported",
+        "rationale": "Anatomical changes (adhesions, blind loops, anastomoses) are classic SIBO predisposers"
+      },
+      {
+        "id": "C8",
+        "label": "Severely poor digestive satisfaction",
+        "field": "digestive_satisfaction",
+        "condition": "<= 4",
+        "rationale": "Satisfaction ≤4/10 indicates functional severity consistent with SIBO clinical burden, not benign daily gas"
+      }
+    ],
+    "auto_disqualifiers": [
+      {
+        "id": "D1",
+        "label": "High digestive satisfaction",
+        "field": "digestive_satisfaction",
+        "condition": ">= 7",
+        "note": "Client is not distressed by their digestion — SIBO typically causes significant functional impairment"
+      },
+      {
+        "id": "D2",
+        "label": "Normal stool pattern",
+        "field": "stool_type",
+        "condition": "Bristol type 3, 4, or 5",
+        "note": "Normal stool consistency argues strongly against small bowel dysfunction"
+      },
+      {
+        "id": "D3",
+        "label": "Always-good lifelong digestion",
+        "field": "digestive_health_over_time",
+        "condition": "= 'always_good'",
+        "note": "SIBO rarely presents in clients with a lifelong history of good digestive health"
+      },
+      {
+        "id": "D4",
+        "label": "Client self-describes symptoms as normal",
+        "field": "day1_digestive_symptoms or day2_digestive_symptoms",
+        "condition": "contains 'normal' or 'everyday gas' in client's own words",
+        "note": "Client normalisation of symptoms indicates subjective tolerance inconsistent with SIBO burden"
+      }
+    ],
+    "llm_instruction": "Evaluate all inclusion criteria against the client questionnaire. Count how many are met. Check all auto-disqualifiers. If any auto-disqualifier fires OR fewer than 2 inclusion criteria are met, set sibo_suspected: false. Only set sibo_suspected: true when >= 2 criteria met AND zero auto-disqualifiers triggered. Document your count and reasoning in sibo_criteria_met and sibo_reasoning."
+  },
   "polyphenol_antimicrobial_thresholds": {
     "description": "Doses above these ranges have documented antimicrobial activity — use supplement doses below these",
     "quercetin": {

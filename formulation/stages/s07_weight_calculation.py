@@ -323,14 +323,29 @@ def run(ctx: PipelineContext) -> PipelineContext:
     calc.evening_pooled_components = _enforce_capsule_capacity(
         calc.evening_pooled_components, EVENING_CAPSULE_CAPACITY_MG, "evening", ctx)
 
-    calc.polyphenol_capsules = _enforce_capsule_capacity(
-        calc.polyphenol_capsules, EVENING_CAPSULE_CAPACITY_MG, "polyphenol", ctx)
+    # NOTE: polyphenol capsules are NOT passed through _enforce_capsule_capacity().
+    # The enforcer was silently truncating oversized ingredients (e.g. Curcumin 1010mg → 650mg)
+    # because polyphenol components lack _source="vitamin_mineral" and got classified as
+    # "reducible". The polyphenol capsule already has its own splitting logic in
+    # weight_calculator._calc_polyphenol_capsule_totals() which correctly handles oversized
+    # ingredients by equal-splitting them across multiple capsules.
+    # Bug fix: 24 Mar 2026 — removed enforcer call that caused 35% dose loss across 28 clients.
 
     calc.morning_pooled_components = _enforce_capsule_capacity(
         calc.morning_pooled_components, EVENING_CAPSULE_CAPACITY_MG, "morning", ctx)
 
     # ── Dose optimizer (JSON-driven rules) ───────────────────────────────
     _run_dose_optimizer(calc, ctx)
+
+    # ── Jar dedup sweep ──────────────────────────────────────────────────
+    # Rule: a substance must appear ONCE in the entire formulation.
+    # Capsule duplicates are fine (same substance in morning + evening = OK).
+    # But jar + capsule = NOT OK. Remove from jar — capsule wins.
+    # Also: jar_prebiotics + jar_botanicals duplicate = NOT OK.
+    #   Keep prebiotic (microbiome-driven), remove botanical.
+    # BUG FIX (25 Mar 2026): Apple Polyphenol Extract appeared doubled in
+    #   3 samples across batches 001, 005, 011 via two different patterns.
+    _dedup_jar_vs_capsules(calc)
 
     # ── Generate formulation ─────────────────────────────────────────────
     formulation = calc.generate()
@@ -542,6 +557,70 @@ def _enforce_capsule_capacity(
     return deduped
 
 
+def _dedup_jar_vs_capsules(calc):
+    """Remove jar entries that duplicate substances already in any capsule.
+
+    Rules:
+      1. If a substance is in BOTH jar (prebiotics or botanicals) AND any capsule
+         (morning_pooled, evening_pooled, polyphenol_capsules) → remove from jar.
+         Capsule wins — it has precise dosing from LLM/deterministic selection.
+      2. If a substance is in BOTH jar_prebiotics AND jar_botanicals → keep the
+         prebiotic entry (microbiome-driven, higher priority), remove the botanical.
+
+    Substance matching is case-insensitive with parenthetical suffix stripping.
+
+    BUG FIX (25 Mar 2026): Catches all jar duplication patterns that caused
+    Apple Polyphenol Extract to appear twice in 3 client formulations.
+    """
+    import re
+
+    def _normalize(name: str) -> str:
+        return re.sub(r'\s*\(.*?\)\s*', '', name).strip().lower()
+
+    # ── Collect all capsule substance names ──────────────────────────────
+    capsule_substances = set()
+    for c in calc.morning_pooled_components:
+        capsule_substances.add(_normalize(c.get("substance", "")))
+    for c in calc.evening_pooled_components:
+        capsule_substances.add(_normalize(c.get("substance", "")))
+    for c in calc.polyphenol_capsules:
+        capsule_substances.add(_normalize(c.get("substance", "")))
+    capsule_substances.discard("")
+
+    # ── Step 1: Remove jar entries that duplicate a capsule substance ────
+    removed_count = 0
+    for pool_name in ("jar_prebiotics", "jar_botanicals"):
+        pool = getattr(calc, pool_name, [])
+        cleaned = []
+        for item in pool:
+            name = _normalize(item.get("substance", ""))
+            if name in capsule_substances:
+                removed_count += 1
+                print(f"  🔄 Jar dedup: removed '{item['substance']}' from {pool_name}"
+                      f" — already in capsule (capsule wins)")
+            else:
+                cleaned.append(item)
+        setattr(calc, pool_name, cleaned)
+
+    # ── Step 2: Dedup within jar — prebiotic wins over botanical ─────────
+    prebiotic_names = {_normalize(p.get("substance", "")) for p in calc.jar_prebiotics}
+    botanicals_cleaned = []
+    for item in getattr(calc, 'jar_botanicals', []):
+        name = _normalize(item.get("substance", ""))
+        if name in prebiotic_names:
+            removed_count += 1
+            print(f"  🔄 Jar dedup: removed '{item['substance']}' from jar_botanicals"
+                  f" — already in jar_prebiotics (prebiotic wins)")
+        else:
+            botanicals_cleaned.append(item)
+    calc.jar_botanicals = botanicals_cleaned
+
+    if removed_count > 0:
+        print(f"  ✅ Jar dedup sweep: removed {removed_count} duplicate(s)")
+    else:
+        print(f"  ✅ Jar dedup sweep: no duplicates found")
+
+
 def _run_dose_optimizer(calc, ctx: PipelineContext):
     """Run the JSON-driven DoseOptimizer on evening components.
 
@@ -676,7 +755,7 @@ def _build_component_registry(calc, ctx: PipelineContext) -> List[Dict]:
         registry.append({
             "substance": f"{pb['substance']} ({pb['dose_g']}g)",
             "dose": f"{pb['dose_g']}g",
-            "delivery": "sachet",
+            "delivery": "powder jar",
             "category": "prebiotic",
             "source": "microbiome_primary",
             "health_claims": [f"{mix_name} substrate"],
@@ -730,7 +809,7 @@ def _build_component_registry(calc, ctx: PipelineContext) -> List[Dict]:
         registry.append({
             "substance": f"{substance} ({jb['dose_g']}g)",
             "dose": f"{jb['dose_g']}g",
-            "delivery": "sachet",
+            "delivery": "powder jar",
             "category": "supplement",
             "source": "questionnaire_only",
             "health_claims": health_claims,
@@ -812,7 +891,7 @@ def _build_component_registry(calc, ctx: PipelineContext) -> List[Dict]:
     #
     # Fix: When timing override is active, merge duplicate substances into a single
     # consolidated entry with combined dose and a "multiple sources" note.
-    timing_override_active = ctx.medication.timing_override_applied
+    timing_override_active = ctx.medication.timing_override is not None
     if timing_override_active:
         # Normalize substance names by stripping dose annotations in parentheses
         import re

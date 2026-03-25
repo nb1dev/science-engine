@@ -358,6 +358,7 @@ _STATUS_TO_GBAR = {
     "Below range": ("below", "badge-below", "↓ Low"),
     "Within range": ("ok", "badge-ok", "✓ Healthy"),
     "Absent": ("critical", "badge-critical", "✗ Absent"),
+    "Absent — CRITICAL": ("critical", "badge-critical", "✗ Absent"),  # compound status from priority engine
 }
 _CONTEXTUAL_STATUS_TO_GBAR = {
     "Above range": ("critical", "badge-critical", "↑ Elevated"),
@@ -594,10 +595,24 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
     master = _load_json(output_dir / f"formulation_master_{sample_id}.json")
     recipe = _load_json(output_dir / f"manufacturing_recipe_{sample_id}.json")
     
-    from formulation.platform_mapping import _evening_capsule_label
-    
+    from formulation.platform_mapping import _evening_capsule_label, _extract_executive_summary
+
     inputs = trace["inputs"]
     steps = trace["decision_chain"]
+
+    # ── Re-extract executive summary at render time ──────────────────────
+    # The decision_trace.json is written at formulation time. If formulation
+    # ran before the narrative report was generated, the stored executive_summary
+    # only has overall_pattern (fallback). We re-extract from the narrative MD
+    # at render time so the 4-box grid is always up to date.
+    #
+    # output_dir is reports_json/ — sample dir is two levels up (reports/reports_json/)
+    _sample_dir_from_output = str(Path(output_dir).parent.parent)
+    _fresh_exec = _extract_executive_summary(_sample_dir_from_output, sample_id)
+    if _fresh_exec and sum(1 for v in _fresh_exec.values() if v) >= 2:
+        # At least 2 of the 4 sections extracted — use fresh data
+        inputs["microbiome"]["executive_summary"] = _fresh_exec
+    # ─────────────────────────────────────────────────────────────────────
     final = trace["final_formulation"]
     evidence = trace.get("evidence_sources", {})
     axes = rationale["health_axis_predictions"]
@@ -993,9 +1008,28 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
                     dlv = ht.get("delivery", "other")
                     delivery_groups.setdefault(dlv, []).append(ht)
                 
+                # Build dose lookup from supplement_selection — total daily dose (not per-capsule)
+                # This fixes polyphenol entries where component_registry bakes per-capsule dose
+                # into the substance name (e.g. "Curcumin 1000mg (+ 10.0mg Piperine) (505.0mg)")
+                _supp_dose_lookup = {}
+                for _ss in master.get("decisions", {}).get("supplement_selection", {}).get("supplements", []):
+                    _supp_dose_lookup[_ss.get("substance", "")] = _ss.get("dose_mg", 0)
+
                 # Build group labels from recipe — same source as Section 3 Final Formulation
                 # This ensures Section 7 labels always match the actual delivery format and timing
                 _GROUP_LABELS = _build_delivery_label_lookup(recipe)
+
+                # ── Medication timing override: apply → DINNER label to all groups ──
+                # polyphenol/evening/magnesium capsule labels are NOT updated by
+                # apply_medication_timing_override.py (it only patches morning-type units),
+                # so we patch them here for consistency with the other delivery group headers.
+                if timing_override and timing_override.get("move_to"):
+                    _move_to_upper = timing_override["move_to"].upper()
+                    _override_suffix = f" → {_move_to_upper} (MEDICATION OVERRIDE)"
+                    for _dlv_key in ("polyphenol capsule", "evening capsule", "magnesium capsule"):
+                        if _dlv_key in _GROUP_LABELS:
+                            _GROUP_LABELS[_dlv_key] = _GROUP_LABELS[_dlv_key] + _override_suffix
+
                 _GROUP_ORDER = ["probiotic capsule", "softgel", "sachet", "morning wellness capsule", "polyphenol capsule", "evening capsule", "magnesium capsule"]
                 
                 table_rows = ""
@@ -1017,8 +1051,15 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
                         sc, sbg = _src_colors.get(src_cls, ("var(--mid)", "var(--sand)"))
                         hc_badge = f'<span style="background:var(--purple-lt);color:var(--purple);padding:1px 7px;border-radius:10px;font-size:9px;margin-left:6px;font-weight:600">{_esc(hc)}</span>' if hc else ""
                         targets_text = _highlight_claims_in_text(ht["what_it_targets"], _all_claims_set)
+                        # Fix polyphenol component display: strip trailing per-capsule dose
+                        # suffix "(Xmg)" and show total daily dose from supplement_selection
+                        _comp_display = ht["component"]
+                        _comp_base = re.sub(r'\s*\(\d+\.?\d*mg\)\s*$', '', _comp_display)
+                        if _comp_base in _supp_dose_lookup and _comp_base != _comp_display:
+                            _total_dose = _supp_dose_lookup[_comp_base]
+                            _comp_display = f"{_comp_base} ({_total_dose}mg)"
                         table_rows += f'''<tr style="border-bottom:1px solid var(--rule)">
-                          <td style="padding:6px 10px;font-weight:600;color:var(--dark);font-size:12px">{_esc(ht["component"])}{hc_badge}</td>
+                          <td style="padding:6px 10px;font-weight:600;color:var(--dark);font-size:12px">{_esc(_comp_display)}{hc_badge}</td>
                           <td style="padding:6px 10px;color:var(--mid);font-size:11px">{targets_text}</td>
                           <td style="padding:6px 10px;white-space:nowrap"><span style="background:{sbg};color:{sc};padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600">{src_label}</span></td>
                         </tr>'''

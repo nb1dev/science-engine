@@ -1,0 +1,706 @@
+{
+  "sample_id": "1421093249814",
+  "generated_at": "2026-03-24T18:14:29.546712",
+  "schema_version": "3.0",
+  "report_date": "2026-03-06",
+  "overall_score": {
+    "total": 86.8,
+    "band": "Excellent",
+    "pillars": {
+      "health_association": {
+        "score": 16.3,
+        "max": 20,
+        "scientific": "Measures how health-associated your species composition is based on the GMWI2 model of 155 taxa.",
+        "non_expert": "This shows how many of your bacteria are the types typically found in healthy people — think of it as your gut's health fingerprint."
+      },
+      "diversity_resilience": {
+        "score": 19.9,
+        "max": 20,
+        "scientific": "Combined Shannon diversity and guild-level evenness — measures species richness and structural redundancy.",
+        "non_expert": "How many different types of bacteria you have and how well-balanced they are — more variety means your gut can handle stress and recover faster."
+      },
+      "metabolic_function": {
+        "score": 20.0,
+        "max": 20,
+        "scientific": "Composite of 4 CLR diagnostic ratios (CUR, FCR, MDR, PPR) measuring substrate utilization, fermentation efficiency, mucus dependency, and putrefaction pressure.",
+        "non_expert": "This shows how well your bacteria are processing food — are they running on the right fuel, converting it efficiently, and producing gentle rather than harsh byproducts."
+      },
+      "guild_balance": {
+        "score": 20.6,
+        "max": 30,
+        "scientific": "Evaluates 6 functional guilds by abundance position within reference ranges and CLR competitive status, weighted by ecological dependency.",
+        "non_expert": "This checks whether your six bacterial teams are properly staffed — each team has a job, and this score shows if they have enough members to do their work well."
+      },
+      "safety_profile": {
+        "score": 10.0,
+        "max": 10,
+        "scientific": "Absence of dysbiosis-associated taxa (F. nucleatum, S. gallolyticus, P. anaerobius, E-S), extreme guild overgrowth, and BCFA pathway activity.",
+        "non_expert": "This checks for any red flags — harmful bacteria, extreme overgrowth, or signs of unhealthy fermentation. A high score here means your gut has a clean safety record."
+      }
+    },
+    "score_drivers": {
+      "strongest": {
+        "pillar": "metabolic_function",
+        "label": "Metabolic Function",
+        "pct_of_max": 100
+      },
+      "weakest": {
+        "pillar": "guild_balance",
+        "label": "Bacterial Group Balance",
+        "pct_of_max": 69
+      },
+      "key_note": "Your strongest area is metabolic function (100% of its potential)"
+    }
+  },
+  "score_summary": "Your overall score is <strong>86.8</strong> out of 100. The main areas to focus on are <strong>fiber processing</strong> and <strong>bifidobacteria</strong>.",
+  "bacterial_groups": {
+    "Butyrate Producers": {
+      "abundance": 19.61,
+      "healthy_range": "10-25%",
+      "status": "Within range",
+      "clr": 1.17,
+      "evenness": 0.77,
+      "evenness_status": "High redundancy — resilient",
+      "client_interpretation": "Your butyrate-producing bacteria are thriving at healthy levels and winning the competition for resources. These bacteria produce energy that feeds your gut lining and supports intestinal health."
+    },
+    "Cross-Feeders": {
+      "abundance": 12.36,
+      "healthy_range": "6-12%",
+      "status": "Above range",
+      "clr": 0.7,
+      "evenness": 0.76,
+      "evenness_status": "High redundancy — resilient",
+      "client_interpretation": "Your connector bacteria are performing well, sitting at the top of their healthy range. These bacteria help different microbial teams work together by passing nutrients between fermentation stages."
+    },
+    "Fiber Degraders": {
+      "abundance": 12.05,
+      "healthy_range": "30-50%",
+      "status": "Below range",
+      "clr": 0.68,
+      "evenness": 0.68,
+      "evenness_status": "Moderate redundancy",
+      "client_interpretation": "Your fiber-processing bacteria need expansion - they're currently much lower than optimal levels. While the bacteria you have are doing well, you need more of this team to efficiently break down complex plant materials."
+    },
+    "Mucin Degraders": {
+      "abundance": 2.18,
+      "healthy_range": "1-4%",
+      "status": "Within range",
+      "clr": -1.03,
+      "evenness": 0.89,
+      "evenness_status": "High redundancy — resilient",
+      "client_interpretation": "Your mucus-layer bacteria are at healthy levels but aren't competing well for resources. These bacteria help maintain the protective mucus barrier in your gut, and while present, they could use more support."
+    },
+    "Bifidobacteria": {
+      "abundance": 2.18,
+      "healthy_range": "2-10%",
+      "status": "Within range",
+      "clr": -1.03,
+      "evenness": 0.93,
+      "evenness_status": "High redundancy — resilient",
+      "client_interpretation": "Your Bifidobacteria are at the lower end of healthy levels and struggling to compete for resources. These beneficial bacteria support immune function and gut barrier health, so strengthening their position would be valuable."
+    },
+    "Proteolytic Guild": {
+      "abundance": 0.45,
+      "healthy_range": "1-5%",
+      "status": "Below range",
+      "clr": -2.61,
+      "evenness": 0.6,
+      "evenness_status": "Moderate redundancy",
+      "client_interpretation": "Your protein-fermenting bacteria are very low, which is actually good news. These bacteria can produce harsh byproducts when they're too active, so having them at minimal levels supports a gentler gut environment."
+    }
+  },
+  "metabolic_dials": {
+    "main_fuel": {
+      "state": "carb_driven",
+      "label": "Carbohydrate fermentation dominant",
+      "value": 2.436
+    },
+    "fermentation_efficiency": {
+      "state": "efficient",
+      "label": "Efficient assembly line",
+      "value": 1.965
+    },
+    "mucus_dependency": {
+      "state": "diet_fed",
+      "label": "Diet-substrate driven",
+      "value": -1.708
+    },
+    "putrefaction_pressure": {
+      "state": "scfa_dominant",
+      "label": "SCFA-dominant — gentle byproducts",
+      "value": -3.777
+    }
+  },
+  "ecological_metrics": {
+    "shannon": 3.471,
+    "pielou_evenness": 0.755,
+    "diversity_state": "moderate"
+  },
+  "safety_profile": {
+    "dysbiosis_markers": {
+      "F_nucleatum": 0.0,
+      "S_gallolyticus": 0.0,
+      "P_anaerobius": 0.0,
+      "E_Shigella": 0.0
+    },
+    "any_detected": false
+  },
+  "guild_timepoints": [
+    {
+      "label": "Baseline — Mar 2026",
+      "score": 86.8,
+      "guilds": {
+        "fd": 0.1205,
+        "bb": 0.0218,
+        "cf": 0.1236,
+        "bp": 0.1961,
+        "pg": 0.0045,
+        "md": 0.0218
+      }
+    }
+  ],
+  "protocol_summary": {
+    "synbiotic_mix": {
+      "mix_id": 3,
+      "mix_name": "Fiber & SCFA Restoration"
+    },
+    "morning_solid_units": 6,
+    "morning_jar_units": 1,
+    "evening_solid_units": 2,
+    "total_daily_units": 9,
+    "total_daily_weight_g": 19.27
+  },
+  "profile": {
+    "first_name": "Azzato",
+    "age": 41,
+    "sex": null,
+    "diet": "Omnivore",
+    "stress": 7,
+    "sleep": 8,
+    "goals": [
+      "Improve Digestion Gut Comfort",
+      "Immune resilience",
+      "Longevity Healthy Aging"
+    ],
+    "sensitivity": "Moderate"
+  },
+  "circle_scores": {
+    "gut_lining": 97,
+    "inflammation": 99,
+    "fiber_processing": 42,
+    "bifidobacteria": 52
+  },
+  "strengths_challenges": {
+    "strengths": [
+      {
+        "icon": "🛡️",
+        "title": "Low inflammatory pressure",
+        "text": "Your beneficial bacteria are producing mostly gentle, protective short-chain fatty acids with minimal harsh protein-fermentation byproducts. This is an important marker of gut health."
+      },
+      {
+        "icon": "🌱",
+        "title": "Good diversity",
+        "text": "Your gut shows good species diversity (Shannon 3.47, above the population median of 3.29). A varied bacterial community provides a more stable and adaptable foundation for gut health."
+      },
+      {
+        "icon": "⚡",
+        "title": "Strong butyrate support",
+        "text": "Your butyrate-producing bacteria are at 19.6% — within the healthy 10-25% range. These bacteria produce the primary fuel for your gut lining cells, supporting barrier integrity and reducing inflammation."
+      },
+      {
+        "icon": "🏗️",
+        "title": "Strong gut lining support",
+        "text": "Your gut lining has good protection: butyrate producers are active, your bacteria are fed primarily by dietary fiber rather than mucus, and mucin degradation is controlled. This combination supports a well-maintained gut barrier."
+      },
+      {
+        "icon": "✅",
+        "title": "Clean safety profile",
+        "text": "None of the key dysbiosis-associated bacteria (Fusobacterium nucleatum, Streptococcus gallolyticus, Peptostreptococcus anaerobius, Escherichia-Shigella) were detected at concerning levels. Your gut has a reassuring safety baseline."
+      },
+      {
+        "icon": "🥗",
+        "title": "Diet-fed ecosystem",
+        "text": "Your bacteria are primarily fuelled by what you eat rather than by eroding your gut's protective mucus layer. This is the ecologically stable pattern and reflects a gut that has adequate dietary substrate."
+      }
+    ],
+    "challenges": [
+      {
+        "icon": "🌾",
+        "title": "Fiber-processing bacteria below range",
+        "area_key": "fiber_processing",
+        "area_label": "fiber processing",
+        "severity": "moderate",
+        "text": "Your fiber-processing bacteria are at 12.1% — below their healthy range of 30-50%. This is the entry point for the entire fermentation chain, so supporting this group is a primary target."
+      },
+      {
+        "icon": "⬇️",
+        "title": "Competitive disadvantage — Bifidobacteria",
+        "area_key": "bifidobacteria",
+        "area_label": "bifidobacteria",
+        "severity": "moderate",
+        "text": "Your bifidobacteria are at 2.2% (within range) but are being outcompeted by other bacteria (CLR -1.03). Despite their adequate numbers, they're under competitive pressure and may struggle to maintain their position over time."
+      }
+    ],
+    "all_strengths": [
+      {
+        "icon": "🛡️",
+        "title": "Low inflammatory pressure",
+        "text": "Your beneficial bacteria are producing mostly gentle, protective short-chain fatty acids with minimal harsh protein-fermentation byproducts. This is an important marker of gut health."
+      },
+      {
+        "icon": "🌱",
+        "title": "Good diversity",
+        "text": "Your gut shows good species diversity (Shannon 3.47, above the population median of 3.29). A varied bacterial community provides a more stable and adaptable foundation for gut health."
+      },
+      {
+        "icon": "⚡",
+        "title": "Strong butyrate support",
+        "text": "Your butyrate-producing bacteria are at 19.6% — within the healthy 10-25% range. These bacteria produce the primary fuel for your gut lining cells, supporting barrier integrity and reducing inflammation."
+      },
+      {
+        "icon": "🏗️",
+        "title": "Strong gut lining support",
+        "text": "Your gut lining has good protection: butyrate producers are active, your bacteria are fed primarily by dietary fiber rather than mucus, and mucin degradation is controlled. This combination supports a well-maintained gut barrier."
+      },
+      {
+        "icon": "✅",
+        "title": "Clean safety profile",
+        "text": "None of the key dysbiosis-associated bacteria (Fusobacterium nucleatum, Streptococcus gallolyticus, Peptostreptococcus anaerobius, Escherichia-Shigella) were detected at concerning levels. Your gut has a reassuring safety baseline."
+      },
+      {
+        "icon": "🥗",
+        "title": "Diet-fed ecosystem",
+        "text": "Your bacteria are primarily fuelled by what you eat rather than by eroding your gut's protective mucus layer. This is the ecologically stable pattern and reflects a gut that has adequate dietary substrate."
+      },
+      {
+        "icon": "⚙️",
+        "title": "Efficient fermentation",
+        "text": "Your gut's fermentation assembly line is running well — intermediate fermentation compounds are being fully converted into beneficial short-chain fatty acids rather than accumulating. This means your bacteria are cooperating efficiently."
+      },
+      {
+        "icon": "💪",
+        "title": "Strong competitive position — Butyrate Producers",
+        "text": "Your butyrate producers hold a strong competitive position in your gut ecosystem (CLR +1.17), meaning they are winning the competition for ecological space. This is a positive sign for long-term stability."
+      }
+    ],
+    "all_challenges": [
+      {
+        "icon": "🌾",
+        "title": "Fiber-processing bacteria below range",
+        "area_key": "fiber_processing",
+        "area_label": "fiber processing",
+        "severity": "moderate",
+        "text": "Your fiber-processing bacteria are at 12.1% — below their healthy range of 30-50%. This is the entry point for the entire fermentation chain, so supporting this group is a primary target."
+      },
+      {
+        "icon": "⬇️",
+        "title": "Competitive disadvantage — Bifidobacteria",
+        "area_key": "bifidobacteria",
+        "area_label": "bifidobacteria",
+        "severity": "moderate",
+        "text": "Your bifidobacteria are at 2.2% (within range) but are being outcompeted by other bacteria (CLR -1.03). Despite their adequate numbers, they're under competitive pressure and may struggle to maintain their position over time."
+      }
+    ],
+    "distinct_areas": [
+      "fiber processing",
+      "bifidobacteria"
+    ]
+  },
+  "good_news": "Your gut community shows excellent diversity and balance, creating a stable ecosystem that can weather changes and bounce back from disruptions.",
+  "timeline_phases": [
+    {
+      "weeks": "1–4",
+      "label": "Settling in",
+      "color": "#3A6EA8",
+      "dot_class": "wk4",
+      "title": "🌱 Settling in",
+      "body": "The probiotic strains in your capsule are adapting to your gut environment — encountering existing bacteria, beginning to colonise, and establishing early positions. Your daily prebiotic sachet is reaching the lower gut, priming the environment before measurable compositional shifts occur. Vitamin C, Zinc, and B-vitamins from your sachet begin supporting immune and energy pathways within days. The LP815 strain begins producing calming GABA from week 1, supporting stress-axis balance. You may notice small changes in digestion rhythm — this is normal as your gut adjusts."
+    },
+    {
+      "weeks": "5–8",
+      "label": "Early momentum",
+      "color": "#2E8B6E",
+      "dot_class": "wk8",
+      "title": "🔋 Early momentum",
+      "body": "Beneficial bacteria begin expanding as prebiotic fibres consistently supply the substrate they need. Your fiber degraders start moving toward healthy abundance levels. Short-chain fatty acid production increases as the fermentation chain becomes more active. Omega-3 EPA and DHA from your softgels are building up in cell membranes, typically reaching effective anti-inflammatory concentrations by week 6. Vitamin D3 supports ongoing immune regulation. Many people start noticing improvements in digestion consistency and gut comfort during this window."
+    },
+    {
+      "weeks": "9–12",
+      "label": "Deepening balance",
+      "color": "#C97C2A",
+      "dot_class": "wk12",
+      "title": "🛡️ Deepening balance",
+      "body": "Guild populations move toward their target ranges. Butyrate output increases as the fermentation chain becomes more complete — your gut lining receives more of the protective compounds it needs for repair. Magnesium Bisglycinate supports deeper sleep and stress resilience as tissue saturation builds. Inflammatory metabolite pressure typically decreases during this phase as the SCFA-to-protein fermentation balance shifts."
+    },
+    {
+      "weeks": "13–16",
+      "label": "Consolidation",
+      "color": "#6B5EA8",
+      "dot_class": "wk16",
+      "title": "⚖️ Consolidation",
+      "body": "The ecological shifts from earlier phases become self-sustaining. A more diverse, well-balanced community is better equipped to hold its gains under normal life pressures — stress, travel, or temporary dietary changes. Botanical adaptogens and the full vitamin-mineral stack have reached their most effective tissue concentrations. Weeks 13–16 are the ideal window for a reassessment sample to measure the full compositional shift."
+    }
+  ],
+  "supplement_cards": [
+    {
+      "num": 1,
+      "key": "delivery_format_1_probiotic_capsule",
+      "name": "Probiotic Capsule",
+      "timing": "🌅 Every morning",
+      "timing_group": "morning",
+      "what_it_is": "Live beneficial bacteria, selected specifically for your microbiome pattern.",
+      "why": "This probiotic blend introduces beneficial gut bacteria to help restore your digestive balance and support calm, focused mood. It's specifically chosen because your fiber-processing bacteria are low at 12.1%, and includes a special strain that produces calming compounds for better gut-brain communication.",
+      "pills": [
+        {
+          "name": "Lactobacillus plantarum UALp-05",
+          "dose": "12.5B CFU"
+        },
+        {
+          "name": "Lactobacillus plantarum 299v",
+          "dose": "12.5B CFU"
+        },
+        {
+          "name": "Lactobacillus acidophilus NCFM",
+          "dose": "12.5B CFU"
+        },
+        {
+          "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "dose": "12.5B CFU"
+        },
+        {
+          "name": "Lactiplantibacillus plantarum LP815",
+          "dose": "5B CFU"
+        }
+      ],
+      "supports": [
+        "Fiber & SCFA Restoration",
+        "Fiber below range",
+        "Gut-Brain",
+        "Sleep Quality",
+        "Stress/Anxiety"
+      ],
+      "color": "#1E1E2A",
+      "emoji": "💊"
+    },
+    {
+      "num": 2,
+      "key": "delivery_format_2_omega_softgels",
+      "name": "Omega & Antioxidant Softgel",
+      "timing": "🌅 Every morning (2×)",
+      "timing_group": "morning",
+      "what_it_is": "Essential fatty acids and antioxidants in an easy-to-absorb softgel form.",
+      "why": "This comprehensive softgel delivers essential fats and protective nutrients to support brain health, immune function, and healthy aging. The combination of Omega-3s, Vitamin D, and powerful antioxidants directly supports your immune resilience and longevity goals.",
+      "pills": [
+        {
+          "name": "Omega-3 (EPA + DHA)",
+          "dose": "712.5mg"
+        },
+        {
+          "name": "Vitamin D3",
+          "dose": "10mcg (400 IU)"
+        },
+        {
+          "name": "Vitamin E",
+          "dose": "7.5mg"
+        },
+        {
+          "name": "Astaxanthin (H. pluvialis 10% oleoresin)",
+          "dose": "3mg active (30mg oleoresin)"
+        }
+      ],
+      "supports": [
+        "Anti-inflammatory",
+        "Antioxidant Protection",
+        "Brain Health",
+        "Immune System"
+      ],
+      "color": "#C97C2A",
+      "emoji": "🐟"
+    },
+    {
+      "num": 3,
+      "key": "delivery_format_3_powder_jar",
+      "name": "Daily Prebiotic Powder",
+      "timing": "🌅 Every morning",
+      "timing_group": "morning",
+      "what_it_is": "A blend of prebiotic fibres mixed into water — food for your beneficial bacteria, designed for easy daily use.",
+      "why": "This prebiotic powder feeds your beneficial gut bacteria to improve digestion and gut comfort. It's particularly important for you since your fiber-processing bacteria need extra support to reach optimal levels.",
+      "pills": [
+        {
+          "name": "Inulin",
+          "dose": "0.5"
+        },
+        {
+          "name": "Beta-Glucans",
+          "dose": "1.5"
+        },
+        {
+          "name": "PHGG",
+          "dose": "3.5"
+        },
+        {
+          "name": "Apple Polyphenol Extract",
+          "dose": "0.5"
+        },
+        {
+          "name": "GOS",
+          "dose": "0.5"
+        },
+        {
+          "name": "Quercetin",
+          "dose": "0.4"
+        },
+        {
+          "name": "Mentha Piperita (Peppermint)",
+          "dose": "2.0"
+        },
+        {
+          "name": "Foeniculum Vulgare (Fennel)",
+          "dose": "6.0"
+        }
+      ],
+      "supports": [],
+      "color": "#2E8B6E",
+      "emoji": "🌿"
+    },
+    {
+      "num": 4,
+      "key": "delivery_format_4_morning_wellness_capsules",
+      "name": "Morning Wellness Capsule",
+      "timing": "🌅 Every morning",
+      "timing_group": "morning",
+      "what_it_is": "Targeted vitamins, minerals, and botanical compounds selected for your specific health profile.",
+      "why": "These morning nutrients strengthen your immune system and support healthy metabolism throughout the day. The combination of Vitamin C, zinc, and selenium is tailored to boost your immune resilience while supporting your gut barrier health.",
+      "pills": [
+        {
+          "name": "Vitamin C",
+          "dose": "250mg"
+        },
+        {
+          "name": "Zinc",
+          "dose": "8mg"
+        },
+        {
+          "name": "Selenium",
+          "dose": "40mcg"
+        }
+      ],
+      "supports": [],
+      "color": "#6B5EA8",
+      "emoji": "🌙"
+    },
+    {
+      "num": 5,
+      "key": "delivery_format_5_evening_wellness_capsules",
+      "name": "Evening Wellness Capsule",
+      "timing": "🌙 30–60 min before bed",
+      "timing_group": "evening",
+      "what_it_is": "Botanical and functional molecules timed to work with your body's evening recovery processes.",
+      "why": "This evening capsule provides natural immune protection to help your body defend against daily challenges. The propolis works overnight to support your immune resilience goal with gentle, natural antimicrobial properties.",
+      "pills": [
+        {
+          "name": "Propolis",
+          "dose": "300"
+        }
+      ],
+      "supports": [
+        "Sleep Quality"
+      ],
+      "color": "#3A6EA8",
+      "emoji": "🌙"
+    },
+    {
+      "num": 6,
+      "key": "delivery_format_6_polyphenol_capsule",
+      "name": "Polyphenol Capsule",
+      "timing": "🌅 Every morning (2×)",
+      "timing_group": "morning",
+      "what_it_is": "Concentrated plant compounds that modulate gut bacteria and reduce inflammatory signals.",
+      "why": "This anti-inflammatory capsule helps reduce inflammation throughout your body while nourishing your gut bacteria. It's included because inflammation can impact digestion and healthy aging, two of your key health priorities.",
+      "pills": [
+        {
+          "name": "Curcumin 1000mg (+ 10.0mg Piperine)",
+          "dose": "505.0"
+        },
+        {
+          "name": "Curcumin 1000mg (+ 10.0mg Piperine)",
+          "dose": "505.0"
+        }
+      ],
+      "supports": [],
+      "color": "#8B5E3C",
+      "emoji": "🌙"
+    },
+    {
+      "num": 7,
+      "key": "delivery_format_magnesium_capsule",
+      "name": "Magnesium Bisglycinate Capsule",
+      "timing": "🌙 30–60 min before bed",
+      "what_it_is": "Highly absorbable magnesium in bisglycinate form — supports sleep quality, muscle recovery, and stress resilience.",
+      "why": "Questionnaire (Stress: stress 7/10 ≥ 6)",
+      "pills": [
+        {
+          "name": "Magnesium Bisglycinate",
+          "dose": "105mg elemental"
+        }
+      ],
+      "supports": [
+        "Stress"
+      ],
+      "color": "#4A5568",
+      "emoji": "🌙"
+    }
+  ],
+  "goal_cards": [
+    {
+      "emoji": "🎯",
+      "title": "Your personal health goal",
+      "mechanism": "A balanced, resilient gut microbiome provides the foundation for many aspects of health — from energy and metabolism to immunity and mental clarity. Supporting your microbiome creates positive ripple effects across multiple systems.",
+      "formula_link": "Your formula is designed holistically — the probiotic mix, prebiotic blend, and targeted nutrients all work together to create the conditions your gut needs to function at its best.",
+      "inferred": false
+    },
+    {
+      "emoji": "🛡️",
+      "title": "Stronger immune resilience",
+      "mechanism": "Around 70% of your immune system is shaped by your gut bacteria. Beneficial bacteria modulate immune signalling, train immune cells, and maintain the gut barrier that prevents unwanted particles from triggering immune responses.",
+      "formula_link": "Your formula targets this through Zinc and Vitamin C in the sachet (directly support immune cell activity), Omega-3 EPA/DHA (resolve inflammatory signals), Vitamin D3 (regulates immune training), and the probiotic mix (rebuilds beneficial bacteria that educate immune cells).",
+      "inferred": false
+    },
+    {
+      "emoji": "🌿",
+      "title": "Longevity and healthy ageing",
+      "mechanism": "A balanced, resilient gut microbiome is one of the most consistent predictors of healthy ageing across populations. Gut bacteria influence inflammation, metabolic function, immune competence, and even cognitive health — all of which are central to long-term vitality.",
+      "formula_link": "Your formula is designed holistically — the probiotic mix, prebiotic blend, Omega-3, antioxidant support, and targeted nutrients all work together to create the conditions your gut needs to support systemic health over the long term.",
+      "inferred": false
+    },
+    {
+      "emoji": "🧘",
+      "title": "Better mood and reduced anxiety",
+      "mechanism": "Your gut produces about 90% of your body's serotonin and communicates directly with your brain via the vagus nerve. Gut microbiome imbalances — especially disruptions to beneficial bacteria — have been consistently linked to mood and anxiety patterns.",
+      "formula_link": "Your formula targets this through Ashwagandha (clinical evidence for cortisol reduction and anxiety relief), LP815 probiotic strain (produces calming GABA), Omega-3 DHA (brain health and mood regulation), and Magnesium Bisglycinate (supports the nervous system and stress resilience).",
+      "inferred": true
+    }
+  ],
+  "root_cause_data": {
+    "deviation_cards": [
+      {
+        "deviation": {
+          "key": "Fiber Degraders__below",
+          "type": "below_range",
+          "guild_key": "Fiber Degraders",
+          "client_label": "Fiber-Processing Bacteria",
+          "icon": "🌾",
+          "value_str": "12.1%",
+          "range_str": "30–50%",
+          "description": "Your Fiber-Processing Bacteria are at 12.1% — below the healthy range of 30–50%."
+        },
+        "narrative": "Your fiber-processing bacteria are the workhorses of your gut — they break down the fiber from vegetables, fruits, and whole grains you eat and turn it into protective compounds that keep your gut lining healthy and your immune system strong. At 12.1%, you have significantly fewer of these beneficial bacteria than the healthy range of 30-50%. This matters because these bacteria produce the compounds your gut needs to maintain its protective barrier and communicate effectively with your immune system. When their numbers are low, your gut becomes more vulnerable to inflammation and less efficient at extracting the full benefits from all that healthy fiber you're eating. It's like having a smaller workforce trying to handle the same amount of important work — they simply can't keep up with demand.",
+        "summary_line": "The good news is that fiber-processing bacteria respond beautifully to the right support, and your high-fiber diet gives you a strong foundation to build from.",
+        "health_meaning": "Your Fiber-Processing Bacteria are at 12.1% — below the healthy range of 30–50%.",
+        "drivers": [],
+        "personal_synthesis": "",
+        "kb_drivers": [
+          {
+            "icon": "😰",
+            "label": "Chronic Stress & Anxiety",
+            "text": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+            "kb_text": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+            "is_llm_text": false,
+            "directionality": "bidirectional",
+            "directionality_arrow": "stress ↔ microbiome",
+            "evidence_label": "Emerging research",
+            "evidence_strength": "weak",
+            "domain_key": "stress_anxiety"
+          }
+        ]
+      }
+    ],
+    "awareness_chips": [
+      {
+        "domain_key": "high_protein_diet",
+        "domain_label": "High Protein / Low-Carb Diet",
+        "icon": "🥩",
+        "directionality_arrow": "diet → microbiome",
+        "summary_text": "A high-protein, low-fiber diet is one of the most direct dietary drivers of the protein-fermenting bacteria pattern. Increasing fermentable fiber while maintaining protein balance is the primary dietary lever to address this."
+      },
+      {
+        "domain_key": "immune_gut_axis",
+        "domain_label": "Frequent Infections / Immune Vulnerability",
+        "icon": "🛡️",
+        "directionality_arrow": "microbiome → immune function",
+        "summary_text": "Around 70% of your immune system operates in and around your gut. When gut bacteria that produce butyrate are depleted, the physical and immunological defenses of your gut barrier are weakened — which is directly connected to increased immune vulnerability and susceptibility to infections."
+      }
+    ],
+    "section_summary": "The story here centers around stress. Despite your excellent diet and active lifestyle, your sustained stress level of 7/10 is creating an environment where your beneficial gut bacteria struggle to flourish. The encouraging news is that supporting your gut bacteria can actually help break this stress cycle, making both your digestive health and stress management easier over time.",
+    "cited_papers": [],
+    "factor_cards": [
+      {
+        "domain_key": "stress_anxiety",
+        "icon": "😰",
+        "label": "Chronic Stress & Anxiety",
+        "subtitle": "Affects 1 bacterial imbalance",
+        "evidence_label": "Research supported",
+        "evidence_strength": "moderate",
+        "guilds_affected_count": 1,
+        "guild_impacts": [
+          {
+            "client_label": "Fiber-Processing Bacteria",
+            "value_str": "12.1%",
+            "impact": "low"
+          }
+        ],
+        "explanation": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+        "kb_text": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+        "directionality": "bidirectional"
+      }
+    ],
+    "cascade_guilds": [
+      {
+        "client_label": "Fiber-Processing Bacteria",
+        "value_str": "12.1%",
+        "impact": "low",
+        "driving_factor_emojis": [
+          "😰"
+        ]
+      }
+    ],
+    "metrics_strip": [
+      {
+        "client_label": "Fiber-Processing Bacteria",
+        "value_str": "12.1%",
+        "range_str": "30–50%",
+        "impact": "low",
+        "icon": "🌾"
+      }
+    ]
+  },
+  "cited_papers": [],
+  "lifestyle_recommendations": [
+    {
+      "emoji": "🌾",
+      "title": "Gradually increase soluble fiber intake",
+      "text": "Your fiber-processing bacteria at 12.1% are significantly below the healthy range of 30-50%, so slowly increase soluble fiber sources over 2-3 weeks to avoid digestive discomfort while rebuilding this crucial bacterial community."
+    },
+    {
+      "emoji": "🧘",
+      "title": "Implement targeted stress reduction",
+      "text": "With your stress level at 7/10, prioritize daily stress management techniques as chronic stress directly impairs gut barrier function and reduces beneficial bacteria diversity needed for immune resilience."
+    },
+    {
+      "emoji": "🏃",
+      "title": "Optimize exercise timing for gut health",
+      "text": "Since you already maintain high physical activity, focus on timing intense workouts earlier in the day to support your excellent sleep quality (8/10) while maximizing exercise's microbiome-boosting benefits."
+    },
+    {
+      "emoji": "🍽️",
+      "title": "Incorporate prebiotic-rich plant categories",
+      "text": "Add resistant starch sources and fermentable plant fibers across meals to specifically feed your depleted fiber-processing bacteria, supporting both digestive comfort and long-term gut health."
+    },
+    {
+      "emoji": "⏰",
+      "title": "Establish consistent meal timing",
+      "text": "Eat meals at regular intervals to support your circadian rhythm and complement your strong sleep pattern, as meal timing directly influences beneficial bacteria populations critical for immune function and healthy aging."
+    }
+  ],
+  "supplement_why_texts": {}
+}

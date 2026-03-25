@@ -14,6 +14,15 @@ v2.1: Added SIBO self-report detection from questionnaire fields.
       Fixed P3 skip to use explicit LLM boolean (sensitivity_override_active)
       rather than inferring from free-text overrides_applied list.
       Added 10% ceiling tolerance (prebiotic_tolerance_pct from KB).
+
+v2.2: Added SIBO clinical criteria gate to prevent over-triggering the Mix 4
+      zero-FODMAP override on isolated daily mild bloating.
+      - Added sibo_clinical_criteria block to prebiotic_rules.json KB
+      - Added mandatory sibo_assessment block to LLM response schema
+      - _detect_sibo_override() path (b) now requires explicit sibo_assessment.sibo_suspected
+        instead of inferring from total_fodmap_grams < 0.15
+      - User prompt now passes all SIBO-relevant digestive fields (bloating_when,
+        digestive_health_over_time, day symptom notes, medical flags) to LLM
 """
 
 import json
@@ -225,24 +234,33 @@ def _make_headroom(
 def _detect_sibo_override(mix_id, design: Dict, mix_rules: Dict, context_flags: Dict) -> bool:
     """
     Return True when Mix 4's SIBO override is active. Fires when EITHER:
-      (a) LLM went zero-FODMAP: mix_id == 4 AND total_fodmap_grams < 0.15
+      (a) Client self-reported SIBO in questionnaire: context_flags["sibo_self_reported"] == True
+          AND mix_id == 4  (deterministic, takes priority)
+      (b) LLM explicitly assessed SIBO as suspected via sibo_assessment block:
+          mix_id == 4 AND design["sibo_assessment"]["sibo_suspected"] == True
           AND KB defines zero_fodmap_permitted for this mix
-      (b) Client self-reported SIBO in questionnaire: context_flags["sibo_self_reported"] == True
-          AND mix_id == 4
 
     Both paths require mix_id == 4 — SIBO override is only valid for this mix.
+
+    NOTE: Path (b) no longer fires just because the LLM returned zero_fodmap_grams < 0.15.
+    The LLM must explicitly evaluate the sibo_clinical_criteria from the KB and return
+    sibo_assessment.sibo_suspected = true. This prevents the override from triggering on
+    isolated daily bloating without multi-criteria SIBO clinical support (e.g. sample
+    1421794165663: bloating 4/10, satisfaction 9/10, always-good digestion — not SIBO).
     """
     if str(mix_id) != "4":
         return False
 
-    # Path (b): questionnaire self-report — deterministic, takes priority
+    # Path (a): questionnaire self-report — deterministic, takes priority
     if context_flags.get("sibo_self_reported"):
         return True
 
-    # Path (a): LLM chose zero-FODMAP and KB permits it
-    if float(design.get("total_fodmap_grams", 0.0)) >= 0.15:
+    # Path (b): LLM must have explicitly evaluated SIBO criteria and set sibo_suspected = true
+    # Falling back on zero_fodmap_grams < 0.15 alone is no longer sufficient.
+    if not mix_rules.get("sibo_override", {}).get("zero_fodmap_permitted", False):
         return False
-    return bool(mix_rules.get("sibo_override", {}).get("zero_fodmap_permitted", False))
+    sibo_assessment = design.get("sibo_assessment", {})
+    return bool(sibo_assessment.get("sibo_suspected", False))
 
 
 # ---------------------------------------------------------------------------
@@ -451,6 +469,46 @@ contradiction override (FODMAP reduction, PHGG substitution, bloating protocol) 
 warrants skipping priority-3 diversity substrates. Set false if no sensitivity override
 is being applied. This is an explicit clinical judgement, not derived from overrides_applied.
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MIX 4 SIBO ASSESSMENT — MANDATORY FOR MIX 4 CLIENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The Mix 4 SIBO override (zero-FODMAP protocol) is a high-impact clinical decision.
+Applying it removes all FODMAP substrates — this is only valid when there is genuine
+multi-criteria evidence of small bowel overgrowth. Daily mild bloating alone is NOT
+sufficient — it is non-specific and common in high-protein / low-fermented-food diets.
+
+YOU MUST complete the sibo_assessment block in your response for every Mix 4 client.
+The system will REJECT the SIBO override if sibo_assessment is absent or sibo_suspected
+is false — substrate floors will be enforced automatically in that case.
+
+INCLUSION CRITERIA — score how many of these the client meets:
+  C1: bloating_severity >= 7/10  (mild/moderate bloating ≤6 does NOT count)
+  C2: bloating onset within 90 min of meals ("within_90min_of_meal" or "immediately_after_meal")
+  C3: Bristol stool type 6 or 7 (loose/watery — not type 3/4/5 which is normal)
+  C4: vitamin or nutrient deficiency reported despite seemingly adequate diet
+  C5: recurrent antibiotic use (≥2 courses, or frequency = "frequently")
+  C6: PPI use (ppi_has = "yes")
+  C7: prior GI surgery or structural GI risk reported
+  C8: digestive_satisfaction <= 4/10  (satisfaction 5+ does NOT count)
+
+AUTO-DISQUALIFIERS — if ANY of these are present, SIBO cannot be suspected regardless
+of inclusion criteria count:
+  D1: digestive_satisfaction >= 7/10  → client is not functionally impaired
+  D2: stool type Bristol 3, 4, or 5  → normal stool consistency argues against SIBO
+  D3: digestive_health_over_time = "always_good"  → lifelong good digestion
+  D4: client's own words describe symptoms as "normal" or "everyday gas"
+
+DECISION RULE:
+  sibo_suspected = true  ONLY when: criteria_met_count >= 2 AND zero auto-disqualifiers fire
+  sibo_suspected = false in all other cases — apply standard high-sensitivity FODMAP reduction
+  (keep priority-1 and priority-2 substrate floors, reduce bulk, add PHGG)
+
+EXAMPLE of a client who should NOT trigger SIBO (to prevent the mistake of over-triggering):
+  bloating 4/10, daily frequency, Bristol 4, satisfaction 9/10, always_good digestion,
+  self-reports "normal everyday gas" → 0 criteria met, 3 auto-disqualifiers → sibo_suspected: false
+  Correct action: moderate FODMAP restriction, keep GOS 0.5g + Inulin 0.5g floors, add PHGG bulk.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 ADDITIONAL RULES:
 - Total prebiotic grams MUST be within the provided dose range
 - PHGG is the safest non-FODMAP base fiber for sensitive clients
@@ -468,13 +526,25 @@ RESPOND WITH ONLY A JSON OBJECT:
   "contradictions_found": [<list>],
   "overrides_applied": [<list>],
   "sensitivity_override_active": <true|false>,
+  "sibo_assessment": {
+    "mix_4_only": true,
+    "criteria_evaluated": ["C1", "C2", ...],
+    "criteria_met": ["<id>: <label>", ...],
+    "criteria_met_count": <number>,
+    "disqualifiers_fired": ["<id>: <label>", ...],
+    "sibo_suspected": <true|false>,
+    "sibo_reasoning": "<brief explanation of why sibo_suspected is true or false>"
+  },
   "prebiotics": [
     {"substance": "<n>", "dose_g": <number>, "fodmap": <bool>, "rationale": "<mechanism-referenced why>"}
   ],
   "condition_specific_additions": [
     {"substance": "<n>", "dose_g_or_mg": "<dose>", "condition": "<which>", "rationale": "<why>"}
   ]
-}"""
+}
+
+NOTE: sibo_assessment is required for Mix 4. For all other mixes, include it with
+sibo_suspected: false and sibo_reasoning: "Not Mix 4 — SIBO override not applicable"."""
 
 
 # ---------------------------------------------------------------------------
@@ -502,6 +572,10 @@ def design_prebiotics(unified_input: Dict, rule_outputs: Dict, mix_selection: Di
     mix_key = f"mix_{mix_selection['mix_id']}"
     mix_prebiotics = prebiotic_kb["per_mix_prebiotics"].get(mix_key, {})
 
+    # Extract SIBO-relevant medical fields for the prompt
+    medical = unified_input["questionnaire"].get("medical", {})
+    diet = unified_input["questionnaire"].get("diet", {})
+
     user_prompt = f"""## Selected Synbiotic Mix
 Mix ID: {mix_selection["mix_id"]}
 Mix Name: {mix_selection["mix_name"]}
@@ -522,11 +596,23 @@ Mix Name: {mix_selection["mix_name"]}
 Min: {prebiotic_range["min_g"]}g, Max: {prebiotic_range["max_g"]}g
 CFU tier: {prebiotic_range["cfu_tier"]}
 
-## Client Digestive Profile
+## Client Digestive Profile (full — required for SIBO assessment)
 Bloating severity: {bloating}/10
 Bloating frequency: {digestive.get("bloating_frequency")}
+Bloating timing (when in day): {digestive.get("bloating_when")}
 Stool type (Bristol): {digestive.get("stool_type")}
 Digestive satisfaction: {digestive.get("digestive_satisfaction")}/10
+Digestive health over time: {digestive.get("digestive_health_over_time")}
+Abdominal pain frequency: {digestive.get("abdominal_pain_frequency")}
+Client day 1 digestive symptoms (own words): {diet.get("day1_digestive_symptoms") or digestive.get("day1_digestive_symptoms") or "not reported"}
+Client day 2 digestive symptoms (own words): {diet.get("day2_digestive_symptoms") or digestive.get("day2_digestive_symptoms") or "not reported"}
+
+## Client Medical Flags (SIBO risk factors)
+PPI use: {medical.get("ppi_has", "no")}
+Antibiotics frequency: {medical.get("antibiotics_frequency", "none")}
+GI surgeries: {medical.get("digestive_surgeries") or "none"}
+Diagnoses: {medical.get("diagnoses") or "none"}
+Vitamin deficiencies: {medical.get("vitamin_deficiencies") or "none"}
 
 ## Client Goals
 {json.dumps(goals.get("ranked", []))}

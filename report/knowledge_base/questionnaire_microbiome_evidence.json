@@ -13,9 +13,7 @@
     "weak_to_moderate": "Human association stated but study design details limited; single study.",
     "weak": "Animal evidence only, hypothesis-level language, or very small pilot."
   },
-
   "domains": {
-
     "antibiotic_use": {
       "domain_label": "Antibiotic Use",
       "icon": "💊",
@@ -27,7 +25,10 @@
         {
           "signal_id": "antibiotic_bifido_butyrate_depletion",
           "microbiome_feature": "Depletion of Bifidobacterium species and butyrate producers; concurrent bloom of enterobacteria and pathobionts (E. faecalis, F. nucleatum)",
-          "guild_keys": ["HMO/Oligosaccharide-Utilising Bifidobacteria", "Butyrate Producers"],
+          "guild_keys": [
+            "Bifidobacteria",
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -45,7 +46,9 @@
         {
           "signal_id": "antibiotic_roseburia_amoxicillin",
           "microbiome_feature": "Loss of Roseburia (butyrate-CoA:acetate-CoA transferase pathway contributor) with amoxicillin/clavulanate",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -64,7 +67,9 @@
           "signal_id": "antibiotic_bbb_junction_reduction",
           "microbiome_feature": "Reduced BBB junction proteins (occludin, ZO-1, claudin-5) in antibiotic-treated mice",
           "guild_keys": [],
-          "metric_keys": ["gut_brain_axis"],
+          "metric_keys": [
+            "gut_brain_axis"
+          ],
           "direction": "disrupts",
           "match_requires": "context_only",
           "evidence_strength": "weak",
@@ -81,8 +86,13 @@
         {
           "signal_id": "antibiotic_scfa_mass_reduction",
           "microbiome_feature": "Reduced fecal microbiota mass and fecal SCFAs in patient contexts with SIBO markers",
-          "guild_keys": ["Fiber Degraders", "Butyrate Producers"],
-          "metric_keys": ["scfa_output"],
+          "guild_keys": [
+            "Fiber Degraders",
+            "Butyrate Producers"
+          ],
+          "metric_keys": [
+            "scfa_output"
+          ],
           "direction": "depletes",
           "match_requires": "below_range",
           "evidence_strength": "moderate",
@@ -95,6 +105,27 @@
           "section3_text": {
             "non_expert": "Following antibiotic use, the total protective output from your gut bacteria — including all the short-chain fatty acids that protect your lining — can fall dramatically. This effect can persist for months after the antibiotic course ends."
           }
+        },
+        {
+          "signal_id": "antibiotic_low_diversity",
+          "microbiome_feature": "Reduced gut microbial diversity (Shannon index) following antibiotic perturbation",
+          "guild_keys": [],
+          "metric_keys": [
+            "shannon",
+            "diversity"
+          ],
+          "direction": "depletes",
+          "match_requires": "low_diversity",
+          "evidence_strength": "strong",
+          "evidence_type": "human_clinical",
+          "mechanism": {
+            "scientific": "Antibiotic use reduces alpha-diversity (Shannon index) by eliminating sensitive taxa and allowing resistant or tolerant taxa to dominate, with recovery taking months to years depending on class and host.",
+            "non_expert": "Antibiotics reduce the variety of bacteria in your gut by eliminating sensitive species. Even after a single course, diversity can remain reduced for months, leaving the ecosystem less resilient and less able to perform all its normal functions."
+          },
+          "caveat": "Diversity recovery varies by antibiotic class, dosing, and host. Some species may not recover without deliberate dietary intervention.",
+          "section3_text": {
+            "non_expert": "One of the most consistent effects of antibiotics is a reduction in gut bacterial variety — and your Shannon diversity score of 2.28 fits this pattern. Antibiotics are like a forest fire: they clear out a wide range of species indiscriminately, and the ecosystem takes time to recover its full richness."
+          }
         }
       ],
       "root_cause_summary": {
@@ -102,7 +133,6 @@
         "non_expert": "Antibiotic use is one of the most well-documented causes of gut microbiome disruption. The good news is that with the right support, recovery is expected — but it takes time and targeted intervention."
       }
     },
-
     "low_dietary_fiber": {
       "domain_label": "Low Dietary Fiber",
       "icon": "🌾",
@@ -114,7 +144,10 @@
         {
           "signal_id": "low_fiber_substrate_starvation",
           "microbiome_feature": "Low dietary fiber availability reduces support for Fiber Degraders and cross-feeding guilds",
-          "guild_keys": ["Fiber Degraders", "Cross-Feeders"],
+          "guild_keys": [
+            "Fiber Degraders",
+            "Cross-Feeders"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -132,7 +165,10 @@
         {
           "signal_id": "low_fiber_scfa_reduction",
           "microbiome_feature": "Reduced SCFA production from fiber fermentation (acetate, propionate, butyrate)",
-          "guild_keys": ["Butyrate Producers", "Cross-Feeders"],
+          "guild_keys": [
+            "Butyrate Producers",
+            "Cross-Feeders"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -150,7 +186,10 @@
         {
           "signal_id": "low_fiber_mucus_degradation",
           "microbiome_feature": "Fiber-deprived microbiota degrades the colonic mucus barrier and increases pathogen susceptibility",
-          "guild_keys": ["Mucin Degraders", "Fiber Degraders"],
+          "guild_keys": [
+            "Mucin Degraders",
+            "Fiber Degraders"
+          ],
           "metric_keys": [],
           "direction": "elevates_mucin_degraders",
           "match_requires": "above_range",
@@ -171,7 +210,6 @@
         "non_expert": "Not getting enough fiber is the most fundamental dietary cause of the imbalances we're seeing. It's also the most directly addressable through the prebiotic component of your protocol."
       }
     },
-
     "high_protein_diet": {
       "domain_label": "High Protein / Low-Carb Diet",
       "icon": "🥩",
@@ -183,7 +221,9 @@
         {
           "signal_id": "high_protein_toxic_metabolites",
           "microbiome_feature": "Increased proteolytic fermentation producing ammonia, amines, phenols, sulfides when carbohydrates are depleted",
-          "guild_keys": ["Proteolytic Dysbiosis Guild"],
+          "guild_keys": [
+            "Proteolytic Dysbiosis Guild"
+          ],
           "metric_keys": [],
           "direction": "elevates",
           "match_requires": "above_range",
@@ -201,7 +241,9 @@
         {
           "signal_id": "high_protein_bcfa_increase",
           "microbiome_feature": "Branched-chain fatty acid (BCFA) production increases within 24 hours on high-protein diet",
-          "guild_keys": ["Proteolytic Dysbiosis Guild"],
+          "guild_keys": [
+            "Proteolytic Dysbiosis Guild"
+          ],
           "metric_keys": [],
           "direction": "elevates",
           "match_requires": "above_range",
@@ -219,7 +261,9 @@
         {
           "signal_id": "high_protein_sulfide_meat",
           "microbiome_feature": "Fecal sulfide concentrations increase proportionately with meat intake; nitrogen leaving terminal ileum increases with dietary protein",
-          "guild_keys": ["Proteolytic Dysbiosis Guild"],
+          "guild_keys": [
+            "Proteolytic Dysbiosis Guild"
+          ],
           "metric_keys": [],
           "direction": "elevates",
           "match_requires": "above_range",
@@ -237,7 +281,9 @@
         {
           "signal_id": "high_protein_crc_hypothesis",
           "microbiome_feature": "Proteolytic products (H2S, ammonia, p-cresol) may contribute to colorectal cancer development",
-          "guild_keys": ["Proteolytic Dysbiosis Guild"],
+          "guild_keys": [
+            "Proteolytic Dysbiosis Guild"
+          ],
           "metric_keys": [],
           "direction": "elevates",
           "match_requires": "above_range",
@@ -258,7 +304,6 @@
         "non_expert": "A high-protein, low-fiber diet is one of the most direct dietary drivers of the protein-fermenting bacteria pattern. Increasing fermentable fiber while maintaining protein balance is the primary dietary lever to address this."
       }
     },
-
     "alcohol_consumption": {
       "domain_label": "Regular Alcohol Consumption",
       "icon": "🍷",
@@ -270,7 +315,9 @@
         {
           "signal_id": "alcohol_butyrate_producer_depletion",
           "microbiome_feature": "Reduced Firmicutes/Lachnospiraceae with lower abundance of butyrate-producing genera (Anaerostipes, Coprococcus, Roseburia)",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -288,8 +335,13 @@
         {
           "signal_id": "alcohol_gut_leakiness_mood",
           "microbiome_feature": "Gut leakiness phenotype in a subset of alcohol-dependent subjects; associated with higher depression, anxiety, and craving scores",
-          "guild_keys": ["Butyrate Producers", "Mucin Degraders"],
-          "metric_keys": ["gut_brain_axis"],
+          "guild_keys": [
+            "Butyrate Producers",
+            "Mucin Degraders"
+          ],
+          "metric_keys": [
+            "gut_brain_axis"
+          ],
           "direction": "disrupts",
           "match_requires": "context_only",
           "evidence_strength": "moderate",
@@ -307,7 +359,10 @@
           "signal_id": "alcohol_bacterial_load_reduction",
           "microbiome_feature": "Lower total bacterial amount in alcohol-dependent subjects with high intestinal permeability",
           "guild_keys": [],
-          "metric_keys": ["shannon", "community_biomass"],
+          "metric_keys": [
+            "shannon",
+            "community_biomass"
+          ],
           "direction": "depletes",
           "match_requires": "low_diversity",
           "evidence_strength": "moderate",
@@ -327,7 +382,6 @@
         "non_expert": "Regular alcohol consumption is a documented contributor to the gut imbalance patterns we're seeing — particularly the depletion of butyrate-producing bacteria. Reducing alcohol intake is one of the most impactful lifestyle changes for gut health recovery."
       }
     },
-
     "smoking": {
       "domain_label": "Tobacco / Smoking",
       "icon": "🚬",
@@ -340,7 +394,9 @@
           "signal_id": "smoking_shannon_diversity",
           "microbiome_feature": "Lower Shannon diversity in tobacco smokers compared with controls (p-value reported)",
           "guild_keys": [],
-          "metric_keys": ["shannon"],
+          "metric_keys": [
+            "shannon"
+          ],
           "direction": "depletes",
           "match_requires": "low_diversity",
           "evidence_strength": "moderate",
@@ -357,7 +413,10 @@
         {
           "signal_id": "smoking_community_composition",
           "microbiome_feature": "Phylum-level shifts: increased Bacteroidetes with decreased Firmicutes and Proteobacteria; significant beta diversity differences by smoking status",
-          "guild_keys": ["Fiber Degraders", "Butyrate Producers"],
+          "guild_keys": [
+            "Fiber Degraders",
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "disrupts",
           "match_requires": "any_deviation",
@@ -394,7 +453,9 @@
           "signal_id": "smoking_tight_junction_reduction",
           "microbiome_feature": "Cigarette smoke markedly decreased claudin-3 and ZO-1 tight junction proteins",
           "guild_keys": [],
-          "metric_keys": ["barrier_integrity"],
+          "metric_keys": [
+            "barrier_integrity"
+          ],
           "direction": "disrupts",
           "match_requires": "context_only",
           "evidence_strength": "weak",
@@ -414,7 +475,6 @@
         "non_expert": "Smoking is linked to a less balanced, less resilient gut microbiome. It's one of several lifestyle factors contributing to the pattern we're seeing — and quitting smoking is consistently associated with microbiome improvement over time."
       }
     },
-
     "stress_anxiety": {
       "domain_label": "Chronic Stress & Anxiety",
       "icon": "😰",
@@ -426,7 +486,10 @@
         {
           "signal_id": "stress_scfa_reduction",
           "microbiome_feature": "Reduced SCFA-producing bacteria and decreased fecal acetate and butyrate under psychosocial stress; associated with increased gut inflammation",
-          "guild_keys": ["Butyrate Producers", "Fiber Degraders"],
+          "guild_keys": [
+            "Butyrate Producers",
+            "Fiber Degraders"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -444,7 +507,9 @@
         {
           "signal_id": "stress_butyrate_genera_depression",
           "microbiome_feature": "Depletion of butyrate-producing genera (Butyricimonas, Coprococcus) in depressed individuals; antidepressant effects linked to these genera",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -462,7 +527,9 @@
         {
           "signal_id": "stress_bifidobacteria_rct",
           "microbiome_feature": "Probiotic mixture containing B. longum evaluated in double-blind placebo-controlled RCT in healthy subjects",
-          "guild_keys": ["HMO/Oligosaccharide-Utilising Bifidobacteria"],
+          "guild_keys": [
+            "Bifidobacteria"
+          ],
           "metric_keys": [],
           "direction": "context_intervention",
           "match_requires": "below_range",
@@ -476,6 +543,47 @@
           "section3_text": {
             "non_expert": "Clinical research has specifically investigated Bifidobacteria supplementation for stress and anxiety — which is directly relevant to your situation, given both your stress levels and your Bifidobacteria results."
           }
+        },
+        {
+          "signal_id": "stress_bifidobacteria_depletion",
+          "microbiome_feature": "Depletion of Bifidobacteria under chronic psychological stress via HPA-axis activation and gut environment shifts",
+          "guild_keys": [
+            "Bifidobacteria"
+          ],
+          "metric_keys": [],
+          "direction": "depletes",
+          "match_requires": "below_range",
+          "evidence_strength": "weak_to_moderate",
+          "evidence_type": "human_animal_mechanistic",
+          "mechanism": {
+            "scientific": "Chronic psychological stress activates the HPA axis, elevating cortisol and altering intestinal pH, motility, and mucosal secretion in ways that selectively disadvantage acid-sensitive beneficial bacteria including Bifidobacteria. Bifidobacteria are among the most stress-sensitive members of the gut community.",
+            "non_expert": "Chronic stress activates your body's stress response system, which alters the gut environment in ways that specifically disadvantage Bifidobacteria — one of the most sensitive beneficial bacteria. As Bifidobacteria decline, the protective compounds they produce for immune regulation and gut-brain communication also fall, potentially amplifying the stress response in a reinforcing cycle."
+          },
+          "caveat": "Direct human longitudinal causal evidence linking stress specifically to Bifidobacteria depletion is limited; mechanistic plausibility is supported by animal and cross-sectional data.",
+          "section3_text": {
+            "non_expert": "Bifidobacteria are among the most sensitive gut bacteria to psychological stress. Chronically elevated stress hormones alter the gut environment in ways that specifically disadvantage this group — which may be a contributing factor to their absence in your results."
+          }
+        },
+        {
+          "signal_id": "stress_low_diversity",
+          "microbiome_feature": "Reduced gut microbial diversity under chronic psychological stress",
+          "guild_keys": [],
+          "metric_keys": [
+            "shannon",
+            "diversity"
+          ],
+          "direction": "reduces",
+          "match_requires": "low_diversity",
+          "evidence_strength": "moderate",
+          "evidence_type": "human_observational_pattern",
+          "mechanism": {
+            "scientific": "Chronic stress activates the HPA axis and sympathetic nervous system, altering gut motility, mucus secretion, and intestinal permeability in ways that selectively disadvantage diverse commensal communities.",
+            "non_expert": "When stress hormones are chronically elevated, they change the gut environment in ways that disadvantage many beneficial bacteria — reducing the overall variety of species that can survive and thrive."
+          },
+          "caveat": "Directionality is bidirectional: low diversity also amplifies stress sensitivity via the gut-brain axis.",
+          "section3_text": {
+            "non_expert": "Chronic stress creates a gut environment that is less hospitable to a wide variety of bacteria, which over time reduces microbial diversity. The gut and brain communicate constantly, so a less diverse gut can also make stress responses feel more intense — creating a reinforcing cycle."
+          }
         }
       ],
       "root_cause_summary": {
@@ -483,7 +591,6 @@
         "non_expert": "Chronic stress and your gut health are caught in a two-way loop. Stress reduces protective gut bacteria, and a disrupted gut makes it harder to regulate stress and mood. Addressing both simultaneously — through microbiome support and stress management — is more effective than either approach alone."
       }
     },
-
     "poor_sleep": {
       "domain_label": "Poor Sleep Quality",
       "icon": "😴",
@@ -495,7 +602,9 @@
         {
           "signal_id": "sleep_scfa_genera_insomnia",
           "microbiome_feature": "Reduced SCFA-producing genera — notably Roseburia and Faecalibacterium — among individuals with insomnia",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -514,7 +623,10 @@
           "signal_id": "sleep_circadian_rhythmicity",
           "microbiome_feature": "Intestinal microbial community exhibits rhythmic fluctuations in structure and function linked to circadian programs",
           "guild_keys": [],
-          "metric_keys": ["circadian", "community_dynamics"],
+          "metric_keys": [
+            "circadian",
+            "community_dynamics"
+          ],
           "direction": "bidirectional",
           "match_requires": "context_only",
           "evidence_strength": "moderate",
@@ -531,7 +643,10 @@
         {
           "signal_id": "sleep_scfa_bbb_penetration",
           "microbiome_feature": "SCFAs can penetrate the blood-brain barrier and access the brain",
-          "guild_keys": ["Butyrate Producers", "Fiber Degraders"],
+          "guild_keys": [
+            "Butyrate Producers",
+            "Fiber Degraders"
+          ],
           "metric_keys": [],
           "direction": "consequence",
           "match_requires": "below_range",
@@ -545,14 +660,54 @@
           "section3_text": {
             "non_expert": "The connection between your gut and sleep isn't just metaphorical — the compounds your gut bacteria produce can physically reach your brain through the bloodstream. Low SCFA production may directly contribute to disrupted sleep architecture."
           }
+        },
+        {
+          "signal_id": "poor_sleep_low_diversity",
+          "microbiome_feature": "Reduced gut microbial diversity associated with disrupted sleep patterns",
+          "guild_keys": [],
+          "metric_keys": [
+            "shannon",
+            "diversity"
+          ],
+          "direction": "reduces",
+          "match_requires": "low_diversity",
+          "evidence_strength": "moderate",
+          "evidence_type": "human_observational_pattern",
+          "mechanism": {
+            "scientific": "Sleep disruption alters circadian-regulated host factors including melatonin, cortisol, and intestinal barrier function that shape microbial community composition and diversity.",
+            "non_expert": "Sleep quality and gut bacteria diversity are closely linked. Poor sleep disrupts the circadian signals that normally help maintain a balanced, varied bacterial community — gradually reducing species richness over time."
+          },
+          "caveat": "Effect size is moderate; causality runs in both directions as gut bacteria also produce compounds affecting sleep architecture.",
+          "section3_text": {
+            "non_expert": "Sleep and microbial diversity are bidirectionally linked. Disrupted sleep patterns alter the hormonal and circadian environment of the gut, which can gradually reduce the variety of bacterial species. At the same time, a less diverse gut produces fewer of the compounds that support healthy sleep architecture."
+          }
+        },
+        {
+          "signal_id": "poor_sleep_bifidobacteria_depletion",
+          "microbiome_feature": "Reduced Bifidobacteria associated with disrupted sleep and circadian rhythm disturbance",
+          "guild_keys": [
+            "Bifidobacteria"
+          ],
+          "metric_keys": [],
+          "direction": "bidirectional",
+          "match_requires": "below_range",
+          "evidence_strength": "weak_to_moderate",
+          "evidence_type": "human_observational_mechanistic",
+          "mechanism": {
+            "scientific": "Bifidobacteria populations follow circadian rhythmicity tied to host sleep-wake cycles. Sleep disruption alters melatonin and cortisol rhythms that indirectly shape the gut environment, selectively disadvantaging Bifidobacteria. Conversely, Bifidobacteria produce GABA-precursor compounds and modulate tryptophan availability — both relevant to sleep-onset signaling.",
+            "non_expert": "Bifidobacteria follow a daily rhythm tied to your sleep cycle, and disrupted sleep disrupts that rhythm. Poor sleep also elevates stress hormones overnight, creating a gut environment that makes it harder for Bifidobacteria to thrive. In the other direction, Bifidobacteria produce compounds that support calm neurological states before sleep — so their absence may worsen sleep quality."
+          },
+          "caveat": "Bidirectional relationship is mechanistically plausible but direct longitudinal human evidence specifically linking sleep disruption to Bifidobacteria depletion is limited.",
+          "section3_text": {
+            "non_expert": "Bifidobacteria are sensitive to circadian disruption from poor sleep — they thrive best when your sleep-wake rhythm is consistent. Disrupted sleep has been linked to their decline, and their absence may in turn worsen sleep quality by reducing gut-derived calming compounds."
+          }
         }
       ],
       "root_cause_summary": {
-        "scientific": "Poor sleep quality co-occurs with reduced SCFA-producing genera, particularly Roseburia and Faecalibacterium. Bidirectional circadian-microbiome coupling means sleep disruption can perpetuate microbiome imbalance and vice versa.",
+        "scientific": "Poor sleep quality co-occurs with reduced SCFA-producing genera, particularly Roseburia and Faecalibacterium, and with Bifidobacteria depletion via circadian disruption. Bidirectional circadian-microbiome coupling means sleep disruption can perpetuate microbiome imbalance and vice versa.",
         "non_expert": "Your sleep quality and your gut health are genuinely connected — not just correlated. Improving gut bacteria that produce butyrate and other SCFAs may support better sleep, while better sleep allows your gut ecosystem to regulate itself more effectively."
       }
     },
-
     "bloating_ibs": {
       "domain_label": "Bloating & Digestive Discomfort",
       "icon": "🫧",
@@ -564,7 +719,10 @@
         {
           "signal_id": "bloating_fermentation_gas",
           "microbiome_feature": "Increased microbial gas production (hydrogen, methane, hydrogen sulfide) as fermentation byproducts; linked to bacterial overgrowth by breath testing",
-          "guild_keys": ["Proteolytic Dysbiosis Guild", "Fiber Degraders"],
+          "guild_keys": [
+            "Proteolytic Dysbiosis Guild",
+            "Fiber Degraders"
+          ],
           "metric_keys": [],
           "direction": "dysregulated_fermentation",
           "match_requires": "any_deviation",
@@ -583,7 +741,9 @@
           "signal_id": "bloating_sibo_ibs_overlap",
           "microbiome_feature": "Substantial proportion of SIBO patients also have an IBS diagnosis — overgrowth and fermentation dynamics contribute to IBS-like symptoms",
           "guild_keys": [],
-          "metric_keys": ["dysbiosis"],
+          "metric_keys": [
+            "dysbiosis"
+          ],
           "direction": "consequence",
           "match_requires": "any_deviation",
           "evidence_strength": "strong",
@@ -600,7 +760,9 @@
         {
           "signal_id": "bloating_fiber_distension",
           "microbiome_feature": "Higher dietary fiber intake associated with less abdominal distension without increased diarrhea",
-          "guild_keys": ["Fiber Degraders"],
+          "guild_keys": [
+            "Fiber Degraders"
+          ],
           "metric_keys": [],
           "direction": "protective",
           "match_requires": "below_range",
@@ -618,7 +780,9 @@
         {
           "signal_id": "bloating_butyrate_motility",
           "microbiome_feature": "Butyrate alters enteric neuronal activity by reversible hyperpolarization and reduces colonic contractility",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "consequence",
           "match_requires": "below_range",
@@ -639,7 +803,6 @@
         "non_expert": "Your bloating and digestive discomfort aren't random — they're direct consequences of the fermentation imbalances in your microbiome. As the bacterial balance shifts toward more efficient fiber fermentation and more butyrate production, these symptoms should improve."
       }
     },
-
     "low_physical_activity": {
       "domain_label": "Low Physical Activity",
       "icon": "🏃",
@@ -652,7 +815,9 @@
           "signal_id": "activity_alpha_diversity",
           "microbiome_feature": "Higher physical activity or VO2max positively associated with alpha diversity in 85.7% of cross-sectional studies",
           "guild_keys": [],
-          "metric_keys": ["shannon"],
+          "metric_keys": [
+            "shannon"
+          ],
           "direction": "correlates_positive",
           "match_requires": "low_diversity",
           "evidence_strength": "moderate",
@@ -669,7 +834,9 @@
         {
           "signal_id": "activity_butyrate_athletes",
           "microbiome_feature": "Athletes have gut-associated microbial community enriched in butyrate-producing species compared with non-athletes",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "correlates_positive",
           "match_requires": "below_range",
@@ -688,7 +855,9 @@
           "signal_id": "activity_tight_junctions",
           "microbiome_feature": "Exercise upregulates tight junction proteins, suggesting improved intestinal barrier function",
           "guild_keys": [],
-          "metric_keys": ["barrier_integrity"],
+          "metric_keys": [
+            "barrier_integrity"
+          ],
           "direction": "protective",
           "match_requires": "context_only",
           "evidence_strength": "moderate",
@@ -706,7 +875,9 @@
           "signal_id": "activity_excessive_training_dysbiosis",
           "microbiome_feature": "Excessive training without adequate recovery may induce dysbiosis and inflammation",
           "guild_keys": [],
-          "metric_keys": ["dysbiosis"],
+          "metric_keys": [
+            "dysbiosis"
+          ],
           "direction": "elevates_when_excessive",
           "match_requires": "context_only",
           "evidence_strength": "moderate",
@@ -726,7 +897,6 @@
         "non_expert": "Regular physical activity is one of the lifestyle factors most consistently associated with a healthier microbiome — particularly higher butyrate-producing bacteria and greater diversity. Increasing activity is a meaningful complement to your supplement protocol."
       }
     },
-
     "ultra_processed_diet": {
       "domain_label": "Ultra-Processed Food Intake",
       "icon": "🍟",
@@ -739,7 +909,9 @@
           "signal_id": "upf_diversity_permeability",
           "microbiome_feature": "Reduced gut microbiota diversity with barrier breakdown and increased intestinal permeability (leaky gut) in UPF patterns",
           "guild_keys": [],
-          "metric_keys": ["shannon"],
+          "metric_keys": [
+            "shannon"
+          ],
           "direction": "depletes",
           "match_requires": "low_diversity",
           "evidence_strength": "moderate",
@@ -756,7 +928,9 @@
         {
           "signal_id": "upf_roseburia_lachnospira",
           "microbiome_feature": "Underrepresentation of Roseburia and Lachnospira with higher UPF intake (>5 servings/day)",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -793,7 +967,9 @@
           "signal_id": "upf_emulsifier_encroachment",
           "microbiome_feature": "CMC and polysorbate 80 emulsifiers cause bacterial encroachment on the epithelium in mice",
           "guild_keys": [],
-          "metric_keys": ["barrier_integrity"],
+          "metric_keys": [
+            "barrier_integrity"
+          ],
           "direction": "disrupts",
           "match_requires": "context_only",
           "evidence_strength": "weak",
@@ -813,7 +989,6 @@
         "non_expert": "Regular consumption of ultra-processed foods contributes to gut imbalance through multiple pathways — reduced fiber, specific additives, and their combined effect on diversity and barrier integrity. Shifting toward whole foods is one of the most impactful dietary changes for your gut health."
       }
     },
-
     "fatigue_energy": {
       "domain_label": "Fatigue & Low Energy",
       "icon": "⚡",
@@ -825,8 +1000,12 @@
         {
           "signal_id": "fatigue_diversity_butyrate",
           "microbiome_feature": "Less diverse gut microbiome with reduced butyrate-producing bacteria (F. prausnitzii, R. hominis) in fatigue cohorts",
-          "guild_keys": ["Butyrate Producers"],
-          "metric_keys": ["shannon"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
+          "metric_keys": [
+            "shannon"
+          ],
           "direction": "depletes",
           "match_requires": "below_range",
           "evidence_strength": "moderate",
@@ -843,7 +1022,10 @@
         {
           "signal_id": "fatigue_mecfs_metagenomics",
           "microbiome_feature": "ME/CFS: decreased Faecalibacterium, Roseburia, Eubacterium with reduced fecal butyrate confirmed by metabolomics",
-          "guild_keys": ["Butyrate Producers", "Cross-Feeders"],
+          "guild_keys": [
+            "Butyrate Producers",
+            "Cross-Feeders"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -861,7 +1043,9 @@
         {
           "signal_id": "fatigue_bifidobacteria_cfs",
           "microbiome_feature": "Significantly reduced Bifidobacterium populations in CFS patients (with increased Enterococcus and Candida during acute phase)",
-          "guild_keys": ["HMO/Oligosaccharide-Utilising Bifidobacteria"],
+          "guild_keys": [
+            "Bifidobacteria"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -880,7 +1064,9 @@
           "signal_id": "fatigue_diversity_severity",
           "microbiome_feature": "Disruption of gut microbiota diversity associated with fatigue severity in CFS patients",
           "guild_keys": [],
-          "metric_keys": ["shannon"],
+          "metric_keys": [
+            "shannon"
+          ],
           "direction": "depletes",
           "match_requires": "low_diversity",
           "evidence_strength": "moderate",
@@ -897,7 +1083,10 @@
         {
           "signal_id": "fatigue_scfa_systemic_energy",
           "microbiome_feature": "SCFAs serve as primary energy source for colonocytes and enter systemic circulation to facilitate hepatic and muscular gluconeogenesis and glycogenesis",
-          "guild_keys": ["Butyrate Producers", "Fiber Degraders"],
+          "guild_keys": [
+            "Butyrate Producers",
+            "Fiber Degraders"
+          ],
           "metric_keys": [],
           "direction": "consequence",
           "match_requires": "below_range",
@@ -918,7 +1107,6 @@
         "non_expert": "The gut microbiome is one of the most underappreciated contributors to energy levels. The pattern we're seeing in your gut — low butyrate-producing bacteria, low Bifidobacteria, and reduced diversity — is consistently found in people with persistent fatigue. Supporting your microbiome is a meaningful intervention for energy as well as gut health."
       }
     },
-
     "skin_symptoms": {
       "domain_label": "Skin Conditions (Acne, Eczema, Psoriasis)",
       "icon": "🩹",
@@ -930,7 +1118,9 @@
         {
           "signal_id": "skin_fprausnitzii_treg",
           "microbiome_feature": "Reduced Faecalibacterium prausnitzii; butyrate output decreases → oxidative stress ↑, colonocyte energy ↓, Treg induction impaired → systemic inflammation",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -948,7 +1138,10 @@
         {
           "signal_id": "skin_psoriasis_taxa",
           "microbiome_feature": "Lower Pseudobutyrivibrio, Ruminococcus, and Akkermansia in psoriasis and psoriatic arthritis",
-          "guild_keys": ["Butyrate Producers", "Mucin Degraders"],
+          "guild_keys": [
+            "Butyrate Producers",
+            "Mucin Degraders"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -967,7 +1160,9 @@
           "signal_id": "skin_dysregulated_immune",
           "microbiome_feature": "Altered gut microbial composition with dysregulated immune responses contributes to systemic inflammation and skin barrier dysfunction",
           "guild_keys": [],
-          "metric_keys": ["dysbiosis"],
+          "metric_keys": [
+            "dysbiosis"
+          ],
           "direction": "consequence",
           "match_requires": "any_deviation",
           "evidence_strength": "moderate",
@@ -987,7 +1182,6 @@
         "non_expert": "Skin and gut health are genuinely connected through the immune system. The bacteria in your gut that are currently low — particularly butyrate producers — have a direct role in training the immune cells that regulate inflammation throughout the body, including in the skin."
       }
     },
-
     "immune_gut_axis": {
       "domain_label": "Frequent Infections / Immune Vulnerability",
       "icon": "🛡️",
@@ -999,7 +1193,9 @@
         {
           "signal_id": "immune_butyrate_hif_barrier",
           "microbiome_feature": "Microbiota depletion reduces colonic butyrate and HIF expression; both restored by butyrate supplementation",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "depletes",
           "match_requires": "below_range",
@@ -1017,7 +1213,9 @@
         {
           "signal_id": "immune_butyrate_claudin_il10ra",
           "microbiome_feature": "Butyrate promotes epithelial barrier formation through IL-10RA-mediated repression of permeability-promoting claudin-2",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "consequence",
           "match_requires": "below_range",
@@ -1035,7 +1233,9 @@
         {
           "signal_id": "immune_butyrate_hif_stabilization",
           "microbiome_feature": "Butyrate stabilizes HIF and alters intestinal epithelial cell oxygen consumption, favoring physiologic hypoxia in the colon",
-          "guild_keys": ["Butyrate Producers"],
+          "guild_keys": [
+            "Butyrate Producers"
+          ],
           "metric_keys": [],
           "direction": "consequence",
           "match_requires": "below_range",
@@ -1056,7 +1256,6 @@
         "non_expert": "Around 70% of your immune system operates in and around your gut. When gut bacteria that produce butyrate are depleted, the physical and immunological defenses of your gut barrier are weakened — which is directly connected to increased immune vulnerability and susceptibility to infections."
       }
     },
-
     "metabolic_risk": {
       "domain_label": "Metabolic Health & Weight",
       "icon": "⚖️",
@@ -1068,7 +1267,10 @@
         {
           "signal_id": "metabolic_scfa_appetite_regulation",
           "microbiome_feature": "SCFA production stimulates gut hormones (GLP-1, PYY) and regulates food intake via brain signaling",
-          "guild_keys": ["Butyrate Producers", "Fiber Degraders"],
+          "guild_keys": [
+            "Butyrate Producers",
+            "Fiber Degraders"
+          ],
           "metric_keys": [],
           "direction": "consequence",
           "match_requires": "below_range",
@@ -1087,7 +1289,9 @@
           "signal_id": "metabolic_high_stool_scfa_adverse",
           "microbiome_feature": "Higher stool SCFA levels COUNTER-INTUITIVELY associated with lower diversity, higher permeability, systemic inflammation, glycemia, dyslipidemia, obesity, and hypertension in community-based adult sample",
           "guild_keys": [],
-          "metric_keys": ["shannon"],
+          "metric_keys": [
+            "shannon"
+          ],
           "direction": "nuanced",
           "match_requires": "context_only",
           "evidence_strength": "moderate",
@@ -1104,7 +1308,9 @@
         {
           "signal_id": "metabolic_cysteine_crc",
           "microbiome_feature": "Higher abundance of putative cysteine-degrading bacteria in colorectal cancer samples vs healthy controls",
-          "guild_keys": ["Proteolytic Dysbiosis Guild"],
+          "guild_keys": [
+            "Proteolytic Dysbiosis Guild"
+          ],
           "metric_keys": [],
           "direction": "elevates",
           "match_requires": "above_range",

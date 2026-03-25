@@ -1,6 +1,6 @@
 {
   "sample_id": "1421029282376",
-  "generated_at": "2026-03-19T17:04:52.652719",
+  "generated_at": "2026-03-24T18:13:50.423655",
   "schema_version": "3.0",
   "report_date": "2026-03-10",
   "overall_score": {
@@ -52,27 +52,7 @@
       "key_note": "Your strongest area is metabolic function (100% of its potential)"
     }
   },
-  "score_summary": "Your overall score is <strong>85.7</strong> out of 100. The main area to focus on is <strong>fiber processing</strong>.",
-  "profile": {
-    "first_name": "Polina",
-    "age": 30,
-    "sex": "Female",
-    "diet": "Omnivore",
-    "stress": 7,
-    "sleep": 9,
-    "goals": [
-      "Immune resilience",
-      "Mood & anxiety",
-      "Optimise metabolism"
-    ],
-    "sensitivity": "Moderate"
-  },
-  "circle_scores": {
-    "gut_lining": 89,
-    "inflammation": 83,
-    "fiber_processing": 67,
-    "bifidobacteria": 88
-  },
+  "score_summary": "Your overall score is <strong>85.7</strong> out of 100. The main areas to focus on are <strong>fiber processing</strong> and <strong>microbial diversity</strong>.",
   "bacterial_groups": {
     "Cross-Feeders": {
       "abundance": 17.02,
@@ -174,22 +154,48 @@
         "bb": 0.1028,
         "cf": 0.1702,
         "bp": 0.1417,
-        "pg": 0.0500,
+        "pg": 0.05,
         "md": 0.0304
       }
     }
   ],
+  "protocol_summary": {
+    "synbiotic_mix": {
+      "mix_id": 3,
+      "mix_name": "Butyrate Specialist"
+    },
+    "morning_solid_units": 4,
+    "morning_jar_units": 0,
+    "evening_solid_units": 1,
+    "total_daily_units": 6,
+    "total_daily_weight_g": 10.06
+  },
+  "profile": {
+    "first_name": "Polina",
+    "age": 30,
+    "sex": "Female",
+    "diet": "Omnivore",
+    "stress": 7,
+    "sleep": 9,
+    "goals": [
+      "Immune resilience",
+      "Mood & anxiety",
+      "Optimise metabolism"
+    ],
+    "sensitivity": "Moderate"
+  },
+  "circle_scores": {
+    "gut_lining": 89,
+    "inflammation": 83,
+    "fiber_processing": 67,
+    "bifidobacteria": 88
+  },
   "strengths_challenges": {
     "strengths": [
       {
         "icon": "🛡️",
         "title": "Low inflammatory pressure",
         "text": "Your beneficial bacteria are producing mostly gentle, protective short-chain fatty acids with minimal harsh protein-fermentation byproducts. This is an important marker of gut health."
-      },
-      {
-        "icon": "🌱",
-        "title": "Good diversity",
-        "text": "Your gut shows moderate-to-good species diversity (Shannon 3.20). A varied bacterial community provides a more stable and adaptable foundation for gut health."
       },
       {
         "icon": "⚡",
@@ -210,6 +216,11 @@
         "icon": "🏗️",
         "title": "Strong gut lining support",
         "text": "Your gut lining has good protection: butyrate producers are active, your bacteria are fed primarily by dietary fiber rather than mucus, and mucin degradation is controlled. This combination supports a well-maintained gut barrier."
+      },
+      {
+        "icon": "✅",
+        "title": "Clean safety profile",
+        "text": "None of the key dysbiosis-associated bacteria (Fusobacterium nucleatum, Streptococcus gallolyticus, Peptostreptococcus anaerobius, Escherichia-Shigella) were detected at concerning levels. Your gut has a reassuring safety baseline."
       }
     ],
     "challenges": [
@@ -220,6 +231,14 @@
         "area_label": "fiber processing",
         "severity": "moderate",
         "text": "Your fiber-processing bacteria are at 15.2% — below their healthy range of 30-50%. This is the entry point for the entire fermentation chain, so supporting this group is a primary target."
+      },
+      {
+        "icon": "🌿",
+        "title": "Moderate diversity",
+        "area_key": "diversity",
+        "area_label": "microbial diversity",
+        "severity": "moderate",
+        "text": "Your species diversity (Shannon 3.20) is in the lower half of the normal range — below the population median of 3.29 but above the 25th percentile. Building more diversity over time is a worthwhile goal and one of the indirect benefits of your prebiotic protocol."
       }
     ],
     "all_strengths": [
@@ -227,11 +246,6 @@
         "icon": "🛡️",
         "title": "Low inflammatory pressure",
         "text": "Your beneficial bacteria are producing mostly gentle, protective short-chain fatty acids with minimal harsh protein-fermentation byproducts. This is an important marker of gut health."
-      },
-      {
-        "icon": "🌱",
-        "title": "Good diversity",
-        "text": "Your gut shows moderate-to-good species diversity (Shannon 3.20). A varied bacterial community provides a more stable and adaptable foundation for gut health."
       },
       {
         "icon": "⚡",
@@ -277,14 +291,261 @@
         "area_label": "fiber processing",
         "severity": "moderate",
         "text": "Your fiber-processing bacteria are at 15.2% — below their healthy range of 30-50%. This is the entry point for the entire fermentation chain, so supporting this group is a primary target."
+      },
+      {
+        "icon": "🌿",
+        "title": "Moderate diversity",
+        "area_key": "diversity",
+        "area_label": "microbial diversity",
+        "severity": "moderate",
+        "text": "Your species diversity (Shannon 3.20) is in the lower half of the normal range — below the population median of 3.29 but above the 25th percentile. Building more diversity over time is a worthwhile goal and one of the indirect benefits of your prebiotic protocol."
       }
     ],
     "distinct_areas": [
-      "fiber processing"
-    ],
-    "bottom_line": "The main issue is not total collapse — it is imbalance in a few high-impact areas. Your gut still has strong foundations to build on."
+      "fiber processing",
+      "microbial diversity"
+    ]
   },
   "good_news": "Your gut bacteria community is well-balanced and stable, with strong connector bacteria that help different teams work together smoothly during daily changes.",
+  "timeline_phases": [
+    {
+      "weeks": "1–4",
+      "label": "Settling in",
+      "color": "#3A6EA8",
+      "dot_class": "wk4",
+      "title": "🌱 Settling in",
+      "body": "The probiotic strains in your capsule are adapting to your gut environment — encountering existing bacteria, beginning to colonise, and establishing early positions. Your daily prebiotic sachet is reaching the lower gut, priming the environment before measurable compositional shifts occur. Vitamin C, Zinc, and B-vitamins from your sachet begin supporting immune and energy pathways within days. The LP815 strain begins producing calming GABA from week 1, supporting stress-axis balance. You may notice small changes in digestion rhythm — this is normal as your gut adjusts."
+    },
+    {
+      "weeks": "5–8",
+      "label": "Early momentum",
+      "color": "#2E8B6E",
+      "dot_class": "wk8",
+      "title": "🔋 Early momentum",
+      "body": "Beneficial bacteria begin expanding as prebiotic fibres consistently supply the substrate they need. Short-chain fatty acid production increases as the fermentation chain becomes more active. Omega-3 EPA and DHA from your softgels are building up in cell membranes, typically reaching effective anti-inflammatory concentrations by week 6. Vitamin D3 supports ongoing immune regulation. Many people start noticing improvements in digestion consistency and gut comfort during this window."
+    },
+    {
+      "weeks": "9–12",
+      "label": "Deepening balance",
+      "color": "#C97C2A",
+      "dot_class": "wk12",
+      "title": "🛡️ Deepening balance",
+      "body": "Guild populations move toward their target ranges. Butyrate output increases as the fermentation chain becomes more complete — your gut lining receives more of the protective compounds it needs for repair. Ashwagandha's adaptogenic effects on the stress axis compound with continued use, typically most noticeable from week 8 onward. Magnesium Bisglycinate supports deeper sleep and stress resilience as tissue saturation builds. Inflammatory metabolite pressure typically decreases during this phase as the SCFA-to-protein fermentation balance shifts."
+    },
+    {
+      "weeks": "13–16",
+      "label": "Consolidation",
+      "color": "#6B5EA8",
+      "dot_class": "wk16",
+      "title": "⚖️ Consolidation",
+      "body": "The ecological shifts from earlier phases become self-sustaining. A more diverse, well-balanced community is better equipped to hold its gains under normal life pressures — stress, travel, or temporary dietary changes. Botanical adaptogens and the full vitamin-mineral stack have reached their most effective tissue concentrations. Weeks 13–16 are the ideal window for a reassessment sample to measure the full compositional shift."
+    }
+  ],
+  "supplement_cards": [
+    {
+      "num": 1,
+      "key": "delivery_format_1_probiotic_capsule",
+      "name": "Probiotic Capsule",
+      "timing": "🌅 Every morning",
+      "timing_group": "morning",
+      "what_it_is": "Live beneficial bacteria, selected specifically for your microbiome pattern.",
+      "why": "This probiotic blend introduces beneficial gut bacteria that produce calming compounds and support your digestive system's fiber processing abilities. It's specifically chosen to boost your fiber-processing bacteria levels and help manage mood and anxiety through the gut-brain connection.",
+      "pills": [
+        {
+          "name": "Lactobacillus plantarum CECT 7484 (KABP022)",
+          "dose": "10B CFU"
+        },
+        {
+          "name": "Lactobacillus plantarum CECT 7485 (KABP023)",
+          "dose": "10B CFU"
+        },
+        {
+          "name": "Lactobacillus plantarum 299v (DSM 9843)",
+          "dose": "10B CFU"
+        },
+        {
+          "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "dose": "10B CFU"
+        },
+        {
+          "name": "Lactiplantibacillus plantarum LP815",
+          "dose": "5B CFU"
+        }
+      ],
+      "supports": [
+        "Butyrate Specialist",
+        "Fiber below range",
+        "Gut-Brain",
+        "Sleep Quality",
+        "Stress/Anxiety"
+      ],
+      "color": "#1E1E2A",
+      "emoji": "💊"
+    },
+    {
+      "num": 2,
+      "key": "delivery_format_2_omega_softgels",
+      "name": "Omega & Antioxidant Softgel",
+      "timing": "🌅 Every morning (2×)",
+      "timing_group": "morning",
+      "what_it_is": "Essential fatty acids and antioxidants in an easy-to-absorb softgel form.",
+      "why": "This combination delivers essential fats and nutrients that support brain function, mood balance, and immune strength. The Omega-3s target your mood and anxiety goals while Vitamin D and antioxidants boost your immune resilience.",
+      "pills": [
+        {
+          "name": "Omega-3 (EPA + DHA)",
+          "dose": "712.5mg"
+        },
+        {
+          "name": "Vitamin D3",
+          "dose": "10mcg (400 IU)"
+        },
+        {
+          "name": "Vitamin E",
+          "dose": "7.5mg"
+        },
+        {
+          "name": "Astaxanthin (H. pluvialis 10% oleoresin)",
+          "dose": "3mg active (30mg oleoresin)"
+        }
+      ],
+      "supports": [
+        "Anti-inflammatory",
+        "Antioxidant Protection",
+        "Brain Health",
+        "Immune System"
+      ],
+      "color": "#C97C2A",
+      "emoji": "🐟"
+    },
+    {
+      "num": 3,
+      "key": "delivery_format_3_daily_sachet",
+      "name": "Daily Prebiotic Sachet",
+      "timing": "🌅 Every morning",
+      "timing_group": "morning",
+      "what_it_is": "A blend of prebiotic fibres and micronutrients — food for your beneficial bacteria plus targeted vitamin and mineral support.",
+      "why": "This prebiotic powder feeds your beneficial gut bacteria and provides key vitamins and minerals for immune and metabolic support. It's designed to work with your probiotic to improve your fiber-processing bacteria levels while supporting your immune resilience and metabolism goals.",
+      "pills": [
+        {
+          "name": "Inulin",
+          "dose": "1.5"
+        },
+        {
+          "name": "FOS",
+          "dose": "1.0"
+        },
+        {
+          "name": "Resistant starch",
+          "dose": "2.0"
+        },
+        {
+          "name": "Beta-glucans",
+          "dose": "1.5"
+        },
+        {
+          "name": "GOS",
+          "dose": "0.5"
+        },
+        {
+          "name": "Vitamin C",
+          "dose": "250mg"
+        },
+        {
+          "name": "Zinc",
+          "dose": "8mg"
+        },
+        {
+          "name": "Vitamin B12",
+          "dose": "25mcg"
+        },
+        {
+          "name": "Folate (B9)",
+          "dose": "200mcg"
+        }
+      ],
+      "supports": [
+        "Butyrate Specialist substrate",
+        "Fatigue",
+        "Immune System",
+        "Metabolism"
+      ],
+      "color": "#2E8B6E",
+      "emoji": "🌿"
+    },
+    {
+      "num": 4,
+      "key": "delivery_format_4_evening_capsule",
+      "name": "Evening Wellness Capsule",
+      "timing": "🌙 30–60 min before bed",
+      "timing_group": "evening",
+      "what_it_is": "Botanical and functional molecules timed to work with your body's evening recovery processes.",
+      "why": "This evening blend combines stress-reducing herbs that help calm your mind and support your body's natural defenses. It targets your mood and anxiety goals while providing immune support through natural protective compounds.",
+      "pills": [
+        {
+          "name": "Ashwagandha (Withania somnifera)",
+          "dose": "300.0"
+        },
+        {
+          "name": "Propolis",
+          "dose": "300"
+        }
+      ],
+      "supports": [
+        "Sleep Quality"
+      ],
+      "color": "#6B5EA8",
+      "emoji": "🌙"
+    },
+    {
+      "num": 5,
+      "key": "delivery_format_magnesium_capsule",
+      "name": "Magnesium Bisglycinate Capsule",
+      "timing": "🌙 30–60 min before bed",
+      "what_it_is": "Highly absorbable magnesium in bisglycinate form — supports sleep quality, muscle recovery, and stress resilience.",
+      "why": "Questionnaire (Stress: stress 7/10 ≥ 6 + stress/mood goal)",
+      "pills": [
+        {
+          "name": "Magnesium Bisglycinate",
+          "dose": "105mg elemental"
+        }
+      ],
+      "supports": [
+        "Stress"
+      ],
+      "color": "#4A5568",
+      "emoji": "🌙"
+    }
+  ],
+  "goal_cards": [
+    {
+      "emoji": "🛡️",
+      "title": "Stronger immune resilience",
+      "mechanism": "Around 70% of your immune system is shaped by your gut bacteria. Beneficial bacteria modulate immune signalling, train immune cells, and maintain the gut barrier that prevents unwanted particles from triggering immune responses.",
+      "formula_link": "Your formula targets this through Zinc and Vitamin C in the sachet (directly support immune cell activity), Omega-3 EPA/DHA (resolve inflammatory signals), Vitamin D3 (regulates immune training), and the probiotic mix (rebuilds beneficial bacteria that educate immune cells).",
+      "inferred": false
+    },
+    {
+      "emoji": "🧘",
+      "title": "Better mood and reduced anxiety",
+      "mechanism": "Your gut produces about 90% of your body's serotonin and communicates directly with your brain via the vagus nerve. Gut microbiome imbalances — especially disruptions to beneficial bacteria — have been consistently linked to mood and anxiety patterns.",
+      "formula_link": "Your formula targets this through Ashwagandha (clinical evidence for cortisol reduction and anxiety relief), LP815 probiotic strain (produces calming GABA), Omega-3 DHA (brain health and mood regulation), and Magnesium Bisglycinate (supports the nervous system and stress resilience).",
+      "inferred": false
+    },
+    {
+      "emoji": "🎯",
+      "title": "Optimise metabolism",
+      "mechanism": "A balanced, resilient gut microbiome provides the foundation for many aspects of health — from energy and metabolism to immunity and mental clarity. Supporting your microbiome creates positive ripple effects across multiple systems.",
+      "formula_link": "Your formula is designed holistically — the probiotic mix, prebiotic blend, and targeted nutrients all work together to create the conditions your gut needs to function at its best.",
+      "inferred": false
+    },
+    {
+      "emoji": "😴",
+      "title": "Better sleep quality",
+      "mechanism": "Sleep and the gut microbiome operate in a bidirectional relationship. Gut bacteria influence circadian rhythm signals, serotonin and melatonin precursor availability, and inflammatory mediators that affect sleep architecture.",
+      "formula_link": "Your formula targets this through L-Theanine (promotes relaxation without sedation), Magnesium Bisglycinate (supports deep sleep phases), Ashwagandha (reduces HPA-axis activation that disrupts sleep onset), and the LP815 strain (GABA production supports calm states before sleep).",
+      "inferred": true
+    }
+  ],
   "root_cause_data": {
     "deviation_cards": [
       {
@@ -298,8 +559,8 @@
           "range_str": "30–50%",
           "description": "Your Fiber-Processing Bacteria are at 15.2% — below the healthy range of 30–50%."
         },
-        "narrative": "Your fiber-processing bacteria are the workhorses of your gut — they break down the fiber from fruits, vegetables, and whole grains into protective compounds that keep your gut lining healthy and support your immune system. At 15.2%, you have about half of what we'd expect to see in a thriving gut ecosystem. This matters for your day-to-day health because these bacteria produce the compounds that help regulate inflammation, support your mood through the gut-brain connection, and strengthen your immune defenses. When their numbers are low, you might notice that your body doesn't bounce back from stress as easily, and your overall resilience feels diminished. The good news is that these bacteria respond beautifully to the right support — they're just waiting for the right conditions to flourish again.",
-        "summary_line": "Your fiber-processing bacteria took a hit from recent antibiotics and lifestyle stressors, but they're incredibly responsive to targeted support and will rebuild with the right approach.",
+        "narrative": "Your fiber-processing bacteria are the workhorses of your gut — they break down the fiber from fruits, vegetables, and whole grains into protective compounds that keep your gut lining healthy and support your immune system. At 15.2%, you have about half the amount that most people need for optimal gut health. This matters more than you might think for your daily life. These bacteria produce compounds that help regulate your mood and support the gut-brain connection — something that's particularly relevant given your goal to improve mood and reduce anxiety. When fiber-processing bacteria are low, your gut can't extract as much benefit from the healthy foods you eat, and it becomes harder for your gut to maintain its protective barrier. The good news is that these bacteria respond beautifully to the right support — they're just waiting for the right conditions to flourish again.",
+        "summary_line": "Your fiber-processing bacteria took a hit but they're ready to bounce back with the right support.",
         "health_meaning": "Your Fiber-Processing Bacteria are at 15.2% — below the healthy range of 30–50%.",
         "drivers": [],
         "personal_synthesis": "",
@@ -341,6 +602,37 @@
             "domain_key": "stress_anxiety"
           }
         ]
+      },
+      {
+        "deviation": {
+          "key": "diversity__moderate",
+          "type": "moderate_diversity",
+          "guild_key": null,
+          "client_label": "Microbial Diversity",
+          "icon": "🌿",
+          "value_str": "Shannon 3.20",
+          "range_str": "> 3.29 (population median)",
+          "description": "Your gut microbial diversity (Shannon 3.20) is in the lower half of the reference population — below the population median of 3.29."
+        },
+        "narrative": "Think of microbial diversity like having a diverse ecosystem in your gut — the more different types of beneficial bacteria you have, the more resilient and adaptable your gut becomes. Your diversity score of 3.20 puts you in the lower half compared to others, which means your gut ecosystem is a bit less varied than ideal. This matters because a diverse gut microbiome is like having a well-stocked toolbox — different bacteria handle different jobs, from processing various types of food to supporting your immune system and even influencing your mood. When diversity is lower, your gut becomes more vulnerable to disruption and less efficient at all these important tasks. Lower diversity is also connected to increased inflammation and reduced immune resilience, which ties directly into your goals of strengthening your immune system and improving your mood.",
+        "summary_line": "Your gut ecosystem needs more variety, but this is very achievable with targeted support.",
+        "health_meaning": "Your gut microbial diversity (Shannon 3.20) is in the lower half of the reference population — below the population median of 3.29.",
+        "drivers": [],
+        "personal_synthesis": "",
+        "kb_drivers": [
+          {
+            "icon": "🚬",
+            "label": "Tobacco / Smoking",
+            "text": "The composition of gut bacteria differs significantly between smokers and non-smokers — smoking creates a distinct microbial environment that tends to favor less beneficial bacterial communities.",
+            "kb_text": "The composition of gut bacteria differs significantly between smokers and non-smokers — smoking creates a distinct microbial environment that tends to favor less beneficial bacterial communities.",
+            "is_llm_text": false,
+            "directionality": "driver",
+            "directionality_arrow": "exposure → microbiome",
+            "evidence_label": "Research supported",
+            "evidence_strength": "moderate",
+            "domain_key": "smoking"
+          }
+        ]
       }
     ],
     "awareness_chips": [
@@ -366,456 +658,136 @@
         "summary_text": "Around 70% of your immune system operates in and around your gut. When gut bacteria that produce butyrate are depleted, the physical and immunological defenses of your gut barrier are weakened — which is directly connected to increased immune vulnerability and susceptibility to infections."
       }
     ],
-    "section_summary": "Your gut is telling the story of a recent perfect storm — necessary antibiotics, ongoing stress, and occasional smoking all converged to disrupt your beneficial bacteria. The silver lining is that fiber-processing bacteria are among the most responsive to positive changes, and your daily fermented foods show you're already supporting recovery.",
-    "cited_papers": [
+    "section_summary": "The story here is clear: your recent antibiotic treatments created a significant disruption in your gut, and your ongoing stress and occasional smoking are making it harder for your beneficial bacteria to fully recover. The good news is that this is a very recoverable situation — your gut is simply waiting for the right conditions to rebuild its protective, diverse community.",
+    "cited_papers": [],
+    "factor_cards": [
       {
-        "citation": "Chen et al., 2024",
-        "title": "When smoke meets gut: deciphering the interactions between tobacco smoking and gut microbiota in disease development",
-        "abstract": "Tobacco smoking is a prevalent and detrimental habit practiced worldwide, increasing the risk of various diseases, including chronic obstructive pulmonary disease (COPD), cardiovascular disease, liver disease, and cancer. Although previous research has explored the detrimental health effects of tobacco smoking, recent studies suggest that gut microbiota dysbiosis may play a critical role in these outcomes. Numerous tobacco smoke components, such as nicotine, are found in the gastrointestinal tract and interact with gut microbiota, leading to lasting impacts on host health and diseases. This review delves into the ways tobacco smoking and its various constituents influence gut microbiota composition and functionality. We also summarize recent advancements in understanding how tobacco smokin",
-        "venue": "Science China Life Sciences",
-        "year": 2024,
-        "doi": "10.1007/s11427-023-2446-y",
-        "authors": [
-          "Bo Chen",
-          "Guangyi Zeng",
-          "Lulu Sun",
-          "Changtao Jiang"
+        "domain_key": "smoking",
+        "icon": "🚬",
+        "label": "Tobacco / Smoking",
+        "subtitle": "Affects 2 bacterial imbalances",
+        "evidence_label": "Research supported",
+        "evidence_strength": "moderate",
+        "guilds_affected_count": 2,
+        "guild_impacts": [
+          {
+            "client_label": "Fiber-Processing Bacteria",
+            "value_str": "15.2%",
+            "impact": "low"
+          },
+          {
+            "client_label": "Microbial Diversity",
+            "value_str": "Shannon 3.20",
+            "impact": "low"
+          }
+        ],
+        "explanation": "The composition of gut bacteria differs significantly between smokers and non-smokers — smoking creates a distinct microbial environment that tends to favor less beneficial bacterial communities.",
+        "kb_text": "The composition of gut bacteria differs significantly between smokers and non-smokers — smoking creates a distinct microbial environment that tends to favor less beneficial bacterial communities.",
+        "directionality": "driver"
+      },
+      {
+        "domain_key": "antibiotic_use",
+        "icon": "💊",
+        "label": "Antibiotic Use",
+        "subtitle": "Affects 1 bacterial imbalance",
+        "evidence_label": "Well established",
+        "evidence_strength": "strong",
+        "guilds_affected_count": 1,
+        "guild_impacts": [
+          {
+            "client_label": "Fiber-Processing Bacteria",
+            "value_str": "15.2%",
+            "impact": "low"
+          }
+        ],
+        "explanation": "Antibiotics are one of the most common causes of the pattern we're seeing. Even a single course can significantly reduce your Bifidobacteria and butyrate-producing bacteria — the two groups most critical for your gut's protection and fermentation capacity.",
+        "kb_text": "Antibiotics are one of the most common causes of the pattern we're seeing. Even a single course can significantly reduce your Bifidobacteria and butyrate-producing bacteria — the two groups most critical for your gut's protection and fermentation capacity.",
+        "directionality": "driver"
+      },
+      {
+        "domain_key": "stress_anxiety",
+        "icon": "😰",
+        "label": "Chronic Stress & Anxiety",
+        "subtitle": "Affects 1 bacterial imbalance",
+        "evidence_label": "Research supported",
+        "evidence_strength": "moderate",
+        "guilds_affected_count": 1,
+        "guild_impacts": [
+          {
+            "client_label": "Fiber-Processing Bacteria",
+            "value_str": "15.2%",
+            "impact": "low"
+          }
+        ],
+        "explanation": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+        "kb_text": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+        "directionality": "bidirectional"
+      }
+    ],
+    "cascade_guilds": [
+      {
+        "client_label": "Fiber-Processing Bacteria",
+        "value_str": "15.2%",
+        "impact": "low",
+        "driving_factor_emojis": [
+          "💊",
+          "🚬",
+          "😰"
         ]
       },
       {
-        "citation": "Castro-Rodríguez et al., 2025",
-        "title": "Lactiplantibacillus plantarum Intake Reduces Gastrointestinal Tract Damage Caused by Chronic Stress in Young Rats",
-        "abstract": "Stress is the body’s coordinated response to stimuli that threaten its internal stability. It is a risk factor that alters the functionality of the gastrointestinal tract. This study evaluated the effect of Lactiplantibacillus plantarum 299v on chronic stress-induced morphological alterations in the small and large intestine, the expression of intestinal barrier and immune related genes, and gut microbiota composition in 52-day old male Wistar rats. The animals were randomly assigned to three groups: control (C), chronic restraint stress (S), and chronic restraint stress plus L. plantarum (1 × 1010 CFU/mL, SP). The chronic restraint stress protocol consisted of a 1-h daily session, 5 days per week, for four consecutive weeks. Administration of L. plantarum increased the number of goblet ce",
-        "venue": "ACS Omega",
-        "year": 2025,
-        "doi": "10.1021/acsomega.5c07219",
-        "authors": [
-          "D. C. Castro-Rodríguez",
-          "E. Pérez-Sánchez",
-          "Georgina Hernández-Montes",
-          "Julián Fernando Oviedo-León",
-          "L. Nicolás-Toledo"
+        "client_label": "Microbial Diversity",
+        "value_str": "Shannon 3.20",
+        "impact": "low",
+        "driving_factor_emojis": [
+          "🚬"
         ]
+      }
+    ],
+    "metrics_strip": [
+      {
+        "client_label": "Fiber-Processing Bacteria",
+        "value_str": "15.2%",
+        "range_str": "30–50%",
+        "impact": "low",
+        "icon": "🌾"
       },
       {
-        "citation": "Li et al., 2026",
-        "title": "Gut Microbiota-Driven Pathways Linking Chronic Stress to Tumor Progression",
-        "abstract": "Chronic stress is increasingly recognized as a critical factor influencing tumor progression, but its underlying mechanisms remain incompletely understood. This review examines the role of gut microbiota as a critical mediator linking chronic stress to tumor progression. Recent evidence suggests that chronic stress triggers gut dysbiosis, characterized by reduced microbial diversity, depletion of beneficial bacteria, and enrichment of potentially harmful species. We summarize the mechanisms by which chronic stress regulates gut microbial dysbiosis, including stress-related hormone signaling, intestinal inflammation, mucosal barrier disruption, and altered gut motility. Additionally, we examine how stress-induced dysbiosis contributes to tumor progression through immune suppression, metabol",
-        "venue": "International Journal on Biological Sciences",
-        "year": 2026,
-        "doi": "10.7150/ijbs.119630",
-        "authors": [
-          "Qing Li",
-          "Siyuan Xia",
-          "Xian Zhang",
-          "Yuqiang Liu",
-          "Xue Xiao",
-          "Jinlin Yang"
-        ]
-      },
-      {
-        "citation": "Vervoort et al., 2015",
-        "title": "Metagenomic analysis of the impact of nitrofurantoin treatment on the human faecal microbiota.",
-        "abstract": "OBJECTIVES\nThe objective was to study changes in the faecal microbiota of patients with uncomplicated urinary tract infections (UTIs) treated with nitrofurantoin and of non-treated healthy controls using 16S rRNA analysis.\n\n\nMETHODS\nSerial stool samples were collected from patients receiving nitrofurantoin treatment at different timepoints [before treatment (day 1; T1), within 48 h of end of treatment (days 5-15; T2) and 28 days after treatment (days 31-43; T3)], as well as from healthy controls. Direct DNA extraction (PowerSoil DNA Isolation Kit, MoBio Laboratories, Carlsbad, CA, USA) from stool samples was followed by pyrosequencing (454 GS FLX Titanium) of the V3-V5 region of the bacterial 16S rRNA gene.\n\n\nRESULTS\nAmong UTI patients, mean proportions of the Actinobacteria phylum increas",
-        "venue": "Journal of Antimicrobial Chemotherapy",
-        "year": 2015,
-        "doi": "10.1093/jac/dkv062",
-        "authors": [
-          "J. Vervoort",
-          "B. Xavier",
-          "Andrew J. Stewardson",
-          "S. Coenen",
-          "M. Godycki-Cwirko",
-          "N. Adriaenssens",
-          "A. Kowalczyk",
-          "C. Lammens",
-          "S. Harbarth",
-          "H. Goossens",
-          "S. Malhotra-Kumar"
-        ]
+        "client_label": "Microbial Diversity",
+        "value_str": "Shannon 3.20",
+        "range_str": "> 3.29 (population median)",
+        "impact": "low",
+        "icon": "🌿"
       }
     ]
   },
-  "timeline_phases": [
-    {
-      "weeks": "1–4",
-      "label": "Settling in",
-      "color": "#3A6EA8",
-      "dot_class": "wk4",
-      "title": "🌱 Settling in",
-      "body": "The probiotic strains in your capsule are adapting to your gut environment — encountering existing bacteria, beginning to colonise, and establishing early positions. Your daily prebiotic sachet is reaching the lower gut, priming the environment before measurable compositional shifts occur. Vitamin C, Zinc, and B-vitamins from your sachet begin supporting immune and energy pathways within days. The LP815 strain begins producing calming GABA from week 1, supporting stress-axis balance. You may notice small changes in digestion rhythm — this is normal as your gut adjusts."
-    },
-    {
-      "weeks": "5–8",
-      "label": "Early momentum",
-      "color": "#2E8B6E",
-      "dot_class": "wk8",
-      "title": "🔋 Early momentum",
-      "body": "Beneficial bacteria begin expanding as prebiotic fibres consistently supply the substrate they need. Your fiber degraders start moving toward healthy abundance levels. Short-chain fatty acid production increases as the fermentation chain becomes more active. Omega-3 EPA and DHA from your softgels are building up in cell membranes, typically reaching effective anti-inflammatory concentrations by week 6. Vitamin D3 supports ongoing immune regulation. Many people start noticing improvements in digestion consistency and gut comfort during this window."
-    },
-    {
-      "weeks": "9–12",
-      "label": "Deepening balance",
-      "color": "#C97C2A",
-      "dot_class": "wk12",
-      "title": "🛡️ Deepening balance",
-      "body": "Guild populations move toward their target ranges. Butyrate output increases as the fermentation chain becomes more complete — your gut lining receives more of the protective compounds it needs for repair. Ashwagandha's adaptogenic effects on the stress axis compound with continued use, typically most noticeable from week 8 onward. Magnesium Bisglycinate supports deeper sleep and stress resilience as tissue saturation builds. Inflammatory metabolite pressure typically decreases during this phase as the SCFA-to-protein fermentation balance shifts."
-    },
-    {
-      "weeks": "13–16",
-      "label": "Consolidation",
-      "color": "#6B5EA8",
-      "dot_class": "wk16",
-      "title": "⚖️ Consolidation",
-      "body": "The ecological shifts from earlier phases become self-sustaining. A more diverse, well-balanced community is better equipped to hold its gains under normal life pressures — stress, travel, or temporary dietary changes. Botanical adaptogens and the full vitamin-mineral stack have reached their most effective tissue concentrations. Weeks 13–16 are the ideal window for a reassessment sample to measure the full compositional shift."
-    }
-  ],
+  "cited_papers": [],
   "lifestyle_recommendations": [
     {
       "emoji": "🌾",
       "title": "Prioritize diverse fiber sources daily",
-      "text": "With your fiber-processing bacteria at only 15.2% (well below the 30-50% range), focus on incorporating multiple categories of plant-based fibers at each meal to rebuild this critical bacterial community."
-    },
-    {
-      "emoji": "🏃‍♀️",
-      "title": "Gradually increase physical activity intensity",
-      "text": "Since you currently engage in light activity, progressively add moderate-intensity exercise sessions 3-4 times weekly to enhance beneficial gut bacteria that support both immune function and mood regulation."
+      "text": "Your fiber-processing bacteria at 15.2% are significantly below the healthy range of 30-50%. Focus on incorporating multiple types of plant fibers throughout each day to rebuild this critical bacterial community."
     },
     {
       "emoji": "🧘",
-      "title": "Implement daily stress-reduction practices",
-      "text": "Given your high stress level (7/10), incorporate 10-15 minutes of mindfulness or breathing exercises daily to support gut barrier function and optimize the stress-microbiome connection."
+      "title": "Implement targeted stress reduction practices",
+      "text": "With your stress level at 7/10, prioritize daily stress management techniques like meditation or deep breathing exercises. High stress can further disrupt gut bacteria diversity, which is already slightly below optimal at 3.20."
+    },
+    {
+      "emoji": "🏃",
+      "title": "Gradually increase physical activity intensity",
+      "text": "Since you currently engage in light activity, progressively add moderate-intensity exercise 3-4 times weekly. Regular movement can enhance microbial diversity and support both immune function and mood regulation."
     },
     {
       "emoji": "🍽️",
-      "title": "Maintain consistent meal timing patterns",
-      "text": "Establish regular eating windows and avoid late-night meals to support your circadian rhythm and complement your excellent sleep quality (9/10) for optimal microbiome function."
+      "title": "Maintain consistent meal timing",
+      "text": "Establish regular eating patterns to support your circadian rhythm and gut bacteria cycles. This consistency can help optimize the excellent sleep quality you already maintain while supporting immune resilience."
     },
     {
-      "emoji": "💧",
-      "title": "Support fiber fermentation with adequate hydration",
-      "text": "Increase water intake throughout the day, especially when boosting fiber consumption, to facilitate proper bacterial fermentation and short-chain fatty acid production for immune and mood benefits."
+      "emoji": "🦠",
+      "title": "Include fermented foods strategically",
+      "text": "Add fermented food categories to your omnivorous diet 4-5 times weekly to introduce beneficial bacteria. This can help compensate for your below-range microbial diversity while supporting mood and anxiety management."
     }
   ],
-  "supplement_cards": [
-    {
-      "num": 1,
-      "key": "probiotic_hard_capsule",
-      "name": "Probiotic Hard Capsule",
-      "timing": "🌅 1× morning",
-      "total_weight": "550mg",
-      "what_it_is": "Live beneficial bacteria, selected specifically for your microbiome pattern.",
-      "why": "Mix 3 (Fiber & SCFA Restoration) targets your fiber-processing bacteria, which sit below range at 15.2% despite being compositionally competitive. These strains provide cross-feeding support and substrate provisioning to expand your fiber degrader guild back into its functional range. LP815 adds psychobiotic GABA production for stress/mood support.",
-      "pills": [
-        { "name": "Lactobacillus plantarum UALp-05", "dose": "125mg · 12.5B CFU" },
-        { "name": "Lactobacillus plantarum 299v", "dose": "125mg · 12.5B CFU" },
-        { "name": "Lactobacillus acidophilus NCFM", "dose": "125mg · 12.5B CFU" },
-        { "name": "Bifidobacterium animalis subsp. lactis BB-12", "dose": "125mg · 12.5B CFU" },
-        { "name": "Lactiplantibacillus plantarum LP815", "dose": "50mg · 5B CFU" }
-      ],
-      "supports": [
-        "Fiber & SCFA Restoration",
-        "Gut-Brain",
-        "Stress/Anxiety"
-      ],
-      "color": "#1E1E2A",
-      "emoji": "💊"
-    },
-    {
-      "num": 2,
-      "key": "omega_antioxidant_softgel",
-      "name": "Omega + Antioxidant Softgel",
-      "timing": "🌅 2× morning",
-      "total_weight": "1500mg",
-      "what_it_is": "Essential fatty acids and antioxidants in an easy-to-absorb softgel form.",
-      "why": "Omega-3 EPA and DHA support gut barrier integrity, reduce inflammatory signalling, and support brain and mood function. Vitamin D3 regulates immune training. Astaxanthin provides potent antioxidant protection.",
-      "per_softgel_note": "PER SOFTGEL (×2)",
-      "pills": [
-        { "name": "Omega-3 (EPA + DHA)", "dose": "712.5mg" },
-        { "name": "Vitamin D3", "dose": "10mcg (400 IU)" },
-        { "name": "Vitamin E", "dose": "7.5mg" },
-        { "name": "Astaxanthin (H. pluvialis 10% oleoresin)", "dose": "3mg active (30mg oleoresin)" }
-      ],
-      "supports": [
-        "Anti-inflammatory",
-        "Brain Health",
-        "Immune System",
-        "Antioxidant Protection"
-      ],
-      "color": "#C97C2A",
-      "emoji": "🐟"
-    },
-    {
-      "num": 3,
-      "key": "prebiotic_powder_jar",
-      "name": "Prebiotic & Botanical Powder Jar",
-      "timing": "🌅 1× morning",
-      "total_weight": "6.5g",
-      "what_it_is": "A blend of prebiotic fibres mixed into water — food for your beneficial bacteria, designed for easy daily use.",
-      "why": "This prebiotic blend selectively feeds the beneficial bacteria identified as needing support. PHGG provides a gentle base, Beta-glucans and Resistant starch boost SCFA and butyrate production, while Inulin, FOS, and GOS are the specific substrates your probiotic strains (especially L. acidophilus NCFM) need to thrive.",
-      "pills": [
-        { "name": "PHGG", "dose": "2g" },
-        { "name": "Beta-glucans", "dose": "1.5g" },
-        { "name": "Inulin", "dose": "1g" },
-        { "name": "FOS", "dose": "0.5g" },
-        { "name": "GOS", "dose": "0.5g" },
-        { "name": "Resistant starch", "dose": "1g" }
-      ],
-      "phased_dosing": {
-        "weeks_1_2_g": 3.2,
-        "weeks_3_plus_g": 6.5,
-        "instruction": "Weeks 1–2: 3.2g/day (half dose) → Week 3+: 6.5g/day (full dose)"
-      },
-      "supports": [
-        "Fiber & SCFA Restoration substrate",
-        "Butyrate production",
-        "Immune resilience"
-      ],
-      "color": "#2E8B6E",
-      "emoji": "🌿"
-    },
-    {
-      "num": 4,
-      "key": "morning_wellness_capsules",
-      "name": "Morning Wellness Capsules",
-      "timing": "🌅 2× morning",
-      "total_weight": "763mg",
-      "what_it_is": "Targeted vitamins, minerals, and polyphenol compounds selected for your specific health profile.",
-      "why": "Capsule 1 addresses immune resilience (Vitamin C + Zinc + Selenium) and fatigue (B12 + Folate). Capsule 2 provides potent anti-inflammatory action through Curcumin co-formulated with Piperine for 2,000% enhanced absorption — best taken with food.",
-      "capsules": [
-        {
-          "label": "Capsule 1",
-          "weight": "258mg",
-          "components": [
-            { "name": "Vitamin C", "dose": "250mg" },
-            { "name": "Zinc", "dose": "8mg" },
-            { "name": "Selenium", "dose": "40mcg" },
-            { "name": "Vitamin B12", "dose": "25mcg" },
-            { "name": "Folate (B9)", "dose": "200mcg" }
-          ]
-        },
-        {
-          "label": "Capsule 2",
-          "weight": "505mg",
-          "components": [
-            { "name": "Curcumin", "dose": "500mg" },
-            { "name": "Piperine (black pepper extract)", "dose": "5mg" }
-          ]
-        }
-      ],
-      "supports": [
-        "Fatigue",
-        "Immune System",
-        "Metabolism",
-        "Anti-inflammatory",
-        "Longevity"
-      ],
-      "color": "#6B5EA8",
-      "emoji": "☀"
-    },
-    {
-      "num": 5,
-      "key": "evening_wellness_capsules",
-      "name": "Evening Wellness Capsules",
-      "timing": "🌙 2× evening (30–60 min before bed)",
-      "total_weight": "1350mg",
-      "what_it_is": "Botanical adaptogens and mineral support timed to work with your body's evening recovery processes.",
-      "why": "Capsule 1: Ashwagandha is a clinically-evidenced adaptogen for cortisol reduction and anxiety relief — directly addressing your stress level (7/10) and mood improvement goal. Propolis provides natural antibacterial/antiviral support for immune resilience. Capsule 2: Magnesium Bisglycinate supports deep sleep, stress resilience, and nervous system recovery — the bisglycinate form is chosen for superior absorption and calming effect.",
-      "capsules": [
-        {
-          "label": "Capsule 1",
-          "weight": "600mg",
-          "components": [
-            { "name": "Ashwagandha (Withania somnifera)", "dose": "300mg" },
-            { "name": "Propolis", "dose": "300mg" }
-          ]
-        },
-        {
-          "label": "Capsule 2 — Magnesium",
-          "weight": "750mg",
-          "components": [
-            { "name": "Magnesium Bisglycinate", "dose": "750mg (105mg elemental)" }
-          ]
-        }
-      ],
-      "supports": [
-        "Stress/Anxiety",
-        "Immune Resilience",
-        "Sleep Quality",
-        "Nervous System"
-      ],
-      "color": "#3A6EA8",
-      "emoji": "🌙"
-    }
-  ],
-  "goal_cards": [
-    {
-      "emoji": "🛡️",
-      "title": "Stronger immune resilience",
-      "mechanism": "Around 70% of your immune system is shaped by your gut bacteria. Beneficial bacteria modulate immune signalling, train immune cells, and maintain the gut barrier that prevents unwanted particles from triggering immune responses.",
-      "formula_link": "Your formula targets this through Zinc and Vitamin C in the sachet (directly support immune cell activity), Omega-3 EPA/DHA (resolve inflammatory signals), Vitamin D3 (regulates immune training), and the probiotic mix (rebuilds beneficial bacteria that educate immune cells)."
-    },
-    {
-      "emoji": "🧘",
-      "title": "Better mood and reduced anxiety",
-      "mechanism": "Your gut produces about 90% of your body's serotonin and communicates directly with your brain via the vagus nerve. Gut microbiome imbalances — especially disruptions to beneficial bacteria — have been consistently linked to mood and anxiety patterns.",
-      "formula_link": "Your formula targets this through Ashwagandha (clinical evidence for cortisol reduction and anxiety relief), LP815 probiotic strain (produces calming GABA), Omega-3 DHA (brain health and mood regulation), and Magnesium Bisglycinate (supports the nervous system and stress resilience)."
-    },
-    {
-      "emoji": "🎯",
-      "title": "Optimise metabolism",
-      "mechanism": "A balanced, resilient gut microbiome provides the foundation for many aspects of health — from energy and metabolism to immunity and mental clarity. Supporting your microbiome creates positive ripple effects across multiple systems.",
-      "formula_link": "Your formula is designed holistically — the probiotic mix, prebiotic blend, and targeted nutrients all work together to create the conditions your gut needs to function at its best."
-    }
-  ],
-  "cited_papers": [
-    {
-      "citation": "Chen et al., 2024",
-      "title": "When smoke meets gut: deciphering the interactions between tobacco smoking and gut microbiota in disease development",
-      "abstract": "Tobacco smoking is a prevalent and detrimental habit practiced worldwide, increasing the risk of various diseases, including chronic obstructive pulmonary disease (COPD), cardiovascular disease, liver disease, and cancer. Although previous research has explored the detrimental health effects of tobacco smoking, recent studies suggest that gut microbiota dysbiosis may play a critical role in these outcomes. Numerous tobacco smoke components, such as nicotine, are found in the gastrointestinal tract and interact with gut microbiota, leading to lasting impacts on host health and diseases. This review delves into the ways tobacco smoking and its various constituents influence gut microbiota composition and functionality. We also summarize recent advancements in understanding how tobacco smokin",
-      "venue": "Science China Life Sciences",
-      "year": 2024,
-      "doi": "10.1007/s11427-023-2446-y",
-      "authors": [
-        "Bo Chen",
-        "Guangyi Zeng",
-        "Lulu Sun",
-        "Changtao Jiang"
-      ]
-    },
-    {
-      "citation": "Castro-Rodríguez et al., 2025",
-      "title": "Lactiplantibacillus plantarum Intake Reduces Gastrointestinal Tract Damage Caused by Chronic Stress in Young Rats",
-      "abstract": "Stress is the body’s coordinated response to stimuli that threaten its internal stability. It is a risk factor that alters the functionality of the gastrointestinal tract. This study evaluated the effect of Lactiplantibacillus plantarum 299v on chronic stress-induced morphological alterations in the small and large intestine, the expression of intestinal barrier and immune related genes, and gut microbiota composition in 52-day old male Wistar rats. The animals were randomly assigned to three groups: control (C), chronic restraint stress (S), and chronic restraint stress plus L. plantarum (1 × 1010 CFU/mL, SP). The chronic restraint stress protocol consisted of a 1-h daily session, 5 days per week, for four consecutive weeks. Administration of L. plantarum increased the number of goblet ce",
-      "venue": "ACS Omega",
-      "year": 2025,
-      "doi": "10.1021/acsomega.5c07219",
-      "authors": [
-        "D. C. Castro-Rodríguez",
-        "E. Pérez-Sánchez",
-        "Georgina Hernández-Montes",
-        "Julián Fernando Oviedo-León",
-        "L. Nicolás-Toledo"
-      ]
-    },
-    {
-      "citation": "Li et al., 2026",
-      "title": "Gut Microbiota-Driven Pathways Linking Chronic Stress to Tumor Progression",
-      "abstract": "Chronic stress is increasingly recognized as a critical factor influencing tumor progression, but its underlying mechanisms remain incompletely understood. This review examines the role of gut microbiota as a critical mediator linking chronic stress to tumor progression. Recent evidence suggests that chronic stress triggers gut dysbiosis, characterized by reduced microbial diversity, depletion of beneficial bacteria, and enrichment of potentially harmful species. We summarize the mechanisms by which chronic stress regulates gut microbial dysbiosis, including stress-related hormone signaling, intestinal inflammation, mucosal barrier disruption, and altered gut motility. Additionally, we examine how stress-induced dysbiosis contributes to tumor progression through immune suppression, metabol",
-      "venue": "International Journal on Biological Sciences",
-      "year": 2026,
-      "doi": "10.7150/ijbs.119630",
-      "authors": [
-        "Qing Li",
-        "Siyuan Xia",
-        "Xian Zhang",
-        "Yuqiang Liu",
-        "Xue Xiao",
-        "Jinlin Yang"
-      ]
-    },
-    {
-      "citation": "Vervoort et al., 2015",
-      "title": "Metagenomic analysis of the impact of nitrofurantoin treatment on the human faecal microbiota.",
-      "abstract": "OBJECTIVES\nThe objective was to study changes in the faecal microbiota of patients with uncomplicated urinary tract infections (UTIs) treated with nitrofurantoin and of non-treated healthy controls using 16S rRNA analysis.\n\n\nMETHODS\nSerial stool samples were collected from patients receiving nitrofurantoin treatment at different timepoints [before treatment (day 1; T1), within 48 h of end of treatment (days 5-15; T2) and 28 days after treatment (days 31-43; T3)], as well as from healthy controls. Direct DNA extraction (PowerSoil DNA Isolation Kit, MoBio Laboratories, Carlsbad, CA, USA) from stool samples was followed by pyrosequencing (454 GS FLX Titanium) of the V3-V5 region of the bacterial 16S rRNA gene.\n\n\nRESULTS\nAmong UTI patients, mean proportions of the Actinobacteria phylum increas",
-      "venue": "Journal of Antimicrobial Chemotherapy",
-      "year": 2015,
-      "doi": "10.1093/jac/dkv062",
-      "authors": [
-        "J. Vervoort",
-        "B. Xavier",
-        "Andrew J. Stewardson",
-        "S. Coenen",
-        "M. Godycki-Cwirko",
-        "N. Adriaenssens",
-        "A. Kowalczyk",
-        "C. Lammens",
-        "S. Harbarth",
-        "H. Goossens",
-        "S. Malhotra-Kumar"
-      ]
-    },
-    {
-      "citation": "Michels et al., 2017",
-      "title": "Chronic Psychosocial Stress and Gut Health in Children: Associations With Calprotectin and Fecal Short-Chain Fatty Acids",
-      "abstract": "Objectives The mechanisms underpinning the association between chronic stress and gut health are poorly understood. We aimed to investigate the relationship between bacterial produced short-chain fatty acids, gut barrier function, and stress measures. Methods A fecal sample, hair sample, and questionnaire data were collected from 113 Belgian children (8–16 years old). Biological measures of stress included hair cortisol (most proximal 3 cm) and 5-minute heart rate variability (high frequency). Self-report measures of stress included emotional problems and negative events. Fecal calprotectin was determined as a marker of intestinal inflammation and an indirect indicator of gut barrier integrity. Fecal short-chain fatty acids (butyrate, propionate, acetate, valerate, isobutyrate, and isovale",
-      "venue": "Psychosomatic Medicine",
-      "year": 2017,
-      "doi": "10.1097/PSY.0000000000000413",
-      "authors": [
-        "N. Michels",
-        "T. van de Wiele",
-        "S. de Henauw"
-      ]
-    },
-    {
-      "citation": "Wouw et al., 2018",
-      "title": "Short‐chain fatty acids: microbial metabolites that alleviate stress‐induced brain–gut axis alterations",
-      "abstract": "Chronic (psychosocial) stress changes gut microbiota composition, as well as inducing behavioural and physiological deficits. The microbial metabolites short‐chain fatty acids (SCFAs) have been implicated in gastrointestinal functional, (neuro)immune regulation and host metabolism, but their role in stress‐induced behavioural and physiological alterations is poorly understood. Administration of SCFAs to mice undergoing psychosocial stress alleviates enduring alterations in anhedonia and heightened stress‐responsiveness, as well as stress‐induced increases in intestinal permeability. In contrast, chronic stress‐induced alterations in body weight gain, faecal SCFAs and the gene expression of the SCFA receptors FFAR2 and FFAR3 remained unaffected by SCFA supplementation. These results present",
-      "venue": "Journal of Physiology",
-      "year": 2018,
-      "doi": "10.1113/JP276431",
-      "authors": [
-        "M. van de Wouw",
-        "Marcus Boehme",
-        "J. Lyte",
-        "Niamh C Wiley",
-        "C. Strain",
-        "O. O’Sullivan",
-        "G. Clarke",
-        "C. Stanton",
-        "T. Dinan",
-        "J. Cryan"
-      ]
-    },
-    {
-      "citation": "Mitchell et al., 2019",
-      "title": "Does Exercise Alter Gut Microbial Composition? A Systematic Review",
-      "abstract": "Purpose The objective of this systematic review of literature was to evaluate and summarize published research that has investigated the association between exercise and gut microbial composition in mammals. Methods This review was conducted according to the Preferred Reporting Items for Systematic Reviews and Meta-Analyses guidelines. The databases searched for this review included: PubMed; PubMed Central; Medline; Cumulative Index of Nursing and Allied Health Literature; Web of Science; Commonwealth Agricultural Bureaux Direct; Health Source: Nursing Academic Edition; Clinicaltrials.gov; International Prospective Register of Systematic Reviews (PROSPERO); and the Cochrane Library. Results Twenty-five articles met the inclusion criteria: 17 rodent, one canine, two equine, and five human s",
-      "venue": "Medicine & Science in Sports & Exercise",
-      "year": 2019,
-      "doi": "10.1249/MSS.0000000000001760",
-      "authors": [
-        "C. M. Mitchell",
-        "B. Davy",
-        "M. Hulver",
-        "A. Neilson",
-        "Brian J. Bennett",
-        "K. Davy"
-      ]
-    },
-    {
-      "citation": "Kable et al., 2021",
-      "title": "Tree-based Analysis of Dietary Diversity Captures Associations between Fiber Intake and Gut Microbiota Composition in a Healthy U.S. Adult Cohort.",
-      "abstract": "BACKGROUND\nDiet patterns are a significant and modifiable contributing factor to the composition of the human gut microbiota.\n\n\nOBJECTIVE\nWe set out to identify reproducible relationships between diet and gut microbial community composition in a diverse, healthy U.S. adult cohort.\n\n\nMETHODS\nTwo to three Automated Self-Administered 24-hour Dietary Recalls (ASA24) were collected over 10-14 d together with a single stool sample from 343 healthy adults in a cross-sectional phenotyping study (ClinicalTrials.gov Identifier: NCT02367287). This study examined a multi-ethnic cohort balanced for age (18y-65y), sex, and BMI (18.5-45). Dietary data was edited to a tree format according to published methods. The tree structure was annotated with the average total grams of dry weight, fat, protein, carb",
-      "venue": "Journal of NutriLife",
-      "year": 2021,
-      "doi": "10.1093/jn/nxab430",
-      "authors": [
-        "Mary E. Kable",
-        "Elizabeth L Chin",
-        "David Storms",
-        "D. Lemay",
-        "C. Stephensen"
-      ]
-    }
-  ],
-  "protocol_summary": {
-    "synbiotic_mix": {
-      "mix_id": 3,
-      "mix_name": "Fiber & SCFA Restoration"
-    },
-    "morning_solid_units": 5,
-    "morning_jar_units": 1,
-    "evening_solid_units": 3,
-    "total_daily_units": 8,
-    "total_daily_weight_g": 10.66,
-    "delivery_formats": [
-      { "name": "Probiotic Hard Capsule", "timing": "morning", "count": 1, "contents": "55B CFU (Mix 3 + LP815)" },
-      { "name": "Omega + Antioxidant Softgel", "timing": "morning", "count": 2, "contents": "Omega-3 712.5mg + D3 + E + Astaxanthin per softgel" },
-      { "name": "Prebiotic & Botanical Powder Jar", "timing": "morning", "count": 1, "contents": "6.5g prebiotics (PHGG, Beta-glucans, Inulin, FOS, GOS, Resistant starch)" },
-      { "name": "Morning Wellness Capsules", "timing": "morning", "count": 2, "contents": "Capsule 1: Vit C 250mg + Zinc 8mg + Selenium 40mcg + B12 25mcg + Folate 200mcg | Capsule 2: Curcumin 500mg + Piperine 5mg" },
-      { "name": "Evening Wellness Capsules", "timing": "evening", "count": 2, "contents": "Capsule 1: Ashwagandha 300mg + Propolis 300mg | Capsule 2: Magnesium Bisglycinate 750mg (105mg elemental)" }
-    ]
-  }
+  "supplement_why_texts": {}
 }

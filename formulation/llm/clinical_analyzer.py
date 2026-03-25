@@ -63,16 +63,20 @@ def analyze_questionnaire_clinical(unified_input: Dict, use_bedrock: bool = True
         "none_or_rarely": "None (0/year)",
         "none": "None (0/year)",
         "rarely": "Rarely (0–1/year)",
+        "occasionally_1_2": "Occasional (1–2/year)",
         "1-2": "Occasional (1–2/year)",
+        "frequently_3_plus": "Frequent (3+/year)",
         "3+": "Frequent (3+/year)",
-        "": "Not reported",
+        "": "None (0/year)",       # Missing field = not reported = none
     }
     COLDS_LABELS = {
         "rarely_0_1": "Rarely (0–1/year)",
         "none": "None (0/year)",
+        "occasionally_2_3": "Occasionally (2–3/year)",
         "2-3": "Occasionally (2–3/year)",
+        "frequently_4_plus": "Frequently (4+/year)",
         "4+": "Frequently (4+/year)",
-        "": "Not reported",
+        "": "None (0/year)",       # Missing field = not reported = none
     }
     uti_label = UTI_LABELS.get(medical.get('uti_per_year', ''), medical.get('uti_per_year', '?'))
     colds_label = COLDS_LABELS.get(medical.get('colds_per_year', ''), medical.get('colds_per_year', '?'))
@@ -83,6 +87,12 @@ Your task:
 1. Write bullet-point clinical profile
 2. Identify symptoms implying additional health claims not explicitly stated as goals
 3. Flag everything requiring human clinical review
+
+CRITICAL DATA INTEGRITY RULES:
+- "None (0/year)" means the client has NONE of that condition — state it as absent, never infer or speculate.
+- Only include information the client explicitly reported. Do NOT fill in gaps with plausible assumptions.
+- If a field shows no data or a zero value, omit it from the profile entirely — do not mention it at all.
+- Never use phrases like "rare UTIs", "occasional infections", or similar unless the client explicitly reported them.
 
 Return ONLY valid JSON:
 {

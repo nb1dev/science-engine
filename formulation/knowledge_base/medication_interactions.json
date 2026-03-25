@@ -1,7 +1,8 @@
 {
   "metadata": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "created": "2026-03-18",
+    "updated": "2026-03-25",
     "description": "Deterministic medication interaction rules. Each rule is clinician-reviewed and reproducible. Rules fire BEFORE LLM decisions — they are upstream clinical constraints, not downstream corrections.",
     "tier_definitions": {
       "A": "Hard medical override — MUST change formulation. Auto-executed, no clinician review needed.",
@@ -20,7 +21,7 @@
     {
       "rule_id": "MED_001",
       "medication": "levothyroxine",
-      "aliases": ["T4", "Τ4", "synthroid", "euthyrox", "eltroxin", "levo-t", "tirosint", "levoxyl", "unithroid", "eutirox", "l-thyroxine", "thyroxine"],
+      "aliases": ["T4", "\u03a44", "synthroid", "euthyrox", "eltroxin", "levo-t", "tirosint", "levoxyl", "unithroid", "eutirox", "l-thyroxine", "thyroxine"],
       "interaction_class": "mineral_absorption_conflict",
       "tier": "A",
       "severity": "high",
@@ -72,6 +73,58 @@
       "clinical_note": "At doses >400mg Mg + Ramipril, risk of excessive hypotension. At 200-300mg: usually not a major clinical issue but dizziness may occur. For safety: remove magnesium entirely when alternative stress support exists.",
       "added_by": "clinician_revision",
       "added_date": "2026-03-18"
+    },
+    {
+      "rule_id": "MED_003",
+      "medication": "any_prescription_medication",
+      "aliases": [],
+      "interaction_class": "cyp3a4_pgp_inhibition",
+      "tier": "A",
+      "severity": "high",
+      "description": "Curcumin at supplemental doses (500-1000mg/day) is a clinically relevant inhibitor of CYP3A4 and P-glycoprotein (P-gp). These are the primary metabolic pathways for many chronic prescription medications. Inhibition can unpredictably raise plasma drug concentrations, increasing risk of toxicity or adverse effects. This rule fires whenever any serious/chronic prescription medication is detected in the client questionnaire.",
+      "affected_supplement": "curcumin",
+      "trigger": "any_non_otc_medication_present",
+      "otc_whitelist": [
+        "ibuprofen", "nurofen", "advil", "motrin",
+        "paracetamol", "acetaminophen", "tylenol", "panadol",
+        "aspirin", "aspro",
+        "antacid", "rennie", "gaviscon", "tums", "maalox", "riopan",
+        "omeprazole_otc", "pantoprazole_otc",
+        "antihistamine", "cetirizine", "loratadine", "fexofenadine", "desloratadine",
+        "chlorphenamine", "diphenhydramine", "benadryl", "claritin", "zyrtec",
+        "nasal spray", "saline spray",
+        "eye drops",
+        "loperamide", "imodium",
+        "dextromethorphan", "cough syrup",
+        "vitamin supplement", "multivitamin",
+        "probiotic",
+        "melatonin_otc"
+      ],
+      "otc_note": "If all client medications match the OTC whitelist, downgrade to Tier C (flag_only). No auto-removal of curcumin.",
+      "resolution": {
+        "type": "unconditional_remove",
+        "substances": ["curcumin"],
+        "reason": "CYP3A4/P-gp inhibition risk — curcumin 500-1000mg/day can unpredictably raise plasma concentrations of chronic prescription medications",
+        "replace_with_category": "Anti-inflammatory",
+        "replace_note": "LLM supplement selector will pick rank 2 or 3 from Anti-inflammatory KB category (Glutathione 50-100mg or Astragalus membranaceus). Selection happens automatically via medication exclusion block in LLM prompt."
+      },
+      "clinical_note": "Curcumin is a potent CYP3A4/P-gp inhibitor at supplemental doses. For clients on any chronic prescription medication (statins, dopamine agonists, ACE inhibitors, SSRIs, antihypertensives, immunosuppressants, anticoagulants, etc.), the interaction risk is non-trivial and highly variable between individuals. Safe alternatives (Glutathione, Astragalus) provide anti-inflammatory support without CYP3A4 involvement.",
+      "known_affected_medications": [
+        {
+          "name": "atorvastatin",
+          "aliases": ["lipitor", "sortis", "torvast"],
+          "drug_class": "statin",
+          "mechanism": "Atorvastatin is CYP3A4-metabolized. Curcumin inhibition raises statin plasma concentration — increased myopathy/rhabdomyolysis risk."
+        },
+        {
+          "name": "cabergoline",
+          "aliases": ["dostinex", "cabaser"],
+          "drug_class": "dopamine_agonist",
+          "mechanism": "Cabergoline is metabolized via CYP3A4. Curcumin inhibition can raise cabergoline plasma levels unpredictably. Mild dopaminergic pathway interactions also possible."
+        }
+      ],
+      "added_by": "polina_clinical_review",
+      "added_date": "2026-03-25"
     }
   ]
 }

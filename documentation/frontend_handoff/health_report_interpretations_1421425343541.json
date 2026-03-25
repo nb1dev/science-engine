@@ -1,0 +1,865 @@
+{
+  "sample_id": "1421425343541",
+  "generated_at": "2026-03-24T18:16:41.487883",
+  "schema_version": "3.0",
+  "report_date": "2026-03-06",
+  "overall_score": {
+    "total": 74.8,
+    "band": "Good",
+    "pillars": {
+      "health_association": {
+        "score": 19.5,
+        "max": 20,
+        "scientific": "Measures how health-associated your species composition is based on the GMWI2 model of 155 taxa.",
+        "non_expert": "This shows how many of your bacteria are the types typically found in healthy people — think of it as your gut's health fingerprint."
+      },
+      "diversity_resilience": {
+        "score": 18.1,
+        "max": 20,
+        "scientific": "Combined Shannon diversity and guild-level evenness — measures species richness and structural redundancy.",
+        "non_expert": "How many different types of bacteria you have and how well-balanced they are — more variety means your gut can handle stress and recover faster."
+      },
+      "metabolic_function": {
+        "score": 12.2,
+        "max": 20,
+        "scientific": "Composite of 4 CLR diagnostic ratios (CUR, FCR, MDR, PPR) measuring substrate utilization, fermentation efficiency, mucus dependency, and putrefaction pressure.",
+        "non_expert": "This shows how well your bacteria are processing food — are they running on the right fuel, converting it efficiently, and producing gentle rather than harsh byproducts."
+      },
+      "guild_balance": {
+        "score": 15.4,
+        "max": 30,
+        "scientific": "Evaluates 6 functional guilds by abundance position within reference ranges and CLR competitive status, weighted by ecological dependency.",
+        "non_expert": "This checks whether your six bacterial teams are properly staffed — each team has a job, and this score shows if they have enough members to do their work well."
+      },
+      "safety_profile": {
+        "score": 9.6,
+        "max": 10,
+        "scientific": "Absence of dysbiosis-associated taxa (F. nucleatum, S. gallolyticus, P. anaerobius, E-S), extreme guild overgrowth, and BCFA pathway activity.",
+        "non_expert": "This checks for any red flags — harmful bacteria, extreme overgrowth, or signs of unhealthy fermentation. A high score here means your gut has a clean safety record."
+      }
+    },
+    "score_drivers": {
+      "strongest": {
+        "pillar": "health_association",
+        "label": "Health Association",
+        "pct_of_max": 98
+      },
+      "weakest": {
+        "pillar": "guild_balance",
+        "label": "Bacterial Group Balance",
+        "pct_of_max": 51
+      },
+      "key_note": "Your strongest area is health association (98% of its potential)"
+    }
+  },
+  "score_summary": "Your overall score is <strong>74.8</strong> out of 100. The main areas to focus on are <strong>inflammatory pressure</strong>, <strong>fiber processing</strong>, <strong>monoculture risk</strong>, and <strong>bifidobacteria</strong>.",
+  "bacterial_groups": {
+    "Proteolytic Guild": {
+      "abundance": 15.48,
+      "healthy_range": "1-5%",
+      "status": "Above range",
+      "clr": 0.37,
+      "evenness": 0.61,
+      "evenness_status": "Moderate redundancy",
+      "client_interpretation": "Your protein-fermenting bacteria are much more active than optimal, which may create harsh byproducts that can irritate your gut lining. While they're not completely dominating other bacteria, this overgrowth suggests your microbial ecosystem has shifted toward protein processing."
+    },
+    "Cross-Feeders": {
+      "abundance": 12.06,
+      "healthy_range": "6-12%",
+      "status": "Above range",
+      "clr": 0.12,
+      "evenness": 0.71,
+      "evenness_status": "High redundancy — resilient",
+      "client_interpretation": "Your connector bacteria are performing beautifully — they're helping different bacterial teams work together efficiently and have strong backup systems in place. This is one of your microbiome's key strengths."
+    },
+    "Butyrate Producers": {
+      "abundance": 11.62,
+      "healthy_range": "10-25%",
+      "status": "Within range",
+      "clr": 0.08,
+      "evenness": 0.76,
+      "evenness_status": "High redundancy — resilient",
+      "client_interpretation": "Your butyrate-producing bacteria are in great shape — they're making plenty of the fuel your gut lining needs to stay healthy and have excellent backup systems. This is another major strength in your microbiome."
+    },
+    "Fiber Degraders": {
+      "abundance": 11.2,
+      "healthy_range": "30-50%",
+      "status": "Below range",
+      "clr": 0.04,
+      "evenness": 0.48,
+      "evenness_status": "Moderate redundancy",
+      "client_interpretation": "Your fiber-processing bacteria are running much lower than optimal, which limits your microbiome's ability to break down plant materials into beneficial compounds. While the bacteria you do have are holding their own, you need more of this essential team."
+    },
+    "Mucin Degraders": {
+      "abundance": 5.14,
+      "healthy_range": "1-4%",
+      "status": "Above range",
+      "clr": -0.73,
+      "evenness": 0.64,
+      "evenness_status": "Moderate redundancy",
+      "client_interpretation": "Your mucus-layer bacteria are more active than ideal and appear to be under competitive pressure from other bacterial groups. This suggests they may be working harder to access nutrients from your gut's protective mucus layer."
+    },
+    "Bifidobacteria": {
+      "abundance": 3.13,
+      "healthy_range": "2-10%",
+      "status": "Within range",
+      "clr": -1.23,
+      "evenness": 0.2,
+      "evenness_status": "Low redundancy — monoculture risk",
+      "client_interpretation": "While you have a reasonable amount of Bifidobacteria, they're struggling to compete effectively with other bacteria in your gut. Their low diversity makes them vulnerable, so supporting their competitive strength would benefit your overall microbial balance."
+    }
+  },
+  "metabolic_dials": {
+    "main_fuel": {
+      "state": "protein_driven",
+      "label": "Protein fermentation elevated",
+      "value": -0.96
+    },
+    "fermentation_efficiency": {
+      "state": "efficient",
+      "label": "Efficient assembly line",
+      "value": 1.329
+    },
+    "mucus_dependency": {
+      "state": "backup",
+      "label": "Partial mucus-substrate reliance",
+      "value": -0.779
+    },
+    "putrefaction_pressure": {
+      "state": "protein_pressure",
+      "label": "Elevated protein fermentation pressure",
+      "value": 0.287
+    }
+  },
+  "ecological_metrics": {
+    "shannon": 3.456,
+    "pielou_evenness": 0.754,
+    "diversity_state": "moderate"
+  },
+  "safety_profile": {
+    "dysbiosis_markers": {
+      "F_nucleatum": 0.0,
+      "S_gallolyticus": 0.0,
+      "P_anaerobius": 0.0,
+      "E_Shigella": 0.0
+    },
+    "any_detected": false
+  },
+  "guild_timepoints": [
+    {
+      "label": "Baseline — Mar 2026",
+      "score": 74.8,
+      "guilds": {
+        "fd": 0.112,
+        "bb": 0.0313,
+        "cf": 0.1206,
+        "bp": 0.1162,
+        "pg": 0.1548,
+        "md": 0.0514
+      }
+    }
+  ],
+  "protocol_summary": {
+    "synbiotic_mix": {
+      "mix_id": 3,
+      "mix_name": "Fiber & SCFA Restoration"
+    },
+    "morning_solid_units": 8,
+    "morning_jar_units": 1,
+    "evening_solid_units": 3,
+    "total_daily_units": 12,
+    "total_daily_weight_g": 17.09
+  },
+  "profile": {
+    "first_name": "Claes",
+    "age": 53,
+    "sex": "Male",
+    "diet": "Omnivore",
+    "stress": 8,
+    "sleep": 8,
+    "goals": [
+      "Longevity Healthy Aging",
+      "Boost Energy Reduce Fatigue",
+      "Mood & anxiety"
+    ],
+    "sensitivity": "Low"
+  },
+  "circle_scores": {
+    "gut_lining": 60,
+    "inflammation": 19,
+    "fiber_processing": 42,
+    "bifidobacteria": 64
+  },
+  "strengths_challenges": {
+    "strengths": [
+      {
+        "icon": "🌱",
+        "title": "Good diversity",
+        "text": "Your gut shows good species diversity (Shannon 3.46, above the population median of 3.29). A varied bacterial community provides a more stable and adaptable foundation for gut health."
+      },
+      {
+        "icon": "⚡",
+        "title": "Strong butyrate support",
+        "text": "Your butyrate-producing bacteria are at 11.6% — within the healthy 10-25% range. These bacteria produce the primary fuel for your gut lining cells, supporting barrier integrity and reducing inflammation."
+      },
+      {
+        "icon": "⚖️",
+        "title": "Balanced guild relationships",
+        "text": "Most of your bacterial groups are within their healthy ranges with no extreme competitive imbalances. This reflects a well-organised gut ecosystem where different microbial teams are coexisting in proportion."
+      },
+      {
+        "icon": "✅",
+        "title": "Clean safety profile",
+        "text": "None of the key dysbiosis-associated bacteria (Fusobacterium nucleatum, Streptococcus gallolyticus, Peptostreptococcus anaerobius, Escherichia-Shigella) were detected at concerning levels. Your gut has a reassuring safety baseline."
+      },
+      {
+        "icon": "⚙️",
+        "title": "Efficient fermentation",
+        "text": "Your gut's fermentation assembly line is running well — intermediate fermentation compounds are being fully converted into beneficial short-chain fatty acids rather than accumulating. This means your bacteria are cooperating efficiently."
+      }
+    ],
+    "challenges": [
+      {
+        "icon": "🔥",
+        "title": "Elevated inflammatory pressure",
+        "area_key": "inflammatory_pressure",
+        "area_label": "inflammatory pressure",
+        "severity": "high",
+        "text": "Your protein-fermenting bacteria are elevated at 15.5% (above the healthy 1-5% range), and your fermentation byproduct profile is shifted toward harsh protein-fermentation compounds. This creates low-grade inflammatory signals in the gut."
+      },
+      {
+        "icon": "🥩",
+        "title": "Excess protein fermentation pattern",
+        "area_key": "inflammatory_pressure",
+        "area_label": "inflammatory pressure",
+        "severity": "high",
+        "text": "Multiple markers — elevated proteolytic bacteria, protein-dominant fermentation balance, and harsh byproduct profile — all point in the same direction. Protein fermentation is dominating where carbohydrate fermentation should be."
+      },
+      {
+        "icon": "🌾",
+        "title": "Fiber-processing bacteria below range",
+        "area_key": "fiber_processing",
+        "area_label": "fiber processing",
+        "severity": "moderate",
+        "text": "Your fiber-processing bacteria are at 11.2% — below their healthy range of 30-50%. This is the entry point for the entire fermentation chain, so supporting this group is a primary target."
+      },
+      {
+        "icon": "🎲",
+        "title": "Monoculture risk — Bifidobacteria",
+        "area_key": "monoculture",
+        "area_label": "monoculture risk",
+        "severity": "moderate",
+        "text": "Your bifidobacteria show low internal diversity (evenness score 0.20) — most of the functional capacity is concentrated in a single species. This is fragile: if that species is disrupted, the guild loses its function with little backup."
+      },
+      {
+        "icon": "⬇️",
+        "title": "Competitive disadvantage — Bifidobacteria",
+        "area_key": "bifidobacteria",
+        "area_label": "bifidobacteria",
+        "severity": "moderate",
+        "text": "Your bifidobacteria are at 3.1% (within range) but are being outcompeted by other bacteria (CLR -1.23). Despite their adequate numbers, they're under competitive pressure and may struggle to maintain their position over time."
+      }
+    ],
+    "all_strengths": [
+      {
+        "icon": "🌱",
+        "title": "Good diversity",
+        "text": "Your gut shows good species diversity (Shannon 3.46, above the population median of 3.29). A varied bacterial community provides a more stable and adaptable foundation for gut health."
+      },
+      {
+        "icon": "⚡",
+        "title": "Strong butyrate support",
+        "text": "Your butyrate-producing bacteria are at 11.6% — within the healthy 10-25% range. These bacteria produce the primary fuel for your gut lining cells, supporting barrier integrity and reducing inflammation."
+      },
+      {
+        "icon": "⚖️",
+        "title": "Balanced guild relationships",
+        "text": "Most of your bacterial groups are within their healthy ranges with no extreme competitive imbalances. This reflects a well-organised gut ecosystem where different microbial teams are coexisting in proportion."
+      },
+      {
+        "icon": "✅",
+        "title": "Clean safety profile",
+        "text": "None of the key dysbiosis-associated bacteria (Fusobacterium nucleatum, Streptococcus gallolyticus, Peptostreptococcus anaerobius, Escherichia-Shigella) were detected at concerning levels. Your gut has a reassuring safety baseline."
+      },
+      {
+        "icon": "⚙️",
+        "title": "Efficient fermentation",
+        "text": "Your gut's fermentation assembly line is running well — intermediate fermentation compounds are being fully converted into beneficial short-chain fatty acids rather than accumulating. This means your bacteria are cooperating efficiently."
+      }
+    ],
+    "all_challenges": [
+      {
+        "icon": "🔥",
+        "title": "Elevated inflammatory pressure",
+        "area_key": "inflammatory_pressure",
+        "area_label": "inflammatory pressure",
+        "severity": "high",
+        "text": "Your protein-fermenting bacteria are elevated at 15.5% (above the healthy 1-5% range), and your fermentation byproduct profile is shifted toward harsh protein-fermentation compounds. This creates low-grade inflammatory signals in the gut."
+      },
+      {
+        "icon": "🥩",
+        "title": "Excess protein fermentation pattern",
+        "area_key": "inflammatory_pressure",
+        "area_label": "inflammatory pressure",
+        "severity": "high",
+        "text": "Multiple markers — elevated proteolytic bacteria, protein-dominant fermentation balance, and harsh byproduct profile — all point in the same direction. Protein fermentation is dominating where carbohydrate fermentation should be."
+      },
+      {
+        "icon": "🌾",
+        "title": "Fiber-processing bacteria below range",
+        "area_key": "fiber_processing",
+        "area_label": "fiber processing",
+        "severity": "moderate",
+        "text": "Your fiber-processing bacteria are at 11.2% — below their healthy range of 30-50%. This is the entry point for the entire fermentation chain, so supporting this group is a primary target."
+      },
+      {
+        "icon": "🎲",
+        "title": "Monoculture risk — Bifidobacteria",
+        "area_key": "monoculture",
+        "area_label": "monoculture risk",
+        "severity": "moderate",
+        "text": "Your bifidobacteria show low internal diversity (evenness score 0.20) — most of the functional capacity is concentrated in a single species. This is fragile: if that species is disrupted, the guild loses its function with little backup."
+      },
+      {
+        "icon": "⬇️",
+        "title": "Competitive disadvantage — Bifidobacteria",
+        "area_key": "bifidobacteria",
+        "area_label": "bifidobacteria",
+        "severity": "moderate",
+        "text": "Your bifidobacteria are at 3.1% (within range) but are being outcompeted by other bacteria (CLR -1.23). Despite their adequate numbers, they're under competitive pressure and may struggle to maintain their position over time."
+      }
+    ],
+    "distinct_areas": [
+      "inflammatory pressure",
+      "fiber processing",
+      "monoculture risk",
+      "bifidobacteria"
+    ]
+  },
+  "good_news": "Your connector bacteria are thriving at 12.1% — perfectly positioned to bridge fermentation stages. Your butyrate-producing team is healthy, creating energy for your gut lining.",
+  "timeline_phases": [
+    {
+      "weeks": "1–4",
+      "label": "Settling in",
+      "color": "#3A6EA8",
+      "dot_class": "wk4",
+      "title": "🌱 Settling in",
+      "body": "The probiotic strains in your capsule are adapting to your gut environment — encountering existing bacteria, beginning to colonise, and establishing early positions. Your daily prebiotic sachet is reaching the lower gut, priming the environment before measurable compositional shifts occur. Vitamin C, Zinc, and B-vitamins from your sachet begin supporting immune and energy pathways within days. The LP815 strain begins producing calming GABA from week 1, supporting stress-axis balance. You may notice small changes in digestion rhythm — this is normal as your gut adjusts."
+    },
+    {
+      "weeks": "5–8",
+      "label": "Early momentum",
+      "color": "#2E8B6E",
+      "dot_class": "wk8",
+      "title": "🔋 Early momentum",
+      "body": "Beneficial bacteria begin expanding as prebiotic fibres consistently supply the substrate they need. Your proteolytic guild start moving toward healthy abundance levels. Short-chain fatty acid production increases as the fermentation chain becomes more active. Omega-3 EPA and DHA from your softgels are building up in cell membranes, typically reaching effective anti-inflammatory concentrations by week 6. Vitamin D3 supports ongoing immune regulation. Many people start noticing improvements in digestion consistency and gut comfort during this window."
+    },
+    {
+      "weeks": "9–12",
+      "label": "Deepening balance",
+      "color": "#C97C2A",
+      "dot_class": "wk12",
+      "title": "🛡️ Deepening balance",
+      "body": "Guild populations move toward their target ranges. Butyrate output increases as the fermentation chain becomes more complete — your gut lining receives more of the protective compounds it needs for repair. Ashwagandha's adaptogenic effects on the stress axis compound with continued use, typically most noticeable from week 8 onward. Magnesium Bisglycinate supports deeper sleep and stress resilience as tissue saturation builds. Inflammatory metabolite pressure typically decreases during this phase as the SCFA-to-protein fermentation balance shifts."
+    },
+    {
+      "weeks": "13–16",
+      "label": "Consolidation",
+      "color": "#6B5EA8",
+      "dot_class": "wk16",
+      "title": "⚖️ Consolidation",
+      "body": "The ecological shifts from earlier phases become self-sustaining. A more diverse, well-balanced community is better equipped to hold its gains under normal life pressures — stress, travel, or temporary dietary changes. Botanical adaptogens and the full vitamin-mineral stack have reached their most effective tissue concentrations. Weeks 13–16 are the ideal window for a reassessment sample to measure the full compositional shift."
+    }
+  ],
+  "supplement_cards": [
+    {
+      "num": 1,
+      "key": "delivery_format_1_probiotic_capsule",
+      "name": "Probiotic Capsule",
+      "timing": "🌅 Every morning",
+      "timing_group": "morning",
+      "what_it_is": "Live beneficial bacteria, selected specifically for your microbiome pattern.",
+      "why": "This probiotic blend helps restore healthy gut bacteria balance and supports your mood through the gut-brain connection. It's specifically chosen because your fiber-processing bacteria are below optimal levels, and includes a special strain that produces calming compounds to help with your anxiety goals.",
+      "pills": [
+        {
+          "name": "Lactobacillus plantarum UALp-05",
+          "dose": "12.5B CFU"
+        },
+        {
+          "name": "Lactobacillus plantarum 299v",
+          "dose": "12.5B CFU"
+        },
+        {
+          "name": "Lactobacillus acidophilus NCFM",
+          "dose": "12.5B CFU"
+        },
+        {
+          "name": "Bifidobacterium animalis subsp. lactis BB-12",
+          "dose": "12.5B CFU"
+        },
+        {
+          "name": "Lactiplantibacillus plantarum LP815",
+          "dose": "5B CFU"
+        }
+      ],
+      "supports": [
+        "Fiber & SCFA Restoration",
+        "Fiber below range",
+        "Gut-Brain",
+        "Sleep Quality",
+        "Stress/Anxiety"
+      ],
+      "color": "#1E1E2A",
+      "emoji": "💊"
+    },
+    {
+      "num": 2,
+      "key": "delivery_format_2_omega_softgels",
+      "name": "Omega & Antioxidant Softgel",
+      "timing": "🌅 Every morning (2×)",
+      "timing_group": "morning",
+      "what_it_is": "Essential fatty acids and antioxidants in an easy-to-absorb softgel form.",
+      "why": "This combination supports brain health and mood while providing powerful antioxidant protection for healthy aging. The omega-3s directly target your mood goals, while the other nutrients work together to support your longevity and energy objectives.",
+      "pills": [
+        {
+          "name": "Omega-3 (EPA + DHA)",
+          "dose": "712.5mg"
+        },
+        {
+          "name": "Vitamin D3",
+          "dose": "10mcg (400 IU)"
+        },
+        {
+          "name": "Vitamin E",
+          "dose": "7.5mg"
+        },
+        {
+          "name": "Astaxanthin (H. pluvialis 10% oleoresin)",
+          "dose": "3mg active (30mg oleoresin)"
+        }
+      ],
+      "supports": [
+        "Anti-inflammatory",
+        "Antioxidant Protection",
+        "Brain Health",
+        "Immune System"
+      ],
+      "color": "#C97C2A",
+      "emoji": "🐟"
+    },
+    {
+      "num": 3,
+      "key": "delivery_format_3_powder_jar",
+      "name": "Daily Prebiotic Powder",
+      "timing": "🌅 Every morning",
+      "timing_group": "morning",
+      "what_it_is": "A blend of prebiotic fibres mixed into water — food for your beneficial bacteria, designed for easy daily use.",
+      "why": "This prebiotic powder feeds your beneficial gut bacteria to help restore balance in your microbiome. It's particularly important given your low fiber-processing bacteria levels, helping them flourish for better digestive health.",
+      "pills": [
+        {
+          "name": "Inulin",
+          "dose": "0.5"
+        },
+        {
+          "name": "Beta-Glucans",
+          "dose": "1.5"
+        },
+        {
+          "name": "GOS",
+          "dose": "0.5"
+        },
+        {
+          "name": "PHGG",
+          "dose": "5.5"
+        },
+        {
+          "name": "Carthamus Tinctorius (Safflower)",
+          "dose": "2.7"
+        }
+      ],
+      "supports": [],
+      "color": "#2E8B6E",
+      "emoji": "🌿"
+    },
+    {
+      "num": 4,
+      "key": "delivery_format_4_morning_wellness_capsules",
+      "name": "Morning Wellness Capsule",
+      "timing": "🌅 Every morning (2×)",
+      "timing_group": "morning",
+      "what_it_is": "Targeted vitamins, minerals, and botanical compounds selected for your specific health profile.",
+      "why": "This energizing blend combines adaptogenic herbs with essential B vitamins to combat fatigue and boost your daily energy levels. The carefully selected nutrients work together to support your metabolism and help you feel more vibrant throughout the day.",
+      "pills": [
+        {
+          "name": "Eleutherococcus Senticosus",
+          "dose": "600mg"
+        },
+        {
+          "name": "Zinc",
+          "dose": "11mg"
+        },
+        {
+          "name": "Pantothenic acid (B5)",
+          "dose": "5mg"
+        },
+        {
+          "name": "Riboflavin (B2)",
+          "dose": "1.1mg"
+        },
+        {
+          "name": "Folate (B9)",
+          "dose": "200mcg"
+        },
+        {
+          "name": "Vitamin B12",
+          "dose": "25mcg"
+        },
+        {
+          "name": "Biotin (B7)",
+          "dose": "300mcg"
+        },
+        {
+          "name": "Selenium",
+          "dose": "40mcg"
+        },
+        {
+          "name": "Vitamin C",
+          "dose": "250mg"
+        },
+        {
+          "name": "Niacin (B3)",
+          "dose": "160mg"
+        }
+      ],
+      "supports": [],
+      "color": "#6B5EA8",
+      "emoji": "🌙"
+    },
+    {
+      "num": 5,
+      "key": "delivery_format_5_evening_wellness_capsules",
+      "name": "Evening Wellness Capsule",
+      "timing": "🌙 30–60 min before bed",
+      "timing_group": "evening",
+      "what_it_is": "Botanical and functional molecules timed to work with your body's evening recovery processes.",
+      "why": "This calming herb helps your body manage stress and supports better mood balance, especially in the evening. It's specifically chosen as the top natural option for your anxiety and mood goals.",
+      "pills": [
+        {
+          "name": "Ashwagandha (Withania somnifera)",
+          "dose": "300"
+        }
+      ],
+      "supports": [
+        "Sleep Quality"
+      ],
+      "color": "#3A6EA8",
+      "emoji": "🌙"
+    },
+    {
+      "num": 6,
+      "key": "delivery_format_6_polyphenol_capsule",
+      "name": "Polyphenol Capsule",
+      "timing": "🌅 Every morning (3×)",
+      "timing_group": "morning",
+      "what_it_is": "Concentrated plant compounds that modulate gut bacteria and reduce inflammatory signals.",
+      "why": "These powerful plant compounds provide anti-inflammatory support for healthy aging and help manage cholesterol levels. They're key for your longevity goals, working to protect your cells from damage as you age.",
+      "pills": [
+        {
+          "name": "Curcumin 1000mg (+ 10.0mg Piperine)",
+          "dose": "505.0"
+        },
+        {
+          "name": "Curcumin 1000mg (+ 10.0mg Piperine)",
+          "dose": "505.0"
+        },
+        {
+          "name": "Bergamot Polyphenolic Fraction",
+          "dose": "500"
+        }
+      ],
+      "supports": [],
+      "color": "#8B5E3C",
+      "emoji": "🌙"
+    },
+    {
+      "num": 7,
+      "key": "delivery_format_magnesium_capsule",
+      "name": "Magnesium Bisglycinate Capsule",
+      "timing": "🌙 30–60 min before bed",
+      "what_it_is": "Highly absorbable magnesium in bisglycinate form — supports sleep quality, muscle recovery, and stress resilience.",
+      "why": "Questionnaire (Sport: Active lifestyle (inferred); Stress: stress 8/10 ≥ 6 + stress/mood goal)",
+      "pills": [
+        {
+          "name": "Magnesium Bisglycinate",
+          "dose": "210mg elemental"
+        }
+      ],
+      "supports": [
+        "Sport",
+        "Stress"
+      ],
+      "color": "#4A5568",
+      "emoji": "🌙"
+    }
+  ],
+  "goal_cards": [
+    {
+      "emoji": "🌿",
+      "title": "Longevity and healthy ageing",
+      "mechanism": "A balanced, resilient gut microbiome is one of the most consistent predictors of healthy ageing across populations. Gut bacteria influence inflammation, metabolic function, immune competence, and even cognitive health — all of which are central to long-term vitality.",
+      "formula_link": "Your formula is designed holistically — the probiotic mix, prebiotic blend, Omega-3, antioxidant support, and targeted nutrients all work together to create the conditions your gut needs to support systemic health over the long term.",
+      "inferred": false
+    },
+    {
+      "emoji": "⚡",
+      "title": "Boost energy and reduce fatigue",
+      "mechanism": "The gut microbiome influences energy through multiple pathways: butyrate fuels colonocytes and regulates metabolism, B-vitamins produced by gut bacteria support cellular energy production, and inflammatory load from a disrupted microbiome creates systemic fatigue. A well-balanced gut is the foundation of sustained energy.",
+      "formula_link": "Your formula targets this through B12 and Folate (essential for energy metabolism), Omega-3 (mitochondrial membrane support), the probiotic and prebiotic blend (restores butyrate production and reduces inflammatory drain on energy), and adaptogenic support to address the stress-fatigue axis.",
+      "inferred": false
+    },
+    {
+      "emoji": "🧘",
+      "title": "Better mood and reduced anxiety",
+      "mechanism": "Your gut produces about 90% of your body's serotonin and communicates directly with your brain via the vagus nerve. Gut microbiome imbalances — especially disruptions to beneficial bacteria — have been consistently linked to mood and anxiety patterns.",
+      "formula_link": "Your formula targets this through Ashwagandha (clinical evidence for cortisol reduction and anxiety relief), LP815 probiotic strain (produces calming GABA), Omega-3 DHA (brain health and mood regulation), and Magnesium Bisglycinate (supports the nervous system and stress resilience).",
+      "inferred": false
+    },
+    {
+      "emoji": "😴",
+      "title": "Better sleep quality",
+      "mechanism": "Sleep and the gut microbiome operate in a bidirectional relationship. Gut bacteria influence circadian rhythm signals, serotonin and melatonin precursor availability, and inflammatory mediators that affect sleep architecture.",
+      "formula_link": "Your formula targets this through L-Theanine (promotes relaxation without sedation), Magnesium Bisglycinate (supports deep sleep phases), Ashwagandha (reduces HPA-axis activation that disrupts sleep onset), and the LP815 strain (GABA production supports calm states before sleep).",
+      "inferred": true
+    }
+  ],
+  "root_cause_data": {
+    "deviation_cards": [
+      {
+        "deviation": {
+          "key": "Fiber Degraders__below",
+          "type": "below_range",
+          "guild_key": "Fiber Degraders",
+          "client_label": "Fiber-Processing Bacteria",
+          "icon": "🌾",
+          "value_str": "11.2%",
+          "range_str": "30–50%",
+          "description": "Your Fiber-Processing Bacteria are at 11.2% — below the healthy range of 30–50%."
+        },
+        "narrative": "Your fiber-processing bacteria are struggling at just 11.2% when they should make up 30-50% of your gut community. These are your gut's gentle workers — they break down fiber into protective compounds that feed your gut lining, support steady energy, and help regulate mood and inflammation. When you don't have enough of them, your gut loses its main source of these beneficial compounds. This shortage likely contributes to your fatigue and mood challenges, since these bacteria produce substances that directly support brain function and energy metabolism. It's like having a understaffed maintenance crew trying to keep a large building running smoothly.",
+        "summary_line": "Your gut is missing the beneficial bacteria that turn fiber into energy-supporting and mood-stabilizing compounds.",
+        "health_meaning": "Your Fiber-Processing Bacteria are at 11.2% — below the healthy range of 30–50%.",
+        "drivers": [],
+        "personal_synthesis": "",
+        "kb_drivers": [
+          {
+            "icon": "😰",
+            "label": "Chronic Stress & Anxiety",
+            "text": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+            "kb_text": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+            "is_llm_text": false,
+            "directionality": "bidirectional",
+            "directionality_arrow": "stress ↔ microbiome",
+            "evidence_label": "Emerging research",
+            "evidence_strength": "weak",
+            "domain_key": "stress_anxiety"
+          }
+        ]
+      },
+      {
+        "deviation": {
+          "key": "Proteolytic Guild__above",
+          "type": "above_range",
+          "guild_key": "Proteolytic Guild",
+          "client_label": "Protein-Fermenting Bacteria",
+          "icon": "🔥",
+          "value_str": "15.5%",
+          "range_str": "1–5%",
+          "description": "Your Protein-Fermenting Bacteria are elevated at 15.5% (above the healthy maximum of 5%)."
+        },
+        "narrative": "Your protein-fermenting bacteria are running the show at 15.5% — three times higher than what we'd want to see. These bacteria specialize in breaking down protein, but when they dominate your gut like this, they produce harsh compounds like ammonia and hydrogen sulfide instead of the gentle, protective substances your gut lining needs to stay healthy. Think of it like having too many aggressive workers and not enough gentle caretakers in your gut ecosystem. This imbalance can contribute to inflammation and may be one reason you're feeling fatigued and struggling with mood — your gut isn't producing the calming, energy-supporting compounds it should be making from fiber instead.",
+        "summary_line": "Your gut has shifted toward protein breakdown instead of the gentler fiber fermentation that supports energy and mood.",
+        "health_meaning": "Your Protein-Fermenting Bacteria are elevated at 15.5% (above the healthy maximum of 5%).",
+        "drivers": [],
+        "personal_synthesis": "",
+        "kb_drivers": []
+      },
+      {
+        "deviation": {
+          "key": "Mucin Degraders__above",
+          "type": "above_range",
+          "guild_key": "Mucin Degraders",
+          "client_label": "Mucus-Layer Bacteria",
+          "icon": "🛡️",
+          "value_str": "5.1%",
+          "range_str": "1–4%",
+          "description": "Your Mucus-Layer Bacteria are elevated at 5.1% (above the healthy maximum of 4%)."
+        },
+        "narrative": "Your mucus-layer bacteria are slightly elevated at 5.1%, which suggests your gut's protective mucus barrier might be under some stress. These bacteria live in the mucus layer that coats your intestinal wall, and when they increase, it often means your gut is working harder to maintain its protective barrier. While this isn't dramatically high, it's a sign that your gut lining is having to work overtime to protect itself, possibly from the harsh compounds being produced by those elevated protein-fermenting bacteria. Think of it as your gut's security team having to put in extra hours because of increased threats.",
+        "summary_line": "Your gut's protective barrier is working a bit harder than it should, likely responding to the harsh compounds from protein fermentation.",
+        "health_meaning": "Your Mucus-Layer Bacteria are elevated at 5.1% (above the healthy maximum of 4%).",
+        "drivers": [],
+        "personal_synthesis": "",
+        "kb_drivers": []
+      },
+      {
+        "deviation": {
+          "key": "dial__protein_pressure",
+          "type": "above_range",
+          "guild_key": "Proteolytic Dysbiosis Guild",
+          "client_label": "Elevated Protein Fermentation",
+          "icon": "🔥",
+          "value_str": "Protein-dominant",
+          "range_str": "SCFA-dominant (optimal)",
+          "description": "Your fermentation is dominated by protein breakdown rather than fiber fermentation, producing harsher byproducts."
+        },
+        "narrative": "Your gut's fermentation has shifted to be protein-dominant instead of the healthier fiber-dominant pattern we want to see. This means your gut bacteria are primarily breaking down protein into harsh compounds like ammonia and hydrogen sulfide, rather than fermenting fiber into gentle, protective substances that support energy and mood. It's like your gut's chemistry lab is running the wrong experiments — producing inflammatory byproducts instead of the healing compounds your body needs. This fermentation pattern can contribute to fatigue, mood instability, and inflammation throughout your body, which aligns with your goals of boosting energy and improving mood.",
+        "summary_line": "Your gut's chemistry has shifted toward producing harsh compounds instead of the protective, energy-supporting substances you need.",
+        "health_meaning": "Your fermentation is dominated by protein breakdown rather than fiber fermentation, producing harsher byproducts.",
+        "drivers": [],
+        "personal_synthesis": "",
+        "kb_drivers": [
+          {
+            "icon": "🥩",
+            "label": "High Protein / Low-Carb Diet",
+            "text": "A high-protein, low-fiber diet pattern shifts your gut's fermentation toward producing harsher compounds — ammonia, hydrogen sulfide, and phenols — instead of the protective short-chain fatty acids your gut needs. This directly explains the elevated protein-fermenting bacteria pattern.",
+            "kb_text": "A high-protein, low-fiber diet pattern shifts your gut's fermentation toward producing harsher compounds — ammonia, hydrogen sulfide, and phenols — instead of the protective short-chain fatty acids your gut needs. This directly explains the elevated protein-fermenting bacteria pattern.",
+            "is_llm_text": false,
+            "directionality": "driver",
+            "directionality_arrow": "diet → microbiome",
+            "evidence_label": "Research supported",
+            "evidence_strength": "moderate",
+            "domain_key": "high_protein_diet"
+          }
+        ]
+      }
+    ],
+    "awareness_chips": [
+      {
+        "domain_key": "alcohol_consumption",
+        "domain_label": "Regular Alcohol Consumption",
+        "icon": "🍷",
+        "directionality_arrow": "exposure → microbiome",
+        "summary_text": "Regular alcohol consumption is a documented contributor to the gut imbalance patterns we're seeing — particularly the depletion of butyrate-producing bacteria. Reducing alcohol intake is one of the most impactful lifestyle changes for gut health recovery."
+      }
+    ],
+    "section_summary": "The story behind your results centers on two main factors working together: your protein-heavy diet and high stress levels have shifted your gut toward harsh protein fermentation instead of the gentle, protective fiber fermentation your body needs for energy and mood stability. The good news is that both of these factors are within your control to address.",
+    "cited_papers": [],
+    "factor_cards": [
+      {
+        "domain_key": "high_protein_diet",
+        "icon": "🥩",
+        "label": "High Protein / Low-Carb Diet",
+        "subtitle": "Affects 1 bacterial imbalance",
+        "evidence_label": "Research supported",
+        "evidence_strength": "moderate",
+        "guilds_affected_count": 1,
+        "guild_impacts": [
+          {
+            "client_label": "Elevated Protein Fermentation",
+            "value_str": "Protein-dominant",
+            "impact": "high"
+          }
+        ],
+        "explanation": "A high-protein, low-fiber diet pattern shifts your gut's fermentation toward producing harsher compounds — ammonia, hydrogen sulfide, and phenols — instead of the protective short-chain fatty acids your gut needs. This directly explains the elevated protein-fermenting bacteria pattern.",
+        "kb_text": "A high-protein, low-fiber diet pattern shifts your gut's fermentation toward producing harsher compounds — ammonia, hydrogen sulfide, and phenols — instead of the protective short-chain fatty acids your gut needs. This directly explains the elevated protein-fermenting bacteria pattern.",
+        "directionality": "driver"
+      },
+      {
+        "domain_key": "stress_anxiety",
+        "icon": "😰",
+        "label": "Chronic Stress & Anxiety",
+        "subtitle": "Affects 1 bacterial imbalance",
+        "evidence_label": "Research supported",
+        "evidence_strength": "moderate",
+        "guilds_affected_count": 1,
+        "guild_impacts": [
+          {
+            "client_label": "Fiber-Processing Bacteria",
+            "value_str": "11.2%",
+            "impact": "low"
+          }
+        ],
+        "explanation": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+        "kb_text": "Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity.",
+        "directionality": "bidirectional"
+      }
+    ],
+    "cascade_guilds": [
+      {
+        "client_label": "Elevated Protein Fermentation",
+        "value_str": "Protein-dominant",
+        "impact": "high",
+        "driving_factor_emojis": [
+          "🥩"
+        ]
+      },
+      {
+        "client_label": "Fiber-Processing Bacteria",
+        "value_str": "11.2%",
+        "impact": "low",
+        "driving_factor_emojis": [
+          "😰"
+        ]
+      }
+    ],
+    "metrics_strip": [
+      {
+        "client_label": "Mucus-Layer Bacteria",
+        "value_str": "5.1%",
+        "range_str": "1–4%",
+        "impact": "crit",
+        "icon": "🛡️"
+      },
+      {
+        "client_label": "Protein-Fermenting Bacteria",
+        "value_str": "15.5%",
+        "range_str": "1–5%",
+        "impact": "high",
+        "icon": "🔥"
+      },
+      {
+        "client_label": "Elevated Protein Fermentation",
+        "value_str": "Protein-dominant",
+        "range_str": "SCFA-dominant (optimal)",
+        "impact": "high",
+        "icon": "🔥"
+      },
+      {
+        "client_label": "Fiber-Processing Bacteria",
+        "value_str": "11.2%",
+        "range_str": "30–50%",
+        "impact": "low",
+        "icon": "🌾"
+      }
+    ]
+  },
+  "cited_papers": [],
+  "lifestyle_recommendations": [
+    {
+      "emoji": "🌾",
+      "title": "Prioritize diverse fiber sources",
+      "text": "Your fiber-processing bacteria are significantly below optimal range at 11.2%. Focus on incorporating multiple types of plant-based fibers throughout each day to rebuild this crucial bacterial community."
+    },
+    {
+      "emoji": "🥩",
+      "title": "Moderate protein portions and timing",
+      "text": "With protein-fermenting bacteria at 15.5% (3x above optimal) and protein-dominant fermentation, reduce portion sizes of animal proteins and avoid concentrated protein meals late in the day."
+    },
+    {
+      "emoji": "🧘",
+      "title": "Implement daily stress management",
+      "text": "Your stress level of 8/10 likely contributes to your microbiome imbalance and energy/mood concerns. Practice consistent stress-reduction techniques to support gut-brain axis healing."
+    },
+    {
+      "emoji": "🍽️",
+      "title": "Space meals for gut recovery",
+      "text": "Allow 4-5 hours between meals and consider a 12-hour overnight fast to reduce excessive protein fermentation and give your elevated mucus-layer bacteria time to rebalance."
+    },
+    {
+      "emoji": "💤",
+      "title": "Leverage your excellent sleep",
+      "text": "Your strong sleep quality (8/10) is a major asset for microbiome repair. Maintain consistent sleep timing to maximize the gut's natural overnight restoration processes."
+    }
+  ],
+  "supplement_why_texts": {}
+}

@@ -364,10 +364,14 @@ def compute_circle_scores(analysis: dict) -> dict:
     if bifido_abund == 0:
         bifido_abund = _guild_abund('hmo')
 
-    bifido_score = _abundance_score(bifido_abund, 2.0, 10.0, 6.0, 'beneficial')
-    # Cap at 88 for above-range (above 10% is fine but not perfect)
-    if bifido_abund > 10.0:
-        bifido_score = _clamp(88.0 - 5.0 * (bifido_abund - 10.0) / 10.0, 75, 90)
+    # Absent bifidobacteria → 0% (not 1% from rounding residuals)
+    if bifido_abund == 0:
+        bifido_score = 0.0
+    else:
+        bifido_score = _abundance_score(bifido_abund, 2.0, 10.0, 6.0, 'beneficial')
+        # Cap at 88 for above-range (above 10% is fine but not perfect)
+        if bifido_abund > 10.0:
+            bifido_score = _clamp(88.0 - 5.0 * (bifido_abund - 10.0) / 10.0, 75, 90)
 
     bifidobacteria = _clamp(bifido_score)
 
@@ -746,8 +750,8 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
         })
         flagged_area_keys.add('diversity')
 
-    # 9. Low bifidobacteria
-    if bifido_abund < 2.0:
+    # 9. Low bifidobacteria (only if not already flagged by rule 4 as absent/critical)
+    if bifido_abund < 2.0 and 'bifidobacteria' not in flagged_area_keys:
         challenges.append({
             'icon': '🔻',
             'title': 'Low bifidobacteria',
@@ -1113,7 +1117,8 @@ def _check_diversity_match(analysis: dict, match_requires: str) -> bool:
 # ── Guild client-facing names (for deviation display) ────────────────────────
 _GUILD_CLIENT_NAMES = {
     'Fiber Degraders': 'Fiber-Processing Bacteria',
-    'HMO/Oligosaccharide-Utilising Bifidobacteria': 'Bifidobacteria',
+    'Bifidobacteria': 'Bifidobacteria',
+    'HMO/Oligosaccharide-Utilising Bifidobacteria': 'Bifidobacteria',  # legacy name compat
     'Butyrate Producers': 'Gut-Lining Energy Producers',
     'Cross-Feeders': 'Intermediate Processors',
     'Mucin Degraders': 'Mucus-Layer Bacteria',
@@ -1122,14 +1127,16 @@ _GUILD_CLIENT_NAMES = {
 }
 _GUILD_ICONS = {
     'Fiber Degraders': '🌾',
-    'HMO/Oligosaccharide-Utilising Bifidobacteria': '✨',
+    'Bifidobacteria': '✨',
+    'HMO/Oligosaccharide-Utilising Bifidobacteria': '✨',  # legacy name compat
     'Butyrate Producers': '⚡',
     'Cross-Feeders': '🔗',
     'Mucin Degraders': '🛡️',
     'Proteolytic Dysbiosis Guild': '🔥',
     'Proteolytic Guild': '🔥',
 }
-_BENEFICIAL_GUILDS = {'Fiber Degraders', 'HMO/Oligosaccharide-Utilising Bifidobacteria',
+_BENEFICIAL_GUILDS = {'Fiber Degraders', 'Bifidobacteria',
+                      'HMO/Oligosaccharide-Utilising Bifidobacteria',
                       'Butyrate Producers', 'Cross-Feeders'}
 _CONTEXTUAL_GUILDS = {'Mucin Degraders', 'Proteolytic Dysbiosis Guild', 'Proteolytic Guild'}
 
@@ -1150,7 +1157,8 @@ def _detect_microbiome_deviations(analysis: dict) -> list:
 
     GUILD_RANGES = {
         'Fiber Degraders': (30, 50),
-        'HMO/Oligosaccharide-Utilising Bifidobacteria': (2, 10),
+        'Bifidobacteria': (2, 10),
+        'HMO/Oligosaccharide-Utilising Bifidobacteria': (2, 10),  # legacy name compat
         'Butyrate Producers': (10, 25),
         'Cross-Feeders': (6, 12),
         'Mucin Degraders': (1, 4),
@@ -1556,8 +1564,13 @@ def _generate_elicit_queries_llm(
 ) -> list:
     """
     Step 1: Ask Claude to generate targeted Elicit search queries.
-    Returns list of query strings — one per (deviation × factor) pair.
-    Falls back to empty list if unavailable.
+
+    Generates one query per (microbiome deviation × questionnaire factor) pair,
+    so that each deviation gets its own search tuned to the specific factor that
+    may explain it.  With N deviations and M factors this produces up to N×M
+    queries (capped at 12).
+
+    Returns list of query strings.  Falls back to empty list if unavailable.
     """
     try:
         import boto3
@@ -1565,33 +1578,46 @@ def _generate_elicit_queries_llm(
     except Exception:
         return []
 
-    dev_text = '; '.join(f"{d['client_label']} at {d['value_str']}" for d in deviations)
-    factor_text = '\n'.join(f"- {f}" for f in questionnaire_factors)
+    # Build all (deviation, factor) pairs — cross product, cap at 12
+    pairs = [
+        (dev['client_label'], dev['value_str'], factor)
+        for dev in deviations
+        for factor in questionnaire_factors
+    ]
+
+    if not pairs:
+        return []
+
+    pair_text = '\n'.join(
+        f"- Finding: {client_label} ({value_str})  ×  Factor: {factor}"
+        for client_label, value_str, factor in pairs
+    )
 
     prompt = f"""You are a biomedical researcher designing a literature search.
 
-A gut microbiome test found this deviation: {dev_text}
+For each (microbiome finding, questionnaire factor) pair below, generate exactly one search query that would find peer-reviewed papers showing how that factor links to that specific gut bacteria finding.
 
-The client's health history includes these factors:
-{factor_text}
-
-For each factor listed above, generate exactly one search query that would find peer-reviewed papers showing how that factor links to this specific gut bacteria finding. Output one query per factor.
+PAIRS:
+{pair_text}
 
 Rules:
+- One query per pair — in the same order as the list above
 - Each query must be short keyword-style (5-10 words), not a full sentence
-- Focus on the specific bacteria or gut function, not generic terms
-- Include directionality where meaningful (e.g. "depletion" or "reduction")
+- Focus on the specific bacteria or gut function named in the finding, not generic terms
+- Include directionality where meaningful (e.g. "depletion", "absence", "reduction")
 - No medical disease names (no cancer, IBD, etc.)
-- Example format: "effects of antibiotics on fiber-degrading gut bacteria humans"
+- Example queries:
+    "antibiotics deplete Bifidobacterium absence humans"
+    "antibiotics reduce gut microbial diversity Shannon humans"
 
-Return ONLY a JSON array of strings — one string per factor, no other text."""
+Return ONLY a JSON array of strings — one string per pair in order, no other text."""
 
     try:
         response = client.invoke_model(
             modelId=model_id,
             body=json.dumps({
                 'anthropic_version': 'bedrock-2023-05-31',
-                'max_tokens': 400,
+                'max_tokens': 600,
                 'temperature': 0.5,
                 'messages': [{'role': 'user', 'content': prompt}]
             }),
@@ -1627,7 +1653,7 @@ def _fetch_elicit_for_queries(queries: list, elicit_key: str) -> list:
     all_papers = []
 
     def _fetch_one(q):
-        return _query_elicit(q, elicit_key, n_results=3)
+        return _query_elicit(q, elicit_key, n_results=2)
 
     with ThreadPoolExecutor(max_workers=4) as executor:
         futures = {executor.submit(_fetch_one, q): q for q in queries}
@@ -2297,12 +2323,11 @@ def build_root_cause_section(questionnaire: dict, analysis: dict,
     # Domains that explain at least one deviation
     explaining_domain_keys = set(domain_explains.keys())
 
-    # Triggered domains that explain deviations — sorted by strength
-    relevant_triggered = [
-        (dk, conf) for dk, conf in triggered_domains
-        if dk in explaining_domain_keys
-    ]
-    relevant_triggered.sort(
+    # All triggered domains pass directly to Elicit + Claude — no KB gate.
+    # The KB is used as evidence context (grounding), not as a filter.
+    # Sort by evidence strength so the strongest domains appear first.
+    relevant_triggered = sorted(
+        triggered_domains,
         key=lambda x: -(max(
             strength_scores.get(s.get('evidence_strength', 'weak'), 1)
             for s in domains_evidence.get(x[0], {}).get('signals', [{'evidence_strength': 'weak'}])
@@ -2312,9 +2337,9 @@ def build_root_cause_section(questionnaire: dict, analysis: dict,
     # ── Step 4a: Build questionnaire factors list for Elicit query generation
     questionnaire_context = _extract_questionnaire_context(questionnaire)
 
-    # Extract human-readable factor labels from triggered explaining domains
+    # Extract human-readable factor labels from all triggered domains
     questionnaire_factors = []
-    for dk, _ in relevant_triggered[:6]:
+    for dk, _ in relevant_triggered:
         domain_data = domains_evidence.get(dk, {})
         label = domain_data.get('domain_label', dk)
         questionnaire_factors.append(label)
@@ -2324,7 +2349,7 @@ def build_root_cause_section(questionnaire: dict, analysis: dict,
         for ab in ctx['antibiotics']:
             questionnaire_factors = [f"{ab} (antibiotic)" if 'antibiotic' in questionnaire_factors else ab] + [f for f in questionnaire_factors if 'antibiotic' not in f.lower()]
             break
-    questionnaire_factors = list(dict.fromkeys(questionnaire_factors))[:6]  # deduplicate, max 6
+    questionnaire_factors = list(dict.fromkeys(questionnaire_factors))  # deduplicate, no cap
 
     # ── Step 4b: Get Elicit search queries from Claude (targeted per deviation+factors) ──
     elicit_papers_flat = []  # flat list of all retrieved papers (deduplicated)
@@ -2579,8 +2604,13 @@ def build_root_cause_section(questionnaire: dict, analysis: dict,
         for fe in factor_llm_result.get('factor_explanations', [])
         if fe.get('domain_key') and fe.get('explanation')
     }
+    # Only include domains that have at least one matching guild impact in factor_cards.
+    # Triggered domains with 0 guild impacts (no KB-signal match to any active deviation)
+    # belong in awareness_chips only — not factor_cards.
     factor_cards = []
     for domain_key, conf in relevant_triggered_sorted:
+        if not factor_guild_impacts.get(domain_key):
+            continue  # no guild impacts → awareness_chip territory, skip
         domain_data = domains_evidence.get(domain_key, {})
         best_strength = max(
             (_ev_strength_scores.get(s.get('evidence_strength', 'weak'), 1)
@@ -2590,10 +2620,15 @@ def build_root_cause_section(questionnaire: dict, analysis: dict,
         ev_key = {4: 'strong', 3: 'moderate', 2: 'weak_to_moderate', 1: 'weak'}.get(best_strength, 'weak')
         guild_impacts = factor_guild_impacts.get(domain_key, [])
         explanation = factor_expl_lookup.get(domain_key, '')
+        # Collect best KB static science text (used in "What does science say" block)
+        kb_text = ''
+        for sig in domain_data.get('signals', [])[:2]:
+            t = sig.get('section3_text', {}).get('non_expert', '') or sig.get('mechanism', {}).get('non_expert', '')
+            if t and len(t) > len(kb_text):
+                kb_text = t
         if not explanation:
-            # Fall back to KB text
-            for sig in domain_data.get('signals', [])[:1]:
-                explanation = sig.get('section3_text', {}).get('non_expert', '') or sig.get('mechanism', {}).get('non_expert', '')
+            # Fall back to KB text for the explanation too
+            explanation = kb_text
         factor_cards.append({
             'domain_key': domain_key,
             'icon': domain_data.get('icon', '🔍'),
@@ -2604,6 +2639,7 @@ def build_root_cause_section(questionnaire: dict, analysis: dict,
             'guilds_affected_count': len(guild_impacts),
             'guild_impacts': guild_impacts,
             'explanation': explanation,
+            'kb_text': kb_text,   # KB static science text for "What does science say"
             'directionality': domain_data.get('directionality', 'driver'),
         })
 
@@ -3063,8 +3099,8 @@ def build_supplement_cards(formulation: dict, analysis: dict) -> list:
                 dose = c.get('dose_per_softgel', '')
                 pills.append({'name': c.get('substance', ''), 'dose': str(dose)})
         else:
-            # Sachet — combine prebiotics and vitamins
-            for section in ['prebiotics', 'vitamins_minerals', 'supplements']:
+            # Sachet/powder jar — combine prebiotics, botanicals, vitamins, supplements
+            for section in ['prebiotics', 'botanicals', 'vitamins_minerals', 'supplements']:
                 sec_data = unit.get(section, {})
                 for c in sec_data.get('components', []):
                     dose = c.get('dose_g', c.get('dose', ''))
@@ -3161,12 +3197,58 @@ def build_supplement_cards(formulation: dict, analysis: dict) -> list:
             'key': uk,
             'name': DISPLAY_NAMES.get(uk, 'Supplement Unit'),
             'timing': timing_str,
+            'timing_group': timing,  # 'morning' or 'evening' — used for grouping in HTML
             'what_it_is': WHAT_IT_IS.get(uk, 'A targeted supplement unit.'),
             'why': why_text,
             'pills': pills,
             'supports': support_labels,
             'color': UNIT_COLORS[card_num - 1] if card_num <= len(UNIT_COLORS) else '#1E1E2A',
             'emoji': UNIT_EMOJI[card_num - 1] if card_num <= len(UNIT_EMOJI) else '💊',
+        })
+
+    # ── Magnesium capsule — synthesised from component_registry ──────────────
+    # The formulation engine stores magnesium as delivery="magnesium capsule" in
+    # the registry but never creates a delivery_format_*_magnesium key.
+    # We build the card here directly from the registry.
+    mg_comps = [
+        c for c in formulation.get('component_registry', [])
+        if 'magnesium' in (c.get('delivery', '') or '').lower()
+        and 'magnesium' in (c.get('substance', '') or '').lower()
+    ]
+    if mg_comps:
+        card_num += 1
+        mg_pills = []
+        mg_reasons = []
+        for mc in mg_comps:
+            substance = mc.get('substance', 'Magnesium Bisglycinate')
+            # Display name: strip the parenthetical dose info for pill chip
+            display_sub = substance.split('(')[0].strip() if '(' in substance else substance
+            dose = mc.get('dose', '')
+            mg_pills.append({'name': display_sub, 'dose': str(dose)})
+            based_on = mc.get('based_on', '')
+            if based_on:
+                mg_reasons.append(based_on)
+
+        mg_why = ' '.join(mg_reasons[:1]) if mg_reasons else \
+            'Magnesium Bisglycinate supports deeper sleep quality and muscle recovery, timed to work with your body\'s overnight repair cycle.'
+
+        # Determine timing from protocol_summary or timing assignments
+        mg_timing_str = '🌙 30–60 min before bed'
+        mg_count = formulation.get('decisions', {}).get('magnesium', {}).get('capsules', 1)
+        if mg_count and int(mg_count) > 1:
+            mg_timing_str = f'{mg_timing_str} ({mg_count}×)'
+
+        cards.append({
+            'num': card_num,
+            'key': 'delivery_format_magnesium_capsule',
+            'name': 'Magnesium Bisglycinate Capsule',
+            'timing': mg_timing_str,
+            'what_it_is': 'Highly absorbable magnesium in bisglycinate form — supports sleep quality, muscle recovery, and stress resilience.',
+            'why': mg_why,
+            'pills': mg_pills,
+            'supports': [hc for mc in mg_comps for hc in mc.get('health_claims', [])],
+            'color': '#4A5568',
+            'emoji': '🌙',
         })
 
     return cards
@@ -4250,236 +4332,9 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
     <strong style="color:var(--amber)">Amber</strong> = too high &middot;
     <strong style="color:var(--red)">Red</strong> = critically out of range.
     For protective bacteria, low is the concern. For opportunistic bacteria, high is the concern.
-    Hover over any node in the diagram to see your detailed gauge and progress.
   </p>
 
-  <div class="guild-intro">
-    <div style="margin-bottom:-1px;">
-      <div class="option-tabs">
-        <button class="opt-tab active" onclick="switchTab(1)">Option 1 — Pathway schema</button>
-        <button class="opt-tab" onclick="switchTab(2)">Option 2 — Bacterial ranges</button>
-      </div>
-    </div>
-    <div id="opt-panel-1" class="opt-panel active" style="border:1px solid var(--rule);border-radius:0 10px 10px 10px;padding:16px;">
-    <div class="guild-explainer">
-      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);margin-bottom:10px;font-weight:600;">How your gut bacteria work together</div>
-      <div class="pathway-svg-wrap" id="pathway-wrap">
-
-        <div class="info-popup" id="info-popup">
-          <div class="ip-title" id="ip-title"></div>
-          <div id="ip-content"></div>
-        </div>
-        <div class="qanswer-popup" id="qanswer-popup">
-          <div class="qa-q" id="qa-q"></div>
-          <div class="qa-a" id="qa-a"></div>
-        </div>
-        <div class="guild-popup" id="guild-tooltip">
-          <div class="gp-title" id="gp-title"></div>
-          <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px;flex-wrap:wrap;">
-            <span class="gp-status" id="gp-status"></span>
-            <span class="gp-delta" id="gp-delta" style="display:none"></span>
-          </div>
-          <div class="gp-gauge-wrap">
-            <div class="gp-gauge-row">
-              <span class="gp-gauge-val" id="gp-val"></span>
-              <span class="gp-gauge-target" id="gp-target"></span>
-            </div>
-            <div class="gp-gauge-track">
-              <div class="gp-gauge-optimal" id="gp-optimal"></div>
-              <div class="gp-gauge-fill" id="gp-gfill"></div>
-              <div class="gp-gauge-marker" id="gp-marker"></div>
-            </div>
-            <div class="gp-gauge-range"><span>0%</span><span id="gp-range-end"></span></div>
-          </div>
-          <div class="gp-text" id="gp-text"></div>
-        </div>
-
-        <svg viewBox="0 0 640 420" xmlns="http://www.w3.org/2000/svg" id="pathway-svg">
-          <defs>
-            <marker id="ah-green" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#2E8B6E"/></marker>
-            <marker id="ah-amber" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#C97C2A"/></marker>
-            <marker id="ah-blue"  markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#3A6EA8"/></marker>
-            <marker id="ah-red"   markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#C24B3A"/></marker>
-            <marker id="ah-gray"  markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#C8CBCF"/></marker>
-          </defs>
-
-          <rect x="0" y="0" width="640" height="12" fill="#F0EDE6"/>
-          <text x="10" y="9" font-size="7" fill="#9A95A8" font-family="Nunito,sans-serif" font-weight="700" letter-spacing="1.5">FIBER PATHWAY &middot; left to right</text>
-
-          <g class="pnode" data-guild="diet-fiber">
-            <rect x="8" y="65" width="88" height="56" rx="9" fill="#EAF4EF" stroke="#2E8B6E" stroke-width="1.5"/>
-            <text x="52" y="85" text-anchor="middle" font-size="10" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x1F966; Dietary</text>
-            <text x="52" y="98" text-anchor="middle" font-size="9" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">Fiber</text>
-            <text x="52" y="110" text-anchor="middle" font-size="7" fill="#2E8B6E" font-family="Nunito,sans-serif">Complex sugars</text>
-          </g>
-          <line x1="96" y1="92" x2="108" y2="92" stroke="#3A6EA8" stroke-width="2" marker-end="url(#ah-blue)"/>
-          <text x="100" y="88" text-anchor="middle" font-size="6" fill="#9A95A8" font-family="Nunito,sans-serif" font-style="italic">complex carbs</text>
-
-          <!-- Simple Sugars source node -->
-          <g class="pnode" data-guild="diet-sugars">
-            <rect x="8" y="15" width="78" height="40" rx="8" fill="#FFF8EE" stroke="#C97C2A" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="47" y="31" text-anchor="middle" font-size="9" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x1F36C; Simple</text>
-            <text x="47" y="43" text-anchor="middle" font-size="8" fill="#1E1E2A" font-family="Nunito,sans-serif">Sugars</text>
-          </g>
-          <!-- Simple sugars → Bifidobacteria -->
-          <path d="M86,35 C140,35 180,35 224,40" stroke="#C97C2A" stroke-width="1.2" fill="none" stroke-dasharray="4,2" marker-end="url(#ah-amber)"/>
-          <text x="148" y="30" text-anchor="middle" font-size="5.5" fill="#C97C2A" font-family="Nunito,sans-serif" font-style="italic">simple sugars</text>
-          <!-- Simple sugars → Cross-Feeders -->
-          <path d="M86,45 C140,60 180,100 224,125" stroke="#C97C2A" stroke-width="1.2" fill="none" stroke-dasharray="4,2" marker-end="url(#ah-amber)"/>
-          <text x="140" y="85" text-anchor="middle" font-size="5.5" fill="#C97C2A" font-family="Nunito,sans-serif" font-style="italic">simple sugars</text>
-          <g class="pnode" data-guild="fd">
-            <rect id="nr-fd" x="110" y="65" width="88" height="56" rx="9" fill="#EAF0F8" stroke="#3A6EA8" stroke-width="1.5"/>
-            <text x="154" y="85" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x1F33E; Fiber</text>
-            <text x="154" y="98" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">Degraders</text>
-            <text id="ns-fd" x="154" y="110" text-anchor="middle" font-size="7.5" fill="#3A6EA8" font-family="Nunito,sans-serif">loading...</text>
-            <g class="info-btn" data-info="fd" style="cursor:pointer;"><circle cx="192" cy="66" r="7" fill="#3A6EA8" opacity=".85"/><text x="192" y="70" text-anchor="middle" font-size="9" fill="white" font-family="Nunito,sans-serif" font-weight="700">i</text></g>
-          </g>
-          <line id="arr-fd-bb" x1="200" y1="93" x2="222" y2="46" stroke="#3A6EA8" stroke-width="2" marker-end="url(#ah-blue)"/>
-          <line id="arr-fd-cf" x1="200" y1="93" x2="222" y2="136" stroke="#3A6EA8" stroke-width="2" marker-end="url(#ah-blue)"/>
-          <rect id="bb-bottleneck-pill" x="340" y="14" width="116" height="14" rx="5" fill="#9A95A8" display="none"/>
-          <text id="bb-bottleneck-text" x="398" y="24" text-anchor="middle" font-size="7.5" fill="white" font-family="Nunito,sans-serif" font-weight="700" display="none">&#x23F8; Substrate limited</text>
-
-          <g class="pnode" data-guild="bb">
-            <rect id="nr-bb" x="224" y="18" width="88" height="56" rx="9" fill="#FBF1E4" stroke="#C97C2A" stroke-width="1.5"/>
-            <text x="268" y="37" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x2728; Bifido-</text>
-            <text x="268" y="50" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">bacteria</text>
-            <text id="ns-bb" x="268" y="65" text-anchor="middle" font-size="7.5" fill="#C97C2A" font-family="Nunito,sans-serif">loading...</text>
-            <g class="info-btn" data-info="bb" style="cursor:pointer;"><circle cx="306" cy="19" r="7" fill="#C97C2A" opacity=".85"/><text x="306" y="23" text-anchor="middle" font-size="9" fill="white" font-family="Nunito,sans-serif" font-weight="700">i</text></g>
-          </g>
-          <g class="pnode" data-guild="cf">
-            <rect id="nr-cf" x="224" y="108" width="88" height="56" rx="9" fill="#FBF1E4" stroke="#C97C2A" stroke-width="1.5"/>
-            <text x="268" y="127" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x1F517; Cross-</text>
-            <text x="268" y="140" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">Feeders</text>
-            <text id="ns-cf" x="268" y="155" text-anchor="middle" font-size="7.5" fill="#C97C2A" font-family="Nunito,sans-serif">loading...</text>
-            <g class="info-btn" data-info="cf" style="cursor:pointer;"><circle cx="306" cy="109" r="7" fill="#C97C2A" opacity=".85"/><text x="306" y="113" text-anchor="middle" font-size="9" fill="white" font-family="Nunito,sans-serif" font-weight="700">i</text></g>
-          </g>
-          <line id="arr-bb" x1="312" y1="46" x2="362" y2="74" stroke="#C97C2A" stroke-width="2" marker-end="url(#ah-amber)"/>
-          <line id="arr-cf" x1="312" y1="136" x2="362" y2="86" stroke="#C97C2A" stroke-width="2" marker-end="url(#ah-amber)"/>
-          <g class="pnode" data-guild="bp">
-            <rect id="nr-bp" x="364" y="52" width="88" height="56" rx="9" fill="#E8F5F1" stroke="#2E8B6E" stroke-width="1.5"/>
-            <text x="408" y="72" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x26A1; Butyrate</text>
-            <text x="408" y="85" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">Producers</text>
-            <text id="ns-bp" x="408" y="99" text-anchor="middle" font-size="7.5" fill="#2E8B6E" font-family="Nunito,sans-serif">loading...</text>
-            <g class="info-btn" data-info="bp" style="cursor:pointer;"><circle cx="448" cy="53" r="7" fill="#2E8B6E" opacity=".85"/><text x="448" y="57" text-anchor="middle" font-size="9" fill="white" font-family="Nunito,sans-serif" font-weight="700">i</text></g>
-          </g>
-          <line id="arr-bp" x1="452" y1="80" x2="542" y2="80" stroke="#2E8B6E" stroke-width="2" marker-end="url(#ah-green)"/>
-          <rect x="460" y="60" width="74" height="13" rx="5" fill="#2E8B6E"/>
-          <text x="497" y="68" text-anchor="middle" font-size="7.5" fill="white" font-family="Nunito,sans-serif" font-weight="700">Butyrate &rarr;</text>
-          <g class="pnode" data-guild="out-bp">
-            <rect id="nr-out-bp" x="544" y="52" width="88" height="56" rx="9" fill="#E8F5F1" stroke="#2E8B6E" stroke-width="1.5"/>
-            <text x="588" y="70" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x1F3E0; SCFA</text>
-            <text x="588" y="83" text-anchor="middle" font-size="8.5" fill="#4A4858" font-family="Nunito,sans-serif">Colon Fuel</text>
-            <text id="ns-out-bp" x="588" y="99" text-anchor="middle" font-size="7.5" fill="#2E8B6E" font-family="Nunito,sans-serif">loading...</text>
-          </g>
-
-          <rect x="0" y="190" width="640" height="12" fill="#F0EDE6"/>
-          <text x="10" y="199" font-size="7" fill="#9A95A8" font-family="Nunito,sans-serif" font-weight="700" letter-spacing="1.5">PROTEIN PATHWAY &middot; independent</text>
-          <g class="pnode" data-guild="diet-protein">
-            <rect x="8" y="210" width="88" height="56" rx="9" fill="#F0EEF8" stroke="#6B5EA8" stroke-width="1.5"/>
-            <text x="52" y="230" text-anchor="middle" font-size="10" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x1F969; Dietary</text>
-            <text x="52" y="243" text-anchor="middle" font-size="9" fill="#4A4858" font-family="Nunito,sans-serif">Protein</text>
-            <text x="52" y="257" text-anchor="middle" font-size="7" fill="#6B5EA8" font-family="Nunito,sans-serif">undigested</text>
-          </g>
-          <path id="arr-prot" d="M96,238 C170,238 170,238 222,238" stroke="#6B5EA8" stroke-width="2" fill="none" marker-end="url(#ah-blue)"/>
-          <text x="158" y="232" text-anchor="middle" font-size="5.5" fill="#6B5EA8" font-family="Nunito,sans-serif" font-style="italic">amino acids &amp; peptides</text>
-
-          <!-- Fat source node -->
-          <g class="pnode" data-guild="diet-fat">
-            <rect x="120" y="268" width="78" height="40" rx="8" fill="#FFF8EE" stroke="#6B5EA8" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="159" y="284" text-anchor="middle" font-size="9" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x1F9C8; Fat</text>
-            <text x="159" y="298" text-anchor="middle" font-size="7" fill="#6B5EA8" font-family="Nunito,sans-serif">dietary lipids</text>
-          </g>
-          <!-- Fat → Protein Fermenters -->
-          <path d="M198,280 C210,265 215,250 224,243" stroke="#6B5EA8" stroke-width="1.2" fill="none" stroke-dasharray="4,2" marker-end="url(#ah-blue)"/>
-          <text x="220" y="272" text-anchor="middle" font-size="5.5" fill="#6B5EA8" font-family="Nunito,sans-serif" font-style="italic">bile acids</text>
-          <g class="pnode" data-guild="pg">
-            <rect id="nr-pg" x="224" y="210" width="88" height="56" rx="9" fill="#E8F5F1" stroke="#2E8B6E" stroke-width="1.5"/>
-            <text x="268" y="230" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x1F9EB; Protein</text>
-            <text x="268" y="243" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">Fermenters</text>
-            <text id="ns-pg" x="268" y="257" text-anchor="middle" font-size="7.5" fill="#2E8B6E" font-family="Nunito,sans-serif">loading...</text>
-            <g class="info-btn" data-info="pg" style="cursor:pointer;"><circle cx="306" cy="211" r="7" fill="#2E8B6E" opacity=".85"/><text x="306" y="215" text-anchor="middle" font-size="9" fill="white" font-family="Nunito,sans-serif" font-weight="700">i</text></g>
-          </g>
-          <line id="arr-pg" x1="312" y1="238" x2="542" y2="238" stroke="#2E8B6E" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#ah-green)"/>
-          <g class="pnode" data-guild="out-pg">
-            <rect id="nr-out-pg" x="544" y="210" width="88" height="56" rx="9" fill="#E8F5F1" stroke="#2E8B6E" stroke-width="1.5"/>
-            <text x="588" y="230" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x2601;&#xFE0F; Protein</text>
-            <text x="588" y="243" text-anchor="middle" font-size="9" fill="#4A4858" font-family="Nunito,sans-serif">Byproducts</text>
-            <text id="ns-out-pg" x="588" y="257" text-anchor="middle" font-size="7.5" fill="#2E8B6E" font-family="Nunito,sans-serif">loading...</text>
-          </g>
-
-          <rect x="0" y="306" width="640" height="12" fill="#F0EDE6"/>
-          <text x="10" y="315" font-size="7" fill="#9A95A8" font-family="Nunito,sans-serif" font-weight="700" letter-spacing="1.5">MUCUS PATHWAY &middot; homeostatic role</text>
-
-          <!-- Mucus-Layer Bacteria guild (under Protein Fermenters) -->
-          <g class="pnode" data-guild="md">
-            <rect id="nr-md" x="224" y="326" width="88" height="56" rx="9" fill="#EEF0F8" stroke="#6B7EA8" stroke-width="1.5"/>
-            <text x="268" y="345" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x1F504; Mucus</text>
-            <text x="268" y="358" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">Layer Bacteria</text>
-            <text id="ns-md" x="268" y="372" text-anchor="middle" font-size="7.5" fill="#6B7EA8" font-family="Nunito,sans-serif">loading...</text>
-            <g class="info-btn" data-info="md" style="cursor:pointer;"><circle cx="306" cy="327" r="7" fill="#6B7EA8" opacity=".85"/><text x="306" y="331" text-anchor="middle" font-size="9" fill="white" font-family="Nunito,sans-serif" font-weight="700">i</text></g>
-          </g>
-
-          <!-- Mucus Layer source (under Protein Byproducts) -->
-          <g class="pnode" data-guild="out-md">
-            <rect id="nr-out-md" x="544" y="326" width="88" height="56" rx="9" fill="#EEF0F8" stroke="#6B7EA8" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="588" y="345" text-anchor="middle" font-size="9.5" fill="#1E1E2A" font-family="Nunito,sans-serif" font-weight="700">&#x1F6E1;&#xFE0F; Mucus</text>
-            <text x="588" y="358" text-anchor="middle" font-size="9" fill="#4A4858" font-family="Nunito,sans-serif">Layer</text>
-            <text id="ns-out-md" x="588" y="372" text-anchor="middle" font-size="7.5" fill="#6B7EA8" font-family="Nunito,sans-serif">loading...</text>
-          </g>
-
-          <!-- Mucus Layer → Bacteria: "mucus glycans" (substrate arrow) -->
-          <line id="arr-md" x1="544" y1="349" x2="314" y2="349" stroke="#6B7EA8" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#ah-blue)"/>
-          <text x="429" y="342" text-anchor="middle" font-size="6" fill="#6B7EA8" font-family="Nunito,sans-serif" font-style="italic">mucus glycans</text>
-
-          <!-- Bacteria → Mucus Layer: degradation feedback (return arrow) -->
-          <line x1="312" y1="361" x2="542" y2="361" stroke="#6B7EA8" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#ah-blue)"/>
-          <text x="429" y="375" text-anchor="middle" font-size="5.5" fill="#9A95A8" font-family="Nunito,sans-serif" font-style="italic">degradation</text>
-
-          <!-- Question pills -->
-          <g id="qpill-fd" class="qpill" data-q="fd" style="cursor:pointer;display:none;">
-            <rect class="qpill-bg" x="93" y="83" width="18" height="18" rx="9" fill="#3A6EA8" opacity=".9"/>
-            <rect class="qpill-expand" x="93" y="83" width="148" height="18" rx="9" fill="#3A6EA8" opacity="0"/>
-            <text class="qpill-icon" x="102" y="95" text-anchor="middle" font-size="9" fill="white" font-family="Nunito,sans-serif" font-weight="700">?</text>
-            <text class="qpill-label" x="172" y="95" text-anchor="middle" font-size="8" fill="white" font-family="Nunito,sans-serif" font-weight="700" opacity="0">Why is fiber important?</text>
-          </g>
-          <g id="qpill-substrate" class="qpill" data-q="substrate" style="cursor:pointer;display:none;">
-            <rect class="qpill-bg" x="460" y="14" width="18" height="14" rx="7" fill="#3A6EA8" opacity=".9"/>
-            <rect class="qpill-expand" x="350" y="14" width="131" height="14" rx="7" fill="#3A6EA8" opacity="0"/>
-            <text class="qpill-icon" x="469" y="24" text-anchor="middle" font-size="8" fill="white" font-family="Nunito,sans-serif" font-weight="700">?</text>
-            <text class="qpill-label" x="417" y="24" text-anchor="middle" font-size="7.5" fill="white" font-family="Nunito,sans-serif" font-weight="700" opacity="0">What is substrate limitation?</text>
-          </g>
-          <g id="qpill-bp" class="qpill" data-q="bp" style="cursor:pointer;display:none;">
-            <rect class="qpill-bg" x="493" y="46" width="18" height="18" rx="9" fill="#2E8B6E" opacity=".9"/>
-            <rect class="qpill-expand" x="390" y="46" width="150" height="18" rx="9" fill="#2E8B6E" opacity="0"/>
-            <text class="qpill-icon" x="502" y="58" text-anchor="middle" font-size="9" fill="white" font-family="Nunito,sans-serif" font-weight="700">?</text>
-            <text class="qpill-label" x="466" y="58" text-anchor="middle" font-size="8" fill="white" font-family="Nunito,sans-serif" font-weight="700" opacity="0">What does butyrate do?</text>
-          </g>
-          <g id="qpill-scfa" class="qpill" data-q="scfa" style="cursor:pointer;">
-            <rect class="qpill-bg" x="624" y="52" width="16" height="16" rx="8" fill="#2E8B6E" opacity=".85"/>
-            <rect class="qpill-expand" x="490" y="52" width="148" height="16" rx="8" fill="#2E8B6E" opacity="0"/>
-            <text class="qpill-icon" x="632" y="63" text-anchor="middle" font-size="8" fill="white" font-family="Nunito,sans-serif" font-weight="700">?</text>
-            <text class="qpill-label" x="565" y="63" text-anchor="middle" font-size="7.5" fill="white" font-family="Nunito,sans-serif" font-weight="700" opacity="0">What are SCFAs?</text>
-          </g>
-          <g id="qpill-pg" class="qpill" data-q="pg" style="cursor:pointer;display:none;">
-            <rect class="qpill-bg" x="420" y="226" width="18" height="18" rx="9" fill="#C24B3A" opacity=".9"/>
-            <rect class="qpill-expand" x="280" y="226" width="190" height="18" rx="9" fill="#C24B3A" opacity="0"/>
-            <text class="qpill-icon" x="429" y="238" text-anchor="middle" font-size="9" fill="white" font-family="Nunito,sans-serif" font-weight="700">?</text>
-            <text class="qpill-label" x="377" y="238" text-anchor="middle" font-size="8" fill="white" font-family="Nunito,sans-serif" font-weight="700" opacity="0">Why is too much protein bad?</text>
-          </g>
-          <g id="qpill-md" class="qpill" data-q="md" style="cursor:pointer;">
-            <rect class="qpill-bg" x="624" y="326" width="16" height="16" rx="8" fill="#6B7EA8" opacity=".85"/>
-            <rect class="qpill-expand" x="490" y="326" width="150" height="16" rx="8" fill="#6B7EA8" opacity="0"/>
-            <text class="qpill-icon" x="632" y="337" text-anchor="middle" font-size="8" fill="white" font-family="Nunito,sans-serif" font-weight="700">?</text>
-            <text class="qpill-label" x="565" y="337" text-anchor="middle" font-size="7.5" fill="white" font-family="Nunito,sans-serif" font-weight="700" opacity="0">What is the mucus layer?</text>
-          </g>
-        </svg>
-      </div>
-      <div id="dynamic-callout" class="callout" style="margin-top:12px"></div>
-    </div>
-    </div><!-- /opt-panel-1 -->
-
-    <div id="opt-panel-2" class="opt-panel" style="border:1px solid var(--rule);border-radius:0 10px 10px 10px;padding:16px;">
-    <div class="guild-bars">
+  <div class="guild-bars">
 ''')
 
     for g in guilds_display:
@@ -4501,9 +4356,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
       </div>
 ''')
 
-    parts.append('''    </div><!-- /guild-bars -->
-    </div><!-- /opt-panel-2 -->
-  </div><!-- /guild-intro -->
+    parts.append('''  </div><!-- /guild-bars -->
 </div>
 ''')
 
@@ -4663,12 +4516,20 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
         <span class="fc-ev-badge {ev_css}">{_esc(fc.get("evidence_label", "Emerging research"))}</span>
       </div>
 ''')
-            if explanation:
+            if explanation or fc.get('kb_text'):
+                kb_text_html = _esc(fc.get('kb_text', ''))
                 parts.append(f'''      <div class="fc-body">
-        <div class="fc-text">{_esc(explanation)}</div>
-        <span class="fc-scope">{n_guilds} / 4 guilds affected</span>
-      </div>
 ''')
+                if explanation:
+                    parts.append(f'        <div class="fc-text">{_esc(explanation)}</div>\n')
+                if kb_text_html:
+                    parts.append(f'''        <details class="rfc-science" style="margin-top:10px;">
+          <summary>What does science say</summary>
+          <div class="rfc-science-body">{kb_text_html}</div>
+        </details>
+''')
+                parts.append(f'        <span class="fc-scope">{n_guilds} / 4 guilds affected</span>\n')
+                parts.append('      </div>\n')
             parts.append('    </div>\n')
         parts.append('  </div>\n')
 
@@ -4895,74 +4756,105 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
 
     # ════════════════════ SECTION 5: SUPPLEMENTS ════════════════════
     if supplement_cards:
+        # Group cards by timing_group (morning / evening)
+        # Cards without timing_group fall back to their timing string heuristic
+        morning_cards = []
+        evening_cards = []
+        for card in supplement_cards:
+            tg = card.get('timing_group', '')
+            if not tg:
+                # Fallback: infer from timing display string
+                timing_str = card.get('timing', '').lower()
+                tg = 'evening' if 'evening' in timing_str or 'bed' in timing_str or '🌙' in timing_str else 'morning'
+            if tg == 'evening':
+                evening_cards.append(card)
+            else:
+                morning_cards.append(card)
+
+        n_morning = len(morning_cards)
+        n_evening = len(evening_cards)
+
         parts.append(f'''
 <div class="section sand">
   <div class="sec-label">Section 5 · Your Formula</div>
   <h2 class="sec-title">What you are taking and why</h2>
-  <p class="sec-intro">Your formula contains several targeted units. Each one supports a different step in rebalancing your microbiome — and everything in it is there for a specific reason connected to your results.</p>
+  <p class="sec-intro">Your formula is organised by when you take it — morning and evening. Each unit targets a specific aspect of your microbiome rebalancing and is timed to work with your body's natural rhythms.</p>
 
-  <div class="supp-units">
+<style>
+/* ── Supplement timing groups ── */
+.supp-timing-group {{ margin-bottom:36px; }}
+.supp-timing-banner {{ display:flex; align-items:center; gap:14px; margin-bottom:20px; padding:14px 20px;
+  border-radius:10px; }}
+.supp-timing-banner.morning {{ background:linear-gradient(135deg,rgba(58,110,168,.08) 0%,rgba(46,139,110,.06) 100%);
+  border:1px solid rgba(58,110,168,.2); }}
+.supp-timing-banner.evening {{ background:linear-gradient(135deg,rgba(107,94,168,.08) 0%,rgba(30,30,42,.06) 100%);
+  border:1px solid rgba(107,94,168,.2); }}
+.supp-timing-emoji {{ font-size:28px; flex-shrink:0; }}
+.supp-timing-label {{ font-family:'Playfair Display',serif; font-size:22px; font-weight:400; flex:1; }}
+.supp-timing-count {{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--soft);
+  background:var(--sand); padding:4px 12px; border-radius:20px; border:1px solid var(--rule); }}
+.supp-timing-grid {{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }}
+@media(max-width:900px) {{ .supp-timing-grid {{ grid-template-columns:1fr; }} }}
+/* Cards in grid — slightly more compact */
+.supp-timing-grid .supp-unit {{ animation:fadeUp .5s ease both; }}
+</style>
 ''')
 
-        for card in supplement_cards:
-            parts.append(f'''    <div class="supp-unit">
-      <div class="supp-header">
-        <div class="supp-num-block" style="background:{_esc(card["color"])}">{card["num"]}</div>
-        <div class="supp-head-text">
-          <div class="supp-unit-name">{_esc(card["name"])}</div>
-          <div class="supp-unit-when">{_esc(card["timing"])}</div>
+        # ── Render a timing group ─────────────────────────────────────────────
+        def _emit_group(group_label, emoji, group_cards, css_class):
+            if not group_cards:
+                return
+            n = len(group_cards)
+            unit_label = f'{n} unit{"s" if n != 1 else ""}'
+            parts.append(f'''  <div class="supp-timing-group">
+    <div class="supp-timing-banner {css_class}">
+      <span class="supp-timing-emoji">{emoji}</span>
+      <span class="supp-timing-label">{group_label}</span>
+      <span class="supp-timing-count">{unit_label}</span>
+    </div>
+    <div class="supp-timing-grid">
+''')
+            for card in group_cards:
+                parts.append(f'''      <div class="supp-unit">
+        <div class="supp-header">
+          <div class="supp-num-block" style="background:{_esc(card["color"])}">{card["num"]}</div>
+          <div class="supp-head-text">
+            <div class="supp-unit-name">{_esc(card["name"])}</div>
+            <div class="supp-unit-when">{_esc(card["timing"])}</div>
+          </div>
         </div>
-        <div class="supp-unit-tag">{_esc(card["emoji"])} {_esc(card["what_it_is"])}</div>
-      </div>
-      <div class="supp-meta">
-        <div class="supp-meta-item">
-          <div class="smi-label">What it is</div>
-          <div class="smi-text">{_esc(card["what_it_is"])}</div>
+''')
+                if card.get('why'):
+                    parts.append(f'''        <div class="supp-why-band">
+          <span class="why-icon">🎯</span>
+          <span><strong>Why you're taking it:</strong> {_esc(card["why"])}</span>
         </div>
-      </div>
 ''')
-            if card.get('why'):
-                parts.append(f'''      <div class="supp-why-band">
-        <span class="why-icon">🎯</span>
-        <span><strong>Why you're taking it:</strong> {_esc(card["why"])}</span>
-      </div>
+                if 'polyphenol' in card.get('key', '') and 'morning' in card.get('timing', '').lower():
+                    parts.append('''        <div class="supp-why-band" style="background:#FBF1E4;border-top:none;border-left:3px solid var(--amber);padding-top:12px;padding-bottom:12px;">
+          <span class="why-icon">⚠️</span>
+          <span><strong>Take with breakfast or on full stomach.</strong></span>
+        </div>
 ''')
-            # Empty stomach warning for morning polyphenol capsules
-            if 'polyphenol' in card.get('key', '') and 'morning' in card.get('timing', '').lower():
-                parts.append('''      <div class="supp-why-band" style="background:#FBF1E4;border-top:none;border-left:3px solid var(--amber);padding-top:12px;padding-bottom:12px;">
-        <span class="why-icon">⚠️</span>
-        <span><strong>Take with breakfast or on full stomach.</strong> Do not take on an empty stomach — polyphenols at this dose may cause nausea if taken without food.</span>
-      </div>
-''')
-            # Multi-capsule cards (Morning/Evening Wellness) — render per capsule with sub-headers
-            if card.get('capsules'):
-                for cap in card['capsules']:
-                    cap_label = _esc(cap.get('label', ''))
-                    cap_weight = _esc(cap.get('weight', ''))
-                    _cap_weight_html = ('&nbsp;·&nbsp;<span style="font-size:11px;color:var(--soft);">' + cap_weight + '</span>') if cap_weight else ''
-                    parts.append(f'      <div style="padding:4px 24px 0;"><span style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);">{cap_label}</span>{_cap_weight_html}</div>\n')
-                    parts.append('      <div class="supp-pills" style="padding-top:8px;padding-bottom:16px;">\n')
-                    for comp in cap.get('components', []):
-                        parts.append(f'        <div class="pill"><strong>{_esc(comp["name"])}</strong> · {_esc(str(comp["dose"]))}</div>\n')
-                    parts.append('      </div>\n')
-            # Single-level pill cards (Probiotic, Omega, Prebiotic)
-            elif card.get('pills'):
-                parts.append('      <div class="supp-pills">\n')
-                for pill in card['pills']:
-                    parts.append(f'        <div class="pill"><strong>{_esc(pill["name"])}</strong> · {_esc(str(pill["dose"]))}</div>\n')
-                parts.append('      </div>\n')
+                if card.get('pills'):
+                    parts.append('''        <div class="supp-pills">\n''')
+                    for pill in card['pills']:
+                        parts.append(f'''          <div class="pill"><strong>{_esc(pill["name"])}</strong> · {_esc(str(pill["dose"]))}</div>\n''')
+                    parts.append('''        </div>\n''')
+                if card.get('supports'):
+                    parts.append('''        <div class="supp-supports">\n''')
+                    parts.append('''          <div class="supp-supports-label">Supports</div>\n''')
+                    parts.append('''          <div class="supp-supports-chips">\n''')
+                    for s in card['supports']:
+                        parts.append(f'''            <div class="sc-chip">{_esc(s)}</div>\n''')
+                    parts.append('''          </div>\n        </div>\n''')
+                parts.append('''      </div>\n''')
+            parts.append('''    </div>\n  </div>\n''')
 
-            if card.get('supports'):
-                parts.append('      <div class="supp-supports">\n')
-                parts.append('        <div class="supp-supports-label">Supports</div>\n')
-                parts.append('        <div class="supp-supports-chips">\n')
-                for s in card['supports']:
-                    parts.append(f'          <div class="sc-chip">{_esc(s)}</div>\n')
-                parts.append('        </div>\n      </div>\n')
+        _emit_group('Morning', '🌅', morning_cards, 'morning')
+        _emit_group('Evening', '🌙', evening_cards, 'evening')
 
-            parts.append('    </div>\n')
-
-        parts.append('  </div>\n</div>\n')
+        parts.append('</div>\n')
 
     else:
         parts.append('''
@@ -5518,12 +5410,6 @@ document.querySelectorAll('.info-btn[data-info]').forEach(btn => {{
   btn.addEventListener('mouseenter', e => showInfoPopup(e, btn.dataset.info));
   btn.addEventListener('mouseleave', () => infoPopup.classList.remove('visible'));
 }});
-
-// ── Tab switch ──────────────────────────────────────────────────────────────────────────────────
-function switchTab(n) {{
-  document.querySelectorAll('.opt-tab').forEach((t,i) => t.classList.toggle('active', i+1===n));
-  document.querySelectorAll('.opt-panel').forEach((p,i) => p.classList.toggle('active', i+1===n));
-}}
 
 // ── Banner slider ───────────────────────────────────────────────────────────────────────────────
 function updateBanner(idx) {{

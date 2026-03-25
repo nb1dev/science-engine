@@ -120,14 +120,25 @@ def select_supplements(unified_input: Dict, rule_outputs: Dict,
         all_excluded = set()
         exclusion_details = []
 
-        # KB-derived exclusions (from exclusion_reasons)
-        for reason in getattr(medication_exclusions, 'exclusion_reasons', []):
+        # Merge both LLM screener exclusions (exclusion_reasons) AND deterministic KB rule
+        # removals (removal_reasons). These are separate fields on MedicationExclusions:
+        #   - exclusion_reasons: populated by the LLM medication screener (Stage A.5b)
+        #   - removal_reasons:   populated by deterministic KB rules (Stage A.6, e.g. MED_003)
+        # Without merging both, KB-only removals (e.g. curcumin via MED_003) are silently
+        # absent from the LLM exclusion prompt and the LLM may re-select the excluded substance.
+        all_reasons = (
+            getattr(medication_exclusions, 'exclusion_reasons', []) +
+            getattr(medication_exclusions, 'removal_reasons', [])
+        )
+        for reason in all_reasons:
             substance = reason.get('substance', '')
             medication = reason.get('medication', '')
             mechanism = reason.get('mechanism', '')
             if substance:
-                all_excluded.add(substance.lower())
-                exclusion_details.append(f"- {substance} (interacts with {medication} — {mechanism})")
+                substance_lower = substance.lower()
+                if substance_lower not in all_excluded:
+                    all_excluded.add(substance_lower)
+                    exclusion_details.append(f"- {substance} (interacts with {medication} — {mechanism})")
 
         # Evidence-derived exclusions (from evidence retrieval in S3)
         for substance in getattr(medication_exclusions, 'evidence_excluded_substances', set()):

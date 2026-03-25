@@ -82,6 +82,20 @@ def run(ctx: PipelineContext) -> Dict:
         "revision_history": [],
     }
 
+    # ── SIBO clinical warning ────────────────────────────────────────────
+    # If the SIBO zero-FODMAP override is active, surface a concise warning
+    # listing the clinical factors that triggered it. Appears in platform JSON,
+    # dashboard, and any downstream review tooling that reads metadata.warnings.
+    _pb_design = master.get("decisions", {}).get("prebiotic_design", {})
+    _sibo_assessment = _pb_design.get("sibo_assessment", {})
+    if _sibo_assessment.get("sibo_suspected", False):
+        _criteria = _sibo_assessment.get("criteria_met", [])
+        _factors = ", ".join(_criteria) if _criteria else "clinical profile"
+        _sibo_warning = f"SIBO suspected: {_factors}"
+        _meta_warnings = master.get("formulation", {}).get("metadata", {}).setdefault("warnings", [])
+        if _sibo_warning not in _meta_warnings:
+            _meta_warnings.append(_sibo_warning)
+
     # ── Medication timing override ───────────────────────────────────────
     if ctx.medication.timing_override:
         from formulation.apply_medication_timing_override import apply_timing_override, print_timing_override_summary

@@ -42,6 +42,19 @@ def run(ctx: PipelineContext) -> PipelineContext:
     if ctx.medication.excluded_substances:
         _apply_medication_exclusions(ctx)
 
+    # ── Excluded supplement fallback (C.5b) ──────────────────────────────
+    # After medication exclusions remove a substance, check if its health claim
+    # category is now uncovered. If so, inject the next available KB-ranked
+    # alternative (fully dynamic — reads from supplements_nonvitamins.json).
+    _apply_excluded_supplement_fallback(ctx)
+
+    # ── BMI-mandatory supplements (C.5c) ─────────────────────────────────
+    # Deterministic injection based on clinical BMI thresholds.
+    # Currently: BMI ≥ 27.5 → Glucomannan 3g (satiety fiber, powder jar).
+    # Runs after medication exclusions (exclusion set is populated) and after
+    # fallback injector, before the fiber/substance blocklist filter.
+    _apply_bmi_mandatory_supplements(ctx)
+
     # ── Excluded substance filter (D.0a) ─────────────────────────────────
     _apply_excluded_substance_filter(ctx)
 
@@ -65,6 +78,11 @@ def run(ctx: PipelineContext) -> PipelineContext:
 
     # ── Zinc dose guard (D.2e) ──────────────────────────────────────────
     _apply_zinc_dose_guard(ctx)
+
+    # ── Supplement deduplication (D.2f) ─────────────────────────────────
+    # Must run last — after fallback injections, LLM selection, and all
+    # other filters. Removes any substance that appears more than once.
+    _apply_supplement_deduplication(ctx)
 
     print(f"  ✅ Post-processing complete")
     return ctx
@@ -109,13 +127,269 @@ def _is_medication_excluded(substance_name: str, excluded_set: set) -> bool:
     return False
 
 
+def _apply_excluded_supplement_fallback(ctx: PipelineContext):
+    """Deterministic KB fallback: when a substance is removed by medication rules,
+    check if its health claim category is now uncovered and inject the next
+    available KB-ranked alternative.
+
+    Design principles:
+    - Fully KB-driven — reads supplement ranks from supplements_nonvitamins.json.
+      No substance names are hardcoded here. Updating the KB automatically updates
+      the fallback options.
+    - Only fires when a claim is genuinely uncovered (no other selected supplement
+      covers it) — does not add unnecessary supplements.
+    - Respects the excluded_substances set — never reinjects an excluded substance.
+    - Skips supplements with interaction_risk "medium" or "high".
+    - Uses the minimum KB dose for the replacement.
+    - Logs every injection clearly for the pipeline trace.
+    """
+    excluded = ctx.medication.excluded_substances or set()
+    if not excluded:
+        return
+
+    # Load supplement KB
+    kb_path = KB_DIR / "supplements_nonvitamins.json"
+    with open(kb_path, 'r', encoding='utf-8') as f:
+        kb = json.load(f)
+
+    # Build a flat lookup: {substance_id: entry} and health_claim → sorted candidates
+    supplements_flat = kb.get("supplements_flat", [])
+
+    def _normalize(name: str) -> str:
+        return name.lower().strip()
+
+    # Which health claims are currently covered by selected supplements?
+    active_supplement_claims: set = set()
+    for sp in ctx.supplements.get("supplements", []):
+        name_lower = _normalize(sp.get("substance", ""))
+        for entry in supplements_flat:
+            entry_names = {
+                _normalize(entry.get("substance", "")),
+                _normalize(entry.get("id", "")),
+            }
+            if any(n and (n in name_lower or name_lower in n) for n in entry_names):
+                for claim in entry.get("parsed", {}).get("health_claims", []):
+                    active_supplement_claims.add(claim)
+                break
+
+    # Which claims did the excluded substances cover?
+    # Walk removal_reasons to find substances removed by medication rules and their claims
+    claims_needing_fallback: dict = {}  # {claim: [excluded_substance_names]}
+    for reason in getattr(ctx.medication, 'removal_reasons', []):
+        substance_name = reason.get("substance", "").lower()
+        if not substance_name:
+            continue
+        # Find what health claims this substance covered in the KB
+        for entry in supplements_flat:
+            entry_id = _normalize(entry.get("id", ""))
+            entry_sub = _normalize(entry.get("substance", ""))
+            if entry_id in substance_name or substance_name in entry_id or \
+               entry_sub in substance_name or substance_name in entry_sub:
+                for claim in entry.get("parsed", {}).get("health_claims", []):
+                    if claim not in active_supplement_claims:
+                        if claim not in claims_needing_fallback:
+                            claims_needing_fallback[claim] = []
+                        claims_needing_fallback[claim].append(substance_name)
+                break
+
+    if not claims_needing_fallback:
+        return
+
+    # Build candidates per claim: sorted by rank_priority ascending (1 = best)
+    def _get_candidates(claim: str):
+        candidates = []
+        for entry in supplements_flat:
+            if claim in entry.get("parsed", {}).get("health_claims", []):
+                candidates.append(entry)
+        candidates.sort(key=lambda e: e.get("parsed", {}).get("rank_priority", 99))
+        return candidates
+
+    injected = []
+
+    for claim, excluded_names in claims_needing_fallback.items():
+        # Check if this active health claim list warrants a supplement
+        active_claims = ctx.rule_outputs.get("health_claims", {}).get("supplement_claims", [])
+        if claim not in active_claims:
+            continue  # This claim wasn't active for this client — skip
+
+        candidates = _get_candidates(claim)
+        for entry in candidates:
+            entry_id = _normalize(entry.get("id", ""))
+            entry_sub = _normalize(entry.get("substance", ""))
+
+            # Skip if excluded by medication rules
+            is_excluded = any(
+                ex in entry_id or entry_id in ex or
+                ex in entry_sub or entry_sub in ex
+                for ex in excluded
+            )
+            if is_excluded:
+                continue
+
+            # Skip high/medium interaction risk
+            interaction = entry.get("parsed", {}).get("interaction_level", "low")
+            if interaction in ("medium", "high"):
+                continue
+
+            # Skip if already in selected supplements
+            already_selected = any(
+                _normalize(sp.get("substance", "")) in entry_sub or
+                entry_sub in _normalize(sp.get("substance", ""))
+                for sp in ctx.supplements.get("supplements", [])
+            )
+            if already_selected:
+                active_supplement_claims.add(claim)
+                break  # Claim is already covered, no need to inject
+
+            # Determine dose
+            parsed_dose = entry.get("parsed", {}).get("dose", {})
+            dose_unit = parsed_dose.get("unit", "mg")
+            dose_value = parsed_dose.get("min") or parsed_dose.get("value")
+            if dose_value is None:
+                continue  # No usable dose — skip this candidate
+
+            dose_mg = dose_value * 1000 if dose_unit == "g" else dose_value
+
+            # Determine delivery
+            delivery_constraint = entry.get("delivery_constraint", "any")
+            timing_restriction = entry.get("timing_restriction", "any")
+            if delivery_constraint == "capsule_only":
+                delivery = "morning_wellness_capsule"
+            else:
+                delivery = "morning_wellness_capsule"
+
+            replacement = {
+                "substance": entry.get("substance", ""),
+                "dose_mg": dose_mg,
+                "health_claim": claim,
+                "rank": entry.get("rank", ""),
+                "delivery": delivery,
+                "informed_by": "medication_fallback",
+                "rationale": (
+                    f"Fallback replacement for excluded substance(s) [{', '.join(excluded_names)}] "
+                    f"— {claim} health claim would be uncovered. "
+                    f"Selected as next available KB-ranked option ({entry.get('rank', '?')})."
+                ),
+                "_fallback_injected": True,
+            }
+            ctx.supplements["supplements"].append(replacement)
+            active_supplement_claims.add(claim)
+            injected.append(f"{entry.get('substance')} ({claim}, {entry.get('rank')})")
+            print(
+                f"  💊 FALLBACK INJECTION: {entry.get('substance')} {dose_mg}mg "
+                f"→ replaces excluded [{', '.join(excluded_names)}] for '{claim}' claim"
+            )
+            ctx.add_trace(
+                "fallback_injection",
+                entry.get("substance", ""),
+                f"Fallback: replaces excluded [{', '.join(excluded_names)}] for '{claim}' claim",
+                excluded_substances=list(excluded_names),
+                health_claim=claim,
+                rank=entry.get("rank", ""),
+                dose_mg=dose_mg,
+            )
+            break  # One fallback per claim
+
+    if not injected:
+        # All uncovered claims already had coverage or no valid candidate found
+        pass
+    else:
+        print(f"  ✅ Fallback: {len(injected)} supplement(s) injected to cover uncovered claims")
+
+
 # Substances handled deterministically — LLM should not select these
 EXCLUDED_SUBSTANCES = {"magnesium", "vitamin d", "vitamin d3", "vitamin e", "omega-3", "omega",
                        "dha", "epa", "astaxanthin", "melatonin", "l-theanine", "valerian",
                        "valerian root", "valeriana"}
+def _apply_bmi_mandatory_supplements(ctx: PipelineContext):
+    """Inject mandatory supplements based on BMI thresholds.
+
+    Rule: BMI ≥ 27.5 → Glucomannan 3g/day (powder jar)
+    ─────────────────────────────────────────────────────
+    Glucomannan at 3g/day is the standard satiety dose — it reduces appetite via
+    viscous gel formation in the stomach and slows gastric emptying. It is
+    complementary to Capsicum Extract (which acts via thermogenesis) and both
+    are clinically indicated together for weight management.
+
+    Safety guards (all must pass):
+    1. BMI ≥ 27.5 (overweight threshold — WHO Asian BMI cut-off)
+    2. "Fullness/Satiety" is in active supplement claims (confirms weight management
+       is clinically indicated for this client)
+    3. Glucomannan not in medication excluded_substances (contraindication safety)
+    4. Glucomannan not already selected by LLM (prevent duplication)
+    5. No bowel obstruction / swallowing disorder in diagnoses (clinical safety —
+       glucomannan can swell and cause obstruction in these conditions)
+
+    Delivery: "jar" (3g powder) — goes in powder jar alongside prebiotics.
+    Glucomannan is NOT in EXCLUDED_FIBERS so it passes the fiber blocklist filter.
+    """
+    bmi = ctx.unified_input["questionnaire"]["demographics"].get("bmi")
+    if bmi is None or bmi < 27.5:
+        return
+
+    # Guard 2: Fullness/Satiety must be an active claim
+    active_claims = ctx.rule_outputs.get("health_claims", {}).get("supplement_claims", [])
+    if "Fullness/Satiety" not in active_claims:
+        return
+
+    # Guard 3: Not excluded by medication rules
+    excluded = ctx.medication.excluded_substances or set()
+    if any("glucomannan" in ex.lower() for ex in excluded):
+        return
+
+    # Guard 4: Not already selected by LLM
+    existing_names = {sp.get("substance", "").lower() for sp in ctx.supplements.get("supplements", [])}
+    if any("glucomannan" in name for name in existing_names):
+        return
+
+    # Guard 5: No bowel obstruction or swallowing disorder
+    diagnoses = [str(d).lower() for d in ctx.unified_input.get("questionnaire", {}).get("medical", {}).get("diagnoses", [])]
+    contraindicated_conditions = [
+        "bowel obstruction", "intestinal obstruction", "esophageal stricture",
+        "dysphagia", "swallowing disorder", "achalasia", "esophageal",
+    ]
+    if any(kw in diag for diag in diagnoses for kw in contraindicated_conditions):
+        print(f"  ⚠️  Glucomannan skipped: contraindicated condition in diagnoses")
+        return
+
+    # All guards passed — inject Glucomannan 3g
+    ctx.supplements["supplements"].append({
+        "substance": "Glucomannan",
+        "dose_mg": 3000,
+        "dose_g": 3.0,
+        "health_claim": "Fullness/Satiety",
+        "rank": "2nd Choice",
+        "delivery": "jar",
+        "informed_by": "bmi_rule",
+        "rationale": (
+            f"BMI {bmi} ≥ 27.5 — mandatory Glucomannan 3g/day (deterministic weight management rule). "
+            f"Complements LLM-selected Fullness/Satiety supplement via independent mechanism "
+            f"(viscous gel → satiety vs thermogenesis). KB dose range: 1–5g."
+        ),
+        "_bmi_mandatory": True,
+    })
+    print(f"  ⚖️  BMI {bmi} ≥ 27.5 → Glucomannan 3g injected (Fullness/Satiety, powder jar)")
+    ctx.add_trace(
+        "bmi_mandatory_injection",
+        "Glucomannan",
+        f"BMI {bmi} ≥ 27.5 → Glucomannan 3g/day mandatory (deterministic weight management rule)",
+        bmi=bmi,
+        dose_g=3.0,
+        health_claim="Fullness/Satiety",
+    )
+
+
+# Fibers blocked here are placed in the powder jar by the prebiotic designer step.
+# If the LLM also selected them as supplements, they would appear twice — once in
+# the jar and once in a capsule. This list contains ONLY fibers that the prebiotic
+# designer actively uses (confirmed in prebiotic_rules.json).
+#
+# Glucomannan is intentionally EXCLUDED from this list — it is never placed in the jar
+# by the prebiotic designer. It is a satiety supplement (1–5g/day, Fullness/Satiety
+# health claim) and must be freely selectable by the LLM for BMI ≥ 27.5 clients.
 EXCLUDED_FIBERS = {"phgg", "psyllium", "psyllium husk", "inulin", "pure inulin", "fos",
                    "oligofructose", "gos", "galactooligosaccharides", "beta-glucans",
-                   "beta-glucans (oats)", "resistant starch", "glucomannan"}
+                   "beta-glucans (oats)", "resistant starch"}
 
 
 def _apply_excluded_substance_filter(ctx: PipelineContext):
@@ -424,6 +698,47 @@ def _apply_fodmap_correction(ctx: PipelineContext):
         new_total = sum(pb.get("dose_g", 0) for pb in ctx.prebiotics.get("prebiotics", []) if pb.get("fodmap"))
         ctx.prebiotics["total_fodmap_grams"] = new_total
         print(f"  🔧 FODMAP correction: {corrections} substance(s) → total FODMAP: {new_total}g")
+
+
+def _apply_supplement_deduplication(ctx: PipelineContext):
+    """Remove duplicate supplements — keep first occurrence, drop subsequent ones.
+
+    The LLM may occasionally select the same substance twice (e.g. once for
+    Skin Quality and once for another overlapping claim). This filter runs last
+    after all other post-processing to guarantee a clean deduplicated output.
+
+    Normalization: strips bracketed text, lowercase, collapse whitespace.
+    Examples of matches treated as duplicates:
+      - "Apple polyphenol extract" and "Apple polyphenol extract" (exact)
+      - "Ashwagandha (Withania somnifera)" and "Ashwagandha" (base name match)
+    """
+    import re as _re
+
+    def _base_name(name: str) -> str:
+        """Strip parenthetical suffixes and normalize."""
+        return _re.sub(r'\s*\(.*?\)\s*', '', name).lower().strip()
+
+    seen_names: set = set()
+    seen_base: set = set()
+    deduped = []
+    dropped = []
+
+    for sp in ctx.supplements.get("supplements", []):
+        name = sp.get("substance", "")
+        name_lower = name.lower().strip()
+        base = _base_name(name)
+
+        if name_lower in seen_names or base in seen_base:
+            dropped.append(name)
+            ctx.removal_log.add(name, "Duplicate supplement — already present in formula", "deduplication")
+        else:
+            seen_names.add(name_lower)
+            seen_base.add(base)
+            deduped.append(sp)
+
+    if dropped:
+        ctx.supplements["supplements"] = deduped
+        print(f"  🔁 DEDUPLICATION: Removed {len(dropped)} duplicate(s): {dropped}")
 
 
 def _apply_zinc_dose_guard(ctx: PipelineContext):

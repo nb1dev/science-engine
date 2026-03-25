@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inside Your Gut — Polina's Report (Improved Flow)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── ANNOTATION BANNER (design review only) ── */
+.annotation-bar { background:#1a1a2e; color:#a78bfa; font-size:11px; letter-spacing:.15em; text-transform:uppercase; padding:10px 24px; text-align:center; position:sticky; top:0; z-index:9999; border-bottom:1px solid rgba(167,139,250,.2); }
+.annotation-bar a { color:#c4b5fd; text-decoration:underline; cursor:pointer; }
+.annotation { position:relative; }
+.annotation::before { content:attr(data-note); position:absolute; top:-8px; right:12px; background:#7c3aed; color:white; font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:3px 10px; border-radius:20px; z-index:10; white-space:nowrap; }
+.annotation.new::before { background:#059669; content:'✦ NEW — ' attr(data-note); }
+.annotation.changed::before { background:#d97706; content:'⟳ CHANGED — ' attr(data-note); }
+.annotation.removed-hint::before { background:#dc2626; content:'⊘ REMOVED — ' attr(data-note); }
+
+:root {
+  --sand: #F5F0E8;
+  --warm: #FDFAF5;
+  --dark: #1E1E2A;
+  --mid: #4A4858;
+  --soft: #9A95A8;
+  --rule: #E4DDD0;
+  --green: #2E8B6E;
+  --green-lt: #E8F5F1;
+  --red: #C24B3A;
+  --red-lt: #FCECEA;
+  --amber: #C97C2A;
+  --amber-lt: #FBF1E4;
+  --blue: #3A6EA8;
+  --blue-lt: #EAF0F8;
+  --purple: #6B5EA8;
+  --purple-lt: #F0EEF8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Nunito',sans-serif; background:var(--sand); color:var(--dark); font-size:15px; line-height:1.7; }
+
+/* ── COVER ── */
+.cover { min-height:100vh; background:var(--dark); display:grid; grid-template-rows:auto 1fr auto; padding:56px; position:relative; overflow:hidden; }
+.cover-blob1 { position:absolute; width:600px; height:600px; top:-150px; right:-150px; border-radius:50%; background:radial-gradient(circle,rgba(46,139,110,.22) 0%,transparent 65%); pointer-events:none; }
+.cover-blob2 { position:absolute; width:400px; height:400px; bottom:-100px; left:-80px; border-radius:50%; background:radial-gradient(circle,rgba(107,94,168,.18) 0%,transparent 65%); pointer-events:none; }
+.cover-top { display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1; }
+.cover-brand { font-family:'Playfair Display',serif; font-size:15px; color:rgba(255,255,255,.5); letter-spacing:.15em; }
+.cover-tag { font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--green); background:rgba(46,139,110,.15); padding:6px 14px; border-radius:20px; }
+.cover-mid { display:flex; flex-direction:column; justify-content:center; position:relative; z-index:1; }
+.cover-eyebrow { font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:20px; }
+.cover-h1 { font-family:'Playfair Display',serif; font-size:clamp(54px,8vw,96px); font-weight:400; line-height:1; color:white; margin-bottom:16px; }
+.cover-h1 span { font-style:italic; color:rgba(255,255,255,.38); }
+.cover-sub { font-size:16px; color:rgba(255,255,255,.5); max-width:420px; line-height:1.8; margin-bottom:32px; }
+.score-row { display:flex; align-items:center; gap:32px; margin-bottom:28px; }
+.score-dial { position:relative; width:120px; height:120px; flex-shrink:0; }
+.score-dial svg { transform:rotate(-90deg); }
+.dial-bg { fill:none; stroke:rgba(255,255,255,.08); stroke-width:10; }
+.dial-fill { fill:none; stroke-width:10; stroke-linecap:round; }
+.score-label { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.score-num { font-family:'Playfair Display',serif; font-size:30px; color:white; line-height:1; }
+.score-den { font-size:11px; color:rgba(255,255,255,.35); letter-spacing:.1em; }
+.score-info-text { color:rgba(255,255,255,.55); font-size:14px; max-width:320px; line-height:1.8; }
+.score-info-text strong { color:white; }
+
+/* ── GUT STORY (NEW) ── */
+.gut-story { background:rgba(46,139,110,.12); border:1px solid rgba(46,139,110,.25); border-radius:14px; padding:22px 26px; margin-bottom:28px; position:relative; z-index:1; }
+.gs-label { font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:rgba(46,139,110,.9); margin-bottom:10px; font-weight:700; display:flex; align-items:center; gap:8px; }
+.gs-label::after { content:''; flex:1; height:1px; background:rgba(46,139,110,.2); }
+.gs-body { font-size:15px; color:rgba(255,255,255,.8); line-height:1.85; }
+.gs-body strong { color:white; }
+.gs-goals { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+.gs-goal-chip { font-size:11px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.55); padding:4px 12px; border-radius:20px; }
+.gs-goal-chip.active { background:rgba(46,139,110,.2); border-color:rgba(46,139,110,.4); color:rgba(255,255,255,.8); }
+
+/* Pillar scores */
+.pillar-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:0; position:relative; z-index:1; margin-bottom:0; }
+.pillar-chip { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:12px 16px; min-width:120px; cursor:help; position:relative; }
+.pillar-chip .pc-name { font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:6px; }
+.pillar-chip .pc-score { font-family:'Playfair Display',serif; font-size:20px; color:white; }
+.pillar-chip .pc-max { font-size:11px; color:rgba(255,255,255,.3); }
+.pillar-chip .pc-bar { height:3px; background:rgba(255,255,255,.1); border-radius:2px; margin-top:8px; }
+.pillar-chip .pc-bar-fill { height:100%; border-radius:2px; }
+/* Tooltip (non-expert mode) */
+.pillar-chip .pc-tooltip { display:none; position:absolute; bottom:calc(100% + 10px); left:0; background:var(--dark); border:1px solid rgba(255,255,255,.12); border-radius:10px; padding:10px 14px; font-size:12px; color:rgba(255,255,255,.72); line-height:1.65; min-width:220px; max-width:280px; z-index:100; pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.4); }
+.pillar-chip:hover .pc-tooltip { display:block; }
+.pc-tooltip-label { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:6px; }
+
+.cover-bottom { position:relative; z-index:1; display:flex; gap:36px; flex-wrap:wrap; margin-top:24px; }
+.cover-stat .cs-label { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.25); margin-bottom:4px; }
+.cover-stat .cs-val { font-size:14px; color:rgba(255,255,255,.7); }
+
+/* ── UTILITY ── */
+.section { padding:72px 56px; background:var(--warm); border-bottom:1px solid var(--rule); }
+.section.sand { background:var(--sand); }
+.sec-label { font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--soft); margin-bottom:10px; }
+.sec-title { font-family:'Playfair Display',serif; font-size:38px; font-weight:400; margin-bottom:8px; }
+.sec-intro { color:var(--mid); max-width:600px; line-height:1.85; margin-bottom:48px; }
+.fade-in { opacity:0; transform:translateY(16px); animation:fadeUp .6s ease forwards; }
+@keyframes fadeUp { to { opacity:1; transform:none; } }
+
+/* ── GOAL THREAD TAG ── */
+.goal-thread { display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--purple); background:var(--purple-lt); border:1px solid rgba(107,94,168,.18); padding:3px 10px; border-radius:20px; margin-bottom:12px; }
+.goal-thread-small { font-size:9px; padding:2px 8px; }
+
+/* ── BODY SYSTEMS PANEL (NEW) ── */
+.body-systems { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:48px; }
+.bsys-card { border-radius:12px; padding:20px; border:1px solid var(--rule); background:var(--warm); position:relative; overflow:hidden; }
+.bsys-card.bsys-focus { border-color:rgba(201,124,42,.3); background:var(--amber-lt); }
+.bsys-card.bsys-good { border-color:rgba(46,139,110,.25); background:var(--green-lt); }
+.bsys-icon { font-size:28px; margin-bottom:10px; display:block; }
+.bsys-name { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:4px; }
+.bsys-status { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:2px 10px; border-radius:20px; display:inline-block; margin-bottom:10px; }
+.status-focus { background:var(--amber); color:white; }
+.status-good { background:var(--green); color:white; }
+.bsys-text { font-size:12px; color:var(--mid); line-height:1.65; }
+.bsys-connection { font-size:11px; color:var(--soft); margin-top:8px; font-style:italic; }
+.bsys-finding { font-size:11px; font-weight:600; color:var(--amber); margin-top:6px; }
+.bsys-card.bsys-good .bsys-finding { color:var(--green); }
+
+/* ── HEALTH DIALS ── */
+.health-dials { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:48px; }
+.h-dial-card { background:var(--warm); border:1px solid var(--rule); border-radius:12px; padding:24px 16px; text-align:center; animation:fadeUp .5s ease both; }
+.h-dial-card:nth-child(1){animation-delay:.05s} .h-dial-card:nth-child(2){animation-delay:.1s}
+.h-dial-card:nth-child(3){animation-delay:.15s} .h-dial-card:nth-child(4){animation-delay:.2s}
+.h-dial-wrap { position:relative; width:88px; height:88px; margin:0 auto 12px; }
+.h-dial-wrap svg { transform:rotate(-90deg); }
+.hd-bg { fill:none; stroke:#E4DDD0; stroke-width:8; }
+.hd-fill { fill:none; stroke-width:8; stroke-linecap:round; stroke-dasharray:232; }
+.hd-label { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.hd-pct { font-family:'Playfair Display',serif; font-size:20px; line-height:1; }
+.hd-name { font-size:11px; color:var(--mid); margin-top:6px; font-weight:600; letter-spacing:.02em; }
+.hd-desc { font-size:12px; color:var(--soft); line-height:1.5; margin-top:4px; }
+.hd-impact { font-size:12px; color:var(--dark); line-height:1.55; margin-top:8px; padding-top:8px; border-top:1px solid var(--rule); font-weight:500; }
+.hd-impact.focus { color:var(--amber); }
+
+/* ── GUILD BARS ── */
+.guild-explainer { margin-bottom:24px; }
+.guild-explainer p { color:var(--mid); line-height:1.85; margin-bottom:14px; }
+.callout { background:var(--green-lt); border-left:3px solid var(--green); padding:16px 20px; border-radius:0 8px 8px 0; margin-top:20px; font-size:14px; color:var(--mid); line-height:1.7; }
+.guild-bars { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.gbar { background:var(--warm); border:1px solid var(--rule); border-radius:10px; padding:16px 20px; position:relative; overflow:hidden; animation:fadeUp .5s ease both; }
+.gbar.critical { background:var(--red-lt); border-color:rgba(194,75,58,.3); }
+.gbar.below { background:var(--blue-lt); border-color:rgba(58,110,168,.3); }
+.gbar.above { background:var(--amber-lt); border-color:rgba(201,124,42,.3); }
+.gbar.ok { background:var(--green-lt); border-color:rgba(46,139,110,.2); }
+.gbar:nth-child(1){animation-delay:.05s} .gbar:nth-child(2){animation-delay:.1s}
+.gbar:nth-child(3){animation-delay:.15s} .gbar:nth-child(4){animation-delay:.2s}
+.gbar:nth-child(5){animation-delay:.25s} .gbar:nth-child(6){animation-delay:.3s}
+.gbar-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.gbar-name { font-size:13px; font-weight:600; }
+.gbar-badge { font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:3px 10px; border-radius:20px; }
+.badge-critical { background:var(--red); color:white; }
+.badge-below { background:var(--blue); color:white; }
+.badge-above { background:var(--amber); color:white; }
+.badge-ok { background:var(--green); color:white; }
+.gbar-track { height:6px; background:rgba(0,0,0,.07); border-radius:3px; position:relative; margin-bottom:8px; }
+.gbar-range { position:absolute; height:100%; border-radius:3px; background:rgba(0,0,0,.12); }
+.gbar-fill { position:absolute; height:100%; border-radius:3px; transition:width 1.2s ease; }
+.fill-critical { background:var(--red); }
+.fill-below { background:var(--blue); }
+.fill-above { background:var(--amber); }
+.fill-ok { background:var(--green); }
+.gbar-note { font-size:12px; color:var(--mid); line-height:1.5; }
+.gbar-role { font-size:11px; color:var(--soft); font-style:italic; margin-bottom:6px; }
+
+/* ── SECTION 2: SW ── */
+.sw-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.sw-card { border-radius:12px; padding:32px; animation:fadeUp .5s ease both; }
+.sw-card.strengths { background:var(--green-lt); border:1px solid rgba(46,139,110,.25); }
+.sw-card.weaknesses { background:var(--red-lt); border:1px solid rgba(194,75,58,.25); }
+.sw-card-head { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
+.sw-icon { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.icon-green { background:var(--green); }
+.icon-red { background:var(--red); }
+.sw-head-label { font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--soft); }
+.sw-head-title { font-family:'Playfair Display',serif; font-size:22px; }
+.sw-items { display:flex; flex-direction:column; gap:14px; }
+.sw-item { display:flex; gap:12px; }
+.sw-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:7px; }
+.dot-green { background:var(--green); }
+.dot-red { background:var(--red); }
+.dot-amber { background:var(--amber); }
+.sw-text { font-size:14px; color:var(--mid); line-height:1.7; }
+.sw-text strong { color:var(--dark); }
+/* Good news (new) */
+.good-news-bar { background:var(--green); color:white; border-radius:10px; padding:16px 22px; display:flex; gap:14px; align-items:flex-start; margin-top:24px; }
+.gn-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
+.gn-label { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:4px; font-weight:700; }
+.gn-text { font-size:14px; color:rgba(255,255,255,.9); line-height:1.7; }
+
+/* ── SECTION 3: ROOT CAUSES (redesigned) ── */
+/* Short story block (new — at top) */
+.short-story { background:var(--dark); color:white; border-radius:12px; padding:26px 30px; margin-bottom:36px; }
+.ss-label { font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:12px; font-weight:700; }
+.ss-body { font-size:15px; color:rgba(255,255,255,.8); line-height:1.85; }
+.ss-body strong { color:white; }
+
+/* Awareness chips — elevated to top (moved from bottom) */
+.awareness-zone { margin-bottom:36px; }
+.aw-label { font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:var(--soft); margin-bottom:8px; display:flex; align-items:center; gap:10px; font-weight:600; }
+.aw-label::after { content:''; flex:1; height:1px; background:var(--rule); }
+.aw-intro { font-size:13px; color:var(--mid); line-height:1.7; margin-bottom:16px; max-width:640px; }
+.aw-chips { display:flex; flex-direction:column; gap:8px; }
+details.aw-chip { background:var(--warm); border:1px solid var(--rule); border-radius:10px; overflow:hidden; }
+details.aw-chip summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:12px; padding:12px 18px; user-select:none; }
+details.aw-chip summary::-webkit-details-marker { display:none; }
+details.aw-chip summary::after { content:'▸'; font-size:11px; color:var(--soft); margin-left:auto; flex-shrink:0; }
+details.aw-chip[open] summary::after { content:'▾'; }
+.aw-icon { font-size:20px; flex-shrink:0; }
+.aw-title { font-size:13px; font-weight:600; color:var(--dark); flex:1; }
+.aw-arrow { font-size:10px; color:var(--soft); }
+.aw-body { padding:10px 18px 14px 50px; font-size:13px; color:var(--mid); line-height:1.7; border-top:1px solid var(--rule); }
+
+/* Factor cards */
+.rc-devs { display:flex; flex-direction:column; gap:0; margin-bottom:32px; }
+.rc-dev-block { padding:28px 0; border-bottom:1px solid var(--rule); }
+.rc-dev-block:first-child { padding-top:0; }
+.rc-dev-block:last-child { border-bottom:none; padding-bottom:0; }
+.rc-dev-header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px; }
+.rc-dev-title { font-family:'Playfair Display',serif; font-size:20px; }
+.rc-narrative p { font-size:14px; color:var(--mid); line-height:1.85; margin-bottom:10px; }
+.rc-narrative p:last-child { margin-bottom:0; }
+.rc-factors-label { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--soft); margin-bottom:10px; font-weight:600; display:flex; align-items:center; gap:10px; }
+.rc-factors-label::after { content:''; flex:1; height:1px; background:var(--rule); }
+.rc-factor-stack { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+details.rc-factor-chip { background:var(--warm); border:1px solid var(--rule); border-radius:10px; overflow:hidden; }
+details.rc-factor-chip summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:12px; padding:12px 18px; user-select:none; }
+details.rc-factor-chip summary::-webkit-details-marker { display:none; }
+details.rc-factor-chip summary::after { content:'▸'; font-size:11px; color:var(--soft); margin-left:auto; flex-shrink:0; }
+details.rc-factor-chip[open] summary::after { content:'▾'; }
+.rfc-icon { font-size:20px; flex-shrink:0; }
+.rfc-title { font-size:13px; font-weight:600; color:var(--dark); flex:1; }
+.rfc-ev-label { font-size:9px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:white; padding:2px 8px; border-radius:20px; white-space:nowrap; flex-shrink:0; }
+.ev-label-established { background:var(--dark); }
+.ev-label-supported { background:var(--blue); }
+.ev-label-emerging { background:var(--amber); }
+.rfc-body { padding:10px 18px 14px; border-top:1px solid var(--rule); }
+.rfc-text { font-size:13px; color:var(--mid); line-height:1.75; }
+.rc-takeaway { margin-top:14px; background:var(--green-lt); border-left:3px solid var(--green); border-radius:0 8px 8px 0; padding:12px 16px; font-size:14px; color:var(--green); font-weight:600; line-height:1.7; }
+
+/* Cascade — collapsed by default */
+details.cascade-reveal { margin-top:24px; }
+details.cascade-reveal summary { list-style:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--blue); padding:8px 16px; border:1px solid rgba(58,110,168,.25); background:var(--blue-lt); border-radius:20px; user-select:none; }
+details.cascade-reveal summary::-webkit-details-marker { display:none; }
+details.cascade-reveal summary::after { content:'Show connection diagram →'; }
+details.cascade-reveal[open] summary::after { content:'Hide connection diagram ↑'; }
+.cascade-body { margin-top:16px; background:var(--warm); border:1px solid var(--rule); border-radius:10px; padding:20px; }
+.cascade-grid { display:flex; gap:0; align-items:stretch; }
+.casc-left { display:flex; flex-direction:column; gap:8px; min-width:180px; padding-right:16px; }
+.casc-right { display:flex; flex-direction:column; gap:8px; flex:1; padding-left:16px; border-left:1px solid var(--rule); }
+.casc-arrow { display:flex; align-items:center; padding:0 8px; color:var(--soft); font-size:20px; align-self:center; }
+.casc-factor-pill { background:var(--sand); border:1px solid var(--rule); border-radius:8px; padding:8px 12px; display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--mid); }
+.casc-guild-pill { border-radius:8px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.casc-guild-pill.gp-low { background:var(--red-lt); border:1px solid rgba(194,75,58,.2); }
+.casc-guild-pill.gp-high { background:var(--amber-lt); border:1px solid rgba(201,124,42,.2); }
+.cgp-label { font-size:12px; font-weight:600; color:var(--dark); }
+.cgp-value { font-size:11px; color:var(--soft); }
+.cgp-emojis { font-size:14px; }
+
+/* ── SECTION 4: TIMELINE ── */
+.turnaround-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+.timeline { position:relative; padding-left:36px; margin-top:8px; }
+.timeline::before { content:''; position:absolute; left:11px; top:8px; bottom:8px; width:2px; background:linear-gradient(to bottom,var(--blue),var(--green),var(--amber),var(--purple)); border-radius:2px; }
+.tl-item { position:relative; margin-bottom:36px; }
+.tl-dot { position:absolute; left:-30px; top:4px; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:white; }
+.tl-period { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--soft); margin-bottom:4px; }
+.tl-title { font-size:15px; font-weight:600; color:var(--dark); margin-bottom:6px; }
+.tl-body { font-size:14px; color:var(--mid); line-height:1.7; }
+/* Personalized note (new) */
+.tl-personal { font-size:12px; color:var(--blue); background:var(--blue-lt); border-left:2px solid var(--blue); border-radius:0 6px 6px 0; padding:8px 12px; margin-top:10px; line-height:1.6; }
+.tl-personal strong { color:var(--blue); }
+
+.lifestyle-panel { background:var(--dark); border-radius:12px; padding:32px; color:white; }
+.lifestyle-panel .lp-label { font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:20px; }
+.lp-items { display:flex; flex-direction:column; gap:20px; }
+.lp-item { display:flex; gap:16px; align-items:flex-start; }
+.lp-emoji { font-size:24px; flex-shrink:0; }
+.lp-title { font-size:14px; font-weight:600; color:white; margin-bottom:4px; }
+.lp-text { font-size:13px; color:rgba(255,255,255,.55); line-height:1.65; }
+
+/* ── SECTION 5: SUPPLEMENTS ── */
+.supp-units { display:flex; flex-direction:column; gap:28px; }
+.supp-unit { background:var(--warm); border:1px solid var(--rule); border-radius:12px; overflow:hidden; animation:fadeUp .5s ease both; }
+.supp-unit:nth-child(1){animation-delay:.05s} .supp-unit:nth-child(2){animation-delay:.1s}
+.supp-unit:nth-child(3){animation-delay:.15s} .supp-unit:nth-child(4){animation-delay:.2s}
+.supp-unit:nth-child(5){animation-delay:.25s}
+.supp-header { display:grid; grid-template-columns:64px 1fr auto; align-items:center; border-bottom:1px solid var(--rule); }
+.supp-num-block { width:64px; height:64px; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:26px; color:white; }
+.supp-head-text { padding:14px 20px; }
+.supp-unit-name { font-size:15px; font-weight:600; }
+.supp-unit-when { font-size:12px; color:var(--soft); }
+.supp-unit-tag { padding:12px 20px; font-size:12px; color:var(--soft); white-space:nowrap; }
+.supp-meta { display:grid; grid-template-columns:1fr 1fr; gap:0; border-bottom:1px solid var(--rule); }
+.supp-meta-item { padding:16px 24px; border-right:1px solid var(--rule); }
+.supp-meta-item:last-child { border-right:none; }
+.smi-label { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--soft); margin-bottom:4px; }
+.smi-text { font-size:13px; color:var(--mid); line-height:1.6; }
+/* Addresses finding (new) */
+.supp-addresses { padding:12px 24px; border-bottom:1px solid var(--rule); display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:var(--blue-lt); }
+.sa-label { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); font-weight:700; }
+.sa-tag { font-size:11px; background:white; border:1px solid rgba(58,110,168,.2); color:var(--blue); border-radius:20px; padding:3px 10px; }
+.supp-why-band { padding:16px 24px; font-size:14px; color:var(--mid); line-height:1.75; display:flex; gap:12px; align-items:flex-start; border-bottom:1px solid var(--rule); }
+.why-icon { font-size:18px; flex-shrink:0; margin-top:2px; }
+.supp-pills { display:flex; flex-wrap:wrap; gap:8px; padding:16px 24px 20px; }
+.pill { background:var(--sand); border:1px solid var(--rule); border-radius:20px; padding:5px 14px; font-size:12px; color:var(--mid); white-space:nowrap; }
+.pill strong { color:var(--dark); font-weight:600; }
+.supp-supports { padding:0 24px 20px; }
+.supp-supports-label { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--soft); margin-bottom:8px; }
+.supp-supports-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.sc-chip { background:var(--purple-lt); border:1px solid rgba(107,94,168,.2); border-radius:20px; padding:4px 12px; font-size:11px; color:var(--purple); }
+
+/* ── SECTION 6: GOALS ── */
+.goals-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
+.goal-card { border-radius:12px; padding:28px 24px; border:1px solid var(--rule); background:var(--warm); animation:fadeUp .5s ease both; }
+.goal-card:nth-child(1){animation-delay:.05s} .goal-card:nth-child(2){animation-delay:.1s}
+.goal-card:nth-child(3){animation-delay:.15s} .goal-card:nth-child(4){animation-delay:.2s}
+.goal-emoji { font-size:32px; margin-bottom:14px; display:block; }
+.goal-title { font-family:'Playfair Display',serif; font-size:18px; margin-bottom:10px; }
+.goal-mechanism { font-size:13px; color:var(--mid); line-height:1.75; margin-bottom:12px; }
+.goal-formula { font-size:13px; color:var(--mid); line-height:1.75; background:var(--sand); padding:12px 16px; border-radius:8px; border-left:3px solid var(--purple); }
+.goal-inferred-tag { display:inline-block; font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--purple); background:var(--purple-lt); border:1px solid rgba(107,94,168,.2); border-radius:20px; padding:2px 9px; margin-bottom:10px; }
+
+/* ── GLOSSARY (new) ── */
+details.glossary-box { background:var(--warm); border:1px solid var(--rule); border-radius:12px; overflow:hidden; }
+details.glossary-box summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px; padding:16px 22px; user-select:none; font-size:14px; font-weight:600; }
+details.glossary-box summary::-webkit-details-marker { display:none; }
+details.glossary-box summary::after { content:'Show glossary ▸'; font-size:12px; color:var(--soft); margin-left:auto; }
+details.glossary-box[open] summary::after { content:'Hide glossary ▾'; font-size:12px; color:var(--soft); margin-left:auto; }
+.glossary-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; padding:0 22px 20px; }
+.gloss-item { padding:10px 0; border-top:1px solid var(--rule); }
+.gloss-term { font-size:12px; font-weight:700; color:var(--dark); }
+.gloss-def { font-size:12px; color:var(--mid); line-height:1.6; margin-top:3px; }
+
+/* ── FOOTER ── */
+.footer { background:var(--dark); color:rgba(255,255,255,.35); padding:36px 56px; display:flex; justify-content:space-between; align-items:center; font-size:12px; }
+.footer-brand { font-family:'Playfair Display',serif; font-size:16px; color:rgba(255,255,255,.6); }
+
+@media(max-width:900px) {
+  .cover { padding:36px 28px; }
+  .section { padding:56px 28px; }
+  .health-dials { grid-template-columns:1fr 1fr; }
+  .body-systems { grid-template-columns:1fr; }
+  .sw-grid { grid-template-columns:1fr; }
+  .turnaround-grid { grid-template-columns:1fr; }
+  .goals-row { grid-template-columns:1fr; }
+  .guild-bars { grid-template-columns:1fr 1fr; }
+  .footer { flex-direction:column; gap:16px; text-align:center; }
+  .glossary-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Design-review annotation bar — remove in production -->
+<div class="annotation-bar">
+  Improved flow prototype · <strong>Polina · 85.7</strong> · Changes annotated with coloured badges &nbsp;|&nbsp;
+  <span style="background:rgba(5,150,105,.3);padding:2px 8px;border-radius:10px;color:#6ee7b7;">✦ NEW</span> &nbsp;
+  <span style="background:rgba(217,119,6,.3);padding:2px 8px;border-radius:10px;color:#fcd34d;">⟳ CHANGED</span> &nbsp;
+  <span style="background:rgba(220,38,38,.3);padding:2px 8px;border-radius:10px;color:#fca5a5;">⊘ REMOVED</span>
+</div>
+
+<!-- ═══════════════════════════ COVER ═══════════════════════════ -->
+<div class="cover">
+  <div class="cover-blob1"></div>
+  <div class="cover-blob2"></div>
+
+  <div class="cover-top">
+    <div class="cover-brand">NB1 Health · Microbiome Health</div>
+    <div class="cover-tag">Personalised Report · 10 March 2026</div>
+  </div>
+
+  <div class="cover-mid">
+    <div class="cover-eyebrow">Your gut health, explained simply</div>
+    <h1 class="cover-h1">Inside<br>Your <span>Gut</span></h1>
+    <p class="cover-sub">What your microbiome is telling us — in plain language.</p>
+
+    <div class="score-row">
+      <div class="score-dial">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle class="dial-bg" cx="60" cy="60" r="45"/>
+          <circle class="dial-fill" cx="60" cy="60" r="45" stroke="#2E8B6E" style="stroke-dasharray:283; stroke-dashoffset:40.5;"/>
+        </svg>
+        <div class="score-label">
+          <span class="score-num">85.7</span>
+          <span class="score-den">/ 100</span>
+        </div>
+      </div>
+      <div class="score-info-text">
+        <strong>Excellent</strong> — your gut is in strong shape overall, with one clear area to focus on: rebuilding your <strong>fiber-processing bacteria</strong>.<br>
+        <span style="font-size:12px;opacity:.65;margin-top:6px;display:block">Strongest area: Metabolic Function — full marks</span>
+      </div>
+    </div>
+
+    <!-- ✦ NEW: Your Gut Story block -->
+    <div class="gut-story annotation new" data-note="Gut Story narrative">
+      <div class="gs-label">Your gut story</div>
+      <p class="gs-body">
+        Your gut community is <strong>well-organised and genuinely healthy</strong> — with excellent metabolic function, strong butyrate production, and a clean safety profile. The one area that needs support is your <strong>fiber-processing bacteria</strong>, which are at about half their ideal level. These bacteria are the entry point of your entire fermentation chain and directly influence <strong>mood, immune resilience, and digestive comfort</strong> — all of which are on your goals list. Your protocol is specifically designed to rebuild this group over the next 12–16 weeks.
+      </p>
+      <div class="gs-goals">
+        <span class="gs-goal-chip active">🛡️ Immune resilience</span>
+        <span class="gs-goal-chip active">🧘 Mood &amp; anxiety</span>
+        <span class="gs-goal-chip active">🎯 Optimise metabolism</span>
+      </div>
+    </div>
+
+    <!-- ⟳ CHANGED: Pillar chips now have non-expert tooltips on hover -->
+    <div class="pillar-row annotation changed" data-note="Hover tooltips use non_expert descriptions">
+      <div class="pillar-chip">
+        <div class="pc-name">Health</div>
+        <div><span class="pc-score">14.4</span><span class="pc-max"> / 20</span></div>
+        <div class="pc-bar"><div class="pc-bar-fill" style="width:72%;background:#C97C2A"></div></div>
+        <div class="pc-tooltip">
+          <div class="pc-tooltip-label">What this means</div>
+          How many of your bacteria are the types typically found in healthy people — think of it as your gut's health fingerprint.
+        </div>
+      </div>
+      <div class="pillar-chip">
+        <div class="pc-name">Diversity</div>
+        <div><span class="pc-score">18.0</span><span class="pc-max"> / 20</span></div>
+        <div class="pc-bar"><div class="pc-bar-fill" style="width:90%;background:#2E8B6E"></div></div>
+        <div class="pc-tooltip">
+          <div class="pc-tooltip-label">What this means</div>
+          How many different types of bacteria you have and how well-balanced they are — more variety means your gut can handle stress and recover faster.
+        </div>
+      </div>
+      <div class="pillar-chip">
+        <div class="pc-name">Metabolic</div>
+        <div><span class="pc-score">20.0</span><span class="pc-max"> / 20</span></div>
+        <div class="pc-bar"><div class="pc-bar-fill" style="width:100%;background:#2E8B6E"></div></div>
+        <div class="pc-tooltip">
+          <div class="pc-tooltip-label">What this means</div>
+          How well your bacteria are processing food — are they running on the right fuel, converting it efficiently, and producing gentle rather than harsh byproducts.
+        </div>
+      </div>
+      <div class="pillar-chip">
+        <div class="pc-name">Guild Balance</div>
+        <div><span class="pc-score">23.3</span><span class="pc-max"> / 30</span></div>
+        <div class="pc-bar"><div class="pc-bar-fill" style="width:78%;background:#2E8B6E"></div></div>
+        <div class="pc-tooltip">
+          <div class="pc-tooltip-label">What this means</div>
+          Whether your six bacterial teams are properly staffed — each team has a job, and this shows if they have enough members to do their work well.
+        </div>
+      </div>
+      <div class="pillar-chip">
+        <div class="pc-name">Safety</div>
+        <div><span class="pc-score">10.0</span><span class="pc-max"> / 10</span></div>
+        <div class="pc-bar"><div class="pc-bar-fill" style="width:100%;background:#2E8B6E"></div></div>
+        <div class="pc-tooltip">
+          <div class="pc-tooltip-label">What this means</div>
+          A check for any red flags — harmful bacteria, extreme overgrowth, or signs of unhealthy fermentation. Full marks means your gut has a clean safety record.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover-bottom" style="margin-top:24px;">
+    <div class="cover-stat"><div class="cs-label">Profile</div><div class="cs-val">Female · 30</div></div>
+    <div class="cover-stat"><div class="cs-label">Diet</div><div class="cs-val">Omnivore</div></div>
+    <div class="cover-stat"><div class="cs-label">Stress</div><div class="cs-val">7 / 10</div></div>
+    <div class="cover-stat"><div class="cs-label">Sleep</div><div class="cs-val">9 / 10</div></div>
+    <div class="cover-stat"><div class="cs-label">Goals</div><div class="cs-val">Immune resilience · Mood &amp; anxiety · Optimise metabolism</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SECTION 1 — THE BIGGER PICTURE ═══════════════════════════ -->
+<div class="section sand">
+  <div class="sec-label">Section 1 · The Bigger Picture</div>
+  <h2 class="sec-title">How your gut is affecting the rest of your body</h2>
+  <p class="sec-intro">Your gut bacteria don't just digest food — they communicate constantly with your immune system, your brain, and your metabolism. Here's what your results mean for each of those connections right now.</p>
+
+  <!-- ✦ NEW: Body Systems Panel -->
+  <div class="body-systems annotation new" data-note="Body Systems Panel — connects findings to real-life systems">
+    <div class="bsys-card bsys-good">
+      <span class="bsys-icon">🛡️</span>
+      <div class="bsys-name">Immune System</div>
+      <span class="bsys-status status-good">Well supported</span>
+      <p class="bsys-text">Around 70% of your immune system is shaped by your gut bacteria. Your strong butyrate producers and abundant Bifidobacteria are actively supporting immune signalling and gut barrier integrity.</p>
+      <p class="bsys-connection">Relevant to: Immune resilience goal</p>
+      <p class="bsys-finding">✓ Butyrate at 14.2% · Bifidobacteria at 10.3%</p>
+    </div>
+    <div class="bsys-card bsys-focus">
+      <span class="bsys-icon">🧠</span>
+      <div class="bsys-name">Brain &amp; Mood</div>
+      <span class="bsys-status status-focus">Needs attention</span>
+      <p class="bsys-text">Your gut produces ~90% of your body's serotonin and talks to your brain via the vagus nerve. Low fiber-processing bacteria reduce the gut's capacity to produce beneficial compounds that support mood stability.</p>
+      <p class="bsys-connection">Relevant to: Mood &amp; anxiety goal</p>
+      <p class="bsys-finding">↓ Fiber Degraders at 15.2% (target: 30–50%)</p>
+    </div>
+    <div class="bsys-card bsys-good">
+      <span class="bsys-icon">⚡</span>
+      <div class="bsys-name">Metabolism</div>
+      <span class="bsys-status status-good">Well supported</span>
+      <p class="bsys-text">Your bacteria are running on carbohydrate fermentation (the healthy pattern), with an efficient assembly line and SCFA-dominant byproducts — meaning minimal inflammatory pressure on metabolic pathways.</p>
+      <p class="bsys-connection">Relevant to: Optimise metabolism goal</p>
+      <p class="bsys-finding">✓ Metabolic Function score: 20/20</p>
+    </div>
+  </div>
+
+  <div class="sec-label" style="margin-bottom:12px;">Your key health indicators</div>
+  <!-- ⟳ CHANGED: Added plain-language impact line below each dial -->
+  <div class="health-dials annotation changed" data-note="Added health_impact_plain line under each dial">
+    <div class="h-dial-card">
+      <div class="h-dial-wrap">
+        <svg width="88" height="88" viewBox="0 0 88 88">
+          <circle class="hd-bg" cx="44" cy="44" r="37" transform="rotate(-90 44 44)"/>
+          <circle class="hd-fill" cx="44" cy="44" r="37" stroke="#2E8B6E" style="stroke-dashoffset:25.5;" transform="rotate(-90 44 44)"/>
+        </svg>
+        <div class="hd-label"><span class="hd-pct" style="color:#2E8B6E">89%</span></div>
+      </div>
+      <div class="hd-name">Gut Lining<br>Protection</div>
+      <div class="hd-desc">How well your gut wall is protected</div>
+      <div class="hd-impact">Your gut barrier is well-maintained — reducing the risk of "leaky gut" and unwanted immune triggers.</div>
+    </div>
+    <div class="h-dial-card">
+      <div class="h-dial-wrap">
+        <svg width="88" height="88" viewBox="0 0 88 88">
+          <circle class="hd-bg" cx="44" cy="44" r="37" transform="rotate(-90 44 44)"/>
+          <circle class="hd-fill" cx="44" cy="44" r="37" stroke="#2E8B6E" style="stroke-dashoffset:39.4;" transform="rotate(-90 44 44)"/>
+        </svg>
+        <div class="hd-label"><span class="hd-pct" style="color:#2E8B6E">83%</span></div>
+      </div>
+      <div class="hd-name">Inflammation<br>Control</div>
+      <div class="hd-desc">Microbiome support for low inflammatory pressure</div>
+      <div class="hd-impact">Your bacteria are producing mostly gentle byproducts — a positive signal for joint comfort, immune balance, and energy.</div>
+    </div>
+    <div class="h-dial-card">
+      <div class="h-dial-wrap">
+        <svg width="88" height="88" viewBox="0 0 88 88">
+          <circle class="hd-bg" cx="44" cy="44" r="37" transform="rotate(-90 44 44)"/>
+          <circle class="hd-fill" cx="44" cy="44" r="37" stroke="#C97C2A" style="stroke-dashoffset:76.6;" transform="rotate(-90 44 44)"/>
+        </svg>
+        <div class="hd-label"><span class="hd-pct" style="color:#C97C2A">67%</span></div>
+      </div>
+      <div class="hd-name">Fiber<br>Processing</div>
+      <div class="hd-desc">How efficiently your bacteria ferment fiber</div>
+      <div class="hd-impact focus">Your gut is extracting less nutrition from plant foods than it could — and producing fewer mood-supporting compounds. This is the primary focus of your protocol.</div>
+    </div>
+    <div class="h-dial-card">
+      <div class="h-dial-wrap">
+        <svg width="88" height="88" viewBox="0 0 88 88">
+          <circle class="hd-bg" cx="44" cy="44" r="37" transform="rotate(-90 44 44)"/>
+          <circle class="hd-fill" cx="44" cy="44" r="37" stroke="#2E8B6E" style="stroke-dashoffset:27.8;" transform="rotate(-90 44 44)"/>
+        </svg>
+        <div class="hd-label"><span class="hd-pct" style="color:#2E8B6E">88%</span></div>
+      </div>
+      <div class="hd-name">Bifidobacteria<br>Presence</div>
+      <div class="hd-desc">Abundance of your beneficial Bifidobacteria</div>
+      <div class="hd-impact">Thriving Bifidobacteria actively train your immune cells and help amplify the beneficial compounds other bacteria produce.</div>
+    </div>
+  </div>
+
+  <!-- Guild intro with plain-language framing -->
+  <div class="guild-explainer">
+    <p><strong>Think of your gut as having six specialist teams</strong>, each with a different job. The bars below show whether each team has enough members to do that job well. Green = on target · Blue = too low · Amber = above range.</p>
+  </div>
+
+  <!-- ⟳ CHANGED: Guild role label added above each bar's interpretation text -->
+  <div class="guild-bars annotation changed" data-note="Added team 'role' label above each bar note">
+      <div class="gbar above">
+        <div class="gbar-top">
+          <span class="gbar-name">Cross-Feeders</span>
+          <span class="gbar-badge badge-above">↑ High · 17.0%</span>
+        </div>
+        <div class="gbar-track">
+          <div class="gbar-range" style="left:10.9%;width:10.9%"></div>
+          <div class="gbar-fill fill-above" style="width:30.9%"></div>
+        </div>
+        <div class="gbar-role">Role: connect and relay metabolic products between other teams</div>
+        <div class="gbar-note">Thriving above range — excellent communication between bacterial teams, supporting digestive harmony.</div>
+      </div>
+      <div class="gbar critical">
+        <div class="gbar-top">
+          <span class="gbar-name">Fiber Degraders</span>
+          <span class="gbar-badge badge-critical">⚠ Below range · 15.2%</span>
+        </div>
+        <div class="gbar-track">
+          <div class="gbar-range" style="left:54.5%;width:36.4%"></div>
+          <div class="gbar-fill fill-critical" style="width:27.7%"></div>
+        </div>
+        <div class="goal-thread goal-thread-small" style="margin-top:8px;margin-bottom:4px;">⟶ Mood &amp; anxiety &nbsp;·&nbsp; Immune resilience</div>
+        <div class="gbar-role">Role: break down plant fiber — the entry point of the entire fermentation chain</div>
+        <div class="gbar-note">At 15.2% against a 30–50% target. Supporting this group is the primary focus of your prebiotic protocol.</div>
+      </div>
+      <div class="gbar ok">
+        <div class="gbar-top">
+          <span class="gbar-name">Butyrate Producers</span>
+          <span class="gbar-badge badge-ok">✓ Healthy · 14.2%</span>
+        </div>
+        <div class="gbar-track">
+          <div class="gbar-range" style="left:18.2%;width:27.3%"></div>
+          <div class="gbar-fill fill-ok" style="width:25.8%"></div>
+        </div>
+        <div class="gbar-role">Role: produce butyrate — the main fuel for gut lining cells</div>
+        <div class="gbar-note">Excellent shape — nourishing your gut lining and supporting barrier integrity and inflammation control.</div>
+      </div>
+      <div class="gbar above">
+        <div class="gbar-top">
+          <span class="gbar-name">Bifidobacteria</span>
+          <span class="gbar-badge badge-above">↑ High · 10.3%</span>
+        </div>
+        <div class="gbar-track">
+          <div class="gbar-range" style="left:3.6%;width:14.5%"></div>
+          <div class="gbar-fill fill-above" style="width:18.7%"></div>
+        </div>
+        <div class="gbar-role">Role: support immune function and amplify beneficial compounds</div>
+        <div class="gbar-note">Flourishing with exceptional resilience — strong immune support and a favourable environment for beneficial bacteria.</div>
+      </div>
+      <div class="gbar ok">
+        <div class="gbar-top">
+          <span class="gbar-name">Proteolytic Guild</span>
+          <span class="gbar-badge badge-ok">✓ Controlled · 5.0%</span>
+        </div>
+        <div class="gbar-track">
+          <div class="gbar-range" style="left:1.8%;width:7.3%"></div>
+          <div class="gbar-fill fill-ok" style="width:9.1%"></div>
+        </div>
+        <div class="gbar-role">Role: ferment protein — necessary in small amounts, harmful if overgrown</div>
+        <div class="gbar-note">Healthy levels with good competitive balance — preventing excessive protein fermentation.</div>
+      </div>
+      <div class="gbar ok">
+        <div class="gbar-top">
+          <span class="gbar-name">Mucin Degraders</span>
+          <span class="gbar-badge badge-ok">✓ Controlled · 3.0%</span>
+        </div>
+        <div class="gbar-track">
+          <div class="gbar-range" style="left:1.8%;width:5.5%"></div>
+          <div class="gbar-fill fill-ok" style="width:5.5%"></div>
+        </div>
+        <div class="gbar-role">Role: interact with the gut's protective mucus layer</div>
+        <div class="gbar-note">Within normal range and well-controlled — your protective mucus layer is not under excessive pressure.</div>
+      </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SECTION 2 — STRENGTHS & CHALLENGES ═══════════════════════════ -->
+<div class="section">
+  <div class="sec-label">Section 2 · Your Profile</div>
+  <h2 class="sec-title">What's working, and what to focus on</h2>
+  <p class="sec-intro">Here is what your microbiome says about what is performing well right now — and the one priority area that will make the most difference.</p>
+
+  <div class="sw-grid">
+    <div class="sw-card strengths">
+      <div class="sw-card-head">
+        <div class="sw-icon icon-green">✦</div>
+        <div>
+          <div class="sw-head-label">Working in your favour</div>
+          <div class="sw-head-title">Your Strengths</div>
+        </div>
+      </div>
+      <div class="sw-items">
+        <div class="sw-item"><div class="sw-dot dot-green"></div><div class="sw-text">🛡️ <strong>Low inflammatory pressure</strong> — Your bacteria are producing mostly gentle, protective short-chain fatty acids with minimal harsh byproducts. An important marker of gut health.</div></div>
+        <div class="sw-item"><div class="sw-dot dot-green"></div><div class="sw-text">⚡ <strong>Strong butyrate support</strong> — Butyrate-producing bacteria at 14.2% within the healthy 10–25% range. These produce the primary fuel for your gut lining cells, supporting barrier integrity.</div></div>
+        <div class="sw-item"><div class="sw-dot dot-green"></div><div class="sw-text">✨ <strong>Abundant Bifidobacteria</strong> — Thriving at 10.3%, above the typical reference range. Strong Bifidobacteria actively support immune function and amplify beneficial compounds.</div></div>
+        <div class="sw-item"><div class="sw-dot dot-green"></div><div class="sw-text">🏗️ <strong>Strong gut lining</strong> — Butyrate producers active, bacteria fed by dietary fiber (not mucus), mucin degradation controlled. This combination maintains a well-protected gut barrier.</div></div>
+        <div class="sw-item"><div class="sw-dot dot-green"></div><div class="sw-text">✅ <strong>Clean safety profile</strong> — None of the four key dysbiosis-associated bacteria detected at concerning levels. Your gut has a reassuring safety baseline.</div></div>
+        <div class="sw-item"><div class="sw-dot dot-green"></div><div class="sw-text">⚙️ <strong>Efficient fermentation</strong> — Your gut's fermentation chain is running well — intermediate compounds are fully converted into beneficial fatty acids rather than accumulating.</div></div>
+      </div>
+    </div>
+
+    <div class="sw-card weaknesses">
+      <div class="sw-card-head">
+        <div class="sw-icon icon-red">!</div>
+        <div>
+          <div class="sw-head-label">Primary focus area</div>
+          <div class="sw-head-title">What Needs Support</div>
+        </div>
+      </div>
+      <div class="sw-items">
+        <div class="sw-item">
+          <div class="sw-dot dot-red"></div>
+          <div class="sw-text">
+            <div class="goal-thread goal-thread-small" style="margin-bottom:6px;">⟶ Mood &amp; anxiety &nbsp;·&nbsp; Immune resilience</div>
+            🌾 <strong>Fiber-processing bacteria below range</strong> — At 15.2% against a healthy range of 30–50%. These are the entry point of the entire fermentation chain — supporting them is the primary target of your protocol. You may notice improvements in digestive ease, energy from plant foods, and mood over the coming weeks.
+          </div>
+        </div>
+        <div class="sw-item">
+          <div class="sw-dot dot-amber"></div>
+          <div class="sw-text">🌿 <strong>Moderate microbial diversity</strong> — Shannon diversity score of 3.20 puts you just below the population median of 3.29. A more varied gut community is more resilient to stress, travel, and dietary change. Building diversity is a secondary benefit of your prebiotic protocol.</div>
+        </div>
+      </div>
+
+      <!-- ✦ NEW: Good news bar (previously unused JSON field) -->
+      <div class="good-news-bar annotation new" data-note="Renders good_news field — previously unused">
+        <div class="gn-icon">💡</div>
+        <div>
+          <div class="gn-label">Good news</div>
+          <div class="gn-text">Your gut bacteria community is well-balanced and stable, with strong connector bacteria that help different teams work together smoothly during daily changes.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SECTION 3 — WHY YOUR GUT LOOKS THIS WAY ═══════════════════════════ -->
+<div class="section sand">
+  <div class="sec-label">Section 3 · The Story Behind Your Results</div>
+  <h2 class="sec-title">Why your gut looks this way</h2>
+  <p class="sec-intro">Understanding what's driving your results helps you address the root causes — not just the symptoms. Here's what your data and lifestyle questionnaire tell us.</p>
+
+  <!-- ✦ NEW: Short Story block — plain narrative first -->
+  <div class="short-story annotation new" data-note="Short Story block — plain narrative before any data">
+    <div class="ss-label">The short story</div>
+    <p class="ss-body">
+      <strong>Antibiotic use</strong> is the likely primary cause of your reduced fiber-processing bacteria — it's one of the most common disruptors of this group, and its effects can persist for months. <strong>Ongoing stress</strong> (you rated 7/10) is making it harder for your gut to fully recover, since the stress-gut axis is bidirectional — each one amplifies the other. The good news is this is a very recoverable pattern: your gut has the right foundation, and the protocol below directly addresses the conditions that have held it back.
+    </p>
+  </div>
+
+  <!-- ✦ NEW: Awareness chips ELEVATED to top of section -->
+  <div class="awareness-zone annotation new" data-note="Awareness chips moved to TOP — from questionnaire, most relatable for lay users">
+    <div class="aw-label">From your health questionnaire</div>
+    <p class="aw-intro">These are lifestyle factors you shared with us that may be contributing to or interacting with your gut pattern. They're also areas where small changes can complement your supplement protocol.</p>
+    <div class="aw-chips">
+      <details class="aw-chip">
+        <summary>
+          <span class="aw-icon">🍷</span>
+          <span class="aw-title">Regular Alcohol Consumption</span>
+          <span class="aw-arrow">exposure → microbiome</span>
+        </summary>
+        <div class="aw-body">Regular alcohol consumption is a documented contributor to the gut imbalance patterns we're seeing — particularly the depletion of butyrate-producing bacteria. Reducing alcohol intake is one of the most impactful lifestyle changes for gut health recovery.</div>
+      </details>
+      <details class="aw-chip">
+        <summary>
+          <span class="aw-icon">🏃</span>
+          <span class="aw-title">Low Physical Activity</span>
+          <span class="aw-arrow">activity level ↔ microbiome</span>
+        </summary>
+        <div class="aw-body">Regular physical activity is one of the lifestyle factors most consistently associated with a healthier microbiome — particularly higher butyrate-producing bacteria and greater diversity. Increasing activity meaningfully complements your supplement protocol.</div>
+      </details>
+      <details class="aw-chip">
+        <summary>
+          <span class="aw-icon">🛡️</span>
+          <span class="aw-title">Immune Vulnerability / Frequent Infections</span>
+          <span class="aw-arrow">microbiome → immune function</span>
+        </summary>
+        <div class="aw-body">Around 70% of your immune system operates in and around your gut. When butyrate-producing bacteria are depleted, the physical and immunological defenses of your gut barrier are weakened — directly connected to increased immune vulnerability and susceptibility to infections.</div>
+      </details>
+    </div>
+  </div>
+
+  <!-- Factor cards — Research-backed drivers -->
+  <div class="rc-devs">
+    <div class="rc-dev-block">
+      <div class="rc-dev-header">
+        <h3 class="rc-dev-title">🌾 Fiber-Processing Bacteria below range</h3>
+        <div class="goal-thread">⟶ Mood &amp; anxiety · Immune resilience</div>
+      </div>
+      <div class="rc-narrative">
+        <p>Your fiber-processing bacteria are the workhorses of your gut — they break down fiber from fruits, vegetables, and whole grains into protective compounds that keep your gut lining healthy and support your immune system. At 15.2%, you have roughly half the amount typically seen in healthy guts.</p>
+        <p>This matters more than the number alone suggests. These bacteria produce compounds that help regulate your mood and support the gut-brain connection — something particularly relevant given your goal to reduce anxiety. When they're low, your gut can't extract as much benefit from the healthy foods you eat, and it becomes harder to maintain your protective gut barrier.</p>
+        <p>The good news: these bacteria respond well to the right support — they're waiting for the conditions to flourish again. That's exactly what your prebiotic sachet is designed to provide.</p>
+      </div>
+      <div class="rc-factors-label">Research-backed drivers</div>
+      <div class="rc-factor-stack">
+        <details class="rc-factor-chip">
+          <summary>
+            <span class="rfc-icon">💊</span>
+            <span class="rfc-title">Antibiotic Use</span>
+            <span class="rfc-ev-label ev-label-established">Well established</span>
+          </summary>
+          <div class="rfc-body">
+            <p class="rfc-text">Antibiotics are one of the most common causes of the pattern we're seeing. Even a single course can significantly reduce Bifidobacteria and butyrate-producing bacteria — the two groups most critical for your gut's protection and fermentation capacity. This effect can persist for months after the course ends.</p>
+          </div>
+        </details>
+        <details class="rc-factor-chip">
+          <summary>
+            <span class="rfc-icon">😰</span>
+            <span class="rfc-title">Chronic Stress &amp; Anxiety</span>
+            <span class="rfc-ev-label ev-label-supported">Research supported</span>
+          </summary>
+          <div class="rfc-body">
+            <p class="rfc-text">Chronic stress activates your body's stress response system, which directly influences your gut environment. Under sustained stress, beneficial bacteria — particularly butyrate producers — tend to decline, reducing the gut's protective capacity. This runs in both directions: low fiber bacteria also amplify the stress response.</p>
+          </div>
+        </details>
+        <details class="rc-factor-chip">
+          <summary>
+            <span class="rfc-icon">🚬</span>
+            <span class="rfc-title">Tobacco / Smoking</span>
+            <span class="rfc-ev-label ev-label-supported">Research supported</span>
+          </summary>
+          <div class="rfc-body">
+            <p class="rfc-text">The composition of gut bacteria differs significantly between smokers and non-smokers — smoking creates a distinct microbial environment that tends to favour less beneficial bacterial communities.</p>
+          </div>
+        </details>
+      </div>
+      <div class="rc-takeaway">Your fiber-processing bacteria took a hit but are ready to bounce back with the right support.</div>
+    </div>
+
+    <div class="rc-dev-block">
+      <div class="rc-dev-header">
+        <h3 class="rc-dev-title">🌿 Moderate Microbial Diversity</h3>
+      </div>
+      <div class="rc-narrative">
+        <p>Think of microbial diversity like having a rich ecosystem in your gut — the more different types of beneficial bacteria you have, the more resilient and adaptable your gut becomes. Your diversity score of 3.20 puts you in the lower half compared to a reference population.</p>
+        <p>A more diverse gut community is better equipped to handle disruptions — stress, travel, temporary dietary changes — without losing its balance. It also has more tools available for the different jobs your immune system, mood regulation, and metabolism require. Building diversity is a natural secondary benefit of your prebiotic protocol as it expands over time.</p>
+      </div>
+      <div class="rc-factors-label">Research-backed drivers</div>
+      <div class="rc-factor-stack">
+        <details class="rc-factor-chip">
+          <summary>
+            <span class="rfc-icon">🚬</span>
+            <span class="rfc-title">Tobacco / Smoking</span>
+            <span class="rfc-ev-label ev-label-supported">Research supported</span>
+          </summary>
+          <div class="rfc-body">
+            <p class="rfc-text">Smoking creates a distinct microbial environment that tends to favour less diverse, less beneficial bacterial communities.</p>
+          </div>
+        </details>
+      </div>
+      <div class="rc-takeaway">Your gut ecosystem needs more variety, but this is very achievable with targeted support.</div>
+    </div>
+  </div>
+
+  <!-- ⟳ CHANGED: Cascade diagram — collapsed by default for lay users -->
+  <details class="cascade-reveal annotation changed" data-note="Cascade diagram collapsed by default — better for non-experts">
+    <summary></summary>
+    <div class="cascade-body">
+      <p style="font-size:13px;color:var(--mid);margin-bottom:16px;">This diagram shows which lifestyle factors are linked to which bacterial imbalances.</p>
+      <div class="cascade-grid">
+        <div class="casc-left">
+          <div class="casc-factor-pill">💊 Antibiotic Use</div>
+          <div class="casc-factor-pill">🚬 Tobacco / Smoking</div>
+          <div class="casc-factor-pill">😰 Chronic Stress</div>
+        </div>
+        <div class="casc-arrow">→</div>
+        <div class="casc-right">
+          <div class="casc-guild-pill gp-low">
+            <span class="cgp-label">Fiber-Processing Bacteria</span>
+            <span class="cgp-value">15.2%</span>
+            <span class="cgp-emojis">💊🚬😰</span>
+          </div>
+          <div class="casc-guild-pill gp-low">
+            <span class="cgp-label">Microbial Diversity</span>
+            <span class="cgp-value">Shannon 3.20</span>
+            <span class="cgp-emojis">🚬</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- ═══════════════════════════ SECTION 4 — WHAT HAPPENS NEXT ═══════════════════════════ -->
+<div class="section">
+  <div class="sec-label">Section 4 · The Road Ahead</div>
+  <h2 class="sec-title">What happens next</h2>
+  <p class="sec-intro">Your protocol works in phases. Here's what to expect — and specifically what should be happening with your fiber-processing bacteria at each stage.</p>
+
+  <div class="turnaround-grid">
+    <div class="timeline">
+      <!-- ⟳ CHANGED: Each phase now has a personalised note tied to the specific finding -->
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#3A6EA8">1</div>
+        <div class="tl-period">Weeks 1–4</div>
+        <div class="tl-title">🌱 Settling in</div>
+        <div class="tl-body">The probiotic strains are adapting to your gut — encountering existing bacteria, beginning to colonise, establishing early positions. Your daily prebiotic sachet starts priming the lower gut environment. Vitamin C, Zinc, and B-vitamins begin supporting immune and energy pathways within days. LP815 begins producing calming GABA from week 1.</div>
+        <div class="tl-personal annotation changed" data-note="Personalized timeline note">
+          <strong>Your fiber-processing bacteria:</strong> The prebiotic fibers in your sachet begin reaching these bacteria from week 1, providing the substrate they need. No measurable increase yet, but the conditions are being set.
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#2E8B6E">2</div>
+        <div class="tl-period">Weeks 5–8</div>
+        <div class="tl-title">🔋 Early momentum</div>
+        <div class="tl-body">Beneficial bacteria begin expanding as prebiotic fibres consistently supply the substrate they need. Short-chain fatty acid production increases as the fermentation chain becomes more active. Omega-3 EPA and DHA reach effective anti-inflammatory concentrations by week 6. Many people notice improvements in digestion consistency and comfort.</div>
+        <div class="tl-personal annotation changed" data-note="Personalized timeline note">
+          <strong>Your fiber-processing bacteria:</strong> This is when early expansion typically begins. You may start noticing better energy from plant-based meals and more settled digestion.
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#C97C2A">3</div>
+        <div class="tl-period">Weeks 9–12</div>
+        <div class="tl-title">🛡️ Deepening balance</div>
+        <div class="tl-body">Guild populations move toward their target ranges. Butyrate output increases as the fermentation chain becomes more complete. Ashwagandha's adaptogenic effects compound with continued use. Magnesium Bisglycinate supports deeper sleep as tissue saturation builds.</div>
+        <div class="tl-personal annotation changed" data-note="Personalized timeline note">
+          <strong>Your fiber-processing bacteria:</strong> Expected to be moving meaningfully toward the 30–50% target range during this phase. Your inflammatory metabolite pressure typically decreases as well.
+        </div>
+      </div>
+      <div class="tl-item" style="margin-bottom:0">
+        <div class="tl-dot" style="background:#6B5EA8">4</div>
+        <div class="tl-period">Weeks 13–16</div>
+        <div class="tl-title">⚖️ Consolidation</div>
+        <div class="tl-body">The ecological shifts become self-sustaining. A more diverse, well-balanced community is better equipped to hold its gains under normal life pressures — stress, travel, or temporary dietary changes. Weeks 13–16 are the ideal window for a reassessment sample.</div>
+        <div class="tl-personal annotation changed" data-note="Personalized timeline note">
+          <strong>Your reassessment:</strong> A new sample at this point should show measurable progress in fiber-processing bacteria and an increase in Shannon diversity.
+        </div>
+      </div>
+    </div>
+
+    <div class="lifestyle-panel">
+      <div class="lp-label">Lifestyle Recommendations</div>
+      <div class="lp-items">
+        <div class="lp-item">
+          <div class="lp-emoji">🌾</div>
+          <div>
+            <div class="lp-title">Diversify fiber sources daily</div>
+            <div class="lp-text">Your fiber-processing bacteria at 15.2% need consistent, varied plant fiber to expand. Aim for multiple fiber types each day — not just quantity, but variety.</div>
+          </div>
+        </div>
+        <div class="lp-item">
+          <div class="lp-emoji">🧘</div>
+          <div>
+            <div class="lp-title">Daily stress reduction practice</div>
+            <div class="lp-text">With stress at 7/10, daily practices like breathwork or meditation directly support your gut-brain axis — and will amplify the effect of your Ashwagandha.</div>
+          </div>
+        </div>
+        <div class="lp-item">
+          <div class="lp-emoji">🏃</div>
+          <div>
+            <div class="lp-title">Add moderate-intensity movement</div>
+            <div class="lp-text">Physical activity 3–4 times weekly consistently increases butyrate-producing bacteria and diversity — a meaningful complement to your supplement protocol.</div>
+          </div>
+        </div>
+        <div class="lp-item">
+          <div class="lp-emoji">🦠</div>
+          <div>
+            <div class="lp-title">Add fermented foods</div>
+            <div class="lp-text">4–5 servings weekly of fermented food (kefir, kimchi, live yogurt) introduces diversity and complements your probiotic and prebiotic stack.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SECTION 5 — YOUR FORMULA ═══════════════════════════ -->
+<div class="section sand">
+  <div class="sec-label">Section 5 · Your Protocol</div>
+  <h2 class="sec-title">Your formula, explained</h2>
+  <p class="sec-intro">Every element of your protocol was chosen based on your specific microbiome pattern, your questionnaire, and your goals. Here's what each product is doing and why it's in your formula.</p>
+
+  <div class="supp-units">
+
+    <!-- SUPPLEMENT 1 -->
+    <div class="supp-unit">
+      <div class="supp-header">
+        <div class="supp-num-block" style="background:#1E1E2A">💊</div>
+        <div class="supp-head-text">
+          <div class="supp-unit-name">Probiotic Capsule</div>
+          <div class="supp-unit-when">🌅 Every morning</div>
+        </div>
+        <div class="supp-unit-tag">Butyrate Specialist</div>
+      </div>
+      <!-- ✦ NEW: What it is row -->
+      <div class="supp-meta annotation new" data-note="what_it_is field now rendered">
+        <div class="supp-meta-item">
+          <div class="smi-label">What it is</div>
+          <div class="smi-text">Live beneficial bacteria, selected specifically for your microbiome pattern.</div>
+        </div>
+        <div class="supp-meta-item">
+          <div class="smi-label">Chosen for</div>
+          <div class="smi-text">Your fiber-processing bacteria deficit + mood &amp; anxiety goal</div>
+        </div>
+      </div>
+      <!-- ✦ NEW: Addresses finding row -->
+      <div class="supp-addresses annotation new" data-note="addresses_finding — links supplement back to specific deviations">
+        <span class="sa-label">Addresses:</span>
+        <span class="sa-tag">↓ Fiber-Processing Bacteria (15.2%)</span>
+        <span class="sa-tag">Gut-Brain connection</span>
+        <span class="sa-tag">Stress / Anxiety goal</span>
+      </div>
+      <div class="supp-why-band">
+        <span class="why-icon">💡</span>
+        <span>This probiotic blend introduces beneficial gut bacteria that produce calming compounds and support your digestive system's fiber-processing abilities. Specifically chosen to boost your fiber-processing bacteria levels and help manage mood and anxiety through the gut-brain connection.</span>
+      </div>
+      <div class="supp-pills">
+        <div class="pill"><strong>L. plantarum CECT 7484</strong> · 10B CFU</div>
+        <div class="pill"><strong>L. plantarum CECT 7485</strong> · 10B CFU</div>
+        <div class="pill"><strong>L. plantarum 299v</strong> · 10B CFU</div>
+        <div class="pill"><strong>B. animalis lactis BB-12</strong> · 10B CFU</div>
+        <div class="pill"><strong>LP815</strong> · 5B CFU · produces GABA</div>
+      </div>
+      <div class="supp-supports">
+        <div class="supp-supports-label">Supports</div>
+        <div class="supp-supports-chips">
+          <span class="sc-chip">Butyrate Specialist</span>
+          <span class="sc-chip">Fiber below range</span>
+          <span class="sc-chip">Gut-Brain</span>
+          <span class="sc-chip">Sleep Quality</span>
+          <span class="sc-chip">Stress/Anxiety</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUPPLEMENT 2 -->
+    <div class="supp-unit">
+      <div class="supp-header">
+        <div class="supp-num-block" style="background:#C97C2A">🐟</div>
+        <div class="supp-head-text">
+          <div class="supp-unit-name">Omega &amp; Antioxidant Softgel</div>
+          <div class="supp-unit-when">🌅 Every morning (2×)</div>
+        </div>
+      </div>
+      <div class="supp-meta annotation new" data-note="what_it_is field now rendered">
+        <div class="supp-meta-item">
+          <div class="smi-label">What it is</div>
+          <div class="smi-text">Essential fatty acids and antioxidants in an easy-to-absorb softgel form.</div>
+        </div>
+        <div class="supp-meta-item">
+          <div class="smi-label">Chosen for</div>
+          <div class="smi-text">Mood &amp; anxiety + immune resilience goals</div>
+        </div>
+      </div>
+      <div class="supp-addresses annotation new" data-note="addresses_finding">
+        <span class="sa-label">Addresses:</span>
+        <span class="sa-tag">Inflammation control support</span>
+        <span class="sa-tag">Brain &amp; mood goal</span>
+        <span class="sa-tag">Immune resilience goal</span>
+      </div>
+      <div class="supp-why-band">
+        <span class="why-icon">💡</span>
+        <span>This combination delivers essential fats and nutrients that support brain function, mood balance, and immune strength. The Omega-3s target your mood and anxiety goals while Vitamin D and antioxidants support your immune resilience.</span>
+      </div>
+      <div class="supp-pills">
+        <div class="pill"><strong>Omega-3 (EPA + DHA)</strong> · 712.5mg</div>
+        <div class="pill"><strong>Vitamin D3</strong> · 400 IU</div>
+        <div class="pill"><strong>Vitamin E</strong> · 7.5mg</div>
+        <div class="pill"><strong>Astaxanthin</strong> · 3mg</div>
+      </div>
+      <div class="supp-supports">
+        <div class="supp-supports-label">Supports</div>
+        <div class="supp-supports-chips">
+          <span class="sc-chip">Anti-inflammatory</span>
+          <span class="sc-chip">Antioxidant Protection</span>
+          <span class="sc-chip">Brain Health</span>
+          <span class="sc-chip">Immune System</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUPPLEMENT 3 -->
+    <div class="supp-unit">
+      <div class="supp-header">
+        <div class="supp-num-block" style="background:#2E8B6E">🌿</div>
+        <div class="supp-head-text">
+          <div class="supp-unit-name">Daily Prebiotic Sachet</div>
+          <div class="supp-unit-when">🌅 Every morning</div>
+        </div>
+      </div>
+      <div class="supp-meta annotation new" data-note="what_it_is field now rendered">
+        <div class="supp-meta-item">
+          <div class="smi-label">What it is</div>
+          <div class="smi-text">A blend of prebiotic fibres and micronutrients — food for your beneficial bacteria plus targeted vitamin and mineral support.</div>
+        </div>
+        <div class="supp-meta-item">
+          <div class="smi-label">Chosen for</div>
+          <div class="smi-text">Your fiber-processing deficit + immune + metabolism goals</div>
+        </div>
+      </div>
+      <div class="supp-addresses annotation new" data-note="addresses_finding">
+        <span class="sa-label">Addresses:</span>
+        <span class="sa-tag">↓ Fiber-Processing Bacteria (15.2%)</span>
+        <span class="sa-tag">↓ Microbial Diversity (3.20)</span>
+        <span class="sa-tag">Immune resilience goal</span>
+      </div>
+      <div class="supp-why-band">
+        <span class="why-icon">💡</span>
+        <span>This prebiotic powder feeds your beneficial gut bacteria and provides key vitamins and minerals for immune and metabolic support. Designed to work with your probiotic to improve fiber-processing bacteria levels while supporting immune resilience and metabolism goals.</span>
+      </div>
+      <div class="supp-pills">
+        <div class="pill"><strong>Inulin</strong> · 1.5g</div>
+        <div class="pill"><strong>FOS</strong> · 1.0g</div>
+        <div class="pill"><strong>Resistant starch</strong> · 2.0g</div>
+        <div class="pill"><strong>Beta-glucans</strong> · 1.5g</div>
+        <div class="pill"><strong>GOS</strong> · 0.5g</div>
+        <div class="pill"><strong>Vitamin C</strong> · 250mg</div>
+        <div class="pill"><strong>Zinc</strong> · 8mg</div>
+        <div class="pill"><strong>Vitamin B12</strong> · 25mcg</div>
+        <div class="pill"><strong>Folate (B9)</strong> · 200mcg</div>
+      </div>
+    </div>
+
+    <!-- SUPPLEMENT 4 -->
+    <div class="supp-unit">
+      <div class="supp-header">
+        <div class="supp-num-block" style="background:#6B5EA8">🌙</div>
+        <div class="supp-head-text">
+          <div class="supp-unit-name">Evening Wellness Capsule</div>
+          <div class="supp-unit-when">🌙 30–60 min before bed</div>
+        </div>
+      </div>
+      <div class="supp-meta annotation new" data-note="what_it_is field now rendered">
+        <div class="supp-meta-item">
+          <div class="smi-label">What it is</div>
+          <div class="smi-text">Botanical and functional molecules timed to work with your body's evening recovery processes.</div>
+        </div>
+        <div class="supp-meta-item">
+          <div class="smi-label">Chosen for</div>
+          <div class="smi-text">Stress level 7/10 + mood &amp; anxiety goal</div>
+        </div>
+      </div>
+      <div class="supp-addresses annotation new" data-note="addresses_finding">
+        <span class="sa-label">Addresses:</span>
+        <span class="sa-tag">Chronic Stress factor (questionnaire)</span>
+        <span class="sa-tag">Mood &amp; anxiety goal</span>
+        <span class="sa-tag">Sleep Quality</span>
+      </div>
+      <div class="supp-why-band">
+        <span class="why-icon">💡</span>
+        <span>This evening blend combines stress-reducing herbs that help calm your mind and support your body's natural defences. Targets your mood and anxiety goals while providing immune support through natural protective compounds.</span>
+      </div>
+      <div class="supp-pills">
+        <div class="pill"><strong>Ashwagandha</strong> · 300mg</div>
+        <div class="pill"><strong>Propolis</strong> · 300mg</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SECTION 6 — GOALS ═══════════════════════════ -->
+<div class="section">
+  <div class="sec-label">Section 6 · Your Goals</div>
+  <h2 class="sec-title">How this connects to what you want</h2>
+  <p class="sec-intro">Your protocol is built around your goals. Here's the science connecting your gut to each of the outcomes you're aiming for.</p>
+  <div class="goals-row">
+    <div class="goal-card">
+      <span class="goal-emoji">🛡️</span>
+      <div class="goal-title">Stronger immune resilience</div>
+      <p class="goal-mechanism">Around 70% of your immune system is shaped by your gut bacteria. Beneficial bacteria modulate immune signalling, train immune cells, and maintain the gut barrier that prevents unwanted particles from triggering immune responses.</p>
+      <p class="goal-formula">Your formula targets this through <strong>Zinc and Vitamin C</strong> in the sachet, <strong>Omega-3 EPA/DHA</strong> (resolve inflammatory signals), <strong>Vitamin D3</strong> (regulates immune training), and the <strong>probiotic mix</strong> (rebuilds beneficial bacteria that educate immune cells).</p>
+    </div>
+    <div class="goal-card">
+      <span class="goal-emoji">🧘</span>
+      <div class="goal-title">Better mood and reduced anxiety</div>
+      <p class="goal-mechanism">Your gut produces about 90% of your body's serotonin and communicates directly with your brain via the vagus nerve. Gut microbiome imbalances — especially low fiber-processing bacteria — have been consistently linked to mood and anxiety patterns.</p>
+      <p class="goal-formula">Your formula targets this through <strong>Ashwagandha</strong> (clinical evidence for cortisol reduction), <strong>LP815</strong> (produces calming GABA), <strong>Omega-3 DHA</strong> (brain health and mood regulation), and <strong>Magnesium Bisglycinate</strong> (nervous system and stress resilience).</p>
+    </div>
+    <div class="goal-card">
+      <span class="goal-emoji">🎯</span>
+      <div class="goal-title">Optimise metabolism</div>
+      <p class="goal-mechanism">A balanced, resilient gut microbiome provides the foundation for energy, metabolism, immunity, and mental clarity. Your metabolic function score is already perfect at 20/20 — the protocol maintains this and builds on it by addressing the fiber-processing deficit.</p>
+      <p class="goal-formula">Your formula works holistically — the probiotic mix, prebiotic blend, and targeted nutrients create the conditions your gut needs to function at its best and sustain those gains.</p>
+    </div>
+    <div class="goal-card">
+      <span class="goal-emoji">😴</span>
+      <div class="goal-inferred-tag">Inferred from questionnaire</div>
+      <div class="goal-title">Better sleep quality</div>
+      <p class="goal-mechanism">Sleep and the gut microbiome operate in a bidirectional relationship. Gut bacteria influence circadian rhythm signals, serotonin and melatonin precursor availability, and inflammatory mediators that affect sleep architecture.</p>
+      <p class="goal-formula">Your formula targets this through <strong>Magnesium Bisglycinate</strong> (supports deep sleep phases), <strong>Ashwagandha</strong> (reduces HPA-axis activation that disrupts sleep onset), and <strong>LP815</strong> (GABA production supports calm states before sleep).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ GLOSSARY (NEW) ═══════════════════════════ -->
+<div class="section sand annotation new" data-note="New glossary section — collapsible for lay users">
+  <div class="sec-label">Understanding your report</div>
+  <h2 class="sec-title" style="margin-bottom:28px;">Key terms explained</h2>
+  <details class="glossary-box">
+    <summary>
+      <span style="font-size:16px;margin-right:8px;">📖</span>
+      Glossary — key terms used in this report
+    </summary>
+    <div class="glossary-grid">
+      <div class="gloss-item">
+        <div class="gloss-term">Butyrate</div>
+        <div class="gloss-def">A short-chain fatty acid (SCFA) produced when bacteria ferment fiber. It's the primary fuel for your gut lining cells and has anti-inflammatory properties.</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">SCFA / Short-Chain Fatty Acids</div>
+        <div class="gloss-def">Beneficial compounds produced by bacteria fermenting fiber. Includes butyrate, acetate, and propionate. These nourish your gut, regulate immunity, and influence mood.</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Shannon Diversity</div>
+        <div class="gloss-def">A scientific measure of species diversity. A higher score means more variety of different bacterial species — a more resilient, adaptable gut ecosystem.</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Guild</div>
+        <div class="gloss-def">A group of bacteria that share a similar ecological function — like a specialist team. There are six guilds in this report, each with a different job in your gut.</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Dysbiosis</div>
+        <div class="gloss-def">An imbalance in gut bacteria — when harmful species overgrow or beneficial species are depleted. The opposite of a healthy, balanced microbiome.</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Prebiotic</div>
+        <div class="gloss-def">Food for your beneficial bacteria. Prebiotics are fibers and compounds that your own body can't digest, but your bacteria can — feeding and supporting their growth.</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Probiotic</div>
+        <div class="gloss-def">Live beneficial bacteria in supplement form. Taken orally, they travel to your gut and can colonise, compete with less beneficial bacteria, and produce helpful compounds.</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Gut-Brain Axis</div>
+        <div class="gloss-def">The two-way communication network between your gut and your brain, primarily via the vagus nerve. Your gut bacteria influence this signalling — affecting mood, stress, and cognitive function.</div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<div class="footer">
+  <div class="footer-brand">NB1 Health</div>
+  <div>Polina · Sample 1421029282376 · 10 March 2026 · Schema v3.0</div>
+  <div>Improved flow prototype — internal review</div>
+</div>
+
+</body>
+</html>

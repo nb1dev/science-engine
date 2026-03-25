@@ -643,8 +643,16 @@ def build_decision_trace(master: Dict, trace_events: list = None, sample_dir: st
     if formulation.get(pp_key):
         pp = formulation[pp_key]
         pp_t = pp.get("totals", {})
-        pp_contents = ", ".join(f"{c.get('substance', '')} {c.get('dose_mg', '')}mg" for c in pp.get("components", []))
-        delivery.append({"type": "Morning Wellness Capsule", "timing": "morning", "count": 1, "contents": pp_contents, "weight_mg": pp_t.get("total_weight_mg", 0)})
+        # Deduplicate components by substance name — components[] has one entry per capsule,
+        # not per unique ingredient. daily_count already encodes how many capsules to take.
+        _seen_substances = {}
+        for c in pp.get("components", []):
+            sub = c.get("substance", "")
+            if sub not in _seen_substances:
+                _seen_substances[sub] = c.get("dose_mg", "")
+        pp_contents = ", ".join(f"{sub} {dose_mg}mg" for sub, dose_mg in _seen_substances.items())
+        pp_count = pp.get("format", {}).get("daily_count", 1)
+        delivery.append({"type": "Morning Wellness Capsule", "timing": "morning", "count": pp_count, "contents": pp_contents, "weight_mg": pp_t.get("total_weight_mg", 0)})
     # v3: Evening Wellness Capsules
     if formulation.get("delivery_format_5_evening_wellness_capsules"):
         ewct = formulation["delivery_format_5_evening_wellness_capsules"].get("totals", {})
@@ -940,7 +948,11 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
                 "category": "polyphenol",
             })
         pp_totals = polyphenol_cap.get("totals", {})
-        units.append({
+        pp_cap_count = pp_totals.get("capsule_count", 1)
+        pp_capsule_layout = pp_totals.get("capsules", [])
+        _pp_fills = [c.get("fill_mg", 0) for c in pp_capsule_layout]
+        pp_max_fill = round(max(_pp_fills), 1) if _pp_fills else pp_totals.get("total_weight_mg", 0)
+        pp_unit = {
             "unit_number": unit_num,
             "label": _l6,
             "format": {"type": "hard_capsule", "size": "00", "material": "vegetarian"},
@@ -948,11 +960,15 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             # Polyphenols (Curcumin+Piperine, Bergamot) require dietary fat for absorption.
             # Must be taken WITH a meal — not on an empty stomach.
             "timing_note": "Take with a meal containing fat — required for polyphenol absorption",
-            "quantity": 1,
-            "fill_weight_mg": pp_totals.get("total_weight_mg", 0),
+            "quantity": pp_cap_count,
+            "fill_weight_per_capsule_mg": pp_max_fill,
+            "total_fill_weight_mg": pp_totals.get("total_weight_mg", 0),
             "ingredients": ingredients,
+            "ingredients_note": f"Total across {pp_cap_count} capsules — see capsule_layout for per-capsule breakdown" if pp_cap_count > 1 else None,
             "total_weight_mg": pp_totals.get("total_weight_mg", 0),
-        })
+            "capsule_layout": pp_capsule_layout,
+        }
+        units.append(pp_unit)
 
     # Unit 5: Evening Wellness Capsules (v3) or Evening Capsule (v2 fallback)
     ewc = formulation.get("delivery_format_5_evening_wellness_capsules")

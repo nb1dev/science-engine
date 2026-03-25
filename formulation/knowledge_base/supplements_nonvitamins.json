@@ -150,7 +150,8 @@
           "Anti-inflammatory",
           "Infection Susceptibility",
           "Skin Quality",
-          "Sport/Recovery"
+          "Sport/Recovery",
+          "Longevity"
         ]
       },
       "timing_restriction": "any",
@@ -1105,7 +1106,8 @@
         "rank_priority": 1,
         "interaction_level": "low",
         "health_claims": [
-          "Stress/Anxiety"
+          "Stress/Anxiety",
+          "Hormone Balance"
         ]
       },
       "timing_restriction": "evening_ok",
@@ -2640,7 +2642,8 @@
             "rank_priority": 1,
             "interaction_level": "low",
             "health_claims": [
-              "Stress/Anxiety"
+              "Stress/Anxiety",
+              "Hormone Balance"
             ]
           },
           "timing_restriction": "evening_ok",
@@ -2698,6 +2701,72 @@
           },
           "timing_restriction": "morning_only",
           "delivery_constraint": "capsule_only"
+        }
+      ]
+    },
+    {
+      "category": "Longevity",
+      "supplement_count": 1,
+      "supplements": [
+        {
+          "id": "glutathione",
+          "substance": "Glutathione",
+          "supplement_type": "Amino Acid & Precursor",
+          "subcategory": "Longevity",
+          "rank": "1st Choice",
+          "standard_dose": "50-100mg",
+          "rationale": "Master antioxidant — reduces oxidative stress, supports cellular longevity, mitochondrial health, and immune resilience. First-line supplement for healthy aging goal.",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily",
+          "notes": "Triggered by longevity_healthy_aging goal. Complementary to Curcumin (anti-inflammatory) — both are included when longevity is a primary goal.",
+          "parsed": {
+            "dose": {
+              "min": 50.0,
+              "max": 100.0,
+              "unit": "mg",
+              "raw": "50-100mg"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Longevity"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
+        }
+      ]
+    },
+    {
+      "category": "Sport/Recovery",
+      "supplement_count": 1,
+      "supplements": [
+        {
+          "id": "glutathione",
+          "substance": "Glutathione",
+          "supplement_type": "Amino Acid & Precursor",
+          "subcategory": "Sport/Recovery",
+          "rank": "1st Choice",
+          "standard_dose": "50-100mg",
+          "rationale": "Reduces exercise-induced oxidative stress; supports muscle recovery and immune function in active individuals. Indicated for clients exercising ≥3x/week.",
+          "interaction_risk": "Low",
+          "timing_in_protocol": "Daily, post-workout or with meals",
+          "notes": "Triggered by sport_recovery inferred signal (vigorous or moderate exercise ≥3 days/week).",
+          "parsed": {
+            "dose": {
+              "min": 50.0,
+              "max": 100.0,
+              "unit": "mg",
+              "raw": "50-100mg"
+            },
+            "rank_priority": 1,
+            "interaction_level": "low",
+            "health_claims": [
+              "Sport/Recovery"
+            ]
+          },
+          "timing_restriction": "any",
+          "delivery_constraint": "any"
         }
       ]
     },
