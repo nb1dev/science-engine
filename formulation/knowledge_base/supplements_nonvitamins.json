@@ -3,7 +3,7 @@
     "version": "1.1.0",
     "source_csv": "documents/supplement_module/final/supplements_nonvitamins.csv",
     "generated_at": "2026-02-23T21:20:23.214616Z",
-    "record_count": 49,
+    "record_count": 48,
     "category_count": 17,
     "typo_corrections_applied": [
       "Maganese",
@@ -1301,33 +1301,6 @@
       "delivery_constraint": "any"
     },
     {
-      "id": "lactulose",
-      "substance": "Lactulose",
-      "supplement_type": "Prebiotic",
-      "subcategory": "Microbiome Restoration",
-      "rank": "3rd Choice",
-      "standard_dose": "10-20g/day",
-      "rationale": "Microbiome restoration + laxative",
-      "interaction_risk": "Medium",
-      "timing_in_protocol": "4-8 weeks",
-      "notes": "Dose dependent laxative; caution with diabetes",
-      "parsed": {
-        "dose": {
-          "min": 10.0,
-          "max": 20.0,
-          "unit": "g",
-          "raw": "10-20g/day"
-        },
-        "rank_priority": 3,
-        "interaction_level": "medium",
-        "health_claims": [
-          "Microbiome Restoration"
-        ]
-      },
-      "timing_restriction": "any",
-      "delivery_constraint": "any"
-    },
-    {
       "id": "astaxanthin",
       "substance": "Astaxanthin (H. pluvialis)",
       "supplement_type": "Carotenoid Antioxidant",
@@ -1375,13 +1348,13 @@
       ],
       "notes": "Each gets own morning capsule. Curcumin+piperine = 505mg min. Bergamot = 1000mg (size 00)."
     },
-    "sachet_safe": {
-      "description": "Mild taste — can go in sachet",
+    "jar_safe": {
+      "description": "Mild taste — go in the powder jar (previously called sachet_safe)",
       "substances": [
         "apple_polyphenol_extract",
         "fermented_pomegranate"
       ],
-      "notes": "Budget = 1000mg - total_capsule_polyphenols. If budget is 0, no sachet polyphenols."
+      "notes": "Budget = 1000mg - total_capsule_polyphenols. If budget is 0, no jar polyphenols."
     }
   },
   "health_categories": [
@@ -1481,15 +1454,17 @@
           "supplement_type": "Fermentable Polyphenol Substrate",
           "subcategory": "Anti-inflammatory",
           "rank": "1st Choice",
-          "standard_dose": "Varies (enhance with black pepper)",
-          "rationale": "Supports microbiota indirectly through anti-inflammatory effects",
+          "standard_dose": "500-1000mg/day (with piperine 1:100)",
+          "rationale": "Supports microbiota indirectly through anti-inflammatory effects. Piperine significantly enhances absorption.",
           "interaction_risk": "Low",
           "timing_in_protocol": "Daily",
-          "notes": "",
+          "notes": "500-1000mg routine safe. Auto-add piperine at 1:100 ratio (5mg per 500mg curcumin). Display as 'Curcumin 500mg (+ 5mg Piperine)' — total weight = 505mg.",
           "parsed": {
             "dose": {
-              "raw": "Varies (enhance with black pepper)",
-              "max": 1010
+              "min": 500.0,
+              "max": 1010,
+              "unit": "mg",
+              "raw": "500-1000mg/day (with piperine 1:100)"
             },
             "rank_priority": 1,
             "interaction_level": "low",
@@ -1498,7 +1473,14 @@
             ]
           },
           "timing_restriction": "evening_ok",
-          "delivery_constraint": "capsule_only"
+          "delivery_constraint": "capsule_only",
+          "polyphenol_tier": 2,
+          "piperine_rule": {
+            "ratio": "1:100",
+            "auto_add": true,
+            "example_display": "Curcumin 500mg (+ 5mg Piperine)",
+            "note": "Piperine is bundled with curcumin — NOT a separate component. Total weight = curcumin_mg + piperine_mg."
+          }
         },
         {
           "id": "glutathione",
@@ -1524,7 +1506,8 @@
               "Anti-inflammatory",
               "Infection Susceptibility",
               "Skin Quality",
-              "Sport/Recovery"
+              "Sport/Recovery",
+              "Longevity"
             ]
           },
           "timing_restriction": "any",
@@ -2229,23 +2212,51 @@
           "supplement_type": "Fermentable Polyphenol Substrate",
           "subcategory": "Infection Susceptibility",
           "rank": "2nd Choice",
-          "standard_dose": "Up to 40mg",
-          "rationale": "Antiviral, anti-inflammatory; natural from quercetin-rich foods",
-          "interaction_risk": "Very Low",
+          "standard_dose": "300-400mg (microbiome modulation); max 500mg",
+          "rationale": "Antiviral, anti-inflammatory; 300-400mg for microbiome modulation, max 500mg/day",
+          "interaction_risk": "Medium",
           "timing_in_protocol": "Continuous, with meals (fat enhances absorption)",
-          "notes": "",
+          "notes": "Nutritionist-confirmed dose range. Cautions: anticoagulants/antiplatelets → flag interaction; kidney disease → auto-exclude; pregnancy/breastfeeding → auto-exclude; multiple medications → flag for review.",
           "parsed": {
             "dose": {
-              "raw": "Up to 40mg"
+              "min": 300.0,
+              "max": 500.0,
+              "unit": "mg",
+              "raw": "300-400mg (microbiome modulation); max 500mg"
             },
             "rank_priority": 2,
-            "interaction_level": "very_low",
+            "interaction_level": "medium",
             "health_claims": [
               "Infection Susceptibility"
             ]
           },
           "timing_restriction": "evening_ok",
-          "delivery_constraint": "any"
+          "delivery_constraint": "any",
+          "polyphenol_tier": 1,
+          "cautions": {
+            "anticoagulants_antiplatelets": {
+              "action": "flag_interaction",
+              "drugs": [
+                "warfarin",
+                "coumadin",
+                "blood thinner",
+                "anticoagulant",
+                "antiplatelet",
+                "aspirin",
+                "clopidogrel"
+              ]
+            },
+            "kidney_disease": {
+              "action": "auto_exclude"
+            },
+            "pregnancy_breastfeeding": {
+              "action": "auto_exclude",
+              "note": "Do not add unless specifically cleared"
+            },
+            "multiple_medications": {
+              "action": "flag_for_review"
+            }
+          }
         },
         {
           "id": "royal_jelly",
@@ -2362,7 +2373,7 @@
     },
     {
       "category": "Microbiome Restoration",
-      "supplement_count": 3,
+      "supplement_count": 2,
       "supplements": [
         {
           "id": "oligofructose",
@@ -2410,33 +2421,6 @@
               "raw": "5-10 g/day"
             },
             "rank_priority": 2,
-            "interaction_level": "medium",
-            "health_claims": [
-              "Microbiome Restoration"
-            ]
-          },
-          "timing_restriction": "any",
-          "delivery_constraint": "any"
-        },
-        {
-          "id": "lactulose",
-          "substance": "Lactulose",
-          "supplement_type": "Prebiotic",
-          "subcategory": "Microbiome Restoration",
-          "rank": "3rd Choice",
-          "standard_dose": "10-20g/day",
-          "rationale": "Microbiome restoration + laxative",
-          "interaction_risk": "Medium",
-          "timing_in_protocol": "4-8 weeks",
-          "notes": "Dose dependent laxative; caution with diabetes",
-          "parsed": {
-            "dose": {
-              "min": 10.0,
-              "max": 20.0,
-              "unit": "g",
-              "raw": "10-20g/day"
-            },
-            "rank_priority": 3,
             "interaction_level": "medium",
             "health_claims": [
               "Microbiome Restoration"

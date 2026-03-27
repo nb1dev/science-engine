@@ -435,7 +435,7 @@ Include 3.1-3.4:
 3.2 What This Means — ecosystem stability
 3.3 Why This Pattern — drivers
 3.4 Integration — link to compositional pattern""",
-        'max_tokens': 2500,
+        'max_tokens': 3500,
     },
     {
         'name': 'Section 4 Part 1: GUILD FRAMEWORK + CLR RATIOS + STATUS TABLE',
@@ -771,6 +771,35 @@ def _markdown_to_pdf(md_path: str, pdf_path: str) -> bool:
         return False
 
     try:
+        # ── Unicode pre-processing — strip characters that break xelatex ──────
+        # Read the markdown, replace known problematic Unicode, strip remaining
+        # non-Latin characters (CJK, emoji, private-use area, etc.) that
+        # xelatex cannot render with the default font stack.
+        with open(md_path, encoding='utf-8') as _f:
+            _md_content = _f.read()
+
+        # Replace specific Unicode characters with safe ASCII equivalents
+        _md_content = (
+            _md_content
+            .replace('\u2212', '-')    # minus sign → hyphen-minus
+            .replace('\u2013', '-')    # en dash → hyphen-minus
+            .replace('\u2014', '--')   # em dash → double hyphen
+            .replace('\u2018', "'")    # left single quotation mark
+            .replace('\u2019', "'")    # right single quotation mark
+            .replace('\u201c', '"')    # left double quotation mark
+            .replace('\u201d', '"')    # right double quotation mark
+            .replace('\u2026', '...')  # horizontal ellipsis
+            .replace('\u00b0', ' deg') # degree sign
+        )
+
+        # Strip remaining non-Latin characters (outside printable ASCII + common
+        # Latin-extended range U+0080–U+024F) to avoid xelatex encoding errors
+        _md_content = re.sub(r'[^\x00-\x7F\u0080-\u024F]', '', _md_content)
+
+        with open(md_path, 'w', encoding='utf-8') as _f:
+            _f.write(_md_content)
+        # ──────────────────────────────────────────────────────────────────────
+
         result = subprocess.run(
             [pandoc_path, md_path, '-o', pdf_path,
              '--pdf-engine=xelatex',

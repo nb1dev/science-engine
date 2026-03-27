@@ -1188,7 +1188,7 @@ def _build_health_table_legacy(master: Dict) -> list:
         health_table.append({"component": "LP815 psychobiotic strain (5B CFU)", "what_it_targets": "Stress, anxiety, mood, sleep", "based_on": f"Microbiome gut-brain pattern + stress {q.get('stress_level','?')}/10", "source": "microbiome_linked", "delivery": "probiotic capsule"})
 
     for pb in prebiotics.get("prebiotics", []):
-        health_table.append({"component": f"{pb['substance']} ({pb['dose_g']}g)", "what_it_targets": _derive_prebiotic_target(pb['substance'], mix_name), "based_on": f"Microbiome pattern", "source": "microbiome_primary", "delivery": "sachet"})
+        health_table.append({"component": f"{pb['substance']} ({pb['dose_g']}g)", "what_it_targets": _derive_prebiotic_target(pb['substance'], mix_name), "based_on": f"Microbiome pattern", "source": "microbiome_primary", "delivery": "jar"})
 
     mg = rule_outputs.get("magnesium", {})
     if mg.get("capsules", 0) > 0:

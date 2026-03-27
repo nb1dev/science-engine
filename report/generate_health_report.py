@@ -1827,12 +1827,17 @@ For factor_explanations: include one entry per domain_key listed in the EVIDENCE
 For cited_paper_keys: list only the citation strings (e.g. 'Maier et al., 2021') from the scientific literature that you actually used."""
 
     try:
-        client = boto3.client('bedrock-runtime', region_name=region)
+        from botocore.config import Config
+        client = boto3.client(
+            'bedrock-runtime',
+            region_name=region,
+            config=Config(read_timeout=600, connect_timeout=10, retries={'max_attempts': 2})
+        )
         response = client.invoke_model(
             modelId=model_id,
             body=json.dumps({
                 'anthropic_version': 'bedrock-2023-05-31',
-                'max_tokens': 2000,
+                'max_tokens': 4000,
                 'temperature': 0.5,
                 'messages': [{'role': 'user', 'content': prompt}]
             }),
@@ -2210,12 +2215,17 @@ Return ONLY valid JSON, no other text:
 }}"""
 
     try:
-        client = boto3.client('bedrock-runtime', region_name=region)
+        from botocore.config import Config
+        client = boto3.client(
+            'bedrock-runtime',
+            region_name=region,
+            config=Config(read_timeout=600, connect_timeout=10, retries={'max_attempts': 2})
+        )
         response = client.invoke_model(
             modelId=model_id,
             body=json.dumps({
                 'anthropic_version': 'bedrock-2023-05-31',
-                'max_tokens': 2500,
+                'max_tokens': 6000,
                 'temperature': 0.5,
                 'messages': [{'role': 'user', 'content': prompt}]
             }),

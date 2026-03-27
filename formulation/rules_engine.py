@@ -713,7 +713,7 @@ def apply_timing_rules(
         # No calming needs at all → morning
         timing_assignments["l_theanine"] = {
             "timing": "morning",
-            "delivery": "morning_sachet",
+            "delivery": "morning_wellness_capsule",
             "reason": "No calming needs — morning timing for focus benefit"
         }
 

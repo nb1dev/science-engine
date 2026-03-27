@@ -11,8 +11,16 @@
       "trigger": {
         "operator": "OR",
         "conditions": [
-          {"field": "sleep_quality", "operator": "<=", "value": 7},
-          {"field": "goals", "operator": "contains", "value": "improve_sleep"}
+          {
+            "field": "sleep_quality",
+            "operator": "<=",
+            "value": 7
+          },
+          {
+            "field": "goals",
+            "operator": "contains",
+            "value": "improve_sleep"
+          }
         ]
       },
       "action": {
@@ -67,9 +75,17 @@
       "trigger": {
         "operator": "AND",
         "conditions": [
-          {"description": "Magnesium placed evening (per Rule 1)"},
-          {"description": "L-theanine is included in formulation"},
-          {"field": "goals", "operator": "contains", "value": "improve_sleep"}
+          {
+            "description": "Magnesium placed evening (per Rule 1)"
+          },
+          {
+            "description": "L-theanine is included in formulation"
+          },
+          {
+            "field": "goals",
+            "operator": "contains",
+            "value": "improve_sleep"
+          }
         ]
       },
       "action": {
@@ -82,15 +98,26 @@
       },
       "else_action": {
         "timing": "morning",
-        "delivery": "morning_sachet",
+        "delivery": "morning_wellness_capsule",
         "rationale": "Daytime calm focus without sedation"
       }
     }
   ],
   "evening_capsule_composition": {
     "purpose": "Sleep optimization when magnesium is evening-timed",
-    "include": ["Magnesium", "L-Theanine", "Melatonin", "Glycine"],
-    "exclude": ["Quercetin", "Antioxidants", "General botanicals", "Immune vitamins", "Digestive enzymes"],
+    "include": [
+      "Magnesium",
+      "L-Theanine",
+      "Melatonin",
+      "Glycine"
+    ],
+    "exclude": [
+      "Quercetin",
+      "Antioxidants",
+      "General botanicals",
+      "Immune vitamins",
+      "Digestive enzymes"
+    ],
     "capacity_limit_mg": 650,
     "rationale": "Evening capsule = sleep-focused. Avoid mixing sleep + non-sleep functions."
   }
