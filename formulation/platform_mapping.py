@@ -59,6 +59,64 @@ def _evening_capsule_label(components: list) -> str:
     return "Evening Wellness Capsule"
 
 
+def _dosing_instruction(quantity: int, timing: str, format_type: str = "capsule") -> str:
+    """Build 'Take X capsules/softgels daily (timing)' string for manufacturing recipe."""
+    unit_word = "softgel" if format_type == "softgel" else "capsule"
+    plural = "s" if quantity != 1 else ""
+    return f"Take {quantity} {unit_word}{plural} daily ({timing})"
+
+
+def _build_dosing_summary(units: list) -> dict:
+    """Build structured daily regimen dict from recipe units list for grand_total.
+
+    Returns:
+        {
+            "morning":     ["1x Probiotic Hard Capsule", ...],   # solid units only
+            "morning_jar": {"qty": 1, "label_short": "...",      # jar split out separately
+                            "phased_dosing": {...}, "total_weight_g": ...},
+            "evening":     ["2x Magnesium Bisglycinate Capsules"]
+        }
+    Rules:
+    - Capsule/Softgel labels are pluralised when qty > 1 ("Capsules", "Softgels")
+    - Jar is stored separately so the renderer can split it into two bullets
+      ("1x Prebiotic & Botanical" / "Powder Jar serving (weeks 1-2: Xg -> week 3+: Yg)")
+    """
+    morning: List[str] = []
+    morning_jar: Optional[dict] = None
+    evening: List[str] = []
+    for u in units:
+        qty = u.get("quantity", 1)
+        label = u.get("label", "unit")
+        fmt_type = u.get("format", {}).get("type", "")
+        timing = u.get("timing", "morning")
+
+        if fmt_type == "jar":
+            # Strip " Powder Jar" suffix for the short label bullet
+            label_short = label.replace(" Powder Jar", "").strip()
+            morning_jar = {
+                "qty": qty,
+                "label_short": label_short,
+                "phased_dosing": u.get("phased_dosing", {}),
+                "total_weight_g": u.get("total_weight_g", ""),
+            }
+            continue  # rendered separately by recipe_renderer
+
+        # Pluralise capsule/softgel labels when more than one unit per day
+        if qty > 1:
+            if label.endswith("Capsule"):
+                label = label + "s"
+            elif label.endswith("Softgel"):
+                label = label + "s"
+
+        part = f"{qty}\u00d7 {label}"
+        (evening if "evening" in timing.lower() else morning).append(part)
+
+    result: dict = {"morning": morning, "evening": evening}
+    if morning_jar is not None:
+        result["morning_jar"] = morning_jar
+    return result
+
+
 def _enrich_priority_interventions(priority_interventions: list) -> list:
     """Add client-facing guild_display_name to each priority intervention.
 
@@ -513,13 +571,14 @@ def build_decision_trace(master: Dict, trace_events: list = None, sample_dir: st
         "confidence": mix.get("confidence", ""),
     })
 
-    # Step 3: LP815
-    if mix.get("lp815_added"):
+    # Step 3: LPc-37 psychobiotic enhancement
+    # NOTE (2026-04-01): LPc-37 (IFF) replaced LP815 (Verb Biotics) as psychobiotic strain.
+    if mix.get("lpc37_added"):
         steps.append({
-            "step": 3, "decision": "LP815 Enhancement", "method": "deterministic",
+            "step": 3, "decision": "LPc-37 Psychobiotic Enhancement", "method": "deterministic",
             "input": f"Stress {q.get('stress_level', '?')}/10, goals: {q.get('goals_ranked', [])}",
             "result": "YES — 5B CFU added",
-            "reasoning": "Stress/mood triggers met → GABA producer for stress/sleep",
+            "reasoning": "Stress/mood triggers met → psychobiotic strain for stress/gut-brain support",
         })
 
     # Step 4: Softgel Decision
@@ -774,7 +833,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
         units.append({
             "unit_number": unit_num,
             "label": "Probiotic Hard Capsule",
-            "format": {"type": "hard_capsule", "size": "00", "material": "vegetarian", "color": "tan/beige opaque"},
+            "format": {"type": "hard_capsule", "size": "0", "material": "vegetarian", "color": "tan/beige opaque"},
             "timing": _t1,
             "quantity": 1,
             "fill_weight_mg": totals.get("total_weight_mg", 0),
@@ -784,6 +843,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             "total_cfu_billions": totals.get("total_cfu_billions", 0),
             "mix_id": mix.get("mix_id"),
             "mix_name": mix.get("mix_name"),
+            "dosing_instruction": _dosing_instruction(1, _t1),
         })
 
     # Unit 2: Softgels (fixed composition)
@@ -807,7 +867,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
         units.append({
             "unit_number": unit_num,
             "label": "Omega + Antioxidant Softgel",
-            "format": {"type": "softgel", "size": "0", "material": "vegetarian", "color": "transparent gel"},
+            "format": {"type": "softgel", "size": "0", "material": "gelatin", "color": "amber gel"},
             "timing": _t2,
             "quantity": sg_count,
             "fill_weight_per_unit_mg": sg_totals.get("weight_per_softgel_mg", 750),
@@ -815,11 +875,13 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             "note": "Fixed composition — identical for all clients",
             "ingredients_per_unit": ingredients_per,
             "daily_totals": {
-                "omega3_mg": 712.5 * sg_count,
+                "fish_oil_mg": 1000 * sg_count,
+                "omega3_mg": 600 * sg_count,
                 "vitamin_d_mcg": 10 * sg_count,
                 "vitamin_e_mg": 7.5 * sg_count,
                 "astaxanthin_mg": 3 * sg_count,
             },
+            "dosing_instruction": _dosing_instruction(sg_count, _t2, format_type="softgel"),
         })
 
     # Unit 3: Powder Jar (v3) or Daily Sachet (v2 fallback)
@@ -930,6 +992,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             "ingredients_note": f"Total across {mwc_cap_count} capsules — see capsule_layout for per-capsule breakdown" if mwc_cap_count > 1 else None,
             "total_weight_mg": mwc_totals.get("total_weight_mg", 0),
             "capsule_layout": mwc_capsule_layout,
+            "dosing_instruction": _dosing_instruction(mwc_cap_count, _t4),
         }
         if opt.get("adjustments_made"):
             mwc_unit["optimizer_adjustments"] = opt["adjustments_made"]
@@ -967,6 +1030,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             "ingredients_note": f"Total across {pp_cap_count} capsules — see capsule_layout for per-capsule breakdown" if pp_cap_count > 1 else None,
             "total_weight_mg": pp_totals.get("total_weight_mg", 0),
             "capsule_layout": pp_capsule_layout,
+            "dosing_instruction": _dosing_instruction(pp_cap_count, _t6),
         }
         units.append(pp_unit)
 
@@ -999,6 +1063,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             "ingredients_note": f"Total across {ewc_cap_count} capsules — see capsule_layout for per-capsule breakdown" if ewc_cap_count > 1 else None,
             "total_weight_mg": ewc_totals.get("total_weight_mg", 0),
             "capsule_layout": ewc_capsule_layout,
+            "dosing_instruction": _dosing_instruction(ewc_cap_count, "evening (30-60 min before bed)"),
         }
         if opt.get("adjustments_made"):
             ewc_unit["optimizer_adjustments"] = opt["adjustments_made"]
@@ -1023,6 +1088,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
                 "fill_weight_mg": ec_totals.get("total_weight_mg", 0),
                 "ingredients": ingredients,
                 "total_weight_mg": ec_totals.get("total_weight_mg", 0),
+                "dosing_instruction": _dosing_instruction(1, "evening (30-60 min before bed)"),
             })
 
         # v2: Evening capsule 2 (overflow)
@@ -1043,6 +1109,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
                 "fill_weight_mg": ec2_totals.get("total_weight_mg", 0),
                 "ingredients": ingredients,
                 "total_weight_mg": ec2_totals.get("total_weight_mg", 0),
+                "dosing_instruction": _dosing_instruction(1, "evening (30-60 min before bed)"),
             })
 
     # Unit: Magnesium capsules (timing determined by timing engine)
@@ -1068,6 +1135,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
                 "elemental_mg_mg": mg["elemental_mg_total_mg"],
             },
             "needs": mg.get("needs_identified", []),
+            "dosing_instruction": _dosing_instruction(mg["capsules"], mg_timing_label),
         })
 
     return {
@@ -1081,6 +1149,7 @@ def build_manufacturing_recipe(master: Dict) -> Dict:
             "total_daily_weight_g": proto.get("total_daily_weight_g", 0),
             "morning_units": proto.get("morning_solid_units", 0) + proto.get("morning_jar_units", 0),
             "evening_units": proto.get("evening_solid_units", 0),
+            "dosing_summary": _build_dosing_summary(units),
         },
         "validation": metadata.get("validation_status"),
     }
@@ -1179,13 +1248,13 @@ def _build_health_table_legacy(master: Dict) -> list:
     health_table = []
     mix_name = mix.get("mix_name", "")
     mix_trigger = mix.get("primary_trigger", "")
-    lp815 = mix.get("lp815_added", False)
+    lpc37 = mix.get("lpc37_added", False)
     strain_count = len(mix.get("strains", []))
-    base_strains = strain_count - (1 if lp815 else 0)
+    base_strains = strain_count - (1 if lpc37 else 0)
 
     health_table.append({"component": f"{base_strains} probiotic strains ({mix_name})", "what_it_targets": _derive_mix_target(mix), "based_on": f"Microbiome analysis ({mix_trigger})", "source": "microbiome_primary", "delivery": "probiotic capsule"})
-    if lp815:
-        health_table.append({"component": "LP815 psychobiotic strain (5B CFU)", "what_it_targets": "Stress, anxiety, mood, sleep", "based_on": f"Microbiome gut-brain pattern + stress {q.get('stress_level','?')}/10", "source": "microbiome_linked", "delivery": "probiotic capsule"})
+    if lpc37:
+        health_table.append({"component": "LPc-37 psychobiotic strain (5B CFU)", "what_it_targets": "Stress, anxiety, mood, sleep", "based_on": f"Microbiome gut-brain pattern + stress {q.get('stress_level','?')}/10", "source": "microbiome_linked", "delivery": "probiotic capsule"})
 
     for pb in prebiotics.get("prebiotics", []):
         health_table.append({"component": f"{pb['substance']} ({pb['dose_g']}g)", "what_it_targets": _derive_prebiotic_target(pb['substance'], mix_name), "based_on": f"Microbiome pattern", "source": "microbiome_primary", "delivery": "sachet"})
@@ -1224,7 +1293,7 @@ def _derive_prebiotic_target(substance: str, mix_name: str) -> str:
     elif "fos" in s:
         return "Selective Bifidobacteria feeding"
     elif "resistant starch" in s:
-        return "Butyrate production, LP815 GABA fuel"
+        return "Butyrate production, LPc-37 psychobiotic fuel"
     elif "beta-glucan" in s or "beta glucan" in s:
         return "Gentle SCFA substrate, fiber expansion"
     elif "pectin" in s:

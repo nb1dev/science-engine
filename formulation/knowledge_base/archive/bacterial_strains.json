@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "source_csv": "documents/supplement_module/final/list_of_bacterial_strains.csv",
+    "generated_at": "2026-02-23T21:20:23.216595Z",
+    "record_count": 26,
+    "description": "Master list of available bacterial strains for probiotic formulations."
+  },
+  "strains": [
+    {
+      "included_strains_(genus_species_strain_id)": "Bifidobacterium longum DSM 24736"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus plantarum 299v (DSM 9843)"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus rhamnosus GG"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus acidophilus CL1285"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus reuteri DSM 17938"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Bifidobacterium infantis/longum 35624",
+      "status": "excluded",
+      "production_status": "no_production",
+      "exclusion_date": "2026-04-01",
+      "exclusion_reason": "Supplier (Novonesis) confirmed this strain is currently not in production. Flagged as 'no production' in their April 2026 CFU list sent to Vitema Pharmaceuticals (email: Strains list along with CFU, 30 March 2026). No replacement strain has been identified yet — do not use in formulations until a replacement is confirmed and this entry is updated.",
+      "replacement_strain": null
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Bifidobacterium animalis subsp. lactis B420"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Bifidobacterium breve BR03"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Bifidobacterium animalis lactis BB12"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus plantarum CECT 7484 (KABP022)"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus plantarum CECT 7485 (KABP023)"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus reuteri ATCC PTA 6475"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus plantarum ECGC 13110402"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus paracasei CNCM I-1518"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus casei Shirota"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus acidophilus DSM 24735"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus paracasei DSM 24733"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus delbrueckii subsp. bulgaricus DSM 24734"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactobacillus plantarum DSM 24730"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Bifidobacterium infantis DSM 24737"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Bifidobacterium breve DSM 24732"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Streptococcus thermophilus DSM 24731"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Limosilactobacillus fermentum LF16"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lacticaseibacillus rhamnosus LR06"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Lactiplantibacillus plantarum LP01"
+    },
+    {
+      "included_strains_(genus_species_strain_id)": "Bifidobacterium longum 04"
+    }
+  ]
+}

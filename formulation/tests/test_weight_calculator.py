@@ -73,6 +73,17 @@ class TestDistributeCFU:
     def test_single_strain(self):
         assert distribute_cfu_evenly(50, 1) == 50.0
 
+    def test_cap_distributes_within_active_capacity(self):
+        """MAX_CAPSULE_CFU (48B) distributed across N strains must never exceed PROBIOTIC_ACTIVE_CAPACITY_MG."""
+        from formulation.weight_calculator import PROBIOTIC_ACTIVE_CAPACITY_MG, CFU_TO_MG_FACTOR
+        MAX_CAPSULE_CFU = int(PROBIOTIC_ACTIVE_CAPACITY_MG / CFU_TO_MG_FACTOR)  # = 48
+        for n_strains in [1, 2, 3, 4, 5, 6, 8]:
+            per_strain = distribute_cfu_evenly(MAX_CAPSULE_CFU, n_strains)
+            total_active_mg = round(per_strain * n_strains * CFU_TO_MG_FACTOR, 2)
+            assert total_active_mg <= PROBIOTIC_ACTIVE_CAPACITY_MG, (
+                f"Cap overflow for {n_strains} strains: {total_active_mg}mg > {PROBIOTIC_ACTIVE_CAPACITY_MG}mg"
+            )
+
 
 # ── CapsuleStackingOptimizer ─────────────────────────────────────────────────
 
@@ -129,8 +140,8 @@ class TestFormulationCalculator:
     def test_basic_generate(self):
         calc = FormulationCalculator(sample_id="test_001")
 
-        # Add probiotics
-        cfu_per = distribute_cfu_evenly(50, 4)
+        # Add probiotics — 48B total (480mg) fits within size-0 capsule active capacity (495mg)
+        cfu_per = distribute_cfu_evenly(48, 4)
         for i in range(4):
             calc.add_probiotic(f"Strain_{i+1}", cfu_per, mix_id=2, mix_name="Bifidogenic Restore")
 
@@ -148,7 +159,7 @@ class TestFormulationCalculator:
         # Probiotic capsule
         probiotic = result["delivery_format_1_probiotic_capsule"]
         assert len(probiotic["components"]) == 4
-        assert probiotic["totals"]["total_cfu_billions"] == pytest.approx(50, abs=0.5)
+        assert probiotic["totals"]["total_cfu_billions"] == pytest.approx(48, abs=0.5)
         assert probiotic["totals"]["validation"] == "PASS"
 
         # Jar
@@ -222,10 +233,10 @@ class TestFormulationCalculator:
         assert poly["totals"]["total_weight_mg"] == 505
 
     def test_probiotic_capacity_overflow(self):
-        """Probiotic capsule exceeding 650mg should produce FAIL + warning."""
+        """Probiotic active content exceeding 495mg (size-0 capsule) should produce FAIL + warning."""
         calc = FormulationCalculator(sample_id="test_overflow")
-        # 70B CFU = 700mg > 650mg capacity
-        calc.add_probiotic("BigStrain", 70, mix_id=1, mix_name="Dysbiosis")
+        # 50B CFU = 500mg > 495mg active capacity
+        calc.add_probiotic("BigStrain", 50, mix_id=1, mix_name="Dysbiosis")
         calc.set_prebiotic_strategy("test")
         result = calc.generate()
         assert result["delivery_format_1_probiotic_capsule"]["totals"]["validation"] == "FAIL"

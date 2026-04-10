@@ -18,12 +18,13 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from generate_health_report import build_supplement_cards
 
+_WORK_DIR = os.environ.get("WORK_DIR", "/Users/pnovikova/Documents/work")
 SAMPLE_DIRS = [
-    '/Users/pnovikova/Documents/work/analysis/nb1_2026_001/1421819436544',
-    '/Users/pnovikova/Documents/work/analysis/nb1_2026_006/1421425343541',
-    '/Users/pnovikova/Documents/work/analysis/nb1_2026_007/1421773212865',
-    '/Users/pnovikova/Documents/work/analysis/nb1_2026_008/1421093249814',
-    '/Users/pnovikova/Documents/work/analysis/nb1_2026_009/1421504848853',
+    os.path.join(_WORK_DIR, 'analysis/nb1_2026_001/1421819436544'),
+    os.path.join(_WORK_DIR, 'analysis/nb1_2026_006/1421425343541'),
+    os.path.join(_WORK_DIR, 'analysis/nb1_2026_007/1421773212865'),
+    os.path.join(_WORK_DIR, 'analysis/nb1_2026_008/1421093249814'),
+    os.path.join(_WORK_DIR, 'analysis/nb1_2026_009/1421504848853'),
 ]
 
 for sample_dir in SAMPLE_DIRS:

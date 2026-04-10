@@ -1,29 +1,33 @@
 """
-Tests for llm_decisions.py — Offline mix selection, prebiotic design, strain lookup.
+Tests for mix selection and prebiotic design — Offline mix selection, prebiotic design, strain lookup.
+
+NOTE (2026-04-01): Import updated from legacy llm_decisions (archive-only) to the
+modular llm/mix_selector. _should_add_lp815 renamed to _should_add_lpc37 following
+replacement of LP815 (Verb Biotics) with LPc-37 (IFF) as the psychobiotic strain.
 """
 
 import pytest
 from copy import deepcopy
-from llm_decisions import (
-    select_mix_offline, design_prebiotics_offline, lookup_strains_for_mix,
-    run_llm_decisions, _should_add_lp815,
+from formulation.llm.mix_selector import (
+    select_mix_offline, lookup_strains_for_mix, _should_add_lpc37,
 )
+from formulation.llm.prebiotic_designer import design_prebiotics_offline
 
 
-# ── _should_add_lp815 ────────────────────────────────────────────────────────
+# ── _should_add_lpc37 ────────────────────────────────────────────────────────
 
-class TestLP815:
+class TestLPc37:
     def test_high_stress_always_adds(self):
-        assert _should_add_lp815(7, []) is True
+        assert _should_add_lpc37(7, []) is True
 
     def test_moderate_stress_with_mood_goal(self):
-        assert _should_add_lp815(5, ["improve_mood_reduce_anxiety"]) is True
+        assert _should_add_lpc37(5, ["improve_mood_reduce_anxiety"]) is True
 
     def test_low_stress_no_goal(self):
-        assert _should_add_lp815(3, []) is False
+        assert _should_add_lpc37(3, []) is False
 
     def test_none_stress(self):
-        assert _should_add_lp815(None, []) is False
+        assert _should_add_lpc37(None, []) is False
 
 
 # ── select_mix_offline — Branch A (broad collapse) ───────────────────────────
@@ -107,22 +111,22 @@ class TestSelectMixOfflineBranchC:
         assert result["mix_id"] == 4
 
 
-# ── LP815 integration ─────────────────────────────────────────────────────────
+# ── LPc-37 integration ───────────────────────────────────────────────────────
 
-class TestLP815Integration:
-    def test_lp815_added_high_stress(self, base_unified_input):
+class TestLPc37Integration:
+    def test_lpc37_added_high_stress(self, base_unified_input):
         data = deepcopy(base_unified_input)
         data["questionnaire"]["lifestyle"]["stress_level"] = 7
         result = select_mix_offline(data, {"sensitivity": {"classification": "moderate"}})
-        assert result["lp815_added"] is True
+        assert result["lpc37_added"] is True
         assert result["total_cfu_billions"] == 55
 
-    def test_lp815_not_added_low_stress(self, base_unified_input):
+    def test_lpc37_not_added_low_stress(self, base_unified_input):
         data = deepcopy(base_unified_input)
         data["questionnaire"]["lifestyle"]["stress_level"] = 3
         data["questionnaire"]["goals"]["ranked"] = ["improve_skin_health"]
         result = select_mix_offline(data, {"sensitivity": {"classification": "moderate"}})
-        assert result["lp815_added"] is False
+        assert result["lpc37_added"] is False
         assert result["total_cfu_billions"] == 50
 
 

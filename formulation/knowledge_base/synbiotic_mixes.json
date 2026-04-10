@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "source": "probiotic_mixes_v2.xlsx + prebiotics4mixes_v2.md (17 March 2026)",
     "description": "Consolidated synbiotic mix reference — 8 mixes with strains, default prebiotic formulas, and clinical triggers.",
-    "note": "LP815 enhancement is applied separately by the pipeline (not baked into mixes). Mix 7 is the sole exception — LP815 is a core named strain in that mix at 10B.",
+    "note": "LPc-37 (IFF) psychobiotic enhancement is applied separately by the pipeline (not baked into mixes). Mix 7 is the sole exception — LPc-37 is a core named strain in that mix at 10B. NOTE: LPc-37 replaced LP815 (Verb Biotics) on 2026-04-01 at Vitema's instruction. LP815 was the original psychobiotic strain; LPc-37 is the current IFF-sourced replacement. NOTE: B. infantis/longum 35624 (Novonesis) replaced by B. longum 1714 (Novonesis) in Mixes 2 and 5 on 2026-04-08 — 35624 confirmed no production by supplier.",
     "previous_version": "archive/v1_2026_03_17/synbiotic_mixes_v1.json"
   },
   "mixes": {
@@ -128,11 +128,13 @@
       },
       "strains": [
         {
-          "name": "Bifidobacterium infantis/longum 35624",
+          "name": "Bifidobacterium longum 1714",
           "supplier": "Novonesis",
           "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Primary IBS anchor and Bifido restoration, IL-10/IL-12 normalisation"
+          "role": "Primary IBS anchor and Bifido restoration, IL-10/IL-12 normalisation",
+          "replaced_strain": "Bifidobacterium infantis/longum 35624",
+          "replacement_reason": "35624 confirmed no production by Novonesis (Apr 2026). B. longum 1714 selected as replacement per supplier availability."
         },
         {
           "name": "Bifidobacterium animalis subsp. lactis B420",
@@ -455,11 +457,13 @@
           "role": "Strong mucus adherence; mucosal immune modulation; pathogen inhibition at mucosal surface"
         },
         {
-          "name": "Bifidobacterium infantis/longum 35624",
+          "name": "Bifidobacterium longum 1714",
           "supplier": "Novonesis",
           "cfu_billions": 10,
           "evidence": "WGO_L1",
-          "role": "Serpin-like activity reduces protease-mediated barrier degradation; anti-inflammatory IL-10 induction protects mucosa"
+          "role": "Serpin-like activity reduces protease-mediated barrier degradation; anti-inflammatory IL-10 induction protects mucosa",
+          "replaced_strain": "Bifidobacterium infantis/longum 35624",
+          "replacement_reason": "35624 confirmed no production by Novonesis (Apr 2026). B. longum 1714 selected as replacement per supplier availability."
         },
         {
           "name": "Bifidobacterium breve BR03 + Bifidobacterium breve B632 (premix)",
@@ -547,7 +551,7 @@
             "substance": "GOS",
             "dose_g": 1.0,
             "fodmap": true,
-            "rationale": "Must-include (v2) — preferred substrate for Bifido-heavy mix (BB-12, HN019, 35624, BR03+B632)"
+            "rationale": "Must-include (v2) — preferred substrate for Bifido-heavy mix (BB-12, HN019, 1714, BR03+B632)"
           },
           {
             "substance": "Pure Inulin",
@@ -676,11 +680,11 @@
           "role": "Psychobiotic 4-strain premix — GABA production, HPA axis modulation, serotonin-pathway support, gut-brain axis signalling bridge. L. rhamnosus LR06 induces region-dependent GABA receptor expression changes; B. longum 04 modulates brain activity during social stress."
         },
         {
-          "name": "Lactiplantibacillus plantarum LP815",
-          "supplier": "Verb Biotics",
+          "name": "Lactobacillus paracasei LPC-37",
+          "supplier": "IFF",
           "cfu_billions": 10,
           "evidence": "Mechanistic",
-          "role": "High-potency GABA producer (10B CFU → ~100mg GABA); core psychobiotic strain — always included in Mix 7"
+          "role": "Psychobiotic strain — gut-brain axis support; core strain always included in Mix 7. REPLACEMENT NOTE (2026-04-01): This strain replaced LP815 (Lactiplantibacillus plantarum, Verb Biotics) per Vitema Pharmaceuticals instruction. LP815 was the original high-potency GABA producer"
         }
       ],
       "default_prebiotic_formula": {
@@ -888,18 +892,19 @@
       }
     }
   },
-  "lp815_enhancement": {
-    "strain": "Lactiplantibacillus plantarum LP815",
-    "supplier": "Verb Biotics",
+  "lpc37_enhancement": {
+    "strain": "Lactobacillus paracasei LPC-37",
+    "supplier": "IFF",
     "cfu_billions": 5,
     "weight_mg": 50,
-    "mechanism": "5B CFU produces 50mg GABA — stress, irritability, and sleep benefits. Applied as cross-mix enhancement (not as core mix strain).",
-    "note": "Mix 7 includes LP815 at 10B as a named core strain — the enhancement block does NOT add additional LP815 on top of Mix 7. For all other mixes, this enhancement adds 5B LP815 when stress/mood triggers are met.",
+    "mechanism": "Applied as cross-mix psychobiotic enhancement for stress/mood/sleep support. 5B CFU dose for Mixes 1-6 and 8; 10B as core strain in Mix 7.",
+    "replacement_note": "LPc-37 replaced LP815 (Lactiplantibacillus plantarum, Verb Biotics) on 2026-04-01 per Vitema Pharmaceuticals instruction.",
+    "note": "Mix 7 includes LPc-37 at 10B as a named core strain — the enhancement block does NOT add additional LPc-37 on top of Mix 7. For all other mixes, this enhancement adds 5B LPc-37 when stress/mood triggers are met.",
     "trigger_rules": [
       "Stress ≥ 6/10 → always add",
       "Stress ≥ 4/10 AND mood/anxiety is a stated goal → always add"
     ],
-    "prebiotic_impact": "Add 0.5-1.0g Resistant Starch for GABA substrate support",
-    "applied_to": "Mixes 1-6, 8 only — enhancement, not replacement. Mix 7 has LP815 built in at 10B."
+    "prebiotic_impact": "Add 0.5-1.0g Resistant Starch for psychobiotic substrate support",
+    "applied_to": "Mixes 1-6, 8 only — enhancement, not replacement. Mix 7 has LPc-37 built in at 10B."
   }
 }

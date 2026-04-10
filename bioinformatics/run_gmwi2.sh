@@ -34,7 +34,7 @@ fi
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
 # Fixed base paths
-WORK_DIR="/Users/pnovikova/Documents/work"
+WORK_DIR="${WORK_DIR:-/Users/pnovikova/Documents/work}"
 RAW_SEQS_DIR="$WORK_DIR/data/$BATCH_ID/raw_sequences/$SAMPLE_ID"
 OUTPUT_BASE="$WORK_DIR/analysis/$BATCH_ID/$SAMPLE_ID"
 OUTPUT_DIR="$OUTPUT_BASE/GMWI2"

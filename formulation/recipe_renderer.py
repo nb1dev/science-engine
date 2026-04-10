@@ -96,6 +96,10 @@ def generate_md(recipe: Dict, sample_id: str, q_coverage: Optional[Dict] = None)
 
         lines.append(f"**Timing:** {qty}× {timing}")
 
+        dosing_instr = unit.get("dosing_instruction")
+        if dosing_instr:
+            lines.append(f"**Dosing:** {dosing_instr}")
+
         if unit.get("timing_note"):
             lines.append(f"**Note:** {unit['timing_note']}")
 
@@ -110,8 +114,14 @@ def generate_md(recipe: Dict, sample_id: str, q_coverage: Optional[Dict] = None)
         # ── Ingredients table ─────────────────────────────────────────────
         ingredients = unit.get("ingredients") or unit.get("ingredients_per_unit") or []
 
+        capsule_layout = unit.get("capsule_layout", [])
+
         if ingredients:
             has_cfu = any("cfu_billions" in ing for ing in ingredients)
+
+            if capsule_layout and qty > 1:
+                lines.append(f"*Total across all {qty} capsules:*")
+                lines.append("")
 
             header = "| Component | Amount |"
             separator = "|-----------|--------|"
@@ -151,6 +161,25 @@ def generate_md(recipe: Dict, sample_id: str, q_coverage: Optional[Dict] = None)
                     row += f" {cfu}B CFU |" if cfu else " — |"
                 lines.append(row)
 
+        # ── Per-capsule breakdown (multi-capsule units only) ──────────────
+        if capsule_layout and qty > 1:
+            lines.append("")
+            lines.append(f"*Per-capsule breakdown ({qty} capsules):*")
+            lines.append("")
+            for cap in capsule_layout:
+                cap_num = cap.get("capsule_number", "?")
+                fill = cap.get("fill_mg", 0)
+                util = cap.get("utilization_pct", 0)
+                lines.append(f"**Capsule {cap_num} of {qty}** — {fill}mg ({util}% capacity)")
+                lines.append("")
+                lines.append("| Component | Dose per capsule |")
+                lines.append("|-----------|-----------------|")
+                for comp in cap.get("components", []):
+                    substance = comp.get("substance", "?")
+                    dose_str = comp.get("dose", "") or f"{comp.get('dose_mg', comp.get('weight_mg', 0))}mg"
+                    lines.append(f"| {substance} | {dose_str} |")
+                lines.append("")
+
         lines.append("")
 
         # ── Unit total ────────────────────────────────────────────────────
@@ -176,6 +205,7 @@ def generate_md(recipe: Dict, sample_id: str, q_coverage: Optional[Dict] = None)
             lines.append("")
             lines.append("**Daily Totals:**")
             DAILY_TOTAL_LABELS = {
+                "fish_oil_mg": "Fish Oil mg",
                 "omega3_mg": "Omega-3 (EPA+DHA) mg",
                 "vitamin_d_mcg": "Vitamin D3 mcg",
                 "vitamin_e_mg": "Vitamin E mg",
@@ -194,12 +224,46 @@ def generate_md(recipe: Dict, sample_id: str, q_coverage: Optional[Dict] = None)
     # ── Grand total ───────────────────────────────────────────────────────
     grand = recipe.get("grand_total", {})
     if grand:
+        total_units = grand.get("total_units", "?")
+        morning_units = grand.get("morning_units", "?")
+        evening_units = grand.get("evening_units", "?")
+        total_weight = grand.get("total_daily_weight_g", "?")
+
         lines.append("## Grand Total (Daily)")
         lines.append("")
-        lines.append(f"- **Total Units:** {grand.get('total_units', '?')}")
-        lines.append(f"- **Total Daily Weight:** {grand.get('total_daily_weight_g', '?')}g")
-        lines.append(f"- **Morning Units:** {grand.get('morning_units', '?')}")
-        lines.append(f"- **Evening Units:** {grand.get('evening_units', '?')}")
+        lines.append(f"- **Total units/day:** {total_units} ({morning_units} morning + {evening_units} evening)")
+        lines.append(f"- **Total daily weight:** {total_weight}g")
+
+        dosing = grand.get("dosing_summary", {})
+        morning_parts = dosing.get("morning", []) if isinstance(dosing, dict) else []
+        morning_jar   = dosing.get("morning_jar") if isinstance(dosing, dict) else None
+        evening_parts = dosing.get("evening", []) if isinstance(dosing, dict) else []
+
+        if morning_parts or morning_jar:
+            jar_note = " + powder serving" if morning_jar else ""
+            lines.append("")
+            lines.append(f"**Morning ({morning_units} units{jar_note}):**")
+            for part in morning_parts:
+                lines.append("")
+                lines.append(f"- {part}")
+            if morning_jar:
+                qty = morning_jar.get("qty", 1)
+                label_short = morning_jar.get("label_short", "Prebiotic & Botanical")
+                lines.append(f"- {qty}\u00d7 {label_short}")
+                phased = morning_jar.get("phased_dosing", {})
+                if phased and phased.get("weeks_1_2_g") and phased.get("weeks_3_plus_g"):
+                    lines.append(f"- Powder Jar serving (weeks 1-2: {phased['weeks_1_2_g']}g -> week 3+: {phased['weeks_3_plus_g']}g)")
+                else:
+                    total_g = morning_jar.get("total_weight_g", "")
+                    lines.append(f"- Powder Jar serving ({total_g}g)" if total_g else "- Powder Jar serving")
+
+        if evening_parts:
+            lines.append("")
+            lines.append(f"**Evening ({evening_units} units):**")
+            for part in evening_parts:
+                lines.append("")
+                lines.append(f"- {part}")
+
         lines.append("")
 
     # ── Footer ────────────────────────────────────────────────────────────

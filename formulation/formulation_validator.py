@@ -28,7 +28,9 @@ from typing import Dict, List, Optional, Any
 VALIDATOR_VERSION = "1.2.1"
 
 # Capsule/unit capacities (must match weight_calculator.py)
-HARD_CAPSULE_CAPACITY_MG = 650
+HARD_CAPSULE_CAPACITY_MG      = 650
+PROBIOTIC_CAPSULE_CAPACITY_MG = 500    # size 0 — must match weight_calculator.py
+PROBIOTIC_ACTIVE_CAPACITY_MG  = 495.0  # 500 × 0.99 (1% reserved for SiO2 + SSF)
 SOFTGEL_CAPACITY_MG = 750
 JAR_TARGET_G = 19.0
 MG_CAPSULE_FILL_MG = 750
@@ -213,17 +215,17 @@ def check_physical_consistency(master: Dict, recipe: Dict) -> List[CheckResult]:
     results = []
     formulation = master.get("formulation", {})
 
-    # ── 1a. Probiotic capsule fill ≤ 650mg ────────────────────────────────
+    # ── 1a. Probiotic capsule — active fill ≤ PROBIOTIC_ACTIVE_CAPACITY_MG ──
     probiotic = formulation.get("delivery_format_1_probiotic_capsule", {})
     if probiotic:
-        total_mg = probiotic.get("totals", {}).get("total_weight_mg", 0)
-        if total_mg > HARD_CAPSULE_CAPACITY_MG + WEIGHT_TOLERANCE_MG:
+        active_mg = probiotic.get("totals", {}).get("active_weight_mg", 0)
+        if active_mg > PROBIOTIC_ACTIVE_CAPACITY_MG + WEIGHT_TOLERANCE_MG:
             results.append(_fail("physical", "probiotic_capsule_capacity",
-                f"≤{HARD_CAPSULE_CAPACITY_MG}mg", f"{total_mg}mg",
-                "Probiotic capsule exceeds capacity"))
+                f"≤{PROBIOTIC_ACTIVE_CAPACITY_MG}mg (active)", f"{active_mg}mg",
+                "Probiotic capsule active content exceeds capacity"))
         else:
             results.append(_pass("physical", "probiotic_capsule_capacity",
-                f"{total_mg}mg ≤ {HARD_CAPSULE_CAPACITY_MG}mg"))
+                f"{active_mg}mg ≤ {PROBIOTIC_ACTIVE_CAPACITY_MG}mg (active)"))
 
     # ── 1b. Morning capsules — per-capsule fill ≤ 650mg ──────────────────
     mwc = formulation.get("delivery_format_4_morning_wellness_capsules", {})
@@ -646,27 +648,27 @@ def check_decision_consistency(master: Dict) -> List[CheckResult]:
     mb = input_summary.get("microbiome_driven", {})
     q = input_summary.get("questionnaire_driven", {})
 
-    # ── 4a. LP815 trigger ─────────────────────────────────────────────────
+    # ── 4a. LPc-37 trigger ────────────────────────────────────────────────
     # v1.2.0: None-safe defaults — questionnaire fields can be null
-    # Rule mirrors _should_add_lp815() in llm/mix_selector.py exactly:
+    # Rule mirrors _should_add_lpc37() in llm/mix_selector.py exactly:
     #   stress ≥ 6 → always add
     #   stress ≥ 4 AND goal is "improve_mood_reduce_anxiety" or "reduce_stress_anxiety" → add
-    lp815_added = mix.get("lp815_added", False)
+    lpc37_added = mix.get("lpc37_added", False)
     stress = q.get("stress_level") or 0
     sleep = q.get("sleep_quality") or 10
     goals = q.get("goals_ranked", []) or []
     _MOOD_GOALS = {"improve_mood_reduce_anxiety", "reduce_stress_anxiety"}
     has_mood_goal = any(g.lower() in _MOOD_GOALS for g in goals)
-    lp815_should_be_added = (stress >= 6) or (stress >= 4 and has_mood_goal)
+    lpc37_should_be_added = (stress >= 6) or (stress >= 4 and has_mood_goal)
 
-    if lp815_added and not lp815_should_be_added:
-        results.append(_warn("decision", "lp815_trigger",
-            f"LP815 added but triggers not met (stress={stress}, mood_goal={has_mood_goal})"))
-    elif not lp815_added and lp815_should_be_added:
-        results.append(_warn("decision", "lp815_trigger",
-            f"LP815 NOT added but triggers met (stress={stress}, mood_goal={has_mood_goal})"))
+    if lpc37_added and not lpc37_should_be_added:
+        results.append(_warn("decision", "lpc37_trigger",
+            f"LPc-37 added but triggers not met (stress={stress}, mood_goal={has_mood_goal})"))
+    elif not lpc37_added and lpc37_should_be_added:
+        results.append(_warn("decision", "lpc37_trigger",
+            f"LPc-37 NOT added but triggers met (stress={stress}, mood_goal={has_mood_goal})"))
     else:
-        results.append(_pass("decision", "lp815_trigger"))
+        results.append(_pass("decision", "lpc37_trigger"))
 
     # ── 4b. Magnesium trigger ─────────────────────────────────────────────
     # v1.2.0: Mirrors assess_magnesium_needs() in rules_engine.py exactly:

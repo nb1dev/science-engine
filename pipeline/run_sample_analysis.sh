@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ################################################################################
 # Microbiome Sample Analysis Pipeline
 # 
@@ -24,40 +23,35 @@
 # Example:
 #   bash scripts/sh/process_pilot_samples.sh --batch nb1_2026_001
 ################################################################################
-
 # Exit on error
 set -e
-
 # Force Python to flush output line-by-line (prevents buffered/delayed display)
 export PYTHONUNBUFFERED=1
-
 # Color codes for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-
 # Configuration
-WORK_DIR="/Users/pnovikova/Documents/work"
+WORK_DIR="${WORK_DIR:-/Users/pnovikova/Documents/work}"
 S3_BUCKET="s3://nb1-prebiomics-sample-data/incoming"
 DEFAULT_BATCHES=("nb1_2026_001" "nb1_2026_002" "nb1_2026_003")
-
 # Script paths
 GMWI2_SCRIPT="$WORK_DIR/science-engine/bioinformatics/run_gmwi2.sh"
 REPORT_SCRIPT="$WORK_DIR/science-engine/bioinformatics/calculate_metrics.py"
 QC_SCRIPT="$WORK_DIR/science-engine/bioinformatics/qc_precheck.py"
-REPORT_JSON_SCRIPT="$WORK_DIR/science-engine/report/generate_report.py"
+REPORT_JSON_SCRIPT="$WORK_DIR/science-engine/report/generate_health_report.py"
 FORMULATION_SCRIPT="$WORK_DIR/science-engine/formulation/generate_formulation.py"
-
 # Flags
 DRY_RUN=false
 METRICS_ONLY=false
 QC_ONLY=false
+REPORT_ONLY=false
+FORMULATION_ONLY=false
 FORCE=false
 SPECIFIC_BATCH=""
 SPECIFIC_SAMPLE=""
-
 ################################################################################
 # Parse command line arguments
 ################################################################################
@@ -83,6 +77,14 @@ while [[ $# -gt 0 ]]; do
             QC_ONLY=true
             shift
             ;;
+        --report-only)
+            REPORT_ONLY=true
+            shift
+            ;;
+        --formulation-only)
+            FORMULATION_ONLY=true
+            shift
+            ;;
         --force)
             FORCE=true
             shift
@@ -91,18 +93,37 @@ while [[ $# -gt 0 ]]; do
             echo "Usage: $0 [OPTIONS]"
             echo ""
             echo "Options:"
-            echo "  --batch BATCH_ID    Process specific batch (e.g., nb1_2026_001)"
-            echo "  --sample SAMPLE_ID  Process specific sample (requires --batch)"
-            echo "  --metrics-only      Skip S3 download and GMWI2; recalculate metrics only"
-            echo "  --qc-only           Run only QC precheck on existing local data (no GMWI2/metrics)"
-            echo "  --force             Force reprocessing even if sample is already complete"
-            echo "  --dry-run           Show what would be done without executing"
-            echo "  --help              Show this help message"
+            echo "  --batch BATCH_ID       Process specific batch (e.g., nb1_2026_001)"
+            echo "  --sample SAMPLE_ID     Process specific sample (requires --batch)"
+            echo "  --force                Force reprocessing even if sample is already complete"
+            echo "  --dry-run              Show what would be done without executing"
+            echo "  --help                 Show this help message"
+            echo ""
+            echo "Pipeline step selectors (mutually exclusive):"
+            echo "  (none)                 Full pipeline: download → QC → GMWI2 → metrics → report → formulation"
+            echo "  --qc-only              QC precheck only on existing local data (no GMWI2/metrics)"
+            echo "  --metrics-only         Recalculate metrics only (requires existing GMWI2 output)"
+            echo "  --report-only          Run structured report only (requires existing metrics)"
+            echo "  --formulation-only     Run formulation only (requires existing report + questionnaire)"
+            echo ""
+            echo "LLM usage per step:"
+            echo "  Step                  LLM calls   Approx tokens   Cost estimate"
+            echo "  ─────────────────────────────────────────────────────────────────"
+            echo "  QC precheck           0           —               free"
+            echo "  GMWI2 + metrics       0           —               free"
+            echo "  --report-only         ~6          ~25K            ~\$0.05–0.10 USD"
+            echo "  --formulation-only    ~4–5        ~15K            ~\$0.03–0.07 USD"
+            echo "  Full pipeline         ~10–11      ~40K            ~\$0.08–0.17 USD"
+            echo "  ─────────────────────────────────────────────────────────────────"
+            echo "  Model: Claude Sonnet via AWS Bedrock (eu-west-1)"
+            echo "  Costs are estimates; actual cost depends on sample complexity."
             echo ""
             echo "Examples:"
             echo "  $0 --batch nb1_2026_001"
             echo "  $0 --batch nb1_2026_004 --sample 1421029282376"
             echo "  $0 --batch nb1_2026_007 --qc-only"
+            echo "  $0 --batch nb1_2026_007 --sample 1421029282376 --report-only"
+            echo "  $0 --batch nb1_2026_007 --sample 1421029282376 --formulation-only"
             echo ""
             echo "Default batches: ${DEFAULT_BATCHES[*]}"
             exit 0
@@ -114,27 +135,21 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
-
 ################################################################################
 # Helper Functions
 ################################################################################
-
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
-
 log_success() {
     echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
-
 log_warning() {
     echo -e "${YELLOW}[WARNING]${NC} $1"
 }
-
 log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
-
 ################################################################################
 # Check if sample is already processed
 ################################################################################
@@ -153,7 +168,6 @@ is_sample_processed() {
     
     return 1  # Not processed
 }
-
 ################################################################################
 # Discover samples from S3 for a given batch
 ################################################################################
@@ -168,7 +182,6 @@ discover_samples() {
     # Only return lines that are 13-digit numbers (sample IDs)
     aws s3 ls "$s3_path" 2>/dev/null | grep "PRE" | awk '{print $NF}' | sed 's/\/$//' | grep -E '^[0-9]{13}$'
 }
-
 ################################################################################
 # Check if sample data already exists locally
 ################################################################################
@@ -185,7 +198,6 @@ check_data_exists() {
         return 1  # Data doesn't exist or directory is empty
     fi
 }
-
 ################################################################################
 # Download sample data from S3
 ################################################################################
@@ -237,7 +249,6 @@ download_sample() {
         log_success "All data already present for $sample_id - no download needed"
     fi
 }
-
 ################################################################################
 # Validate raw sequences exist for GMWI2
 ################################################################################
@@ -270,7 +281,6 @@ validate_raw_sequences() {
         return 1  # Files missing
     fi
 }
-
 ################################################################################
 # Run GMWI2 analysis
 ################################################################################
@@ -311,7 +321,6 @@ run_gmwi2() {
         return 1
     fi
 }
-
 ################################################################################
 # Delete raw sequences to save space
 ################################################################################
@@ -327,7 +336,6 @@ cleanup_raw_sequences() {
         log_success "Raw sequences deleted for $sample_id"
     fi
 }
-
 ################################################################################
 # Run QC precheck (saves JSON + MD report to analysis/{batch}/{sample}/qc/)
 ################################################################################
@@ -476,6 +484,50 @@ process_sample() {
         return 0
     fi
     
+    # --report-only mode: run only structured JSON report
+    if [ "$REPORT_ONLY" = true ]; then
+        local sample_analysis_dir="$WORK_DIR/analysis/$batch_id/$sample_id"
+        local metrics_file="$sample_analysis_dir/only_metrics/${sample_id}_only_metrics.txt"
+        if [ ! -f "$metrics_file" ]; then
+            log_error "No metrics found for $sample_id — run full pipeline or --metrics-only first"
+            return 1
+        fi
+        if [ "$DRY_RUN" = true ]; then
+            log_info "[DRY RUN] Would run report for $sample_id (~6 LLM calls)"
+            return 0
+        fi
+        log_info "Running report only for $sample_id..."
+        if python "$REPORT_JSON_SCRIPT" --sample-dir "$sample_analysis_dir"; then
+            log_success "Report generated for $sample_id"
+        else
+            log_error "Report generation failed for $sample_id"
+            return 1
+        fi
+        return 0
+    fi
+
+    # --formulation-only mode: run only formulation
+    if [ "$FORMULATION_ONLY" = true ]; then
+        local sample_analysis_dir="$WORK_DIR/analysis/$batch_id/$sample_id"
+        local questionnaire_dir="$sample_analysis_dir/questionnaire"
+        if [ ! -d "$questionnaire_dir" ] || [ -z "$(ls -A $questionnaire_dir 2>/dev/null)" ]; then
+            log_error "No questionnaire for $sample_id — cannot run formulation"
+            return 1
+        fi
+        if [ "$DRY_RUN" = true ]; then
+            log_info "[DRY RUN] Would run formulation for $sample_id (~4-5 LLM calls)"
+            return 0
+        fi
+        log_info "Running formulation only for $sample_id..."
+        if python "$FORMULATION_SCRIPT" --sample-dir "$sample_analysis_dir"; then
+            log_success "Formulation generated for $sample_id"
+        else
+            log_error "Formulation failed for $sample_id"
+            return 1
+        fi
+        return 0
+    fi
+
     # Full pipeline mode
     # Check if already processed (--force bypasses this check)
     if [ "$FORCE" = false ] && is_sample_processed "$batch_id" "$sample_id"; then
@@ -600,7 +652,9 @@ process_batch() {
     
     for sample_id in $samples; do
         # Skip "already processed" check for --qc-only and --metrics-only modes
-        if [ "$FORCE" = false ] && [ "$QC_ONLY" = false ] && [ "$METRICS_ONLY" = false ] && is_sample_processed "$batch_id" "$sample_id"; then
+        if [ "$FORCE" = false ] && [ "$QC_ONLY" = false ] && [ "$METRICS_ONLY" = false ] && \
+           [ "$REPORT_ONLY" = false ] && [ "$FORMULATION_ONLY" = false ] && \
+           is_sample_processed "$batch_id" "$sample_id"; then
             ((skipped++))
             echo "SKIPPED: $sample_id (already processed)" >> "$batch_log"
             log_info "Skipped: $sample_id ($skipped/$total_samples)"
@@ -665,8 +719,9 @@ main() {
         fi
         log_info "Processing specific sample: $SPECIFIC_SAMPLE in batch: $SPECIFIC_BATCH"
         
-        # Pre-flight checks (relaxed for --qc-only and --metrics-only modes)
-        if [ "$QC_ONLY" = false ] && [ "$METRICS_ONLY" = false ]; then
+        # Pre-flight checks (relaxed for step-selector modes)
+        if [ "$QC_ONLY" = false ] && [ "$METRICS_ONLY" = false ] && \
+           [ "$REPORT_ONLY" = false ] && [ "$FORMULATION_ONLY" = false ]; then
             if [ ! -f "$GMWI2_SCRIPT" ]; then
                 log_error "GMWI2 script not found: $GMWI2_SCRIPT"
                 exit 1
@@ -718,13 +773,19 @@ main() {
         log_info "Processing all default batches: ${DEFAULT_BATCHES[*]}"
     fi
     
-    # Pre-flight checks (relaxed for --qc-only and --metrics-only modes)
+    # Pre-flight checks (relaxed for step-selector modes)
     if [ "$QC_ONLY" = true ]; then
         if [ ! -f "$QC_SCRIPT" ]; then
             log_error "QC script not found: $QC_SCRIPT"
             exit 1
         fi
         log_info "QC-ONLY MODE — skipping GMWI2/metrics/S3 checks"
+    elif [ "$METRICS_ONLY" = true ]; then
+        log_info "METRICS-ONLY MODE — skipping S3/GMWI2 checks"
+    elif [ "$REPORT_ONLY" = true ]; then
+        log_info "REPORT-ONLY MODE — skipping S3/GMWI2/metrics checks"
+    elif [ "$FORMULATION_ONLY" = true ]; then
+        log_info "FORMULATION-ONLY MODE — skipping S3/GMWI2/metrics/report checks"
     else
         if [ ! -f "$GMWI2_SCRIPT" ]; then
             log_error "GMWI2 script not found: $GMWI2_SCRIPT"

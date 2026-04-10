@@ -32,7 +32,7 @@
       "label": "Omega + Antioxidant Softgel",
       "size": "0",
       "color": "transparent_gel",
-      "capacity_mg": 750,
+      "capacity_mg": 1100,
       "daily_count": 2,
       "timing": "morning",
       "fixed_composition": true,
@@ -40,8 +40,9 @@
       "description": "FIXED composition — everyone who needs any component gets the whole softgel",
       "components_per_softgel": [
         {
-          "substance": "Omega-3 (EPA + DHA)",
-          "dose_mg": 712.5,
+          "substance": "Fish Oil (60% Omega-3 EPA+DHA)",
+          "dose_mg_fish_oil": 1000,
+          "dose_mg_omega3": 600,
           "type": "omega_fatty_acid"
         },
         {
@@ -64,7 +65,8 @@
         }
       ],
       "daily_totals": {
-        "omega3_mg": 1425,
+        "fish_oil_mg": 2000,
+        "omega3_mg": 1200,
         "vitamin_d_mcg": 20,
         "vitamin_d_iu": 800,
         "vitamin_e_mg": 15,
@@ -75,7 +77,7 @@
         "chemotherapy",
         "fish_allergy"
       ],
-      "note": "Pre-mixed softgel. Cannot add/remove individual components."
+      "note": "Pre-mixed softgel. 1000mg fish oil (60% Omega-3). Cannot add/remove individual components."
     },
     "magnesium_capsule": {
       "type": "hard_capsule",
@@ -494,5 +496,21 @@
       "routing": "powder_jar",
       "budget_rule": "Remaining polyphenol budget = 1000mg - total_capsule_polyphenols. If budget is 0, no jar polyphenols."
     }
+  },
+  "filling_rules": {
+    "description": "Hard capsule filling approach for all non-probiotic hard capsules.",
+    "applies_to": ["pooled_morning_capsules", "pooled_evening_capsules", "polyphenol_dedicated_capsule", "magnesium_capsule"],
+    "default": "pure_fill",
+    "pure_fill": {
+      "description": "Active ingredients only — no excipients added unless a conditional rule applies."
+    },
+    "conditional_excipients": [
+      {"excipient": "Silicon dioxide", "function": "glidant/anti-caking", "max_pct": 0.5, "trigger": "poor flow / bridging during filling"},
+      {"excipient": "SSF (sodium stearyl fumarate)", "function": "lubricant", "max_pct": 0.5, "trigger": "sticking or dissolution failure"},
+      {"excipient": "MCC PH-102", "function": "diluent/filler q.s.", "level": "q.s.", "trigger": "fill weight too low for accurate dosing"},
+      {"excipient": "Calcium silicate", "function": "absorbent/anti-caking", "typical_pct": 2.0, "trigger": "sticky blends (propolis-heavy)", "example": "Ashwagandha 300mg + Propolis 300mg"}
+    ],
+    "probiotic_capsule_note": "Probiotic capsule excipients follow separate rules and are NOT covered here.",
+    "implementation_status": "documented_only — pipeline produces pure_fill by default; no excipients are added to JSON output unless manually triggered by Vitema."
   }
 }

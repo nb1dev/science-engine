@@ -85,8 +85,8 @@ def _run_formulation_decisions(
     if mix_result.get("mix_id"):
         kb_strains = lookup_strains_for_mix(mix_result["mix_id"])
         if kb_strains:
-            # Merge KB strains with any LP815 already added
-            existing_lp815 = [s for s in mix_result.get("strains", []) if "LP815" in s.get("name", "")]
+            # Merge KB strains with any LPc-37 already added (psychobiotic enhancement strain)
+            existing_lpc37 = [s for s in mix_result.get("strains", []) if "LPC-37" in s.get("name", "")]
 
             # Assign cfu_billions to KB strains (KB doesn't store CFU — distribute base 50B evenly)
             base_cfu = 50
@@ -95,9 +95,9 @@ def _run_formulation_decisions(
                 if "cfu_billions" not in strain:
                     strain["cfu_billions"] = cfu_per_strain
 
-            mix_result["strains"] = kb_strains + existing_lp815
-            _lp815_label = f" + LP815 {existing_lp815[0]['cfu_billions']}B (psychobiotic)" if existing_lp815 else ""
-            print(f"    Strains: {len(kb_strains)} base ({cfu_per_strain}B each){_lp815_label}")
+            mix_result["strains"] = kb_strains + existing_lpc37
+            _lpc37_label = f" + LPc-37 {existing_lpc37[0]['cfu_billions']}B (psychobiotic)" if existing_lpc37 else ""
+            print(f"    Strains: {len(kb_strains)} base ({cfu_per_strain}B each){_lpc37_label}")
 
     # Update prebiotic range with actual mix CFU
     prebiotic_range = calculate_prebiotic_range(

@@ -14,7 +14,7 @@ Delivery units:
   7. Magnesium bisglycinate capsule(s) (0–2×, fixed 750mg each, evening)
 
 Weight Formulas:
-  Probiotics:   weight_mg = cfu_billions × 10
+  Probiotics:   weight_mg = cfu_billions × 10  (active powder only; inerts added separately)
   Omega oils:   weight_mg = dose_mg (1:1)
   Vitamins mcg: weight_mg = dose_value / 1000 (mcg → mg, e.g. 200mcg = 0.2mg)
   Vitamins mg:  weight_mg = dose_mg (1:1)
@@ -50,10 +50,22 @@ from typing import Dict, List, Optional, Tuple
 
 # ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
+# Hard capsule capacity — size 00, 650mg.
+# NOTE: only the probiotic capsule was changed to size 0 (485mg, see PROBIOTIC_CAPSULE_CAPACITY_MG below).
+# Morning Wellness, Evening Wellness, and Polyphenol capsules remain size 00 / 650mg.
 HARD_CAPSULE_CAPACITY_MG = 650
-SOFTGEL_CAPACITY_MG = 750
+SOFTGEL_CAPACITY_MG = 1100  # Vitema-confirmed: 1000mg fish oil + 7.5mg Vit E + 30mg oleoresin = 1037.5mg fill
 JAR_TARGET_G = 19.0          # Soft limit — warn if exceeded, never hard-fail
 EVENING_CAPSULE_CAPACITY_MG = 650  # kept for backward compat in generate_formulation references
+
+# Probiotic hard capsule (size 0 — changed from 00 per Vitema email 30-Mar-2026)
+PROBIOTIC_CAPSULE_CAPACITY_MG = 500   # ← edit this if revised
+PROBIOTIC_INERT_SIO2_PCT = 0.005      # silicon dioxide: 0.5% of total fill
+PROBIOTIC_INERT_SSF_PCT  = 0.005      # SSF (sodium stearyl fumarate): 0.5% of total fill
+# MCC PH-102 fills the remainder (q.s.) — no constant needed
+PROBIOTIC_ACTIVE_CAPACITY_MG = round(
+    PROBIOTIC_CAPSULE_CAPACITY_MG * (1 - PROBIOTIC_INERT_SIO2_PCT - PROBIOTIC_INERT_SSF_PCT), 2
+)  # = 495.0mg — max active probiotic powder before MCC reaches 0
 
 # CFU to weight conversion
 CFU_TO_MG_FACTOR = 10        # 1B CFU = 10mg powder
@@ -360,9 +372,10 @@ class FormulationCalculator:
         """Add fixed-composition softgels (Omega + D3 + E + Astaxanthin)."""
         self.softgel_count = daily_count
         self.softgel_components = [
-            {"substance": "Omega-3 (EPA + DHA)", "type": "omega_fatty_acid",
-             "dose_per_softgel": "712.5mg", "dose_daily": f"{712.5 * daily_count}mg",
-             "weight_mg_per_softgel": 712.5, "rationale": "Fixed softgel composition"},
+            {"substance": "Fish Oil (60% Omega-3 EPA+DHA)", "type": "omega_fatty_acid",
+             "dose_per_softgel": "1000mg fish oil (600mg EPA+DHA)",
+             "dose_daily": f"2000mg fish oil ({600 * daily_count}mg EPA+DHA)",
+             "weight_mg_per_softgel": 1000, "rationale": "Fixed softgel composition"},
             {"substance": "Vitamin D3", "type": "fat_soluble_vitamin",
              "dose_per_softgel": "10mcg (400 IU)", "dose_daily": f"{10 * daily_count}mcg ({400 * daily_count} IU)",
              "weight_mg_per_softgel": 0.00001, "weight_note": "NEGLIGIBLE",
@@ -596,18 +609,36 @@ class FormulationCalculator:
     # ─── CALCULATION & VALIDATION ─────────────────────────────────────────────
 
     def _calc_probiotic_totals(self) -> Dict:
-        total_mg = sum(c["weight_mg"] for c in self.probiotic_components)
+        active_mg = round(sum(c["weight_mg"] for c in self.probiotic_components), 2)
         total_cfu = sum(c["cfu_billions"] for c in self.probiotic_components)
-        utilization = round((total_mg / HARD_CAPSULE_CAPACITY_MG) * 100, 1)
-        headroom = round(HARD_CAPSULE_CAPACITY_MG - total_mg, 2)
-        validation = "PASS" if total_mg <= HARD_CAPSULE_CAPACITY_MG else "FAIL"
+
+        # Inerts (per total capsule fill)
+        sio2_mg = round(PROBIOTIC_CAPSULE_CAPACITY_MG * PROBIOTIC_INERT_SIO2_PCT, 2)
+        ssf_mg  = round(PROBIOTIC_CAPSULE_CAPACITY_MG * PROBIOTIC_INERT_SSF_PCT, 2)
+        mcc_mg  = round(PROBIOTIC_CAPSULE_CAPACITY_MG - active_mg - sio2_mg - ssf_mg, 2)
+
+        excipient_mg = round(sio2_mg + ssf_mg + max(mcc_mg, 0), 2)
+        total_mg     = round(active_mg + excipient_mg, 2)
+
+        utilization = round((active_mg / PROBIOTIC_ACTIVE_CAPACITY_MG) * 100, 1)
+        validation  = "PASS" if active_mg <= PROBIOTIC_ACTIVE_CAPACITY_MG else "FAIL"
         if validation == "FAIL":
-            self.warnings.append(f"CRITICAL: Probiotic capsule exceeds capacity ({total_mg}mg > {HARD_CAPSULE_CAPACITY_MG}mg)")
+            self.warnings.append(
+                f"CRITICAL: Probiotic capsule active content exceeds capacity "
+                f"({active_mg}mg > {PROBIOTIC_ACTIVE_CAPACITY_MG}mg)"
+            )
         return {
-            "total_weight_mg": round(total_mg, 2),
-            "total_cfu_billions": total_cfu,
-            "utilization_pct": utilization,
-            "headroom_mg": headroom,
+            "active_weight_mg":    active_mg,
+            "excipient_weight_mg": excipient_mg,
+            "total_weight_mg":     total_mg,
+            "total_cfu_billions":  total_cfu,
+            "utilization_pct":     utilization,
+            "headroom_mg":         round(PROBIOTIC_ACTIVE_CAPACITY_MG - active_mg, 2),  # max additional active powder before MCC reaches 0
+            "excipients_breakdown": {
+                "silicon_dioxide_mg": sio2_mg,
+                "ssf_mg":             ssf_mg,
+                "mcc_ph102_mg":       max(mcc_mg, 0),
+            },
             "validation": validation,
         }
 
@@ -905,11 +936,22 @@ class FormulationCalculator:
             },
             "delivery_format_1_probiotic_capsule": {
                 "format": {
-                    "type": "hard_capsule", "size": "00",
-                    "capacity_mg": HARD_CAPSULE_CAPACITY_MG,
+                    "type": "hard_capsule", "size": "0",
+                    "capacity_mg": PROBIOTIC_CAPSULE_CAPACITY_MG,
                     "daily_count": 1, "timing": "morning",
                 },
                 "components": self.probiotic_components,
+                "excipients": [
+                    {"substance": "Silicon Dioxide", "type": "excipient",
+                     "role": "glidant/anti-caking",
+                     "weight_mg": probiotic_totals["excipients_breakdown"]["silicon_dioxide_mg"]},
+                    {"substance": "Sodium Stearyl Fumarate (SSF)", "type": "excipient",
+                     "role": "lubricant",
+                     "weight_mg": probiotic_totals["excipients_breakdown"]["ssf_mg"]},
+                    {"substance": "Microcrystalline Cellulose PH-102 (MCC)", "type": "excipient",
+                     "role": "filler/diluent q.s.",
+                     "weight_mg": probiotic_totals["excipients_breakdown"]["mcc_ph102_mg"]},
+                ],
                 "totals": probiotic_totals,
             },
             "delivery_format_2_omega_softgels": {

@@ -92,6 +92,7 @@ def save_interpretations_json(data: dict, sample_dir: str) -> str:
         'ecological_metrics': data.get('ecological_metrics', {}),
         'safety_profile': data.get('safety_profile', {}),
         'guild_timepoints': data.get('guild_timepoints', []),
+        'guild_thresholds': GUILD_THRESHOLDS,
         'protocol_summary': data.get('protocol_summary', {}),
         # ── LLM / derived layer ───────────────────────────────────────────────
         'profile': data.get('profile', {}),
@@ -105,6 +106,11 @@ def save_interpretations_json(data: dict, sample_dir: str) -> str:
         'cited_papers': data.get('cited_papers', []),
         'lifestyle_recommendations': data.get('lifestyle_recommendations', []),
         'supplement_why_texts': data.get('supplement_why_texts', {}),
+        # ── UI text layer ─────────────────────────────────────────────────────
+        # All static labels, section titles, introductions, fallback messages,
+        # and dynamic strings computed from data.  Stored here so the frontend
+        # can render the full report from the JSON without any out-of-band text.
+        'ui_text': _build_ui_text(data),
     }
     # Also snapshot factor-first fields if present in root_cause_data
     rcd = snapshot.get('root_cause_data', {})
@@ -159,6 +165,8 @@ def load_interpretations_json(sample_dir: str, sample_id: str) -> dict | None:
         'root_cause_data': snapshot.get('root_cause_data', {}),
         'cited_papers': snapshot.get('cited_papers', []),
         'lifestyle_recommendations': snapshot.get('lifestyle_recommendations', []),
+        # ui_text: use cached value when present (new JSONs), regenerate otherwise
+        'ui_text': snapshot.get('ui_text') or _build_ui_text(snapshot),
         # Schema v3.0 flat microbiome fields — override raw analysis if present
         **({
             'schema_version': snapshot['schema_version'],
@@ -1139,6 +1147,18 @@ _BENEFICIAL_GUILDS = {'Fiber Degraders', 'Bifidobacteria',
                       'HMO/Oligosaccharide-Utilising Bifidobacteria',
                       'Butyrate Producers', 'Cross-Feeders'}
 _CONTEXTUAL_GUILDS = {'Mucin Degraders', 'Proteolytic Dysbiosis Guild', 'Proteolytic Guild'}
+
+# ── Guild thresholds — canonical single source of truth (mirrors GCFG in HTML) ─
+# Values are decimal fractions (0–1), matching guild_timepoints data.
+# track_max is the visual ceiling for the pathway diagram track.
+GUILD_THRESHOLDS = {
+    'fd': {'display_name': 'Fiber Degraders',      'min': 0.20, 'max': 0.45, 'track_max': 0.55, 'invert': False},
+    'bb': {'display_name': 'Bifidobacteria',        'min': 0.04, 'max': 0.14, 'track_max': 0.22, 'invert': False},
+    'cf': {'display_name': 'Cross-Feeders',         'min': 0.10, 'max': 0.22, 'track_max': 0.30, 'invert': False},
+    'bp': {'display_name': 'Butyrate Producers',    'min': 0.10, 'max': 0.25, 'track_max': 0.32, 'invert': False},
+    'pg': {'display_name': 'Protein Fermenters',    'min': 0.00, 'max': 0.09, 'track_max': 0.22, 'invert': True },
+    'md': {'display_name': 'Mucus Layer Bacteria',  'min': 0.00, 'max': 0.06, 'track_max': 0.14, 'invert': True },
+}
 
 
 def _detect_microbiome_deviations(analysis: dict) -> list:
@@ -3447,7 +3467,7 @@ def run_consistency_check(data: dict, model_id: str = 'eu.anthropic.claude-sonne
 Sample: {sample_id}
 Overall score: {score_total}/100 ({score_band})
 
-Circle scores:
+Circle scores (these are composite health scores 0–100, NOT bacterial abundance percentages):
 - Gut Lining Protection: {circle_scores.get('gut_lining', '?')}%
 - Inflammation Control: {circle_scores.get('inflammation', '?')}%
 - Fiber Processing: {circle_scores.get('fiber_processing', '?')}%
@@ -3469,7 +3489,7 @@ Please check for:
 1. Any contradictions between strengths and challenges (e.g., claiming low inflammation but flagging proteolytic overgrowth)
 2. Whether supplement WHY explanations logically address the identified challenges
 3. Whether health goal explanations are consistent with the identified microbiome patterns
-4. Whether the circle scores are directionally consistent with the strengths/challenges
+4. Whether the circle scores (0–100 health scores, not abundance values) are directionally consistent with the strengths/challenges (e.g., a low Fiber Processing score should align with fiber-related challenges)
 5. Any other logical inconsistencies in the report
 
 Respond in this exact format:
@@ -3571,6 +3591,360 @@ def _pillar_pct(score: float, max_score: float) -> float:
     return round(score / max_score * 100) if max_score else 0
 
 
+def _build_ui_text(data: dict) -> dict:
+    """Build the complete UI text bundle for a report.
+
+    Contains every static label, section title, introduction paragraph,
+    fallback message, and data-driven string that appears in the HTML.
+    Stored under the ``ui_text`` key in the interpretations JSON so the
+    frontend can render the full report from the JSON alone — no additional
+    text lives outside of this payload.
+
+    Dynamic strings (e.g. ``bottom_line``) are computed here from ``data``
+    so the JSON is always self-contained and consistent with the HTML output.
+    """
+    sc = data.get('strengths_challenges', {})
+    n_challenges = len(sc.get('challenges', []))
+
+    if not n_challenges:
+        bottom_line = (
+            "Your gut is in excellent shape across all key areas. "
+            "Your protocol is about maintaining and optimising these gains."
+        )
+    elif n_challenges <= 2:
+        bottom_line = (
+            "The main issue is not total collapse — it is imbalance in a few "
+            "high-impact areas. Your gut still has strong foundations to build on."
+        )
+    else:
+        bottom_line = (
+            "Despite these imbalances, the pattern is addressable. "
+            "Your protocol targets each of these areas specifically and methodically."
+        )
+
+    return {
+        'cover': {
+            'brand': 'NB1 Health · Microbiome Health',
+            'report_tag_prefix': 'Personalised Report ·',
+            'eyebrow': 'Your gut health, explained simply',
+            'headline': 'Inside Your Gut',
+            'subtitle': (
+                "What your microbiome is telling us — in plain language. "
+                "What's working, what needs support, and exactly what we're doing about it."
+            ),
+            'score_denominator': '/ 100',
+            'stat_labels': {
+                'profile': 'Profile',
+                'diet': 'Diet',
+                'stress': 'Stress',
+                'sleep': 'Sleep',
+                'sensitivity': 'Sensitivity',
+                'goals': 'Goals',
+            },
+            'stress_denominator': '/ 10',
+            'sleep_denominator': '/ 10',
+        },
+        'progress_banner': {
+            'label': 'Your progress so far',
+            'score_label': 'Microbiome score',
+        },
+        'section1': {
+            'sec_label': 'Section 1 · The Big Picture',
+            'title': 'What is happening in your gut?',
+            'intro': (
+                'Your gut is home to trillions of bacteria organised into functional groups '
+                '— each with a different role. These four indicators summarise the key areas '
+                'of your gut health right now.'
+            ),
+            'dials': {
+                'gut_lining': {
+                    'label': 'Gut Lining\nProtection',
+                    'description': 'How well your gut wall is protected and maintained',
+                },
+                'inflammation': {
+                    'label': 'Inflammation\nControl',
+                    'description': 'How favorable your microbiome is for keeping inflammatory pressure low',
+                },
+                'fiber_processing': {
+                    'label': 'Fiber\nProcessing',
+                    'description': 'How efficiently your bacteria ferment and process fiber',
+                },
+                'bifidobacteria': {
+                    'label': 'Bifidobacteria\nPresence',
+                    'description': 'The abundance of your beneficial Bifidobacteria',
+                },
+            },
+            'evolution_label': 'Evolution over time',
+            'guild_bar_legend': (
+                'Each bacterial group has a healthy target range. Your level is shown against '
+                'that range using a colour-coded bar. '
+                'Green = within healthy range · Blue = too low · Amber = too high · '
+                'Red = critically out of range. '
+                'For protective bacteria, low is the concern. '
+                'For opportunistic bacteria, high is the concern.'
+            ),
+        },
+        'section2': {
+            'sec_label': 'Section 2 · Your Profile',
+            'title': 'Your strengths and areas to improve',
+            'intro': (
+                'Every microbiome tells a story. Here is what yours says about what is '
+                'working well — and what needs targeted support.'
+            ),
+            'strengths_label': 'Working in your favour',
+            'strengths_title': 'Your Strengths',
+            'strengths_empty': (
+                'No clear strengths identified — your protocol will build these from the foundation up.'
+            ),
+            'challenges_label': 'Needs attention',
+            'challenges_title': 'Key Challenges',
+            'challenges_empty': (
+                'No significant challenges identified — your microbiome is in good balance.'
+            ),
+            'bottom_line': bottom_line,
+        },
+        'section3': {
+            'sec_label': 'Section 3 · The Story Behind Your Results',
+            'title': 'What is behind this imbalance?',
+            'intro': (
+                'We looked at everything you shared with us — your microbiome, your health '
+                'history, your lifestyle — and asked: why might this person have this '
+                'particular pattern? Here is what we found.'
+            ),
+            'why_prefix': 'Why this happened — ',
+            'science_label': 'What does science say',
+            'cascade_label': 'How these factors connect to your results',
+            'cascade_explanation': (
+                'Each factor pill shows the direction of scientific evidence: '
+                '→ factor influences your gut  |  '
+                '↔ bidirectional — your gut also influences this factor back'
+            ),
+            'cascade_arrow_label': 'factors',
+            'metrics_target_prefix': 'Target: ',
+            'guilds_affected_suffix': '/ 4 guilds affected',
+            'awareness_label': 'From your questionnaire',
+            'awareness_intro': (
+                "You mentioned these factors when filling in your questionnaire. "
+                "We're sharing them as educational background — "
+                "these are not microbiome findings. "
+                "Your test results don't currently show any measurable connection to them, "
+                "but the research linking them to gut health is worth understanding."
+            ),
+            'awareness_chip_badge': 'You reported this',
+            'empty_message': (
+                '✅ Your microbiome looks healthy and your questionnaire doesn\'t flag any '
+                'specific risk factors. There are no deviations to explain at this point. '
+                'Your microbiome findings in Sections 1 and 2 tell the full story.'
+            ),
+        },
+        'section4': {
+            'sec_label': 'Section 4 · The Road Ahead',
+            'title': 'How do we turn this around?',
+            'intro': (
+                'Your personalized formula is designed to work in stages. Here is what to '
+                'expect on the journey toward a more balanced microbiome — and how the '
+                'different components of your formula support each phase.'
+            ),
+            'weeks_prefix': 'Weeks ',
+            'lifestyle_label': 'While your formula works its science',
+        },
+        'section5': {
+            'sec_label': 'Section 5 · Your Formula',
+            'title': 'What you are taking and why',
+            'intro': (
+                'Your formula is organised by when you take it — morning and evening. '
+                'Each unit targets a specific aspect of your microbiome rebalancing and is '
+                "timed to work with your body's natural rhythms."
+            ),
+            'why_label': "Why you're taking it:",
+            'polyphenol_warning': 'Take with breakfast or on full stomach.',
+            'supports_label': 'Supports',
+            'timing_morning': 'Morning',
+            'timing_morning_emoji': '🌅',
+            'timing_evening': 'Evening',
+            'timing_evening_emoji': '🌙',
+            'empty_message': (
+                'Formulation data not available for this sample. '
+                'Please generate the formulation first using generate_formulation.py.'
+            ),
+        },
+        'section6': {
+            'sec_label': 'Section 6 · Your Goals',
+            'title': 'How it aligns with your health goals',
+            'intro': (
+                'Everything in this protocol connects directly to what you told us matters '
+                'most. Here is the link between your goals, the science behind them, and '
+                'how your formula addresses each one.'
+            ),
+            'inferred_tag': 'Also addressed by your formula',
+            'formula_prefix': 'Your formula:',
+            'empty_message': (
+                'Questionnaire data not available — health goals section requires a completed questionnaire.'
+            ),
+        },
+        'references': {
+            'sec_label': 'References',
+            'title': 'Scientific References',
+            'intro': (
+                'The following peer-reviewed papers were used to ground the explanations '
+                'in Section 3. Citations are formatted in APA style.'
+            ),
+        },
+        'footer': {
+            'brand': 'NB1 Health',
+            'disclaimer': (
+                'This report is for informational purposes only and does not constitute '
+                'medical advice. Please consult a healthcare professional before beginning '
+                'any supplement protocol.'
+            ),
+        },
+        # ── Pillar display labels (cover page chips) ───────────────────────────
+        'pillar_labels': {
+            'health_association': 'Health',
+            'diversity_resilience': 'Diversity',
+            'metabolic_function': 'Metabolic',
+            'guild_balance': 'Guild Balance',
+            'safety_profile': 'Safety',
+        },
+        # ── Guild educational descriptions (tooltips in pathway diagram) ───────
+        'guild_descriptions': {
+            'fd': (
+                'First in the fiber chain — they break complex plant fibers into simpler '
+                'sugars that feed Bifidobacteria and Cross-Feeders.'
+            ),
+            'bb': (
+                'They produce lactate and acetate, lowering gut pH to inhibit pathogens '
+                'and amplify the signal for Cross-Feeders.'
+            ),
+            'cf': (
+                'They consume lactate and acetate from Bifidobacteria and Fiber Degraders, '
+                'converting them into precursors for Butyrate Producers.'
+            ),
+            'bp': (
+                'End of the chain — they produce butyrate, the primary fuel for the cells '
+                'lining your colon.'
+            ),
+            'pg': (
+                'A separate pathway: they ferment undigested protein. Lower is better. '
+                'If dominant, they signal a carb→protein ecosystem shift.'
+            ),
+            'md': (
+                'Under healthy conditions, controlled mucin degradation stimulates goblet '
+                'cell turnover and maintains mucus layer homeostasis. These bacteria are a '
+                'normal part of a balanced ecosystem — only when they expand significantly '
+                '(usually when dietary fiber is scarce) do they begin to compromise the '
+                'protective lining.'
+            ),
+        },
+        # ── Q&A pill content (interactive tooltips in pathway diagram) ─────────
+        'qdata': {
+            'fd': {
+                'q': 'Why is fiber important?',
+                'a': (
+                    'Dietary fiber is the main fuel for your beneficial bacteria. Without it, '
+                    'the entire fermentation chain slows down — less butyrate is produced, your '
+                    'gut wall cells get less energy, and protective bacterial communities shrink.'
+                ),
+            },
+            'substrate': {
+                'q': 'What is substrate limitation?',
+                'a': (
+                    "When Fiber Degraders are below their optimal range, there is less raw "
+                    "material flowing into the chain. Bifidobacteria and Cross-Feeders are ready "
+                    "and able — but they are waiting for more substrate. It's like having a "
+                    "factory with the right workers but not enough raw materials arriving."
+                ),
+            },
+            'bp': {
+                'q': 'What does butyrate do?',
+                'a': (
+                    'Butyrate is the primary energy source for the cells lining your colon. '
+                    'It helps maintain the gut barrier, reduces inflammation, and supports immune '
+                    'signalling. Low butyrate is associated with a more permeable gut wall.'
+                ),
+            },
+            'pg': {
+                'q': 'Why is too much protein fermentation bad?',
+                'a': (
+                    'Protein fermentation produces compounds like ammonia and phenols that can '
+                    'be pro-inflammatory at high levels. When protein fermenters dominate, it '
+                    'signals that the ecosystem has shifted away from the healthier fiber-driven '
+                    'state.'
+                ),
+            },
+            'md': {
+                'q': 'What is the mucus layer?',
+                'a': (
+                    'Your intestinal lining is coated by a protective mucus layer that acts as '
+                    'a barrier. Mucus Layer Bacteria use it as a backup fuel source — normal at '
+                    'low levels, but when they expand, they start consuming the lining faster '
+                    'than it regenerates.'
+                ),
+            },
+            'scfa': {
+                'q': 'What are SCFAs?',
+                'a': (
+                    'Short-Chain Fatty Acids (SCFAs) are the main output of your fiber '
+                    'fermentation chain. Butyrate, propionate and acetate are the key ones. '
+                    'They fuel your gut wall cells, regulate inflammation, support your immune '
+                    'system, and even communicate with your brain via the gut-brain axis. Low '
+                    'SCFAs are associated with a weaker gut barrier and higher inflammatory '
+                    'pressure.'
+                ),
+            },
+        },
+        # ── Info popup content (per-guild contextual rows) ─────────────────────
+        'info_data': {
+            'fd': {
+                'title': '🌾 Fiber Degraders — why they matter',
+                'rows': [
+                    {'tag': 'ok',  'label': 'Healthy',  'text': 'Breaking down plant fibers efficiently, feeding the downstream chain.'},
+                    {'tag': 'low', 'label': 'Too low',  'text': 'The fermentation chain loses its main fuel source. Less butyrate is produced, which means less support for your gut lining.'},
+                    {'tag': 'high','label': 'High',     'text': 'Generally a good sign — more fiber is being processed. Rarely problematic.'},
+                ],
+            },
+            'bb': {
+                'title': '✨ Bifidobacteria — why they matter',
+                'rows': [
+                    {'tag': 'ok',  'label': 'Healthy',  'text': 'Producing lactate and acetate, lowering gut pH and keeping harmful bacteria in check.'},
+                    {'tag': 'low', 'label': 'Too low',  'text': 'Less immune support and reduced pH drop — the protective acidic environment weakens.'},
+                    {'tag': 'high','label': 'High',     'text': 'Strong immune support. They amplify the downstream fermentation signal.'},
+                ],
+            },
+            'cf': {
+                'title': '🔗 Cross-Feeders — why they matter',
+                'rows': [
+                    {'tag': 'ok',  'label': 'Healthy',  'text': 'Acting as the bridge of the chain — efficiently converting intermediates for the final step.'},
+                    {'tag': 'low', 'label': 'Too low',  'text': 'Fewer precursors reach Butyrate Producers, reducing the final output even if upstream guilds are active.'},
+                    {'tag': 'high','label': 'High',     'text': 'In this case a positive sign — strong cross-feeding means excellent metabolic communication.'},
+                ],
+            },
+            'bp': {
+                'title': '⚡ Butyrate Producers — why they matter',
+                'rows': [
+                    {'tag': 'ok',  'label': 'Healthy',  'text': 'Producing butyrate, the main fuel for your gut wall cells. Supports the gut barrier and helps regulate inflammation.'},
+                    {'tag': 'low', 'label': 'Too low',  'text': 'Your gut wall cells receive less fuel. This can weaken the gut barrier over time.'},
+                    {'tag': 'high','label': 'High',     'text': 'Strong butyrate output — your gut lining is well-nourished.'},
+                ],
+            },
+            'pg': {
+                'title': '🧫 Protein Fermenters — why they matter',
+                'rows': [
+                    {'tag': 'ok',  'label': 'Controlled', 'text': 'Present at low levels — their byproducts are minimal and the fiber pathway remains dominant.'},
+                    {'tag': 'inv', 'label': 'If elevated', 'text': 'They produce compounds that can be pro-inflammatory and begin to compete with beneficial bacteria for ecological space. A sign the ecosystem is shifting from fiber-driven to protein-driven.'},
+                ],
+            },
+            'md': {
+                'title': '🔄 Mucus Layer Bacteria — why they matter',
+                'rows': [
+                    {'tag': 'ok',  'label': 'Controlled', 'text': 'Under healthy conditions, controlled mucin degradation stimulates goblet cell turnover and maintains mucus layer homeostasis. Normal and adaptive at low levels.'},
+                    {'tag': 'inv', 'label': 'If elevated', 'text': "When they expand significantly — usually when dietary fiber is scarce — they start relying more heavily on the gut's protective mucus lining as a fuel source."},
+                ],
+            },
+        },
+    }
+
+
 def generate_html(data: dict) -> str:
     """Assemble the complete HTML report.
 
@@ -3585,6 +3959,20 @@ def generate_html(data: dict) -> str:
     supplement_cards = data['supplement_cards']
     goal_cards = data['goal_cards']
     good_news = data['good_news']
+
+    # ── UI text bundle — all labels and strings come from here ─────────────────
+    # Falls back to building fresh if the JSON pre-dates ui_text (schema < 3.1).
+    ui = data.get('ui_text') or _build_ui_text(data)
+    ui_cover  = ui.get('cover', {})
+    ui_banner = ui.get('progress_banner', {})
+    ui_s1     = ui.get('section1', {})
+    ui_s2     = ui.get('section2', {})
+    ui_s3     = ui.get('section3', {})
+    ui_s4     = ui.get('section4', {})
+    ui_s5     = ui.get('section5', {})
+    ui_s6     = ui.get('section6', {})
+    ui_refs   = ui.get('references', {})
+    ui_footer = ui.get('footer', {})
 
     # Cover page — from flat JSON keys (schema v3.0)
     score_data = data.get('overall_score', {})
@@ -4160,13 +4548,13 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
 ''')
 
     # ════════════════════ COVER ════════════════════
-    pillar_label_map = {
+    pillar_label_map = ui.get('pillar_labels', {
         'health_association': 'Health',
         'diversity_resilience': 'Diversity',
         'metabolic_function': 'Metabolic',
         'guild_balance': 'Guild Balance',
         'safety_profile': 'Safety',
-    }
+    })
 
     parts.append(f'''
 <div class="cover">
@@ -4174,14 +4562,14 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
   <div class="cover-blob2"></div>
 
   <div class="cover-top">
-    <div class="cover-brand">NB1 Health · Microbiome Health</div>
-    <div class="cover-tag">Personalised Report · {_esc(report_date_display)}</div>
+    <div class="cover-brand">{_esc(ui_cover.get('brand', 'NB1 Health · Microbiome Health'))}</div>
+    <div class="cover-tag">{_esc(ui_cover.get('report_tag_prefix', 'Personalised Report ·'))} {_esc(report_date_display)}</div>
   </div>
 
   <div class="cover-mid">
-    <div class="cover-eyebrow">Your gut health, explained simply</div>
+    <div class="cover-eyebrow">{_esc(ui_cover.get('eyebrow', 'Your gut health, explained simply'))}</div>
     <h1 class="cover-h1">Inside<br>Your <span>Gut</span></h1>
-    <p class="cover-sub">What your microbiome is telling us — in plain language. What's working, what needs support, and exactly what we're doing about it.</p>
+    <p class="cover-sub">{_esc(ui_cover.get('subtitle', "What your microbiome is telling us — in plain language. What's working, what needs support, and exactly what we're doing about it."))}</p>
 
     <div class="score-row">
       <div class="score-dial">
@@ -4193,7 +4581,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
         </svg>
         <div class="score-label">
           <span class="score-num">{total_score}</span>
-          <span class="score-den">/ 100</span>
+          <span class="score-den">{_esc(ui_cover.get('score_denominator', '/ 100'))}</span>
         </div>
       </div>
       <div class="score-info-text">
@@ -4218,32 +4606,33 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
 
     # Profile snapshot
     parts.append('  <div class="cover-bottom">\n')
+    _stat_labels = ui_cover.get('stat_labels', {})
     if profile.get('sex') and profile.get('age'):
-        parts.append(f'    <div class="cover-stat"><div class="cs-label">Profile</div><div class="cs-val">{_esc(profile["sex"])} · {profile["age"]}</div></div>\n')
+        parts.append(f'    <div class="cover-stat"><div class="cs-label">{_esc(_stat_labels.get("profile", "Profile"))}</div><div class="cs-val">{_esc(profile["sex"])} · {profile["age"]}</div></div>\n')
     if profile.get('diet'):
-        parts.append(f'    <div class="cover-stat"><div class="cs-label">Diet</div><div class="cs-val">{_esc(profile["diet"])}</div></div>\n')
+        parts.append(f'    <div class="cover-stat"><div class="cs-label">{_esc(_stat_labels.get("diet", "Diet"))}</div><div class="cs-val">{_esc(profile["diet"])}</div></div>\n')
     if profile.get('stress') is not None:
-        parts.append(f'    <div class="cover-stat"><div class="cs-label">Stress</div><div class="cs-val">{profile["stress"]} / 10</div></div>\n')
+        parts.append(f'    <div class="cover-stat"><div class="cs-label">{_esc(_stat_labels.get("stress", "Stress"))}</div><div class="cs-val">{profile["stress"]} {_esc(ui_cover.get("stress_denominator", "/ 10"))}</div></div>\n')
     if profile.get('sleep') is not None:
-        parts.append(f'    <div class="cover-stat"><div class="cs-label">Sleep</div><div class="cs-val">{profile["sleep"]} / 10</div></div>\n')
+        parts.append(f'    <div class="cover-stat"><div class="cs-label">{_esc(_stat_labels.get("sleep", "Sleep"))}</div><div class="cs-val">{profile["sleep"]} {_esc(ui_cover.get("sleep_denominator", "/ 10"))}</div></div>\n')
     if profile.get('sensitivity'):
-        parts.append(f'    <div class="cover-stat"><div class="cs-label">Sensitivity</div><div class="cs-val">{_esc(profile["sensitivity"])}</div></div>\n')
+        parts.append(f'    <div class="cover-stat"><div class="cs-label">{_esc(_stat_labels.get("sensitivity", "Sensitivity"))}</div><div class="cs-val">{_esc(profile["sensitivity"])}</div></div>\n')
     if profile.get('goals'):
         goals_str = ' · '.join(profile['goals'])
-        parts.append(f'    <div class="cover-stat"><div class="cs-label">Goals</div><div class="cs-val" style="max-width:260px">{_esc(goals_str)}</div></div>\n')
+        parts.append(f'    <div class="cover-stat"><div class="cs-label">{_esc(_stat_labels.get("goals", "Goals"))}</div><div class="cs-val" style="max-width:260px">{_esc(goals_str)}</div></div>\n')
     parts.append('  </div>\n')
 
     # ── Cover progress banner ──
-    parts.append('''
+    parts.append(f'''
   <!-- PROGRESS BANNER -->
   <div style="margin-top:32px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;z-index:1;">
     <div>
-      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px;">Your progress so far</div>
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px;">{_esc(ui_banner.get('label', 'Your progress so far'))}</div>
       <div style="font-family:\'Playfair Display\',serif;font-size:22px;color:white;line-height:1.1;" id="banner-tp-label">—</div>
       <div style="font-size:12px;color:rgba(255,255,255,.45);margin-top:3px;" id="banner-delta-text"></div>
       <div style="margin-top:10px;width:180px;">
         <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;">
-          <span style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);">Microbiome score</span>
+          <span style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);">{_esc(ui_banner.get('score_label', 'Microbiome score'))}</span>
           <span id="banner-score-num" style="font-family:\'Playfair Display\',serif;font-size:18px;color:white;"></span>
         </div>
         <div style="height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;">
@@ -4261,20 +4650,37 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
     parts.append('</div>\n')
 
     # ════════════════════ SECTION 1: WHAT IS HAPPENING ════════════════════
-    parts.append('''
+    parts.append(f'''
 <div class="section sand">
-  <div class="sec-label">Section 1 · The Big Picture</div>
-  <h2 class="sec-title">What is happening in your gut?</h2>
-  <p class="sec-intro">Your gut is home to trillions of bacteria organised into functional groups — each with a different role. These four indicators summarise the key areas of your gut health right now.</p>
+  <div class="sec-label">{_esc(ui_s1.get('sec_label', 'Section 1 · The Big Picture'))}</div>
+  <h2 class="sec-title">{_esc(ui_s1.get('title', 'What is happening in your gut?'))}</h2>
+  <p class="sec-intro">{_esc(ui_s1.get('intro', 'Your gut is home to trillions of bacteria organised into functional groups — each with a different role. These four indicators summarise the key areas of your gut health right now.'))}</p>
 
   <div class="health-dials">
 ''')
 
+    _ui_dials = ui_s1.get('dials', {})
     dial_config = [
-        ('gut_lining', 'Gut Lining\nProtection', 'How well your gut wall is protected and maintained'),
-        ('inflammation', 'Inflammation\nControl', 'How favorable your microbiome is for keeping inflammatory pressure low'),
-        ('fiber_processing', 'Fiber\nProcessing', 'How efficiently your bacteria ferment and process fiber'),
-        ('bifidobacteria', 'Bifidobacteria\nPresence', 'The abundance of your beneficial Bifidobacteria'),
+        (
+            'gut_lining',
+            _ui_dials.get('gut_lining', {}).get('label', 'Gut Lining\nProtection'),
+            _ui_dials.get('gut_lining', {}).get('description', 'How well your gut wall is protected and maintained'),
+        ),
+        (
+            'inflammation',
+            _ui_dials.get('inflammation', {}).get('label', 'Inflammation\nControl'),
+            _ui_dials.get('inflammation', {}).get('description', 'How favorable your microbiome is for keeping inflammatory pressure low'),
+        ),
+        (
+            'fiber_processing',
+            _ui_dials.get('fiber_processing', {}).get('label', 'Fiber\nProcessing'),
+            _ui_dials.get('fiber_processing', {}).get('description', 'How efficiently your bacteria ferment and process fiber'),
+        ),
+        (
+            'bifidobacteria',
+            _ui_dials.get('bifidobacteria', {}).get('label', 'Bifidobacteria\nPresence'),
+            _ui_dials.get('bifidobacteria', {}).get('description', 'The abundance of your beneficial Bifidobacteria'),
+        ),
     ]
 
     for key, label, desc in dial_config:
@@ -4315,10 +4721,10 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
         return ''
 
     # ── Evolution-over-time slider ──
-    parts.append('''
+    parts.append(f'''
   <div style="background:var(--dark);border-radius:14px;padding:14px 20px;margin-bottom:20px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <span style="font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);">Evolution over time</span>
+      <span style="font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);">{_esc(ui_s1.get('evolution_label', 'Evolution over time'))}</span>
       <span id="hr-tp-badge" style="font-size:11px;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);padding:2px 12px;border-radius:20px;">—</span>
     </div>
     <input class="tp-range" type="range" id="hr-tp-slider" min="0" max="0" value="0" step="1" style="accent-color:rgba(255,255,255,.6);">
@@ -4326,12 +4732,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
   </div>
 
   <p style="font-size:13px;color:var(--mid);margin-bottom:24px">
-    Each bacterial group has a healthy target range. Your level is shown against that range using a colour-coded bar.
-    <strong style="color:var(--green)">Green</strong> = within healthy range &middot;
-    <strong style="color:var(--blue)">Blue</strong> = too low &middot;
-    <strong style="color:var(--amber)">Amber</strong> = too high &middot;
-    <strong style="color:var(--red)">Red</strong> = critically out of range.
-    For protective bacteria, low is the concern. For opportunistic bacteria, high is the concern.
+    {_esc(ui_s1.get('guild_bar_legend', 'Each bacterial group has a healthy target range. Your level is shown against that range using a colour-coded bar. Green = within healthy range · Blue = too low · Amber = too high · Red = critically out of range. For protective bacteria, low is the concern. For opportunistic bacteria, high is the concern.'))}
   </p>
 
   <div class="guild-bars">
@@ -4364,19 +4765,14 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
     strengths = sw.get('strengths', [])
     challenges = sw.get('challenges', [])
 
-    # Build reassuring bottom line based on pattern
-    if not challenges:
-        bottom_line = "Your gut is in excellent shape across all key areas. Your protocol is about maintaining and optimising these gains."
-    elif len(challenges) <= 2:
-        bottom_line = "The main issue is not total collapse — it is imbalance in a few high-impact areas. Your gut still has strong foundations to build on."
-    else:
-        bottom_line = "Despite these imbalances, the pattern is addressable. Your protocol targets each of these areas specifically and methodically."
+    # bottom_line comes from ui_text (computed at JSON build time from challenge count)
+    bottom_line = ui_s2.get('bottom_line', '')
 
     parts.append(f'''
 <div class="section">
-  <div class="sec-label">Section 2 · Your Profile</div>
-  <h2 class="sec-title">Your strengths and areas to improve</h2>
-  <p class="sec-intro">Every microbiome tells a story. Here is what yours says about what is working well — and what needs targeted support.</p>
+  <div class="sec-label">{_esc(ui_s2.get('sec_label', 'Section 2 · Your Profile'))}</div>
+  <h2 class="sec-title">{_esc(ui_s2.get('title', 'Your strengths and areas to improve'))}</h2>
+  <p class="sec-intro">{_esc(ui_s2.get('intro', 'Every microbiome tells a story. Here is what yours says about what is working well — and what needs targeted support.'))}</p>
 
   <div class="sw-grid">
 
@@ -4384,8 +4780,8 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
       <div class="sw-card-head">
         <div class="sw-icon icon-green">✦</div>
         <div>
-          <div class="sw-head-label">Working in your favour</div>
-          <div class="sw-head-title">Your Strengths</div>
+          <div class="sw-head-label">{_esc(ui_s2.get('strengths_label', 'Working in your favour'))}</div>
+          <div class="sw-head-title">{_esc(ui_s2.get('strengths_title', 'Your Strengths'))}</div>
         </div>
       </div>
       <div class="sw-items">
@@ -4399,7 +4795,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
         </div>
 ''')
     else:
-        parts.append('<div class="sw-text" style="color:var(--soft);font-style:italic">No clear strengths identified — your protocol will build these from the foundation up.</div>\n')
+        parts.append(f'<div class="sw-text" style="color:var(--soft);font-style:italic">{_esc(ui_s2.get("strengths_empty", "No clear strengths identified — your protocol will build these from the foundation up."))}</div>\n')
 
     parts.append(f'''      </div>
     </div>
@@ -4408,8 +4804,8 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
       <div class="sw-card-head">
         <div class="sw-icon icon-red">!</div>
         <div>
-          <div class="sw-head-label">Needs attention</div>
-          <div class="sw-head-title">Key Challenges</div>
+          <div class="sw-head-label">{_esc(ui_s2.get('challenges_label', 'Needs attention'))}</div>
+          <div class="sw-head-title">{_esc(ui_s2.get('challenges_title', 'Key Challenges'))}</div>
         </div>
       </div>
       <div class="sw-items">
@@ -4425,7 +4821,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
         </div>
 ''')
     else:
-        parts.append('<div class="sw-text" style="color:var(--soft);font-style:italic">No significant challenges identified — your microbiome is in good balance.</div>\n')
+        parts.append(f'<div class="sw-text" style="color:var(--soft);font-style:italic">{_esc(ui_s2.get("challenges_empty", "No significant challenges identified — your microbiome is in good balance."))}</div>\n')
 
     parts.append(f'''      </div>
     </div>
@@ -4450,11 +4846,11 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
         'Emerging research': '#C97C2A',
     }
 
-    parts.append('''
+    parts.append(f'''
 <div class="section sand">
-  <div class="sec-label">Section 3 · The Story Behind Your Results</div>
-  <h2 class="sec-title">What is behind this imbalance?</h2>
-  <p class="sec-intro">We looked at everything you shared with us — your microbiome, your health history, your lifestyle — and asked: why might this person have this particular pattern? Here is what we found.</p>
+  <div class="sec-label">{_esc(ui_s3.get('sec_label', 'Section 3 · The Story Behind Your Results'))}</div>
+  <h2 class="sec-title">{_esc(ui_s3.get('title', 'What is behind this imbalance?'))}</h2>
+  <p class="sec-intro">{_esc(ui_s3.get('intro', 'We looked at everything you shared with us — your microbiome, your health history, your lifestyle — and asked: why might this person have this particular pattern? Here is what we found.'))}</p>
 ''')
 
     has_any = bool(deviation_cards or awareness_chips)
@@ -4487,7 +4883,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
       <div class="ms-meta">
         <div class="ms-label">{_esc(ms.get("client_label", ""))}</div>
         <div class="ms-value">{_esc(ms.get("value_str", ""))}</div>
-        <div class="ms-range">Target: {_esc(ms.get("range_str", ""))}</div>
+        <div class="ms-range">{_esc(ui_s3.get('metrics_target_prefix', 'Target: '))}{_esc(ms.get("range_str", ""))}</div>
       </div>
     </div>
 ''')
@@ -4524,11 +4920,11 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
                     parts.append(f'        <div class="fc-text">{_esc(explanation)}</div>\n')
                 if kb_text_html:
                     parts.append(f'''        <details class="rfc-science" style="margin-top:10px;">
-          <summary>What does science say</summary>
+          <summary>{_esc(ui_s3.get('science_label', 'What does science say'))}</summary>
           <div class="rfc-science-body">{kb_text_html}</div>
         </details>
 ''')
-                parts.append(f'        <span class="fc-scope">{n_guilds} / 4 guilds affected</span>\n')
+                parts.append(f'        <span class="fc-scope">{n_guilds} {_esc(ui_s3.get("guilds_affected_suffix", "/ 4 guilds affected"))}</span>\n')
                 parts.append('      </div>\n')
             parts.append('    </div>\n')
         parts.append('  </div>\n')
@@ -4536,8 +4932,8 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
         # ── Cascade diagram ─────────────────────────────────────────────────
         if cascade_guilds and factor_cards:
             parts.append('  <div class="cascade-section">\n')
-            parts.append('    <div class="cascade-label">How these factors connect to your results</div>\n')
-            parts.append('    <p style="font-size:11px;color:var(--soft);margin-bottom:14px;">Each factor pill shows the direction of scientific evidence: <strong style="color:var(--dark);">→</strong> factor influences your gut &nbsp;|&nbsp; <strong style="color:var(--dark);">↔</strong> bidirectional — your gut also influences this factor back</p>\n')
+            parts.append(f'    <div class="cascade-label">{_esc(ui_s3.get("cascade_label", "How these factors connect to your results"))}</div>\n')
+            parts.append(f'    <p style="font-size:11px;color:var(--soft);margin-bottom:14px;">{_esc(ui_s3.get("cascade_explanation", "Each factor pill shows the direction of scientific evidence: → factor influences your gut  |  ↔ bidirectional — your gut also influences this factor back"))}</p>\n')
             parts.append('    <div class="cascade-diag">\n')
             parts.append('      <div class="casc-left">\n')
             for fc in factor_cards:
@@ -4545,7 +4941,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
                 arrow = '↔' if fc_dir == 'bidirectional' else '→'
                 parts.append(f'        <div class="casc-factor-pill"><span style="font-size:18px">{fc.get("icon","🔍")}</span> {_esc(fc.get("label",""))}<span style="font-size:11px;color:var(--soft);margin-left:6px;">{arrow}</span></div>\n')
             parts.append('      </div>\n')
-            parts.append('      <div class="casc-arrow" style="font-size:14px;color:var(--soft);">factors</div>\n')
+            parts.append(f'      <div class="casc-arrow" style="font-size:14px;color:var(--soft);">{_esc(ui_s3.get("cascade_arrow_label", "factors"))}</div>\n')
             parts.append('      <div class="casc-right">\n')
             for cg in cascade_guilds:
                 gp_cls = {'low': 'gp-low', 'high': 'gp-high', 'crit': 'gp-crit'}.get(cg.get('impact', 'low'), 'gp-low')
@@ -4626,7 +5022,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
             if kb_drivers:
                 n_factors = len(kb_drivers)
                 factor_label = f'{n_factors} contributing factor{"s" if n_factors != 1 else ""}'
-                parts.append(f'      <div class="rc-factors-label">Why this happened — {factor_label}</div>\n')
+                parts.append(f'      <div class="rc-factors-label">{_esc(ui_s3.get("why_prefix", "Why this happened — "))}{factor_label}</div>\n')
                 parts.append('      <div class="rc-factor-stack">\n')
 
                 for driver in kb_drivers:
@@ -4649,7 +5045,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
                     # "What does science say" — nested expandable, only if KB text exists
                     if d_kb:
                         parts.append(f'''            <details class="rfc-science">
-              <summary>What does science say</summary>
+              <summary>{_esc(ui_s3.get('science_label', 'What does science say'))}</summary>
               <div class="rfc-science-body">{d_kb}</div>
             </details>
 ''')
@@ -4672,9 +5068,9 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
 
     # ── Awareness chips — triggered lifestyle factors with no active deviation ──
     if awareness_chips:
-        parts.append('''  <div class="rc-awareness-zone">
-    <div class="rc-awareness-label">From your questionnaire</div>
-    <p class="rc-awareness-intro">You mentioned these factors when filling in your questionnaire. We're sharing them as educational background — <strong>these are not microbiome findings</strong>. Your test results don't currently show any measurable connection to them, but the research linking them to gut health is worth understanding.</p>
+        parts.append(f'''  <div class="rc-awareness-zone">
+    <div class="rc-awareness-label">{_esc(ui_s3.get('awareness_label', 'From your questionnaire'))}</div>
+    <p class="rc-awareness-intro">{_esc(ui_s3.get('awareness_intro', "You mentioned these factors when filling in your questionnaire. We're sharing them as educational background — these are not microbiome findings. Your test results don't currently show any measurable connection to them, but the research linking them to gut health is worth understanding."))}</p>
     <div class="rc-awareness-chips">
 ''')
         for aw in awareness_chips:
@@ -4687,7 +5083,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
         <summary>
           <span class="rc-aw-icon">{aw_icon}</span>
           <span class="rc-aw-title">{aw_label}</span>
-          <span style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin-left:8px;background:var(--sand);padding:2px 8px;border-radius:20px;border:1px solid var(--rule);">You reported this</span>
+          <span style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin-left:8px;background:var(--sand);padding:2px 8px;border-radius:20px;border:1px solid var(--rule);">{_esc(ui_s3.get('awareness_chip_badge', 'You reported this'))}</span>
         </summary>
         <div class="rc-aw-body">{aw_summary}</div>
       </details>
@@ -4695,9 +5091,8 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
         parts.append('    </div>\n  </div>\n')
 
     if not has_any:
-        parts.append('''  <div class="rc-empty">
-    <p>✅ <strong>Your microbiome looks healthy and your questionnaire doesn't flag any specific risk factors.</strong><br>
-    There are no deviations to explain at this point. Your microbiome findings in Sections 1 and 2 tell the full story.</p>
+        parts.append(f'''  <div class="rc-empty">
+    <p>{_esc(ui_s3.get('empty_message', "✅ Your microbiome looks healthy and your questionnaire doesn't flag any specific risk factors. There are no deviations to explain at this point. Your microbiome findings in Sections 1 and 2 tell the full story."))}</p>
   </div>
 ''')
 
@@ -4708,28 +5103,29 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
 
     parts.append(f'''
 <div class="section">
-  <div class="sec-label">Section 4 · The Road Ahead</div>
-  <h2 class="sec-title">How do we turn this around?</h2>
-  <p class="sec-intro">Your personalized formula is designed to work in stages. Here is what to expect on the journey toward a more balanced microbiome — and how the different components of your formula support each phase.</p>
+  <div class="sec-label">{_esc(ui_s4.get('sec_label', 'Section 4 · The Road Ahead'))}</div>
+  <h2 class="sec-title">{_esc(ui_s4.get('title', 'How do we turn this around?'))}</h2>
+  <p class="sec-intro">{_esc(ui_s4.get('intro', 'Your personalized formula is designed to work in stages. Here is what to expect on the journey toward a more balanced microbiome — and how the different components of your formula support each phase.'))}</p>
 
   <div class="turnaround-grid">
     <div class="timeline">
 ''')
 
+    _weeks_prefix = ui_s4.get('weeks_prefix', 'Weeks ')
     for i, phase in enumerate(timeline_phases):
         color = phase_colors[i] if i < len(phase_colors) else '#6B5EA8'
         parts.append(f'''      <div class="tl-item">
         <div class="tl-dot" style="background:{color}">{i + 1}</div>
-        <div class="tl-period">Weeks {_esc(phase["weeks"])}</div>
+        <div class="tl-period">{_esc(_weeks_prefix)}{_esc(phase["weeks"])}</div>
         <div class="tl-title">{_esc(phase["title"])}</div>
         <div class="tl-body">{_esc(phase["body"])}</div>
       </div>
 ''')
 
-    parts.append('''    </div>
+    parts.append(f'''    </div>
 
     <div class="lifestyle-panel">
-      <div class="lp-label">While your formula works its science</div>
+      <div class="lp-label">{_esc(ui_s4.get('lifestyle_label', 'While your formula works its science'))}</div>
       <div class="lp-items">
 ''')
 
@@ -4776,9 +5172,9 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
 
         parts.append(f'''
 <div class="section sand">
-  <div class="sec-label">Section 5 · Your Formula</div>
-  <h2 class="sec-title">What you are taking and why</h2>
-  <p class="sec-intro">Your formula is organised by when you take it — morning and evening. Each unit targets a specific aspect of your microbiome rebalancing and is timed to work with your body's natural rhythms.</p>
+  <div class="sec-label">{_esc(ui_s5.get('sec_label', 'Section 5 · Your Formula'))}</div>
+  <h2 class="sec-title">{_esc(ui_s5.get('title', 'What you are taking and why'))}</h2>
+  <p class="sec-intro">{_esc(ui_s5.get('intro', "Your formula is organised by when you take it — morning and evening. Each unit targets a specific aspect of your microbiome rebalancing and is timed to work with your body's natural rhythms."))}</p>
 
 <style>
 /* ── Supplement timing groups ── */
@@ -4827,13 +5223,13 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
                 if card.get('why'):
                     parts.append(f'''        <div class="supp-why-band">
           <span class="why-icon">🎯</span>
-          <span><strong>Why you're taking it:</strong> {_esc(card["why"])}</span>
+          <span><strong>{_esc(ui_s5.get('why_label', "Why you're taking it:"))}</strong> {_esc(card["why"])}</span>
         </div>
 ''')
                 if 'polyphenol' in card.get('key', '') and 'morning' in card.get('timing', '').lower():
-                    parts.append('''        <div class="supp-why-band" style="background:#FBF1E4;border-top:none;border-left:3px solid var(--amber);padding-top:12px;padding-bottom:12px;">
+                    parts.append(f'''        <div class="supp-why-band" style="background:#FBF1E4;border-top:none;border-left:3px solid var(--amber);padding-top:12px;padding-bottom:12px;">
           <span class="why-icon">⚠️</span>
-          <span><strong>Take with breakfast or on full stomach.</strong></span>
+          <span><strong>{_esc(ui_s5.get('polyphenol_warning', 'Take with breakfast or on full stomach.'))}</strong></span>
         </div>
 ''')
                 if card.get('pills'):
@@ -4843,7 +5239,7 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
                     parts.append('''        </div>\n''')
                 if card.get('supports'):
                     parts.append('''        <div class="supp-supports">\n''')
-                    parts.append('''          <div class="supp-supports-label">Supports</div>\n''')
+                    parts.append(f'          <div class="supp-supports-label">{_esc(ui_s5.get("supports_label", "Supports"))}</div>\n')
                     parts.append('''          <div class="supp-supports-chips">\n''')
                     for s in card['supports']:
                         parts.append(f'''            <div class="sc-chip">{_esc(s)}</div>\n''')
@@ -4851,17 +5247,17 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
                 parts.append('''      </div>\n''')
             parts.append('''    </div>\n  </div>\n''')
 
-        _emit_group('Morning', '🌅', morning_cards, 'morning')
-        _emit_group('Evening', '🌙', evening_cards, 'evening')
+        _emit_group(ui_s5.get('timing_morning', 'Morning'), ui_s5.get('timing_morning_emoji', '🌅'), morning_cards, 'morning')
+        _emit_group(ui_s5.get('timing_evening', 'Evening'), ui_s5.get('timing_evening_emoji', '🌙'), evening_cards, 'evening')
 
         parts.append('</div>\n')
 
     else:
-        parts.append('''
+        parts.append(f'''
 <div class="section sand">
-  <div class="sec-label">Section 5 · Your Formula</div>
-  <h2 class="sec-title">What you are taking and why</h2>
-  <p class="sec-intro">Formulation data not available for this sample. Please generate the formulation first using <code>generate_formulation.py</code>.</p>
+  <div class="sec-label">{_esc(ui_s5.get('sec_label', 'Section 5 · Your Formula'))}</div>
+  <h2 class="sec-title">{_esc(ui_s5.get('title', 'What you are taking and why'))}</h2>
+  <p class="sec-intro">{_esc(ui_s5.get('empty_message', 'Formulation data not available for this sample. Please generate the formulation first using generate_formulation.py.'))}</p>
 </div>
 ''')
 
@@ -4869,43 +5265,43 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
     if goal_cards:
         parts.append(f'''
 <div class="section">
-  <div class="sec-label">Section 6 · Your Goals</div>
-  <h2 class="sec-title">How it aligns with your health goals</h2>
-  <p class="sec-intro">Everything in this protocol connects directly to what you told us matters most. Here is the link between your goals, the science behind them, and how your formula addresses each one.</p>
+  <div class="sec-label">{_esc(ui_s6.get('sec_label', 'Section 6 · Your Goals'))}</div>
+  <h2 class="sec-title">{_esc(ui_s6.get('title', 'How it aligns with your health goals'))}</h2>
+  <p class="sec-intro">{_esc(ui_s6.get('intro', 'Everything in this protocol connects directly to what you told us matters most. Here is the link between your goals, the science behind them, and how your formula addresses each one.'))}</p>
 
   <div class="goals-row">
 ''')
 
         for gc in goal_cards:
-            inferred_tag = '<div class="goal-inferred-tag">Also addressed by your formula</div>' if gc.get('inferred') else ''
+            inferred_tag = f'<div class="goal-inferred-tag">{_esc(ui_s6.get("inferred_tag", "Also addressed by your formula"))}</div>' if gc.get('inferred') else ''
             parts.append(f'''    <div class="goal-card">
       <span class="goal-emoji">{_esc(gc["emoji"])}</span>
       {inferred_tag}
       <div class="goal-title">{_esc(gc["title"])}</div>
       <div class="goal-mechanism">{_esc(gc["mechanism"])}</div>
-      <div class="goal-formula"><strong>Your formula:</strong> {_esc(gc["formula_link"])}</div>
+      <div class="goal-formula"><strong>{_esc(ui_s6.get('formula_prefix', 'Your formula:'))}</strong> {_esc(gc["formula_link"])}</div>
     </div>
 ''')
 
         parts.append('  </div>\n</div>\n')
 
     else:
-        parts.append('''
+        parts.append(f'''
 <div class="section">
-  <div class="sec-label">Section 6 · Your Goals</div>
-  <h2 class="sec-title">How it aligns with your health goals</h2>
-  <p class="sec-intro">Questionnaire data not available — health goals section requires a completed questionnaire.</p>
+  <div class="sec-label">{_esc(ui_s6.get('sec_label', 'Section 6 · Your Goals'))}</div>
+  <h2 class="sec-title">{_esc(ui_s6.get('title', 'How it aligns with your health goals'))}</h2>
+  <p class="sec-intro">{_esc(ui_s6.get('empty_message', 'Questionnaire data not available — health goals section requires a completed questionnaire.'))}</p>
 </div>
 ''')
 
     # ════════════════════ REFERENCES ════════════════════
     cited_papers = data.get('cited_papers', [])
     if cited_papers:
-        parts.append('''
+        parts.append(f'''
 <div class="section sand">
-  <div class="sec-label">References</div>
-  <h2 class="sec-title" style="font-size:28px;margin-bottom:24px;">Scientific References</h2>
-  <p style="font-size:13px;color:var(--soft);margin-bottom:24px;max-width:600px;line-height:1.7;">The following peer-reviewed papers were used to ground the explanations in Section 3. Citations are formatted in APA style.</p>
+  <div class="sec-label">{_esc(ui_refs.get('sec_label', 'References'))}</div>
+  <h2 class="sec-title" style="font-size:28px;margin-bottom:24px;">{_esc(ui_refs.get('title', 'Scientific References'))}</h2>
+  <p style="font-size:13px;color:var(--soft);margin-bottom:24px;max-width:600px;line-height:1.7;">{_esc(ui_refs.get('intro', 'The following peer-reviewed papers were used to ground the explanations in Section 3. Citations are formatted in APA style.'))}</p>
   <div style="display:flex;flex-direction:column;gap:14px;">
 ''')
         for paper in cited_papers:
@@ -4931,8 +5327,8 @@ input.tp-range::-webkit-slider-thumb {{ -webkit-appearance:none; width:16px; hei
     # ════════════════════ FOOTER ════════════════════
     parts.append(f'''
 <div class="footer">
-  <div class="footer-brand">NB1 Health</div>
-  <div style="max-width:440px;text-align:center">This report is for informational purposes only and does not constitute medical advice. Please consult a healthcare professional before beginning any supplement protocol.</div>
+  <div class="footer-brand">{_esc(ui_footer.get('brand', 'NB1 Health'))}</div>
+  <div style="max-width:440px;text-align:center">{_esc(ui_footer.get('disclaimer', 'This report is for informational purposes only and does not constitute medical advice. Please consult a healthcare professional before beginning any supplement protocol.'))}</div>
   <div>{_esc(report_date_display)}</div>
 </div>
 ''')

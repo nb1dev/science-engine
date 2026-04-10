@@ -33,7 +33,7 @@ from datetime import datetime
 from pathlib import Path
 from collections import defaultdict
 
-WORK_DIR = "/Users/pnovikova/Documents/work"
+WORK_DIR = os.environ.get("WORK_DIR", "/Users/pnovikova/Documents/work")
 S3_BUCKET = "s3://nb1-prebiomics-sample-data/incoming"
 
 # Taxonomy alias map for consistency checks — expanded (6A)

@@ -8,7 +8,7 @@ scores from shared/guild_priority.py and ecological reasoning.
 
 Also contains:
   - lookup_strains_for_mix() — KB strain lookup
-  - _should_add_lp815() — deterministic LP815 enhancement logic
+  - _should_add_lpc37() — deterministic LPc-37 enhancement logic (replaced LP815 on 2026-04-01)
 """
 
 import json
@@ -33,8 +33,12 @@ def _load_kb(filename: str) -> Dict:
         return json.load(f)
 
 
-def _should_add_lp815(stress: float, goals: list) -> bool:
-    """LP815 enhancement: add 5B CFU when stress/mood conditions met.
+def _should_add_lpc37(stress: float, goals: list) -> bool:
+    """LPc-37 (IFF) psychobiotic enhancement: add 5B CFU when stress/mood conditions met.
+
+    NOTE (2026-04-01): LPc-37 replaced LP815 (Lactiplantibacillus plantarum, Verb Biotics)
+    per Vitema Pharmaceuticals instruction. Trigger logic is unchanged.
+
     Rules:
       - Stress ≥ 6/10 → always add
       - Stress ≥ 4/10 AND mood/anxiety is a stated goal → always add
@@ -119,17 +123,17 @@ def select_mix_offline(unified_input: Dict, rule_outputs: Dict) -> Dict:
     compromised_beneficial = sum(1 for s in beneficial_scores if s >= 2.0)
 
     def _make_result(mix_id, mix_name, trigger, clr_ctx="", confidence="medium", alt=""):
-        lp815 = _should_add_lp815(stress, goals)
+        lpc37 = _should_add_lpc37(stress, goals)
         total_cfu = 50
         strains = []
-        if lp815:
-            strains.append({"name": "Lactiplantibacillus plantarum LP815", "cfu_billions": 5, "role": "GABA producer (psychobiotic enhancement)"})
+        if lpc37:
+            strains.append({"name": "Lactobacillus paracasei LPC-37", "cfu_billions": 5, "role": "Psychobiotic enhancement (IFF LPc-37)"})
             total_cfu += 5
         return {
             "mix_id": mix_id, "mix_name": mix_name,
             "primary_trigger": trigger, "clr_context": clr_ctx,
             "strains": strains, "total_cfu_billions": total_cfu,
-            "lp815_added": lp815,
+            "lpc37_added": lpc37,
             "confidence": confidence, "alternative_considered": alt,
         }
 

@@ -1106,7 +1106,6 @@ analysis/{batch}/{sample}/
 | File | Content |
 |------|---------|
 | `synbiotic_mixes.json` | All 8 probiotic mixes with strains, CFU, triggers, ecological rationale |
-| `bacterial_strains.json` | Individual strain data (species, function, evidence) |
 | `prebiotic_rules.json` | Prebiotic dosing by CFU tier + sensitivity |
 | `clr_decision_rules.json` | CLR-based decision thresholds for mix selection |
 | `vitamins_minerals.json` | Complete vitamin/mineral catalog with doses, delivery, interactions |

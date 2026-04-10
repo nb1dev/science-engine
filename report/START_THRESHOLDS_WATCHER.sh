@@ -1,7 +1,7 @@
 #!/bin/bash
 # Start Population Thresholds Watcher in Background
 
-cd /Users/pnovikova/Documents/work
+cd "${WORK_DIR:-/Users/pnovikova/Documents/work}"
 
 if pgrep -f "update_population_thresholds.py" > /dev/null; then
     echo "⚠️  Thresholds watcher is already running!"

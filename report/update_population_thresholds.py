@@ -23,7 +23,7 @@ from datetime import datetime
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
 
-WORK_DIR = '/Users/pnovikova/Documents/work'
+WORK_DIR = os.environ.get("WORK_DIR", "/Users/pnovikova/Documents/work")
 ANALYSIS_DIR = os.path.join(WORK_DIR, 'analysis')
 OUTPUT_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),

@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from ..models import PipelineContext
-from formulation.weight_calculator import FormulationCalculator, distribute_cfu_evenly, EVENING_CAPSULE_CAPACITY_MG
+from formulation.weight_calculator import FormulationCalculator, distribute_cfu_evenly, EVENING_CAPSULE_CAPACITY_MG, PROBIOTIC_ACTIVE_CAPACITY_MG, CFU_TO_MG_FACTOR
 from formulation.dose_optimizer import DoseOptimizer
 
 KB_DIR = Path(__file__).parent.parent / "knowledge_base"
@@ -364,11 +364,11 @@ def run(ctx: PipelineContext) -> PipelineContext:
 
 def _add_probiotics(calc, mix: Dict):
     """Add probiotic strains to calculator with capacity guard."""
-    MAX_CAPSULE_CFU = 65
+    MAX_CAPSULE_CFU = int(PROBIOTIC_ACTIVE_CAPACITY_MG / CFU_TO_MG_FACTOR)  # = 48
     strains = mix.get("strains", [])
     if strains:
         total_cfu = sum(s.get("cfu_billions", 10) for s in strains)
-        if total_cfu * 10 > 650:
+        if total_cfu * CFU_TO_MG_FACTOR > PROBIOTIC_ACTIVE_CAPACITY_MG:
             cfu_per = distribute_cfu_evenly(MAX_CAPSULE_CFU, len(strains))
             for strain in strains:
                 calc.add_probiotic(strain["name"], cfu_per, mix_id=mix["mix_id"], mix_name=mix["mix_name"])
@@ -669,13 +669,13 @@ def _build_component_registry(calc, ctx: PipelineContext) -> List[Dict]:
     sg_decision = rule_outputs.get("softgel", {})
 
     # 1. Probiotics (from calc.probiotic_components)
-    non_lp815 = [p for p in calc.probiotic_components if "LP815" not in p.get("substance", "")]
-    if non_lp815:
-        per_strain_cfu = non_lp815[0].get("cfu_billions", 0)
-        total_base_cfu = sum(p.get("cfu_billions", 0) for p in non_lp815)
+    non_lpc37 = [p for p in calc.probiotic_components if "LPC-37" not in p.get("substance", "")]
+    if non_lpc37:
+        per_strain_cfu = non_lpc37[0].get("cfu_billions", 0)
+        total_base_cfu = sum(p.get("cfu_billions", 0) for p in non_lpc37)
         dose_str = f"{total_base_cfu}B CFU ({per_strain_cfu}B each)" if per_strain_cfu else f"{total_base_cfu}B CFU"
         registry.append({
-            "substance": f"{len(non_lp815)} base strains ({mix_name})",
+            "substance": f"{len(non_lpc37)} base strains ({mix_name})",
             "dose": dose_str,
             "delivery": "probiotic capsule",
             "category": "probiotic",
@@ -686,13 +686,13 @@ def _build_component_registry(calc, ctx: PipelineContext) -> List[Dict]:
             "informed_by": "microbiome",
         })
 
-    # LP815 separately
-    lp815_strains = [p for p in calc.probiotic_components if "LP815" in p.get("substance", "")]
-    if lp815_strains:
+    # LPc-37 psychobiotic strain separately
+    lpc37_strains = [p for p in calc.probiotic_components if "LPC-37" in p.get("substance", "")]
+    if lpc37_strains:
         mix_id = mix.get("mix_id")
-        lp815_label = "LP815 psychobiotic strain" if mix_id == 7 else "LP815 gut-brain enhancement strain"
+        lpc37_label = "LPc-37 psychobiotic strain" if mix_id == 7 else "LPc-37 gut-brain enhancement strain"
         registry.append({
-            "substance": f"{lp815_label} (5B CFU)",
+            "substance": f"{lpc37_label} (5B CFU)",
             "dose": "5B CFU",
             "delivery": "probiotic capsule",
             "category": "probiotic",

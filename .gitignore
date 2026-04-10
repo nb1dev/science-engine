@@ -36,6 +36,9 @@ env/
 .ipynb_checkpoints/
 *.ipynb
 
+# AWS infrastructure (credentials, configs, generated assets)
+aws/
+
 # Environment / secrets
 .env
 *.pem
@@ -44,3 +47,10 @@ env/
 # IDE
 .vscode/
 .idea/
+
+# My WORK_DIR
+.env.local
+
+# Claude Code agent config
+CLAUDE.md
+.claude/

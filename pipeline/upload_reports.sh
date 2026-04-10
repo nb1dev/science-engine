@@ -8,7 +8,7 @@ if [[ -z "$BATCH" ]]; then
 fi
 
 
-BASE_ROOT="/Users/pnovikova/Documents/work/analysis"
+BASE_ROOT="${WORK_DIR:-/Users/pnovikova/Documents/work}/analysis"
 BASE_DIR="$BASE_ROOT/$BATCH"
 
 if [[ -z "$NB1_TOKEN" ]]; then

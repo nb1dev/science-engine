@@ -103,7 +103,7 @@ def setup_flexible_paths(batch_id: str, sample_id: str):
     global GMWI_RESULTS_DIR, KNOWLEDGE_BASE_DIR, FUNCTIONAL_DIR
     global MODEL_PATH, CORE_PATHWAYS_PATH, INTEGRATED_REPORT_DIR, INTEGRATED_PLOTS_DIR
     
-    WORK_DIR = "/Users/pnovikova/Documents/work"
+    WORK_DIR = os.environ.get("WORK_DIR", "/Users/pnovikova/Documents/work")
     
     # Auto-constructed paths
     OUTPUT_BASE = os.path.join(WORK_DIR, "analysis", batch_id, sample_id)
@@ -124,8 +124,8 @@ def setup_flexible_paths(batch_id: str, sample_id: str):
     INTEGRATED_PLOTS_DIR = os.path.join(OUTPUT_BASE, "plots")
     
     # Shared resources (fixed paths)
-    KNOWLEDGE_BASE_DIR = os.path.join(WORK_DIR, "analysis", "knowledge_base")
-    MODEL_PATH = Path(os.path.join(WORK_DIR, "scripts", "models", "GMWI2_model.joblib"))
+    KNOWLEDGE_BASE_DIR = os.path.join(WORK_DIR, "science-engine", "bioinformatics", "knowledge_base")
+    MODEL_PATH = Path(os.path.join(WORK_DIR, "science-engine", "bioinformatics", "models", "GMWI2_model.joblib"))
     CORE_PATHWAYS_PATH = Path(KNOWLEDGE_BASE_DIR) / "core_pathways_keywords.tsv"
     
     # Create output directories
@@ -2484,7 +2484,7 @@ def run_integrated_analysis(sample: str) -> Tuple[str, str]:
 
 def discover_samples_in_batch(batch_id: str) -> List[str]:
     """Discover all sample directories in a batch."""
-    work_dir = "/Users/pnovikova/Documents/work"
+    work_dir ="/Users/pnovikova/Documents/work"
     batch_dir = os.path.join(work_dir, "analysis", batch_id)
     
     if not os.path.exists(batch_dir):

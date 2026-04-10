@@ -1159,7 +1159,7 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
             if strains:
                 mix_lines += '<div style="font-size:12px;color:var(--mid);padding:4px 0 0"><strong>Component Decision Lines:</strong></div>'
                 for s in strains:
-                    is_lp = "LP815" in s.get("name", "")
+                    is_lp = "LPC-37" in s.get("name", "").upper()
                     role_tag = "stress/gut-brain" if is_lp else _esc(mix_data.get("mix_name", ""))
                     mix_lines += f'<div style="font-size:11px;color:var(--mid);padding:1px 0;padding-left:12px">→ {_esc(s.get("name","?"))} {s.get("cfu_billions","?")}B | {role_tag}</div>'
             if mix_lines:
@@ -1172,12 +1172,12 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
             cls = sens_data.get("classification", "?")
             sens_extra = f'<div style="margin-top:6px;font-size:12px;color:var(--mid)"><strong>Strategy:</strong> {cls.title()} sensitivity — prebiotic max {sens_data.get("max_prebiotic_g", "?")}g</div>'
 
-        # LP815 extra from mix strains
+        # LPc-37 extra from mix strains
         lp815_extra = ""
-        if step.get("decision") == "LP815 Enhancement":
+        if step.get("decision") == "LPc-37 Psychobiotic Enhancement":
             mix_data2 = master.get("decisions", {}).get("mix_selection", {})
             for s2 in mix_data2.get("strains", []):
-                if "LP815" in s2.get("name", ""):
+                if "LPC-37" in s2.get("name", "").upper():
                     lp815_extra = f'<div style="margin-top:6px;font-size:12px;color:var(--mid)">→ {_esc(s2.get("name","?"))} {s2.get("cfu_billions","?")}B CFU | stress/gut-brain | add-on (separate from base 50B)</div>'
 
         overrides_html = ""
