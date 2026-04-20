@@ -646,27 +646,27 @@ def check_decision_consistency(master: Dict) -> List[CheckResult]:
     mb = input_summary.get("microbiome_driven", {})
     q = input_summary.get("questionnaire_driven", {})
 
-    # ── 4a. LP815 trigger ─────────────────────────────────────────────────
+    # ── 4a. Lpc-37 trigger ────────────────────────────────────────────────
     # v1.2.0: None-safe defaults — questionnaire fields can be null
-    # Rule mirrors _should_add_lp815() in llm/mix_selector.py exactly:
+    # Rule mirrors _should_add_lpc37() in llm/mix_selector.py exactly:
     #   stress ≥ 6 → always add
     #   stress ≥ 4 AND goal is "improve_mood_reduce_anxiety" or "reduce_stress_anxiety" → add
-    lp815_added = mix.get("lp815_added", False)
+    lpc37_added = mix.get("lpc37_added", False)
     stress = q.get("stress_level") or 0
     sleep = q.get("sleep_quality") or 10
     goals = q.get("goals_ranked", []) or []
     _MOOD_GOALS = {"improve_mood_reduce_anxiety", "reduce_stress_anxiety"}
     has_mood_goal = any(g.lower() in _MOOD_GOALS for g in goals)
-    lp815_should_be_added = (stress >= 6) or (stress >= 4 and has_mood_goal)
+    lpc37_should_be_added = (stress >= 6) or (stress >= 4 and has_mood_goal)
 
-    if lp815_added and not lp815_should_be_added:
-        results.append(_warn("decision", "lp815_trigger",
-            f"LP815 added but triggers not met (stress={stress}, mood_goal={has_mood_goal})"))
-    elif not lp815_added and lp815_should_be_added:
-        results.append(_warn("decision", "lp815_trigger",
-            f"LP815 NOT added but triggers met (stress={stress}, mood_goal={has_mood_goal})"))
+    if lpc37_added and not lpc37_should_be_added:
+        results.append(_warn("decision", "lpc37_trigger",
+            f"Lpc-37 added but triggers not met (stress={stress}, mood_goal={has_mood_goal})"))
+    elif not lpc37_added and lpc37_should_be_added:
+        results.append(_warn("decision", "lpc37_trigger",
+            f"Lpc-37 NOT added but triggers met (stress={stress}, mood_goal={has_mood_goal})"))
     else:
-        results.append(_pass("decision", "lp815_trigger"))
+        results.append(_pass("decision", "lpc37_trigger"))
 
     # ── 4b. Magnesium trigger ─────────────────────────────────────────────
     # v1.2.0: Mirrors assess_magnesium_needs() in rules_engine.py exactly:

@@ -793,7 +793,7 @@ The core decision outputs from the formulation pipeline.
 | `.strains[].evidence` | string | Evidence level (`"WGO_L1"` / `"Mechanistic"`) | Evidence badge |
 | `.strains[].role` | string | **What this strain does in the formulation** | Strain card text |
 | `.total_cfu_billions` | float | Total CFU across all strains | Summary display |
-| `.lp815_added` | boolean | Whether LP815 psychobiotic was added | Gut-brain indicator |
+| `.lpc37_added` | boolean | Whether Lpc-37 psychobiotic was added | Gut-brain indicator |
 | `.confidence` | string | `"high"` / `"medium"` / `"low"` | Confidence badge |
 | `.alternative_considered` | string | What alternative mix was considered and why rejected | Transparency |
 
@@ -951,14 +951,14 @@ Each delivery format follows a common pattern:
 | `.totals` | object | Weight totals, utilization, validation |
 
 **Delivery Format 1: Probiotic Capsule**
-- Contains 4 base strains + LP815
+- Contains base mix strains + optional Lpc-37 add-on (5B CFU) when stress/mood triggers met
 - Each strain has: `substance`, `type`, `dose`, `cfu_billions`, `weight_mg`, `rationale`, `evidence_level`
 
 **Delivery Format 2: Omega Softgels**
 - Fixed composition: Omega-3, Vitamin D3, Vitamin E, Astaxanthin
 - `components_per_softgel[]` — per-softgel breakdown
 
-**Delivery Format 3: Powder Jar (Prebiotic Sachet)**
+**Delivery Format 3: Powder Jar**
 - `prebiotics.components[]` — prebiotic fiber blend
 - `botanicals.components[]` — botanical additions (may be empty)
 - `totals.phased_dosing` — phased dosing instructions
@@ -982,7 +982,7 @@ Each delivery format follows a common pattern:
 | `.synbiotic_mix.mix_id` | int | Mix number | Identification |
 | `.synbiotic_mix.mix_name` | string | Mix name | **"Your personalized mix"** |
 | `.morning_solid_units` | int | Pills/softgels taken in morning | **Morning count** |
-| `.morning_jar_units` | int | Sachet/jar units in morning | **Sachet count** |
+| `.morning_jar_units` | int | Jar units in morning | **Jar count** |
 | `.evening_solid_units` | int | Pills taken in evening | **Evening count** |
 | `.total_daily_units` | int | Total daily units | **"X items per day"** |
 | `.total_daily_weight_g` | float | Total daily weight in grams | Data |

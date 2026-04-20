@@ -37,12 +37,12 @@ GUILD_ORDER = [
 ]
 
 GUILD_DISPLAY_NAMES = {
-    'Butyrate Producers': 'Gut-Lining Energy Producers',
-    'Fiber Degraders': 'Fiber-Processing Bacteria',
-    'Cross-Feeders': 'Intermediate Processors',
+    'Butyrate Producers': 'Gut Wall Protectors',
+    'Fiber Degraders': 'Fibre Digesters',
+    'Cross-Feeders': 'Nutrient Recyclers',
     'HMO/Oligosaccharide-Utilising Bifidobacteria': 'Bifidobacteria',
-    'Mucin Degraders': 'Mucus-Layer Bacteria',
-    'Proteolytic Dysbiosis Guild': 'Protein-Fermenting Bacteria',
+    'Mucin Degraders': 'Gut Lining Processors',
+    'Proteolytic Dysbiosis Guild': 'Protein Recyclers',
 }
 
 # Timeline estimates per guild
@@ -350,8 +350,8 @@ def _populate_how_from_formulation(steps: list, sample_dir: str, sample_id: str)
     mix_name = mix.get("mix_name", "")
     mix_id = mix.get("mix_id")
     strains = mix.get("strains", [])
-    strain_names = [s.get("name", "") for s in strains if "LP815" not in s.get("name", "")]
-    lp815 = mix.get("lp815_added", False)
+    strain_names = [s.get("name", "") for s in strains if "Lpc-37" not in s.get("name", "")]
+    lpc37 = mix.get("lpc37_added", False)
     
     prebiotics = master.get("decisions", {}).get("prebiotic_design", {})
     prebiotic_list = prebiotics.get("prebiotics", [])
@@ -366,8 +366,8 @@ def _populate_how_from_formulation(steps: list, sample_dir: str, sample_id: str)
     base_how = f"Mix {mix_id} ({mix_name}, {total_cfu}B CFU, {len(strain_names)} strains)"
     if prebiotic_summary:
         base_how += f" + prebiotics: {prebiotic_summary}"
-    if lp815:
-        base_how += " + LP815 psychobiotic (5B CFU)"
+    if lpc37:
+        base_how += " + Lpc-37 psychobiotic (5B CFU)"
     
     # Guild-specific additions
     guild_how['Fiber Degraders'] = base_how

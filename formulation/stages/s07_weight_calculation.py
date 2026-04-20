@@ -669,13 +669,13 @@ def _build_component_registry(calc, ctx: PipelineContext) -> List[Dict]:
     sg_decision = rule_outputs.get("softgel", {})
 
     # 1. Probiotics (from calc.probiotic_components)
-    non_lp815 = [p for p in calc.probiotic_components if "LP815" not in p.get("substance", "")]
-    if non_lp815:
-        per_strain_cfu = non_lp815[0].get("cfu_billions", 0)
-        total_base_cfu = sum(p.get("cfu_billions", 0) for p in non_lp815)
+    non_lpc37 = [p for p in calc.probiotic_components if "Lpc-37" not in p.get("substance", "")]
+    if non_lpc37:
+        per_strain_cfu = non_lpc37[0].get("cfu_billions", 0)
+        total_base_cfu = sum(p.get("cfu_billions", 0) for p in non_lpc37)
         dose_str = f"{total_base_cfu}B CFU ({per_strain_cfu}B each)" if per_strain_cfu else f"{total_base_cfu}B CFU"
         registry.append({
-            "substance": f"{len(non_lp815)} base strains ({mix_name})",
+            "substance": f"{len(non_lpc37)} base strains ({mix_name})",
             "dose": dose_str,
             "delivery": "probiotic capsule",
             "category": "probiotic",
@@ -686,20 +686,20 @@ def _build_component_registry(calc, ctx: PipelineContext) -> List[Dict]:
             "informed_by": "microbiome",
         })
 
-    # LP815 separately
-    lp815_strains = [p for p in calc.probiotic_components if "LP815" in p.get("substance", "")]
-    if lp815_strains:
+    # Lpc-37 separately
+    lpc37_strains = [p for p in calc.probiotic_components if "Lpc-37" in p.get("substance", "")]
+    if lpc37_strains:
         mix_id = mix.get("mix_id")
-        lp815_label = "LP815 psychobiotic strain" if mix_id == 7 else "LP815 gut-brain enhancement strain"
+        lpc37_label = "Lpc-37 psychobiotic strain" if mix_id == 7 else "Lpc-37 gut-brain enhancement strain"
         registry.append({
-            "substance": f"{lp815_label} (5B CFU)",
+            "substance": f"{lpc37_label} (5B CFU)",
             "dose": "5B CFU",
             "delivery": "probiotic capsule",
             "category": "probiotic",
             "source": "microbiome_linked",
             "health_claims": ["Stress/Anxiety", "Sleep Quality", "Gut-Brain"],
             "based_on": f"Microbiome gut-brain pattern + stress {stress}/10",
-            "what_it_targets": "Stress, anxiety, mood, sleep (produces calming GABA)",
+            "what_it_targets": "Stress, anxiety, mood, sleep (HPA-axis modulation — published RCT evidence for reduced perceived stress)",
             "informed_by": "microbiome + questionnaire",
         })
 

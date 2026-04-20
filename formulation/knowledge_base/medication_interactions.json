@@ -64,7 +64,7 @@
           "resolution": {
             "type": "conditional_remove",
             "condition": "alternative_stress_support_exists",
-            "check_alternatives": ["ashwagandha", "LP815", "l-theanine"],
+            "check_alternatives": ["ashwagandha", "lpc37", "l-theanine"],
             "minimum_alternatives_present": 1,
             "reason": "Magnesium not necessary when stress/relaxation support is already covered by other components"
           }

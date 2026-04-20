@@ -104,7 +104,7 @@ Each client receives a **daily supplement kit** consisting of multiple delivery 
 |---|------|--------|------------------|-----------------|
 | 1 | **Probiotic Hard Capsule** | Morning | 5-8 specific probiotic strains, 50B CFU total | Acid-resistant capsule protects live bacteria through stomach acid |
 | 2 | **Omega + Antioxidant Softgel** | Morning (×2) | Omega-3 (DHA+EPA), Vitamin D3, Vitamin E, Astaxanthin | Fat-soluble compounds need oil matrix for absorption |
-| 3 | **Daily Sachet** (powder drink) | Morning | Prebiotic fibers + water-soluble vitamins + supplements | Volume — prebiotic fibers are bulky (3-10g), can't fit in a capsule |
+| 3 | **Daily Powder Jar** (drink) | Morning | Prebiotic fibers + water-soluble vitamins + supplements | Volume — prebiotic fibers are bulky (3-10g), can't fit in a capsule |
 | 4 | **Morning Wellness Capsule** | Morning | Polyphenols (e.g., Curcumin + Piperine) | Bitter/pungent substances taste terrible in a drink |
 | 5 | **Stress & Relaxation Capsule** | Evening | Calming supplements (e.g., Ashwagandha, L-Theanine) | Evening timing for sleep support and relaxation |
 | 6 | **Magnesium Capsule** | Evening (×1-2) | Magnesium bisglycinate | Evening for sleep, recovery, and relaxation |
@@ -117,7 +117,7 @@ From client `1421794165663` (batch nb1_2026_006):
 
 - **Unit 1**: Probiotic capsule — Mix 4 (Proteolytic Suppression) — 5 strains at 50B CFU total. This client had proteolytic overgrowth, so we selected strains that competitively suppress protein-fermenting bacteria.
 - **Unit 2**: 2× Omega softgels — Omega-3, D3, E, Astaxanthin
-- **Unit 3**: Daily sachet — PHGG 2.5g + Beta-glucans 1.0g + B1 + B2 + B12 + Vitamin C + Zinc (3.76g total)
+- **Unit 3**: Daily powder jar — PHGG 2.5g + Beta-glucans 1.0g + B1 + B2 + B12 + Vitamin C + Zinc (3.76g total)
 - **Unit 4**: Morning capsule — Curcumin 500mg + Piperine 5mg (anti-inflammatory)
 - **Unit 5**: Evening capsule — Ashwagandha 600mg (stress 7/10 → calming support)
 - **Unit 6**: Evening capsule 2 — Quercetin 450mg + L-Theanine 200mg
@@ -135,16 +135,16 @@ Every component in the formula is tagged with its **source** — explaining WHY 
 
 **Questionnaire-driven** (lifestyle personalization):
 - Sleep supplements: L-Theanine, Melatonin, Valerian Root — selected based on sleep quality score and sleep problem type (onset vs maintenance)
-- Stress adaptogens: Ashwagandha — routed to evening capsule when calming goals present. LP815 psychobiotic strain added to probiotic mix when stress ≥6/10
+- Stress adaptogens: Ashwagandha — routed to evening capsule when calming goals present. Lpc-37 psychobiotic strain added to probiotic mix when stress ≥6/10 or (stress ≥4/10 AND mood/anxiety goal)
 - Magnesium dosing: 1 or 2 capsules — based on a 3-criteria scoring: sleep quality, sport/exercise level, stress level
 - Softgel inclusion: Based on goals like skin health, brain health, immune support
 - Polyphenols: Curcumin, Quercetin, Bergamot — selected based on health goals and inflammation markers
-- Timing: Whether supplements go morning (sachet) vs evening (capsule) — based on whether the client has calming goals
+- Timing: Whether supplements go morning (powder jar) vs evening (capsule) — based on whether the client has calming goals
 
 **Fixed components** (same standard for everyone who gets them):
 - Softgel composition: Omega-3 + D3 + E + Astaxanthin is a fixed blend (if included)
 - Capsule format: Size 00 vegetarian hard capsules
-- Sachet capacity: Maximum 19g
+- Powder jar capacity: Maximum 19g daily dose
 - Capsule capacity: Maximum 650mg per capsule
 - Protocol duration: 16 weeks
 
@@ -424,13 +424,13 @@ We maintain a library of **8 pre-designed probiotic mixes**, each targeting a sp
 | 7 | **Psychobiotic** | 5 | Gut-brain primary | Clinician-directed for primary gut-brain axis intervention |
 | 8 | **Fiber Expansion & Displacement** | 5 | Akkermansia overgrowth | Mucin degraders >10% + MDR >+0.5 + Fiber <30% |
 
-### LP815 Psychobiotic Enhancement
+### Lpc-37 Psychobiotic Enhancement
 
-**LP815** (*Lactiplantibacillus plantarum* LP815) is a psychobiotic strain that produces **50mg GABA** (a calming neurotransmitter) at 5B CFU. It can be **added to any mix** when:
+**Lpc-37** (*Lacticaseibacillus paracasei* Lpc-37, supplier IFF/HOWARU) is a psychobiotic strain with **published RCT evidence** for reducing perceived stress at **5B CFU/day**. Its mechanism is **HPA-axis modulation** (not GABA production). It can be **added to any mix** when:
 - Stress ≥6/10, OR
 - Stress ≥4/10 + mood/anxiety goal
 
-This means any mix can become a partial psychobiotic formula when the client needs stress/mood support, without requiring the full Mix 7.
+This means any mix can become a partial psychobiotic formula when the client needs stress/mood support, without requiring the full Mix 7. Mix 7 itself includes Lpc-37 as a named core strain at 10B CFU.
 
 ### Each Mix Has a Tailored Prebiotic Strategy
 
@@ -820,16 +820,16 @@ When conflicts arise (e.g., polyphenol cap exceeded, mineral absorption competit
 - **Deterministic exclusions**: Remove any LLM-selected items that are handled by other pipeline stages (magnesium, omega, melatonin, prebiotic fibers) — prevents double-dosing
 - **Vitamin inclusion gate**: Blocks unjustified B-vitamins (e.g., LLM adds B6 without a deficiency report or microbiome signal → removed because B6 toxicity risk at high doses)
 - **Iron gate**: Males cannot receive iron unless explicitly deficient (KB rule: "men avoid")
-- **Delivery format enforcement**: Fat-soluble vitamins (A, D, E) forced to softgel; water-soluble forced to sachet
+- **Delivery format enforcement**: Fat-soluble vitamins (A, D, E) forced to softgel; water-soluble forced to powder jar
 
 ### 2. Capsule-Only Substance Enforcement
-Certain supplements (curcumin, berberine, quercetin, etc.) taste bitter/pungent and MUST NOT go in the sachet (drink). These are rerouted to capsule format per KB rules.
+Certain supplements (curcumin, berberine, quercetin, etc.) taste bitter/pungent and MUST NOT go in the powder jar (drink). These are rerouted to capsule format per KB rules.
 
 ### 3. Polyphenol Management
 - **Exclusion guards**: Quercetin auto-excluded for pregnancy, kidney disease, or anticoagulant medications
 - **Piperine auto-addition**: Curcumin always gets Piperine at 1:100 ratio (absorption enhancer)
 - **1000mg polyphenol cap**: Total polyphenol mass capped; excess resolved by LLM-informed dropping or deterministic trimming
-- **Tier routing**: Tier 2 polyphenols (curcumin+piperine, bergamot) → dedicated morning capsule; Tier 1 → evening capsule; Sachet-safe (apple, pomegranate) → sachet
+- **Tier routing**: Tier 2 polyphenols (curcumin+piperine, bergamot) → dedicated morning capsule; Tier 1 → evening capsule; Jar-safe (apple, pomegranate) → powder jar
 
 ### 4. Interaction Safety
 - **Herb-drug interactions**: Ashwagandha + thyroid medication (HIGH → auto-remove), Rhodiola + SSRIs (HIGH → auto-remove), Valerian + benzodiazepines (HIGH → auto-remove)
@@ -853,14 +853,14 @@ Every component is assigned to a physical delivery unit with strict capacity lim
 |------|--------|----------|--------|----------|
 | 1 | Probiotic Hard Capsule (Size 00) | 650mg | Morning | Probiotic strains (10mg per 1B CFU) |
 | 2 | Omega Softgel (×1-2) | Fixed composition | Morning | Omega-3 + D3 + E + Astaxanthin |
-| 3 | Daily Sachet | **19g max** | Morning | Prebiotics + water-soluble vitamins + supplements |
+| 3 | Daily Powder Jar | **19g max/day** | Morning | Prebiotics + water-soluble vitamins + supplements |
 | 4 | Evening Capsule (Size 00) | 650mg | Evening | Ashwagandha, L-Theanine, Valerian, etc. |
 | 5 | Polyphenol Capsule (Size 00) | 650mg | Morning | Curcumin+Piperine, Bergamot |
 | 6 | Magnesium Capsule (Size 00, ×1-2) | 750mg each | Evening | Magnesium bisglycinate |
 
-### Smart Sachet Overflow Resolution
+### Smart Powder Jar Overflow Resolution
 
-The sachet is the most constrained unit (prebiotics alone can be 3-10g, leaving limited room for vitamins and supplements). When the sachet exceeds 19g, a 4-step smart resolution algorithm runs:
+The powder jar is the most constrained unit (prebiotics alone can be 3-10g, leaving limited room for vitamins and supplements). When the daily jar dose exceeds 19g, a 4-step smart resolution algorithm runs:
 
 1. **Reduce doses** to knowledge base minimums
 2. **Reroute** compatible supplements to evening capsule (checking timing restrictions)
@@ -876,7 +876,7 @@ When evening components overflow a single 650mg capsule, the pipeline automatica
 The `FormulationCalculator` validates:
 - No unit exceeds its capacity
 - All probiotics fit within 650mg (max 65B CFU → 650mg at 10mg/B)
-- Sachet ≤19g
+- Powder jar daily dose ≤19g
 - Each capsule ≤650mg
 - All selected supplements are accounted for (supplement presence check)
 
@@ -902,7 +902,7 @@ Stage F assembles all outputs. For each sample, the formulation pipeline generat
 
 A **component registry** is built as a single source of truth — listing every substance in the final formula with:
 - Substance name and dose
-- Delivery unit (capsule, sachet, softgel, etc.)
+- Delivery unit (capsule, powder jar, softgel, etc.)
 - Category (probiotic, prebiotic, vitamin, supplement, etc.)
 - **Source**: `microbiome_primary`, `microbiome_linked`, or `questionnaire_only`
 - Health claims addressed
@@ -1356,7 +1356,7 @@ Already partially implemented (CLR ratios suggest dietary patterns — e.g., neg
 ✅ **Complete formulation pipeline** — From microbiome analysis + questionnaire to manufacturing recipe  
 ✅ **8 probiotic mixes** with evidence-based strain selection and ecological rationale  
 ✅ **Comprehensive safety system** — drug interactions, mineral conflicts, polyphenol caps, sensitivity gating  
-✅ **Multiple delivery formats** — capsules, softgels, sachets with smart capacity management  
+✅ **Multiple delivery formats** — capsules, softgels, powder jars with smart capacity management  
 ✅ **Dashboard generation** — Interactive HTML dashboards for clients and board  
 ✅ **Batch processing** — Process entire batches with single commands  
 ✅ **Audit trail** — Decision traces, pipeline logs, component rationale for every sample  
@@ -1367,7 +1367,7 @@ This pipeline covers the entire journey from raw DNA sequences to a physical pro
 - **Ecological context** (not just "is this bacterium present" but "how is it competing with other guilds")
 - **Metabolic relationships** (trophic cascades, cross-feeding, substrate competition)
 - **Clinical safety** (drug interactions, mineral absorption conflicts, pregnancy exclusions)
-- **Physical constraints** (capsule capacity, sachet weight, taste/delivery format)
+- **Physical constraints** (capsule capacity, powder jar weight, taste/delivery format)
 - **Client context** (goals, symptoms, sleep, stress, exercise, diet)
 - **Production feasibility** (manufacturing recipes with exact weights and unit specifications)
 

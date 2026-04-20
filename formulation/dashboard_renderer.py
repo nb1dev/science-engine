@@ -1159,8 +1159,8 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
             if strains:
                 mix_lines += '<div style="font-size:12px;color:var(--mid);padding:4px 0 0"><strong>Component Decision Lines:</strong></div>'
                 for s in strains:
-                    is_lp = "LP815" in s.get("name", "")
-                    role_tag = "stress/gut-brain" if is_lp else _esc(mix_data.get("mix_name", ""))
+                    is_lpc37 = "Lpc-37" in s.get("name", "")
+                    role_tag = "stress/gut-brain" if is_lpc37 else _esc(mix_data.get("mix_name", ""))
                     mix_lines += f'<div style="font-size:11px;color:var(--mid);padding:1px 0;padding-left:12px">→ {_esc(s.get("name","?"))} {s.get("cfu_billions","?")}B | {role_tag}</div>'
             if mix_lines:
                 mix_extra = f'<div style="margin-top:8px;background:var(--sand);border-radius:6px;padding:10px 12px">{mix_lines}</div>'
@@ -1172,13 +1172,13 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
             cls = sens_data.get("classification", "?")
             sens_extra = f'<div style="margin-top:6px;font-size:12px;color:var(--mid)"><strong>Strategy:</strong> {cls.title()} sensitivity — prebiotic max {sens_data.get("max_prebiotic_g", "?")}g</div>'
 
-        # LP815 extra from mix strains
-        lp815_extra = ""
-        if step.get("decision") == "LP815 Enhancement":
+        # Lpc-37 extra from mix strains
+        lpc37_extra = ""
+        if step.get("decision") == "Lpc-37 Enhancement":
             mix_data2 = master.get("decisions", {}).get("mix_selection", {})
             for s2 in mix_data2.get("strains", []):
-                if "LP815" in s2.get("name", ""):
-                    lp815_extra = f'<div style="margin-top:6px;font-size:12px;color:var(--mid)">→ {_esc(s2.get("name","?"))} {s2.get("cfu_billions","?")}B CFU | stress/gut-brain | add-on (separate from base 50B)</div>'
+                if "Lpc-37" in s2.get("name", ""):
+                    lpc37_extra = f'<div style="margin-top:6px;font-size:12px;color:var(--mid)">→ {_esc(s2.get("name","?"))} {s2.get("cfu_billions","?")}B CFU | stress/gut-brain | add-on (separate from base 50B)</div>'
 
         overrides_html = ""
         # Prebiotic Design overrides are already rendered inside extra_detail above —
@@ -1224,7 +1224,7 @@ def build_board_dashboard(sample_id: str, output_dir: str) -> str:
             <div style="color:var(--mid);margin-bottom:5px"><strong style="color:var(--dark)">Input:</strong> {input_text}</div>
             <div style="color:var(--green);font-weight:600;margin-bottom:5px"><strong style="color:var(--dark)">Result:</strong> {_esc(step["result"])}</div>
             <div style="color:var(--mid);font-style:italic"><strong style="color:var(--dark);font-style:normal">Reasoning:</strong> {_esc(step.get("reasoning",""))}</div>
-            {sens_extra}{mix_extra}{lp815_extra}{components_html}{extra_detail}{overrides_html}
+            {sens_extra}{mix_extra}{lpc37_extra}{components_html}{extra_detail}{overrides_html}
           </div>
         </div>'''
 

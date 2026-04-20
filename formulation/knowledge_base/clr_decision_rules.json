@@ -53,7 +53,7 @@
       "name": "Psychobiotic",
       "primary_triggers": ["stress_gte_5_with_gut_brain_involvement"],
       "secondary_triggers": ["IBS_with_psychological_overlay"],
-      "enhancement_rule": "LP815 added when stress≥6/10 OR sleep≤4/10"
+      "enhancement_rule": "Lpc-37 added when stress≥6/10 OR (stress≥4/10 AND mood/anxiety is a stated goal)"
     },
     "mix_8": {
       "name": "Fiber Expansion & Competitive Displacement",

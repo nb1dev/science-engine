@@ -63,7 +63,7 @@ def _enrich_priority_interventions(priority_interventions: list) -> list:
     """Add client-facing guild_display_name to each priority intervention.
 
     The formulation master stores internal guild names (e.g., 'Butyrate Producers')
-    while the microbiome platform uses client-facing names (e.g., 'Gut-Lining Energy Producers').
+    while the microbiome platform uses client-facing names (e.g., 'Gut Wall Protectors').
     This enrichment adds guild_display_name so the platform frontend can show consistent
     names across both the health report and formulation views.
 
@@ -513,13 +513,13 @@ def build_decision_trace(master: Dict, trace_events: list = None, sample_dir: st
         "confidence": mix.get("confidence", ""),
     })
 
-    # Step 3: LP815
-    if mix.get("lp815_added"):
+    # Step 3: Lpc-37
+    if mix.get("lpc37_added"):
         steps.append({
-            "step": 3, "decision": "LP815 Enhancement", "method": "deterministic",
+            "step": 3, "decision": "Lpc-37 Enhancement", "method": "deterministic",
             "input": f"Stress {q.get('stress_level', '?')}/10, goals: {q.get('goals_ranked', [])}",
             "result": "YES — 5B CFU added",
-            "reasoning": "Stress/mood triggers met → GABA producer for stress/sleep",
+            "reasoning": "Stress/mood triggers met → HPA-axis modulator (published RCT evidence for reduced perceived stress)",
         })
 
     # Step 4: Softgel Decision
@@ -1179,13 +1179,13 @@ def _build_health_table_legacy(master: Dict) -> list:
     health_table = []
     mix_name = mix.get("mix_name", "")
     mix_trigger = mix.get("primary_trigger", "")
-    lp815 = mix.get("lp815_added", False)
+    lpc37 = mix.get("lpc37_added", False)
     strain_count = len(mix.get("strains", []))
-    base_strains = strain_count - (1 if lp815 else 0)
+    base_strains = strain_count - (1 if lpc37 else 0)
 
     health_table.append({"component": f"{base_strains} probiotic strains ({mix_name})", "what_it_targets": _derive_mix_target(mix), "based_on": f"Microbiome analysis ({mix_trigger})", "source": "microbiome_primary", "delivery": "probiotic capsule"})
-    if lp815:
-        health_table.append({"component": "LP815 psychobiotic strain (5B CFU)", "what_it_targets": "Stress, anxiety, mood, sleep", "based_on": f"Microbiome gut-brain pattern + stress {q.get('stress_level','?')}/10", "source": "microbiome_linked", "delivery": "probiotic capsule"})
+    if lpc37:
+        health_table.append({"component": "Lpc-37 psychobiotic strain (5B CFU)", "what_it_targets": "Stress, anxiety, mood, sleep (HPA-axis modulation)", "based_on": f"Microbiome gut-brain pattern + stress {q.get('stress_level','?')}/10", "source": "microbiome_linked", "delivery": "probiotic capsule"})
 
     for pb in prebiotics.get("prebiotics", []):
         health_table.append({"component": f"{pb['substance']} ({pb['dose_g']}g)", "what_it_targets": _derive_prebiotic_target(pb['substance'], mix_name), "based_on": f"Microbiome pattern", "source": "microbiome_primary", "delivery": "jar"})
@@ -1224,7 +1224,7 @@ def _derive_prebiotic_target(substance: str, mix_name: str) -> str:
     elif "fos" in s:
         return "Selective Bifidobacteria feeding"
     elif "resistant starch" in s:
-        return "Butyrate production, LP815 GABA fuel"
+        return "Butyrate production, LF16 GABA substrate (Mix 7)"
     elif "beta-glucan" in s or "beta glucan" in s:
         return "Gentle SCFA substrate, fiber expansion"
     elif "pectin" in s:

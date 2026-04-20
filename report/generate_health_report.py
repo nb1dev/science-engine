@@ -475,13 +475,13 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
         strengths.append({
             'icon': '🌱',
             'title': 'High diversity and ecosystem resilience',
-            'text': f'Your gut has a rich variety of bacterial species (Shannon {shannon:.2f}, top 25% of population) with strong community balance (Pielou {pielou:.2f}). A diverse, even ecosystem bounces back faster from disruption.',
+            'text': 'Your gut has a rich variety of bacterial species — in the top 25% of people we test — with strong community balance. A diverse, even ecosystem bounces back faster from disruption.',
         })
     elif shannon >= SHANNON_MED:
         strengths.append({
             'icon': '🌱',
             'title': 'Good diversity',
-            'text': f'Your gut shows good species diversity (Shannon {shannon:.2f}, above the population median of 3.29). A varied bacterial community provides a more stable and adaptable foundation for gut health.',
+            'text': 'Your gut shows good species diversity — above average compared to the wider population. A varied bacterial community provides a more stable and adaptable foundation for gut health.',
         })
 
     # 4. Strong butyrate support
@@ -582,7 +582,7 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
             strengths.append({
                 'icon': '💪',
                 'title': f'Strong competitive position — {gname}',
-                'text': f'Your {gname.lower()} hold a strong competitive position in your gut ecosystem (CLR {clr:+.2f}), meaning they are winning the competition for ecological space. This is a positive sign for long-term stability.',
+                'text': f'Your {gname.lower()} hold a strong competitive position in your gut ecosystem, meaning they are winning the competition for ecological space. This is a positive sign for long-term stability.',
             })
             break  # Only flag the most prominent one
 
@@ -666,14 +666,14 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
         status = gdata.get('status', '')
         if is_beneficial and (abund == 0 or (abund < 2.0 and 'below' in status.lower())):
             ak, al = _guild_area(gname)
-            clr_txt = f' and is being outcompeted (CLR {clr:+.2f})' if clr is not None and clr < -0.5 else ''
+            clr_txt = ' and are being crowded out by other bacteria' if clr is not None and clr < -0.5 else ''
             challenges.append({
                 'icon': '⚠️',
                 'title': f'{gname} — absent or critically low',
                 'area_key': ak,
                 'area_label': al,
                 'severity': 'critical',
-                'text': f'Your {gname.lower()} are{"completely absent" if abund == 0 else f" at only {abund:.1f}%"}{clr_txt}. This is a significant gap — this bacterial group plays an essential role in your gut\'s fermentation network.',
+                'text': f'Your {gname.lower()} are{" completely absent" if abund == 0 else f" at only {abund:.1f}%"}{clr_txt}. This is a significant gap — this bacterial group plays an essential role in your gut\'s fermentation network.',
             })
             flagged_area_keys.add(ak)
 
@@ -710,7 +710,7 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
                 'area_key': 'monoculture',
                 'area_label': 'monoculture risk',
                 'severity': 'moderate',
-                'text': f'Your {gname.lower()} show low internal diversity (evenness score {j:.2f}) — most of the functional capacity is concentrated in a single species. This is fragile: if that species is disrupted, the guild loses its function with little backup.',
+                'text': f'Your {gname.lower()} show low internal diversity — most of the functional capacity is concentrated in a single species. This is fragile: if that species is disrupted, the group loses its function with little backup.',
             })
             flagged_area_keys.add('monoculture')
 
@@ -722,7 +722,7 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
             'area_key': 'resilience',
             'area_label': 'ecosystem resilience',
             'severity': 'moderate',
-            'text': f'{"Low species diversity (Shannon " + str(round(shannon, 2)) + ") " if shannon < SHANNON_LOW else ""}{"Low average guild evenness (" + str(round(avg_j, 2)) + ") " if avg_j < 0.50 else ""}suggest your gut ecosystem is more vulnerable to disruption. A less diverse community has fewer functional backups.',
+            'text': f'{"Low species variety " if shannon < SHANNON_LOW else ""}{"and several bacterial groups relying too heavily on one species " if avg_j < 0.50 else ""}suggest your gut ecosystem is more vulnerable to disruption. A less diverse community has fewer functional backups.',
         })
         flagged_area_keys.add('resilience')
 
@@ -734,7 +734,7 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
             'area_key': 'diversity',
             'area_label': 'microbial diversity',
             'severity': 'moderate',
-            'text': f'Your species diversity (Shannon {shannon:.2f}) is in the lower half of the normal range — below the population median of 3.29 but above the 25th percentile. Building more diversity over time is a worthwhile goal and one of the indirect benefits of your prebiotic protocol.',
+            'text': 'Your species diversity is in the lower half of the normal range — below average but not unusually low. Building more diversity over time is a worthwhile goal and one of the indirect benefits of your prebiotic protocol.',
         })
         flagged_area_keys.add('diversity')
 
@@ -746,7 +746,7 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
             'area_key': 'diversity',
             'area_label': 'microbial diversity',
             'severity': 'moderate',
-            'text': f'Your species diversity score (Shannon {shannon:.2f}) places you below the 25th percentile of the reference population. Limited diversity means fewer types of bacteria available to handle different tasks — building diversity is a key long-term goal.',
+            'text': 'Your species diversity is lower than most people we test. Limited diversity means fewer types of bacteria available to handle different tasks — building diversity is a key long-term goal.',
         })
         flagged_area_keys.add('diversity')
 
@@ -790,7 +790,7 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
                     'area_key': ak,
                     'area_label': al,
                     'severity': 'moderate',
-                    'text': f'Your {gname.lower()} are trying to grow (positive competitive position, CLR {clr:+.2f}) but are below their target range at {abund:.1f}%. They\'re winning the competition but don\'t have enough substrate to fuel the expansion. This is a substrate-limitation pattern, not a colonization problem.',
+                    'text': f'Your {gname.lower()} are trying to grow but are below their target range at {abund:.1f}%. They\'re winning the competition for space but don\'t have enough dietary fuel to expand. This is a feeding problem, not a colonization problem.',
                 })
                 flagged_area_keys.add(ak)
 
@@ -810,7 +810,7 @@ def compute_strengths_challenges(analysis: dict, circle_scores: dict) -> dict:
                     'area_key': ak,
                     'area_label': al,
                     'severity': 'moderate',
-                    'text': f'Your {gname.lower()} are at {abund:.1f}% (within range) but are being outcompeted by other bacteria (CLR {clr:+.2f}). Despite their adequate numbers, they\'re under competitive pressure and may struggle to maintain their position over time.',
+                    'text': f'Your {gname.lower()} are at {abund:.1f}% (within range) but are being outcompeted by other bacteria. Despite their adequate numbers, they\'re under competitive pressure and may struggle to maintain their position over time.',
                 })
                 flagged_area_keys.add(ak)
 
@@ -1116,14 +1116,14 @@ def _check_diversity_match(analysis: dict, match_requires: str) -> bool:
 
 # ── Guild client-facing names (for deviation display) ────────────────────────
 _GUILD_CLIENT_NAMES = {
-    'Fiber Degraders': 'Fiber-Processing Bacteria',
+    'Fiber Degraders': 'Fibre Digesters',
     'Bifidobacteria': 'Bifidobacteria',
     'HMO/Oligosaccharide-Utilising Bifidobacteria': 'Bifidobacteria',  # legacy name compat
-    'Butyrate Producers': 'Gut-Lining Energy Producers',
-    'Cross-Feeders': 'Intermediate Processors',
-    'Mucin Degraders': 'Mucus-Layer Bacteria',
-    'Proteolytic Dysbiosis Guild': 'Protein-Fermenting Bacteria',
-    'Proteolytic Guild': 'Protein-Fermenting Bacteria',
+    'Butyrate Producers': 'Gut Wall Protectors',
+    'Cross-Feeders': 'Nutrient Recyclers',
+    'Mucin Degraders': 'Gut Lining Processors',
+    'Proteolytic Dysbiosis Guild': 'Protein Recyclers',
+    'Proteolytic Guild': 'Protein Recyclers',
 }
 _GUILD_ICONS = {
     'Fiber Degraders': '🌾',
@@ -1343,10 +1343,13 @@ def _extract_questionnaire_context(questionnaire: dict) -> dict:
     age = questionnaire.get('age') or qdata.get('step_1', {}).get('basic', {}).get('age')
     sex = questionnaire.get('biological_sex', '')
 
+    step2 = qdata.get('step_2', {})
     step3 = qdata.get('step_3', {})
     step4 = qdata.get('step_4', {})
     step5 = qdata.get('step_5', {})
+    step6 = qdata.get('step_6', {})
     step7 = qdata.get('step_7', {})
+    step8 = qdata.get('step_8', {})
 
     # Antibiotic courses — full detail
     ab_courses = step3.get('antibiotic_courses', [])
@@ -1362,60 +1365,224 @@ def _extract_questionnaire_context(questionnaire: dict) -> dict:
             entry += f" — lingering: {lingering}"
         antibiotic_summary.append(entry)
 
-    # Lifestyle context
+    # ── Medications (NSAIDs, PPIs, SSRIs) ──
+    medications = []
+    nsaid_use = step3.get('nsaid_use', '')
+    if nsaid_use and nsaid_use not in ('no', 'none', ''):
+        med_str = f"NSAID: {step3.get('nsaid_which', '?')}"
+        freq = step3.get('nsaid_frequency', '')
+        dose = step3.get('nsaid_typical_dose', '')
+        how_long = step3.get('nsaid_how_long', '')
+        if dose:
+            med_str += f" {dose}"
+        if freq:
+            med_str += f" ({freq})"
+        if how_long:
+            med_str += f" for {how_long}"
+        med_str += f" [use: {nsaid_use}]"
+        medications.append(med_str)
+    ppi_has = step3.get('ppi_has', '')
+    if ppi_has == 'yes':
+        ppi_str = f"PPI: {step3.get('ppi_which', '?')}"
+        ppi_dose = step3.get('ppi_dosage', '')
+        ppi_freq = step3.get('ppi_frequency', '')
+        ppi_how_long = step3.get('ppi_how_long', '')
+        if ppi_dose:
+            ppi_str += f" {ppi_dose}"
+        if ppi_freq:
+            ppi_str += f" ({ppi_freq})"
+        if ppi_how_long:
+            ppi_str += f" for {ppi_how_long}"
+        medications.append(ppi_str)
+    ssri_drug = step3.get('ssri_snri_drug', '')
+    if ssri_drug:
+        medications.append(f"SSRI/SNRI: {ssri_drug}")
+    other_meds = step3.get('other_medications', [])
+    for m in other_meds:
+        if isinstance(m, dict):
+            medications.append(f"{m.get('name', '?')} {m.get('dosage', '')} ({m.get('reason', '')})")
+        elif isinstance(m, str) and m:
+            medications.append(m)
+
+    # ── Supplements (step_6) ──
+    supplements = []
+    for s in step6.get('supplements', []):
+        if isinstance(s, dict):
+            name = s.get('type', '') or s.get('name', '')
+            if name:
+                freq = s.get('frequency', '')
+                effect = s.get('effect', '')
+                entry = name
+                if freq:
+                    entry += f" ({freq})"
+                if effect and effect not in ('', 'not_sure'):
+                    entry += f" — effect: {effect}"
+                supplements.append(entry)
+
+    # ── Digestive symptoms (step_2) ──
+    bloating_freq = step2.get('bloating_frequency', '')
+    bloating_severity = step2.get('bloating_severity', '')
+    abdom_pain_freq = step2.get('abdominal_pain_frequency', '')
+    abdom_pain_severity = step2.get('abdominal_pain_severity', '')
+    stool_pattern = step2.get('stool_pattern', '')
+    bm_frequency = step2.get('bm_frequency_if_yes', '')
+    digestive_satisfaction = step2.get('digestive_satisfaction', '')
+    digestive_over_time = step2.get('digestive_health_over_time', '')
+
+    # ── Lifestyle context (step_5) ──
     stress = step5.get('overall_stress_level_1_10')
     stress_symptoms = step5.get('stress_symptoms', [])
     sleep_quality = step5.get('sleep_quality_rating_1_10')
+    sleep_hours = step5.get('sleep_duration_weeknights_hours', '')
     sleep_issues = step5.get('sleep_issues', [])
     activity_level = qdata.get('step_1', {}).get('basic', {}).get('average_daily_activity_level', '')
     vigorous_days = step5.get('vigorous_days_per_week', 0)
     steps = step5.get('average_daily_step_count', '')
+    hours_sitting = step5.get('hours_sitting_per_day', '')
+    energy_level = step5.get('typical_energy_level', '')
+    energy_dip_after_meals = step5.get('energy_dip_after_meals', '')
+    digestive_symptoms_with_stress = step5.get('digestive_symptoms_with_stress', '')
+    mental_clarity = step5.get('mental_clarity', '')
+    mood_stability = step5.get('mood_stability', '')
 
-    # Diet
+    # ── Diet (step_4) ──
     fiber_intake = step4.get('fiber_intake', '')
     diet_pattern = step4.get('diet_pattern', '')
     alcohol_freq = step4.get('alcohol_frequency', '')
     alcohol_drinks = step4.get('alcohol_drinks_per_week', '')
     tobacco = step4.get('tobacco_use', '')
+    tobacco_details = step4.get('tobacco_details', '')
     processed_foods = step4.get('processed_foods_frequency', step4.get('processed_foods', ''))
     fermented_foods = step4.get('fermented_foods_frequency', '')
     protein_pattern = step4.get('protein_pattern', '')
+    # Detailed plant food frequencies
+    fruits = step4.get('fruits', '')
+    veg_non_starchy = step4.get('veg_non_starchy', '')
+    whole_grains = step4.get('whole_grains', '')
+    legumes = step4.get('legumes_beans', '')
+    seeds = step4.get('seeds', '')
+    # Animal protein detail
+    freq_red_meat = step4.get('freq_red_meat', '')
+    freq_poultry = step4.get('freq_poultry', '')
+    freq_fish = step4.get('freq_fish_seafood', '')
+    freq_dairy = step4.get('freq_dairy', '')
+    # Meal timing
+    meal_timing = step4.get('meal_timing', '')
+    breakfast_timing = step4.get('breakfast_timing', '')
+    evening_eating = step4.get('evening_eating', '')
+    water_intake = step4.get('water_intake', '')
+    # Trigger foods
+    trigger_foods = step4.get('trigger_foods', [])
+    sensitivity_avoids = step4.get('sensitivity_avoids', [])
 
-    # Goals
+    # ── Goals ──
     goals = qdata.get('step_1', {}).get('goals', {}).get('main_goals_ranked', [])
     other_goal = qdata.get('step_1', {}).get('goals', {}).get('other_goal_details', '')
 
-    # Health context
+    # ── Health context (step_3, step_7) ──
     diagnoses = step3.get('diagnoses', [])
+    diagnoses_other = step3.get('diagnoses_other', '')
+    family_history = step3.get('family_history', {})
     vitamin_deficiencies = step7.get('vitamin_deficiencies', [])
     skin_concerns = step7.get('skin_concerns', [])
+    skin_freq = step7.get('skin_issues_frequency', '')
+    gut_brain_symptoms = step7.get('gut_brain_symptoms', [])
+    bad_breath = step7.get('bad_breath', '')
+    gum_health = step7.get('gum_health', '')
+    mouth_sores = step7.get('mouth_sores', '')
+    colds_per_year = step7.get('colds_per_year', '')
+    uti_per_year = step7.get('uti_per_year', '')
+    cholesterol_awareness = step7.get('cholesterol_elevated_awareness', '')
+
+    # ── Free-text notes (step_8) ──
+    additional_notes = step8.get('additional_context_notes', '')
+
+    # ── Previous probiotic experience (step_6) ──
+    tried_probiotics = step6.get('tried_probiotics_before', '')
+    previous_effect = step6.get('previous_effect', '')
 
     return {
         'first_name': first_name,
         'age': age,
         'sex': sex,
+        # Medications
+        'medications': medications,
         'antibiotics': antibiotic_summary,
         'antibiotics_frequency_lifetime': step3.get('antibiotics_frequency', ''),
+        'supplements': supplements,
+        'tried_probiotics_before': tried_probiotics,
+        'previous_probiotic_effect': previous_effect,
+        # Digestive symptoms
+        'bloating_frequency': bloating_freq,
+        'bloating_severity': bloating_severity,
+        'abdominal_pain_frequency': abdom_pain_freq,
+        'abdominal_pain_severity': abdom_pain_severity,
+        'stool_pattern': stool_pattern,
+        'bowel_movement_frequency': bm_frequency,
+        'digestive_satisfaction': digestive_satisfaction,
+        'digestive_health_over_time': digestive_over_time,
+        # Lifestyle
         'stress_level': stress,
         'stress_symptoms': stress_symptoms,
+        'digestive_symptoms_with_stress': digestive_symptoms_with_stress,
         'sleep_quality': sleep_quality,
+        'sleep_hours': sleep_hours,
         'sleep_issues': sleep_issues,
         'activity_level': activity_level,
         'vigorous_days_per_week': vigorous_days,
         'daily_steps': steps,
+        'hours_sitting_per_day': hours_sitting,
+        'typical_energy_level': energy_level,
+        'energy_dip_after_meals': energy_dip_after_meals,
+        'mental_clarity': mental_clarity,
+        'mood_stability': mood_stability,
+        # Diet — summary
         'fiber_intake': fiber_intake,
         'diet_pattern': diet_pattern,
         'alcohol_frequency': alcohol_freq,
         'alcohol_drinks_per_week': alcohol_drinks,
         'tobacco_use': tobacco,
+        'tobacco_details': tobacco_details,
         'processed_foods_frequency': processed_foods,
         'fermented_foods_frequency': fermented_foods,
         'protein_pattern': protein_pattern,
+        'water_intake': water_intake,
+        # Diet — plant food detail
+        'fruits': fruits,
+        'vegetables_non_starchy': veg_non_starchy,
+        'whole_grains': whole_grains,
+        'legumes_beans': legumes,
+        'seeds': seeds,
+        # Diet — animal protein detail
+        'red_meat_frequency': freq_red_meat,
+        'poultry_frequency': freq_poultry,
+        'fish_seafood_frequency': freq_fish,
+        'dairy_frequency': freq_dairy,
+        # Diet — meal timing
+        'meal_timing': meal_timing,
+        'breakfast_timing': breakfast_timing,
+        'evening_eating': evening_eating,
+        'trigger_foods': trigger_foods,
+        'sensitivity_avoids': sensitivity_avoids,
+        # Goals
         'goals': goals,
         'other_goal': other_goal,
+        # Health
         'diagnoses': diagnoses,
+        'diagnoses_other': diagnoses_other,
+        'family_history': family_history,
         'vitamin_deficiencies': vitamin_deficiencies,
         'skin_concerns': skin_concerns,
+        'skin_issues_frequency': skin_freq,
+        'gut_brain_symptoms': gut_brain_symptoms,
+        'bad_breath': bad_breath,
+        'gum_health': gum_health,
+        'mouth_sores': mouth_sores,
+        'colds_per_year': colds_per_year,
+        'uti_per_year': uti_per_year,
+        'cholesterol_awareness': cholesterol_awareness,
+        # Free-text
+        'additional_notes': additional_notes,
     }
 
 
@@ -2720,7 +2887,7 @@ def build_timeline_phases(analysis: dict, formulation: dict) -> list:
     has_omega = False
     has_vit_d = False
     has_prebiotic = False
-    has_lp815 = False
+    has_lpc37 = False
     prebiotic_fodmap_g = 0.0
 
     if formulation:
@@ -2746,8 +2913,8 @@ def build_timeline_phases(analysis: dict, formulation: dict) -> list:
                 has_omega = True
             if 'vitamin d' in sub:
                 has_vit_d = True
-            if 'lp815' in sub or 'lp 815' in sub:
-                has_lp815 = True
+            if 'lpc-37' in sub or 'lpc37' in sub or 'lpc 37' in sub:
+                has_lpc37 = True
             if comp.get('category') == 'prebiotic':
                 has_prebiotic = True
 
@@ -2768,7 +2935,7 @@ def build_timeline_phases(analysis: dict, formulation: dict) -> list:
                 "Your daily prebiotic sachet is reaching the lower gut, priming the environment before "
                 "measurable compositional shifts occur. "
                 + ("Vitamin C, Zinc, and B-vitamins from your sachet begin supporting immune and energy pathways within days. " if has_prebiotic else "")
-                + (f"The LP815 strain begins producing calming GABA from week 1, supporting stress-axis balance. " if has_lp815 else "")
+                + (f"Lpc-37 begins modulating the HPA (stress) axis from week 1, supporting stress-axis balance. " if has_lpc37 else "")
                 + "You may notice small changes in digestion rhythm — this is normal as your gut adjusts."
             ),
         },
@@ -3282,13 +3449,13 @@ def build_goal_cards(questionnaire: dict, formulation: dict, analysis: dict) -> 
             'emoji': '🧘',
             'title': 'Better mood and reduced anxiety',
             'mechanism': 'Your gut produces about 90% of your body\'s serotonin and communicates directly with your brain via the vagus nerve. Gut microbiome imbalances — especially disruptions to beneficial bacteria — have been consistently linked to mood and anxiety patterns.',
-            'formula_link': 'Your formula targets this through Ashwagandha (clinical evidence for cortisol reduction and anxiety relief), LP815 probiotic strain (produces calming GABA), Omega-3 DHA (brain health and mood regulation), and Magnesium Bisglycinate (supports the nervous system and stress resilience).',
+            'formula_link': 'Your formula targets this through Ashwagandha (clinical evidence for cortisol reduction and anxiety relief), Lpc-37 probiotic strain (HPA-axis modulation with published RCT evidence for reduced perceived stress), Omega-3 DHA (brain health and mood regulation), and Magnesium Bisglycinate (supports the nervous system and stress resilience).',
         },
         'improve_sleep_quality': {
             'emoji': '😴',
             'title': 'Better sleep quality',
             'mechanism': 'Sleep and the gut microbiome operate in a bidirectional relationship. Gut bacteria influence circadian rhythm signals, serotonin and melatonin precursor availability, and inflammatory mediators that affect sleep architecture.',
-            'formula_link': 'Your formula targets this through L-Theanine (promotes relaxation without sedation), Magnesium Bisglycinate (supports deep sleep phases), Ashwagandha (reduces HPA-axis activation that disrupts sleep onset), and the LP815 strain (GABA production supports calm states before sleep).',
+            'formula_link': 'Your formula targets this through L-Theanine (promotes relaxation without sedation), Magnesium Bisglycinate (supports deep sleep phases), Ashwagandha (reduces HPA-axis activation that disrupts sleep onset), and Lpc-37 (HPA-axis modulation supports lower pre-sleep arousal).',
         },
         'improve_digestive_comfort': {
             'emoji': '🌿',

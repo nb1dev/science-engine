@@ -484,7 +484,7 @@
         "Curcumin",
         "Omega-3"
       ],
-      "note": "Resistant starch is uniquely required by L. fermentum LF16 for GABA production — this is not substitutable by any other substrate. Inulin supports SCFA environment for GABA precursor activity. GOS serves B. longum 04 cross-feeding. LP815 is the primary GABA producer and its substrate preference is the primary constraint on this mix.",
+      "note": "Resistant starch is uniquely required by L. fermentum LF16 for GABA production — this is not substitutable by any other substrate. Inulin supports SCFA environment for GABA precursor activity. GOS serves B. longum 04 cross-feeding. Lpc-37 (the cross-mix psychobiotic, built in at 10B in Mix 7) acts via HPA-axis modulation and has no substrate dependency — the RS floor is driven entirely by LF16, not Lpc-37.",
       "substrate_necessity": {
         "Resistant Starch": {
           "minimum_g": 0.5,
@@ -497,7 +497,7 @@
           "minimum_g": 0.5,
           "priority": 2,
           "fodmap": true,
-          "mechanism": "SCFA substrate supporting the GABA precursor fermentation environment. Inulin fermentation produces the colonic pH and SCFA milieu that supports LF16 and LP815 GABA output. Omittable only when GOS provides adequate B. longum 04 cross-feeding and RS covers LF16 directly.",
+          "mechanism": "SCFA substrate supporting the GABA precursor fermentation environment. Inulin fermentation produces the colonic pH and SCFA milieu that supports LF16 GABA output. Omittable only when GOS provides adequate B. longum 04 cross-feeding and RS covers LF16 directly.",
           "can_be_omitted_if": "GOS >= 0.5 AND Resistant_Starch >= 0.5"
         },
         "GOS": {

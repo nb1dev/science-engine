@@ -3,7 +3,7 @@
     "version": "2.0.0",
     "source": "probiotic_mixes_v2.xlsx + prebiotics4mixes_v2.md (17 March 2026)",
     "description": "Consolidated synbiotic mix reference — 8 mixes with strains, default prebiotic formulas, and clinical triggers.",
-    "note": "LP815 enhancement is applied separately by the pipeline (not baked into mixes). Mix 7 is the sole exception — LP815 is a core named strain in that mix at 10B.",
+    "note": "Lpc-37 enhancement is applied separately by the pipeline (not baked into mixes). Mix 7 is the sole exception — Lpc-37 is a core named strain in that mix at 10B.",
     "previous_version": "archive/v1_2026_03_17/synbiotic_mixes_v1.json"
   },
   "mixes": {
@@ -676,11 +676,11 @@
           "role": "Psychobiotic 4-strain premix — GABA production, HPA axis modulation, serotonin-pathway support, gut-brain axis signalling bridge. L. rhamnosus LR06 induces region-dependent GABA receptor expression changes; B. longum 04 modulates brain activity during social stress."
         },
         {
-          "name": "Lactiplantibacillus plantarum LP815",
-          "supplier": "Verb Biotics",
+          "name": "Lacticaseibacillus paracasei Lpc-37",
+          "supplier": "IFF/HOWARU",
           "cfu_billions": 10,
-          "evidence": "Mechanistic",
-          "role": "High-potency GABA producer (10B CFU → ~100mg GABA); core psychobiotic strain — always included in Mix 7"
+          "evidence": "RCT",
+          "role": "HPA-axis modulator with published RCT evidence for reduced perceived stress; core psychobiotic strain — always included in Mix 7 at 10B CFU"
         }
       ],
       "default_prebiotic_formula": {
@@ -888,18 +888,18 @@
       }
     }
   },
-  "lp815_enhancement": {
-    "strain": "Lactiplantibacillus plantarum LP815",
-    "supplier": "Verb Biotics",
+  "lpc37_enhancement": {
+    "strain": "Lacticaseibacillus paracasei Lpc-37",
+    "supplier": "IFF/HOWARU",
     "cfu_billions": 5,
     "weight_mg": 50,
-    "mechanism": "5B CFU produces 50mg GABA — stress, irritability, and sleep benefits. Applied as cross-mix enhancement (not as core mix strain).",
-    "note": "Mix 7 includes LP815 at 10B as a named core strain — the enhancement block does NOT add additional LP815 on top of Mix 7. For all other mixes, this enhancement adds 5B LP815 when stress/mood triggers are met.",
+    "mechanism": "HPA-axis modulation — reduced perceived stress (published RCT evidence at 5B CFU/day). Applied as cross-mix enhancement (not as core mix strain).",
+    "note": "Mix 7 includes Lpc-37 at 10B as a named core strain — the enhancement block does NOT add additional Lpc-37 on top of Mix 7. For all other mixes, this enhancement adds 5B Lpc-37 when stress/mood triggers are met.",
     "trigger_rules": [
       "Stress ≥ 6/10 → always add",
       "Stress ≥ 4/10 AND mood/anxiety is a stated goal → always add"
     ],
-    "prebiotic_impact": "Add 0.5-1.0g Resistant Starch for GABA substrate support",
-    "applied_to": "Mixes 1-6, 8 only — enhancement, not replacement. Mix 7 has LP815 built in at 10B."
+    "prebiotic_impact": "None — Lpc-37 acts via HPA-axis modulation and has no specific prebiotic substrate requirement (unlike the previous LP815/GABA rationale).",
+    "applied_to": "Mixes 1-6, 8 only — enhancement, not replacement. Mix 7 has Lpc-37 built in at 10B."
   }
 }

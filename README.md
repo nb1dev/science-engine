@@ -256,7 +256,7 @@ Requires AWS CLI configured with access to:
 | Prebiotic design | **LLM** with deterministic offline fallback — `formulation/llm/prebiotic_designer.py` |
 | Strain lookup | Always from `formulation/knowledge_base/synbiotic_mixes.json` |
 | Medication screening | LLM-assisted — `formulation/llm/medication_screener.py` |
-| Standard probiotic dose | 50B CFU/day + optional 5B LP815 |
+| Standard probiotic dose | 50B CFU/day + optional 5B Lpc-37 |
 | Pipeline architecture | Modular stages `s01–s09` in `formulation/stages/` (refactored 19 March 2026) |
 | Outputs | Written to `analysis/nb1_2026_XXX/{sample_id}/` — never stored in this repo |
 

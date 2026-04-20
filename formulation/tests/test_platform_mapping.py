@@ -55,7 +55,7 @@ def _make_master(mix_id=2, mix_name="Bifidogenic Restore", validation="PASS"):
                 "primary_trigger": "Bifido depleted", "clr_context": "CLR -0.8",
                 "confidence": "high", "total_cfu_billions": 50,
                 "strains": [{"name": "Strain1", "cfu_billions": 50, "role": "test"}],
-                "lp815_added": False,
+                "lpc37_added": False,
             },
             "supplement_selection": {
                 "vitamins_minerals": [
