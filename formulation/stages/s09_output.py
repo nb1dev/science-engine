@@ -254,7 +254,18 @@ def _build_input_summary(ctx: PipelineContext) -> Dict:
             "sleep_quality": q["lifestyle"]["sleep_quality"],
             "sleep_quality_label": _sleep_label(q["lifestyle"]["sleep_quality"]),
             "bloating_severity": q["digestive"]["bloating_severity"],
+            "bloating_frequency": q["digestive"].get("bloating_frequency"),
             "sensitivity_classification": ctx.rule_outputs["sensitivity"]["classification"],
+            # B1 (24 Apr 2026) — narrative mode for Section 3 bloating copy.
+            # Source of truth lives on rule_outputs.sensitivity but is surfaced
+            # here so the health-report builders don't need to traverse the
+            # deeper decisions tree.
+            "symptom_narrative_mode": ctx.rule_outputs["sensitivity"].get("symptom_narrative_mode"),
+            "corroborating_microbiome_signals": ctx.rule_outputs["sensitivity"].get("corroborating_microbiome_signals", []),
+            # B1 extended (24 Apr 2026) — all 6 symptom narrative modes.
+            # {bloating, stress, sleep, fatigue, skin, immune} each with
+            # {mode, signals, severity_band, min_corrob_required}.
+            "symptom_narrative_modes": ctx.rule_outputs.get("symptom_narrative_modes", {}),
             "reported_deficiencies": ctx.rule_outputs["therapeutic_triggers"]["reported_deficiencies"],
             "medications": q["medical"].get("medications", []),
         },

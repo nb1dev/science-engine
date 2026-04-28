@@ -92,6 +92,7 @@ def apply_timing_override(master: Dict, timing_override: Dict) -> Dict:
         "delivery_format_5_evening_wellness_capsules",
         "delivery_format_5_polyphenol_capsule",
         "delivery_format_6_polyphenol_capsule",
+        "delivery_format_7_magnesium_capsule",  # added 23 Apr 2026 — Mg has its own block now
     ]
 
     for key in _delivery_keys_to_override:

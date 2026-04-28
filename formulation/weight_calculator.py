@@ -854,16 +854,30 @@ class FormulationCalculator:
             (polyphenol_totals is None or polyphenol_totals["validation"] == "PASS")
         )
 
-        # Unit counts
+        # Per-block physical unit counts (capsules / softgels / jar — NOT compounds).
+        # These are the same values that go into each delivery_format_N.format.daily_count
+        # so that by construction the Σ per timing === protocol_summary counts.
         has_softgels = bool(self.softgel_components)
         has_polyphenol = bool(self.polyphenol_capsules)
         morning_capsule_count = (morning_totals["capsule_count"] if morning_totals else 0)
         evening_capsule_count = (evening_totals["capsule_count"] if evening_totals else 0)
         polyphenol_count = polyphenol_totals["capsule_count"] if polyphenol_totals else 0
+        mg_timing = (mg_data or {}).get("timing", "evening").lower() if mg_data else "evening"
 
-        morning_solid = 1 + (self.softgel_count if has_softgels else 0) + morning_capsule_count + polyphenol_count
+        # Σ from the exact same counts written into each delivery_format_N.format.daily_count.
+        # 1 unit = 1 physical vessel (jar, capsule, softgel). Compound count is irrelevant.
+        morning_solid = (
+            1                                              # probiotic capsule
+            + (self.softgel_count if has_softgels else 0)  # omega softgels
+            + morning_capsule_count                        # morning wellness capsules
+            + polyphenol_count                             # polyphenol capsule(s)
+            + (mg_count if mg_timing == "morning" else 0)  # magnesium capsules (if morning)
+        )
         morning_jar = 1  # Always 1 jar
-        evening_solid = mg_count + evening_capsule_count
+        evening_solid = (
+            evening_capsule_count                          # evening wellness capsules
+            + (mg_count if mg_timing != "morning" else 0)  # magnesium capsules (evening/bedtime)
+        )
         total_units = morning_solid + morning_jar + evening_solid
 
         # Check against KB limits
@@ -973,6 +987,50 @@ class FormulationCalculator:
                 "components": self.polyphenol_capsules,
                 "totals": polyphenol_totals,
             } if self.polyphenol_capsules else None,
+            # ── Magnesium Capsule(s) — NEW BLOCK (23 April 2026) ─────────────
+            # Magnesium bisglycinate previously had no dedicated delivery_format_*
+            # block, even though protocol_summary counted it in total_daily_units.
+            # That caused Σ(delivery_format.format.daily_count) to disagree with
+            # protocol_summary.total_daily_units on every sample that prescribed
+            # magnesium (100% of drift observed across batches 001–011).
+            # Emitting a proper block restores consistency by construction: the
+            # same `mg_count` / `mg_timing` values used to compute morning_solid /
+            # evening_solid above also drive the daily_count in this block.
+            "delivery_format_7_magnesium_capsule": {
+                "format": {
+                    "type": "hard_capsule",
+                    "size": "00",
+                    "capacity_mg": SOFTGEL_CAPACITY_MG,   # Mg bisglycinate capsule holds 750mg
+                    "daily_count": mg_count,
+                    "timing": mg_timing,
+                    "label": "Magnesium Capsule",
+                },
+                "components": [
+                    {
+                        "substance": "Magnesium Bisglycinate",
+                        "type": "vitamin_mineral",
+                        "dose": f"{mg_count * 750}mg bisglycinate "
+                                f"({mg_count * 105}mg elemental Mg)",
+                        "dose_mg": mg_count * 750,
+                        "weight_mg": mg_count * 750,
+                        "per_capsule_bisglycinate_mg": 750,
+                        "per_capsule_elemental_mg_mg": 105,
+                        "rationale": "; ".join((mg_data or {}).get("reasoning", []))
+                                      or "Sleep / stress / muscle-recovery support",
+                        "informed_by": "questionnaire",
+                    }
+                ],
+                "totals": {
+                    "capsule_count": mg_count,
+                    "capacity_mg_per_capsule": SOFTGEL_CAPACITY_MG,
+                    "total_weight_mg": mg_count * 750,
+                    "per_capsule_fill_mg": 750,
+                    "utilization_pct": 100.0,
+                    "needs": (mg_data or {}).get("needs", []),
+                    "reasoning": (mg_data or {}).get("reasoning", []),
+                    "validation": "PASS",
+                },
+            } if mg_count > 0 else None,
             "protocol_summary": {
                 "synbiotic_mix": {
                     "mix_id": self.mix_id,

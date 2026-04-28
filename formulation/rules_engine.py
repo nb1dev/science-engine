@@ -30,6 +30,30 @@ def _load_kb(filename: str) -> Dict:
 
 
 # ─── SENSITIVITY CLASSIFICATION ───────────────────────────────────────────────
+# Rule hierarchy for the narrative-mode extension (24 April 2026)
+# ---------------------------------------------------------------
+# `classify_sensitivity()` is the engine's authoritative ladder for bloating-
+# driven decisions (prebiotic grams, FODMAP clamp, mix filters). The report
+# side must not re-derive it.
+#
+# After `classify_sensitivity()` runs, `classify_symptom_narrative_mode()`
+# maps that classification (+ microbiome corroboration) onto a narrative
+# mode used by Section 3 of the health report:
+#
+#   low                                      → "none" / "lifestyle_normalising"
+#   moderate + no microbiome corroboration   → "lifestyle_normalising"
+#   moderate + microbiome corroboration      → "microbial_contributing"
+#   high                                     → "microbial_driving"
+#
+# "Microbiome corroboration" means ≥1 of:
+#   - Bifidobacteria depletion  (below range)
+#   - Fiber Degraders below range / CLR negative
+#   - Butyrate Producers below range
+#   - Cross-Feeders below range (limited SCFA chain)
+#   - Mucin Degraders above range (barrier strain) — handled as above=True
+# See rnd_health_report/docs/handover_20260424_render_and_logic_refinements.md
+# Part B1 for the full table and the clinical motivation.
+
 
 def classify_sensitivity(digestive: Dict) -> Dict:
     """
@@ -103,6 +127,449 @@ def classify_sensitivity(digestive: Dict) -> Dict:
         "prebiotic_clamp": rules["moderate_sensitivity"]["prebiotic_clamp"],
         "reasoning": reasoning
     }
+
+
+# ─── SYMPTOM NARRATIVE MODE (B1) ──────────────────────────────────────────────
+
+def classify_symptom_narrative_mode(
+    sensitivity: Dict,
+    microbiome: Dict,
+    digestive: Dict,
+) -> Dict:
+    """Decide the narrative mode the Section 3 health-report builder should use
+    when talking about bloating-adjacent symptoms.
+
+    Scalable, reproducible rule — reuses the engine's own sensitivity ladder
+    so every client, regardless of ID, passes through the same four modes.
+
+    Modes:
+        "none"
+            Sensitivity is low AND no bloating reported → S3 does not hero
+            this symptom.
+        "lifestyle_normalising"
+            Sensitivity is low/moderate AND microbiome does not corroborate
+            a microbial bloating driver → copy normalises the symptom as
+            diet/lifestyle/menstrual/stress variance. Does NOT blame
+            bacterial fermentation.
+        "microbial_contributing"
+            Sensitivity is moderate AND microbiome DOES corroborate →
+            copy may gesture at microbial contribution with nuance
+            ("your results show ... which can contribute to ...") but
+            avoids the definitive "bacterial fermentation imbalance" claim.
+        "microbial_driving"
+            Sensitivity is high (severity ≥7 OR daily/most_days frequency
+            OR Bristol 6–7 OR digestive_satisfaction ≤3). Copy may directly
+            link bloating to microbial fermentation.
+
+    Corroborating microbiome signals (≥1 required to upgrade `moderate`
+    from ``lifestyle_normalising`` to ``microbial_contributing``):
+      - Bifidobacteria below range
+      - Fiber Degraders below range (CLR < 0 reinforces)
+      - Butyrate Producers below range
+      - Cross-Feeders below range (SCFA chain gap)
+      - Mucin Degraders above range (mucin-thinning signal)
+
+    Returns:
+        dict with keys:
+          - ``mode``: one of the four mode strings.
+          - ``corroborating_microbiome_signals``: list of human-readable
+            strings describing the signals that matched. Empty when none.
+          - ``reasoning``: explainability trail for the dashboard.
+    """
+    classification = sensitivity.get("classification", "moderate")
+    bloating_severity = digestive.get("bloating_severity") if digestive else None
+
+    reasoning: list[str] = [
+        f"sensitivity.classification = {classification}",
+    ]
+
+    # ── Microbiome corroboration signals ─────────────────────────────────
+    guild_status = (microbiome.get("guild_status") or {}) if microbiome else {}
+    guild_details = (microbiome.get("guild_details") or {}) if microbiome else {}
+    corroborating: list[str] = []
+
+    def _is_below(key: str) -> bool:
+        status = str(guild_status.get(key, "")).lower()
+        return "below" in status
+
+    def _is_above(key: str) -> bool:
+        status = str(guild_status.get(key, "")).lower()
+        return "above" in status or "elev" in status
+
+    if _is_below("bifidobacteria"):
+        corroborating.append("Bifidobacteria below range")
+    if _is_below("fiber_degraders"):
+        clr = (guild_details.get("fiber_degraders") or {}).get("clr")
+        tail = f" (CLR {clr})" if clr is not None else ""
+        corroborating.append(f"Fiber Degraders below range{tail}")
+    if _is_below("butyrate_producers"):
+        corroborating.append("Butyrate Producers below range")
+    if _is_below("cross_feeders"):
+        corroborating.append("Cross-Feeders below range — limited SCFA chain")
+    if _is_above("mucin_degraders"):
+        corroborating.append("Mucin Degraders above range — mucus layer strain")
+
+    # ── Mode selection ───────────────────────────────────────────────────
+    if classification == "high":
+        mode = "microbial_driving"
+        reasoning.append("High sensitivity → microbial_driving (direct language OK)")
+    elif classification == "moderate":
+        if corroborating:
+            mode = "microbial_contributing"
+            reasoning.append(
+                f"Moderate sensitivity + {len(corroborating)} corroborating microbiome signal(s) "
+                f"→ microbial_contributing (nuanced language)"
+            )
+        else:
+            mode = "lifestyle_normalising"
+            reasoning.append(
+                "Moderate sensitivity but no microbiome corroboration "
+                "→ lifestyle_normalising (no microbial claim)"
+            )
+    else:  # low
+        if bloating_severity and bloating_severity >= 1:
+            mode = "lifestyle_normalising"
+            reasoning.append(
+                "Low sensitivity but bloating was reported "
+                "→ lifestyle_normalising (no microbial claim)"
+            )
+        else:
+            mode = "none"
+            reasoning.append(
+                "Low sensitivity and no bloating reported → none (S3 skips bloating hero)"
+            )
+
+    return {
+        "mode": mode,
+        "corroborating_microbiome_signals": corroborating,
+        "reasoning": reasoning,
+    }
+
+
+# ─── MULTI-SYMPTOM NARRATIVE MODES (B1 — extended 24 Apr 2026) ───────────────
+# The single-symptom `classify_symptom_narrative_mode()` above handles bloating.
+# The dispatcher below extends the same 4-mode framework to 5 additional symptoms
+# (stress, sleep, fatigue, skin, immune) using corroboration signals that already
+# exist in the engine's knowledge base — no new clinical thresholds invented.
+#
+# Reuses:
+#   - sensitivity_thresholds.json (bloating)
+#   - goal_to_health_claim.json::microbiome_signal_to_vitamin_claims
+#     (biotin_limited_producer / folate_risk / b12_inverse_signal / b_complex_risk)
+#   - clr_decision_rules.json (CLR sign convention)
+#   - microbiome.guild_status (below / within / above range)
+#
+# Scalability contract: each symptom has a tier function (severity band) and a
+# corroboration function (counts microbiome signals that make a microbial claim
+# defensible). The mode decision is identical across symptoms:
+#
+#   tier=none                         → "none"
+#   tier=low                          → "lifestyle_normalising"
+#   tier=moderate AND corrob >= N     → "microbial_contributing"
+#   tier=moderate AND corrob <  N     → "lifestyle_normalising"
+#   tier=high                         → "microbial_driving"
+#
+# Per-symptom minimum corroboration count (N) reflects evidence strength:
+#   bloating (direct gut mechanism)                        → 1
+#   stress, sleep (moderate gut-brain evidence)            → 1
+#   fatigue, immune (indirect but documented vitamin link) → 1
+#   skin (weak gut-skin axis, correlative)                 → 2  (stricter)
+
+
+_SYMPTOM_CORROBORATION_MIN = {
+    "bloating": 1,
+    "stress":   1,
+    "sleep":    1,
+    "fatigue":  1,
+    "skin":     2,   # tighter bar — evidence is correlative, not causal
+    "immune":   1,
+}
+
+
+def _severity_band_bloating(digestive: Dict, sensitivity: Dict) -> str:
+    """Reuse classify_sensitivity output. low/moderate/high → same band."""
+    classification = (sensitivity or {}).get("classification", "moderate")
+    sev = (digestive or {}).get("bloating_severity")
+    if classification == "high":
+        return "high"
+    if classification == "moderate":
+        return "moderate"
+    # low
+    if sev and sev >= 1:
+        return "low"
+    return "none"
+
+
+def _severity_band_stress(lifestyle: Dict) -> str:
+    """Stress level 1–10. No reporting → 'none'. ≥7 → high, 5–6 → moderate, ≤4 → low."""
+    sl = (lifestyle or {}).get("stress_level")
+    if sl is None:
+        return "none"
+    try:
+        v = int(sl)
+    except Exception:
+        return "none"
+    if v >= 7:
+        return "high"
+    if v >= 5:
+        return "moderate"
+    if v >= 1:
+        return "low"
+    return "none"
+
+
+def _severity_band_sleep(lifestyle: Dict) -> str:
+    """Sleep quality 1–10 (higher = better). <=4 high problem, 5–7 moderate, ≥8 low."""
+    sq = (lifestyle or {}).get("sleep_quality")
+    if sq is None:
+        return "none"
+    try:
+        v = int(sq)
+    except Exception:
+        return "none"
+    if v <= 4:
+        return "high"
+    if v <= 6:
+        return "moderate"
+    if v <= 7:
+        return "low"
+    return "none"
+
+
+def _severity_band_fatigue(lifestyle: Dict) -> str:
+    """energy_level enum: very_low / low / moderate / good_all_day (or None)."""
+    el = ((lifestyle or {}).get("energy_level") or "").lower()
+    if el in ("very_low", "very low"):
+        return "high"
+    if el == "low":
+        return "moderate"
+    if el == "moderate":
+        return "low"
+    if el in ("good_all_day", "good all day", "high"):
+        return "none"
+    return "none"
+
+
+def _severity_band_skin(goals: Dict, medical: Dict) -> str:
+    """Skin concerns are captured via a goal keyword. No numeric severity —
+    presence of goal alone = 'moderate' (worth mentioning if microbiome
+    corroborates strongly). If the client also reports a skin condition in
+    medical, bump to 'high'.
+    """
+    ranked = (goals or {}).get("ranked", []) or []
+    has_skin_goal = any(
+        "skin" in g.lower() for g in ranked
+    )
+    # Medical history scan for skin conditions
+    med_conds = (medical or {}).get("medical_conditions", []) + \
+                (medical or {}).get("conditions", []) + \
+                (medical or {}).get("diagnoses", [])
+    med_text = " ".join(str(c).lower() for c in med_conds)
+    has_skin_condition = any(
+        kw in med_text for kw in ("eczema", "psoriasis", "acne", "rosacea", "dermatitis")
+    )
+    if has_skin_condition:
+        return "high"
+    if has_skin_goal:
+        return "moderate"
+    return "none"
+
+
+def _severity_band_immune(immune_data: Dict, lifestyle: Dict) -> str:
+    """UTI + colds frequencies. Recurrent → high, occasional → moderate, rare/none → low/none."""
+    # Normalise both possible field layouts
+    uti = str((immune_data or {}).get("uti_per_year", "")).lower()
+    colds = str((immune_data or {}).get("colds_per_year", "")).lower()
+
+    recurrent_uti = uti not in ("", "none", "none_or_rarely", "rarely", "0", "0-1", "rarely_0_1")
+    many_colds = any(pat in colds for pat in ("4+", "6+", "5+", "8+", "many", "frequent"))
+
+    if recurrent_uti or many_colds:
+        return "high"
+
+    moderate_colds = "2-3" in colds or "3-4" in colds
+    if moderate_colds:
+        return "moderate"
+
+    if uti or colds:
+        return "low"
+    return "none"
+
+
+def _corroborate_stress(microbiome: Dict) -> List[str]:
+    signals = []
+    gs = (microbiome or {}).get("guild_status") or {}
+    if "below" in str(gs.get("butyrate_producers", "")).lower():
+        signals.append("Butyrate Producers below range — gut-brain axis link")
+    if "below" in str(gs.get("cross_feeders", "")).lower():
+        signals.append("Cross-Feeders below range — SCFA chain gap")
+    return signals
+
+
+def _corroborate_sleep(microbiome: Dict) -> List[str]:
+    signals = []
+    gs = (microbiome or {}).get("guild_status") or {}
+    if "below" in str(gs.get("butyrate_producers", "")).lower():
+        signals.append("Butyrate Producers below range — serotonin precursor pathway")
+    if "below" in str(gs.get("bifidobacteria", "")).lower():
+        signals.append("Bifidobacteria below range — tryptophan metabolism link")
+    return signals
+
+
+def _corroborate_fatigue(microbiome: Dict) -> List[str]:
+    signals = []
+    vs = (microbiome or {}).get("vitamin_signals") or {}
+    gs = (microbiome or {}).get("guild_status") or {}
+    # Reuse the signal thresholds from extract_health_claims()
+    if (vs.get("biotin") or {}).get("risk_level", 0) >= 1:
+        signals.append("Biotin production at risk (microbiome vitamin signal)")
+    if (vs.get("folate") or {}).get("risk_level", 0) >= 2:
+        signals.append("Folate production at risk (microbiome vitamin signal)")
+    if (vs.get("B12") or {}).get("risk_level", 0) >= 2:
+        signals.append("B12 production at risk (microbiome vitamin signal)")
+    if (vs.get("B_complex") or {}).get("risk_level", 0) >= 2:
+        signals.append("B-complex production at risk (microbiome vitamin signal)")
+    if "below" in str(gs.get("butyrate_producers", "")).lower():
+        signals.append("Butyrate Producers below range — energy metabolism link")
+    return signals
+
+
+def _corroborate_skin(microbiome: Dict) -> List[str]:
+    signals = []
+    vs = (microbiome or {}).get("vitamin_signals") or {}
+    gs = (microbiome or {}).get("guild_status") or {}
+    if (vs.get("biotin") or {}).get("risk_level", 0) >= 1:
+        signals.append("Biotin production at risk — skin / hair quality link")
+    if "above" in str(gs.get("mucin_degraders", "")).lower() or \
+       "elev" in str(gs.get("mucin_degraders", "")).lower():
+        signals.append("Mucin Degraders above range — barrier function strain")
+    if "above" in str(gs.get("proteolytic", "")).lower() or \
+       "elev" in str(gs.get("proteolytic", "")).lower():
+        signals.append("Proteolytic Guild above range — pro-inflammatory signal")
+    return signals
+
+
+def _corroborate_immune(microbiome: Dict) -> List[str]:
+    signals = []
+    vs = (microbiome or {}).get("vitamin_signals") or {}
+    gs = (microbiome or {}).get("guild_status") or {}
+    if (vs.get("folate") or {}).get("risk_level", 0) >= 2:
+        signals.append("Folate production at risk — immune support link")
+    if (vs.get("B12") or {}).get("risk_level", 0) >= 2:
+        signals.append("B12 production at risk — immune support link")
+    if "below" in str(gs.get("bifidobacteria", "")).lower():
+        signals.append("Bifidobacteria below range — Treg / IgA modulation link")
+    return signals
+
+
+def _pick_mode(severity_band: str, corrob_count: int, min_required: int) -> str:
+    """Unified mode-picker for all non-bloating symptoms."""
+    if severity_band == "none":
+        return "none"
+    if severity_band == "low":
+        return "lifestyle_normalising"
+    if severity_band == "moderate":
+        return "microbial_contributing" if corrob_count >= min_required else "lifestyle_normalising"
+    if severity_band == "high":
+        return "microbial_driving"
+    return "lifestyle_normalising"  # safe default
+
+
+def classify_all_symptom_narrative_modes(
+    unified_input: Dict,
+    sensitivity: Dict,
+) -> Dict:
+    """Return a dict mapping each of the 6 symptoms to its narrative mode.
+
+    Output shape:
+        {
+          "bloating": { "mode": ..., "signals": [...], "severity_band": ... },
+          "stress":   { ... },
+          "sleep":    { ... },
+          "fatigue":  { ... },
+          "skin":     { ... },
+          "immune":   { ... },
+        }
+
+    This is persisted on ``rule_outputs.symptom_narrative_modes`` and surfaced
+    on ``input_summary.questionnaire_driven.symptom_narrative_modes`` for the
+    Section 3 health-report builder.
+    """
+    q = unified_input.get("questionnaire", {}) or {}
+    microbiome = unified_input.get("microbiome", {}) or {}
+    digestive = q.get("digestive", {}) or {}
+    lifestyle = q.get("lifestyle", {}) or {}
+    goals = q.get("goals", {}) or {}
+    medical = q.get("medical", {}) or {}
+    immune = q.get("immune", {}) or digestive.get("immune", {}) or {}
+
+    out = {}
+
+    # ── bloating (reuse existing single-symptom function for parity) ─────
+    bloating_result = classify_symptom_narrative_mode(
+        sensitivity=sensitivity,
+        microbiome=microbiome,
+        digestive=digestive,
+    )
+    bloating_band = _severity_band_bloating(digestive, sensitivity)
+    out["bloating"] = {
+        "mode": bloating_result["mode"],
+        "signals": bloating_result["corroborating_microbiome_signals"],
+        "severity_band": bloating_band,
+        "min_corrob_required": _SYMPTOM_CORROBORATION_MIN["bloating"],
+    }
+
+    # ── stress ───────────────────────────────────────────────────────────
+    band = _severity_band_stress(lifestyle)
+    sig = _corroborate_stress(microbiome)
+    out["stress"] = {
+        "mode": _pick_mode(band, len(sig), _SYMPTOM_CORROBORATION_MIN["stress"]),
+        "signals": sig,
+        "severity_band": band,
+        "min_corrob_required": _SYMPTOM_CORROBORATION_MIN["stress"],
+    }
+
+    # ── sleep ────────────────────────────────────────────────────────────
+    band = _severity_band_sleep(lifestyle)
+    sig = _corroborate_sleep(microbiome)
+    out["sleep"] = {
+        "mode": _pick_mode(band, len(sig), _SYMPTOM_CORROBORATION_MIN["sleep"]),
+        "signals": sig,
+        "severity_band": band,
+        "min_corrob_required": _SYMPTOM_CORROBORATION_MIN["sleep"],
+    }
+
+    # ── fatigue ──────────────────────────────────────────────────────────
+    band = _severity_band_fatigue(lifestyle)
+    sig = _corroborate_fatigue(microbiome)
+    out["fatigue"] = {
+        "mode": _pick_mode(band, len(sig), _SYMPTOM_CORROBORATION_MIN["fatigue"]),
+        "signals": sig,
+        "severity_band": band,
+        "min_corrob_required": _SYMPTOM_CORROBORATION_MIN["fatigue"],
+    }
+
+    # ── skin ─────────────────────────────────────────────────────────────
+    band = _severity_band_skin(goals, medical)
+    sig = _corroborate_skin(microbiome)
+    out["skin"] = {
+        "mode": _pick_mode(band, len(sig), _SYMPTOM_CORROBORATION_MIN["skin"]),
+        "signals": sig,
+        "severity_band": band,
+        "min_corrob_required": _SYMPTOM_CORROBORATION_MIN["skin"],
+    }
+
+    # ── immune ───────────────────────────────────────────────────────────
+    band = _severity_band_immune(immune, lifestyle)
+    sig = _corroborate_immune(microbiome)
+    out["immune"] = {
+        "mode": _pick_mode(band, len(sig), _SYMPTOM_CORROBORATION_MIN["immune"]),
+        "signals": sig,
+        "severity_band": band,
+        "min_corrob_required": _SYMPTOM_CORROBORATION_MIN["immune"],
+    }
+
+    return out
 
 
 # ─── HEALTH CLAIM EXTRACTION ─────────────────────────────────────────────────
@@ -1431,6 +1898,30 @@ def apply_rules(unified_input: Dict) -> Dict:
         sensitivity["classification"] = "moderate"
         sensitivity["reasoning"].append(f"FODMAP override: digestion goal present but bloating {bloating or 'N/R'}/10 → bumped to moderate (conservative)")
 
+    # 1b. Symptom narrative mode (B1 — 24 April 2026)
+    #     Deterministic downstream signal for the Section 3 health-report
+    #     builder. Decides whether the bloating narrative can mention
+    #     microbial fermentation (and how strongly). See docstring for
+    #     classify_symptom_narrative_mode().
+    narrative_mode = classify_symptom_narrative_mode(
+        sensitivity=sensitivity,
+        microbiome=microbiome,
+        digestive=questionnaire["digestive"],
+    )
+    sensitivity["symptom_narrative_mode"] = narrative_mode["mode"]
+    sensitivity["corroborating_microbiome_signals"] = narrative_mode["corroborating_microbiome_signals"]
+    sensitivity["symptom_narrative_reasoning"] = narrative_mode["reasoning"]
+
+    # 1c. Multi-symptom narrative modes (B1 extended — 24 April 2026)
+    #     Framework-level dict covering bloating + stress + sleep + fatigue +
+    #     skin + immune. Each entry carries {mode, signals, severity_band,
+    #     min_corrob_required}. Section 3 of the health report reads from
+    #     `input_summary.questionnaire_driven.symptom_narrative_modes`.
+    symptom_narrative_modes = classify_all_symptom_narrative_modes(
+        unified_input=unified_input,
+        sensitivity=sensitivity,
+    )
+
     # 2. Health claim extraction
     health_claims = extract_health_claims(
         questionnaire["goals"],
@@ -1480,6 +1971,7 @@ def apply_rules(unified_input: Dict) -> Dict:
 
     return {
         "sensitivity": sensitivity,
+        "symptom_narrative_modes": symptom_narrative_modes,
         "health_claims": health_claims,
         "therapeutic_triggers": therapeutic,
         "prebiotic_range": prebiotic_range,
