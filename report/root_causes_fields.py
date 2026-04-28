@@ -207,7 +207,7 @@ def compute_trophic_impact(data: dict) -> dict:
             'type': 'missing_amplifier',
             'title': 'Bifidobacteria Are Missing',
             'description': 'Without Bifidobacteria, your gut loses a key step in food processing — the production of lactate, which fuels other beneficial bacterial teams. This can reduce beneficial compound output by 50-70%.',
-            'affected_guilds': ['Bifidobacteria', 'Intermediate processors', 'Gut-lining energy producers'],
+            'affected_guilds': ['Bifidobacteria', 'Nutrient Recyclers', 'Gut Wall Protectors'],
             'efficiency_loss': '50-70%',
         })
 
@@ -215,9 +215,9 @@ def compute_trophic_impact(data: dict) -> dict:
     if cross < 6.0:
         impacts.append({
             'type': 'bottleneck',
-            'title': 'Intermediate Processors Are Understaffed',
-            'description': 'Your intermediate processors — the bacteria that convert raw fermentation products into finished beneficial compounds — don\'t have enough members to keep up with demand.',
-            'affected_guilds': ['Intermediate processors', 'Gut-lining energy producers'],
+            'title': 'Nutrient Recyclers Are Understaffed',
+            'description': 'Your nutrient recyclers — the bacteria that convert raw fermentation products into finished beneficial compounds — don\'t have enough members to keep up with demand.',
+            'affected_guilds': ['Nutrient Recyclers', 'Gut Wall Protectors'],
             'efficiency_loss': 'variable',
         })
 
@@ -225,9 +225,9 @@ def compute_trophic_impact(data: dict) -> dict:
     if fiber < 30.0:
         impacts.append({
             'type': 'substrate_limitation',
-            'title': 'Not Enough Fiber-Processing Bacteria',
-            'description': 'Your fiber-processing bacteria are below the level needed to supply the rest of the chain with raw materials. This means every team downstream gets less to work with.',
-            'affected_guilds': ['Fiber-processing bacteria', 'Bifidobacteria', 'Intermediate processors', 'Gut-lining energy producers'],
+            'title': 'Not Enough Fibre Digesters',
+            'description': 'Your fibre digesters are below the level needed to supply the rest of the chain with raw materials. This means every team downstream gets less to work with.',
+            'affected_guilds': ['Fibre Digesters', 'Bifidobacteria', 'Nutrient Recyclers', 'Gut Wall Protectors'],
             'efficiency_loss': 'proportional to deficit',
         })
 
@@ -235,9 +235,9 @@ def compute_trophic_impact(data: dict) -> dict:
     if proteo > 5.0:
         impacts.append({
             'type': 'feedback_loop',
-            'title': 'Protein-Fermenting Bacteria Are Overactive',
-            'description': 'Your protein-fermenting bacteria have grown beyond healthy levels and are producing ammonia and other harsh compounds that make it harder for beneficial bacteria to thrive.',
-            'affected_guilds': ['Protein-fermenting bacteria', 'Gut-lining energy producers', 'Fiber-processing bacteria'],
+            'title': 'Protein Recyclers Are Overactive',
+            'description': 'Your protein recyclers have grown beyond healthy levels and are producing ammonia and other harsh compounds that make it harder for beneficial bacteria to thrive.',
+            'affected_guilds': ['Protein Recyclers', 'Gut Wall Protectors', 'Fibre Digesters'],
             'efficiency_loss': 'escalating',
         })
 
@@ -245,9 +245,9 @@ def compute_trophic_impact(data: dict) -> dict:
     if mucin > 4.0:
         impacts.append({
             'type': 'barrier_stress',
-            'title': 'Mucus-Layer Bacteria Are Overactive',
-            'description': 'Your mucus-layer bacteria have expanded beyond healthy levels, which means your gut is consuming its protective lining for fuel — a sign that not enough dietary fiber is reaching your bacteria.',
-            'affected_guilds': ['Mucus-layer bacteria', 'Fiber-processing bacteria'],
+            'title': 'Gut Lining Processors Are Overactive',
+            'description': 'Your gut lining processors have expanded beyond healthy levels, which means your gut is consuming its protective lining for fuel — a sign that not enough dietary fibre is reaching your bacteria.',
+            'affected_guilds': ['Gut Lining Processors', 'Fibre Digesters'],
             'efficiency_loss': 'barrier integrity risk',
         })
 
@@ -255,9 +255,9 @@ def compute_trophic_impact(data: dict) -> dict:
     if butyrate < 10.0:
         impacts.append({
             'type': 'energy_deficit',
-            'title': 'Gut-Lining Energy Producers Are Low',
-            'description': 'Your gut-lining energy producers are below optimal, which means less butyrate — the primary fuel for your gut lining cells and a key anti-inflammatory compound — is being made.',
-            'affected_guilds': ['Gut-lining energy producers'],
+            'title': 'Gut Wall Protectors Are Low',
+            'description': 'Your gut wall protectors are below optimal, which means less butyrate — the primary fuel for your gut lining cells and a key anti-inflammatory compound — is being made.',
+            'affected_guilds': ['Gut Wall Protectors'],
             'efficiency_loss': 'proportional to deficit',
         })
 
@@ -337,11 +337,11 @@ def assess_reversibility(data: dict, score_total: float) -> dict:
     transition_note = ''
     if mucin_abund > 8.0 and mucin_J < 0.40:
         transition_caution = True
-        transition_note = 'Your mucus-layer bacteria are elevated with low diversity — the rebalancing process may need careful monitoring to ensure a smooth transition.'
+        transition_note = 'Your gut lining processors are elevated with low diversity — the rebalancing process may need careful monitoring to ensure a smooth transition.'
     elif mucin_abund > 4.0 and mucin_J >= 0.60:
-        transition_note = 'Your mucus-layer bacteria are elevated but diverse, which means they should reduce gradually and smoothly as fiber availability improves.'
+        transition_note = 'Your gut lining processors are elevated but diverse, which means they should reduce gradually and smoothly as fiber availability improves.'
     elif mucin_abund > 4.0:
-        transition_note = 'Your mucus-layer bacteria are somewhat elevated — we expect them to normalize as other teams strengthen.'
+        transition_note = 'Your gut lining processors are somewhat elevated — we expect them to normalize as other teams strengthen.'
 
     # Combined assessment
     if shannon >= sh_high and resilience_score >= 4.0:
@@ -399,11 +399,11 @@ DIAL_ROOT_CAUSE_LINKS = {
         },
         'balanced': {
             'scientific': 'CUR near-neutral — mixed substrate utilization with neither carbohydrate nor protein guilds dominating competitive landscape.',
-            'non_expert': 'Your bacteria process a mix of carbohydrates and proteins — strengthening the fiber-processing side could improve beneficial compound production.',
+            'non_expert': 'Your bacteria process a mix of carbohydrates and proteins — strengthening the fibre digester side could improve beneficial compound production.',
         },
         'protein_driven': {
             'scientific': 'CUR negative — proteolytic guild dominates substrate competition, indicating shift from carbohydrate to protein fermentation with associated inflammatory metabolite production.',
-            'non_expert': 'Your gut has shifted toward breaking down protein instead of fiber, which produces harsher byproducts — this suggests your fiber-processing bacteria need more support.',
+            'non_expert': 'Your gut has shifted toward breaking down protein instead of fiber, which produces harsher byproducts — this suggests your fibre digesters need more support.',
         },
     },
     'fermentation_efficiency': {
@@ -441,7 +441,7 @@ DIAL_ROOT_CAUSE_LINKS = {
         },
         'balanced': {
             'scientific': 'PPR near-neutral — Butyrate Producers and Proteolytic Guild in competitive equilibrium. Moderate protein fermentation with adequate SCFA buffering capacity.',
-            'non_expert': 'Some protein fermentation is happening, but your gut-lining energy producers are keeping the harsher byproducts in check — a manageable balance.',
+            'non_expert': 'Some protein fermentation is happening, but your gut wall protectors are keeping the harsher byproducts in check — a manageable balance.',
         },
         'protein_pressure': {
             'scientific': 'PPR positive — Proteolytic Guild competitive advantage over Butyrate Producers. Elevated ammonia, H2S, phenol production creating pro-inflammatory colonic environment.',
@@ -496,7 +496,7 @@ def compute_primary_pattern(data: dict, fields: dict) -> dict:
         return {
             'pattern': 'bifidobacteria_loss_fiber_deficit',
             'scientific': 'Complete Bifidobacteria depletion with fiber degrader deficit — lactate pathway eliminated, forcing ecosystem into alternative fermentation routes with reduced SCFA amplification.',
-            'non_expert': 'Your gut lost a key group of beneficial bacteria (Bifidobacteria) and doesn\'t have enough fiber-processing bacteria — this disrupts the normal chain of food processing and reduces production of protective compounds.',
+            'non_expert': 'Your gut lost a key group of beneficial bacteria (Bifidobacteria) and doesn\'t have enough fibre digesters — this disrupts the normal chain of food processing and reduces production of protective compounds.',
         }
     elif mucin > 4 and mdr_state == 'heavy_mucus':
         return {
@@ -508,7 +508,7 @@ def compute_primary_pattern(data: dict, fields: dict) -> dict:
         return {
             'pattern': 'protein_driven_dysbiosis',
             'scientific': 'Protein-driven dysbiosis — proteolytic guild dominance with elevated putrefactive metabolite production (ammonia, H2S, phenols). Carbohydrate-fermenting guilds suppressed.',
-            'non_expert': 'Your gut has shifted toward protein fermentation, producing harsher byproducts that stress your gut lining — the fiber-processing bacteria need reinforcement.',
+            'non_expert': 'Your gut has shifted toward protein fermentation, producing harsher byproducts that stress your gut lining — the fibre digesters need reinforcement.',
         }
     elif fcr_state == 'sluggish':
         return {
@@ -520,7 +520,7 @@ def compute_primary_pattern(data: dict, fields: dict) -> dict:
         return {
             'pattern': 'fiber_processing_deficit',
             'scientific': 'Fiber processing deficit — primary degradation capacity below optimal despite balanced substrate competition. Upstream limitation constraining downstream guild function.',
-            'non_expert': 'Your fiber-processing bacteria team is understaffed — this means less raw material enters the production chain, limiting how much beneficial compound your gut can produce.',
+            'non_expert': 'Your fibre digesters team is understaffed — this means less raw material enters the production chain, limiting how much beneficial compound your gut can produce.',
         }
     else:
         return {
@@ -548,11 +548,11 @@ def compute_lifestyle_inference(data: dict, fields: dict) -> dict:
 
     evidence = []
     if fiber < 30:
-        evidence.append({'scientific': f'Fiber Degraders at {fiber:.0f}% (below 30% minimum) suggests limited complex fiber reaching the colon', 'non_expert': 'Your fiber-processing bacteria are understaffed, suggesting less fiber variety in recent conditions'})
+        evidence.append({'scientific': f'Fiber Degraders at {fiber:.0f}% (below 30% minimum) suggests limited complex fiber reaching the colon', 'non_expert': 'Your fibre digesters are understaffed, suggesting less fiber variety in recent conditions'})
     if proteo > 5:
-        evidence.append({'scientific': f'Proteolytic Guild at {proteo:.0f}% (above 5% max) indicates elevated colonic protein load', 'non_expert': 'More protein-fermenting bacteria than ideal, suggesting more protein relative to fiber in your system'})
+        evidence.append({'scientific': f'Proteolytic Guild at {proteo:.0f}% (above 5% max) indicates elevated colonic protein load', 'non_expert': 'More protein recyclers than ideal, suggesting more protein relative to fiber in your system'})
     if mucin > 4:
-        evidence.append({'scientific': f'Mucin Degraders at {mucin:.0f}% (above 4% max) indicates compensatory host-substrate utilization', 'non_expert': 'Your mucus-layer bacteria expanded to compensate for insufficient dietary fuel'})
+        evidence.append({'scientific': f'Mucin Degraders at {mucin:.0f}% (above 4% max) indicates compensatory host-substrate utilization', 'non_expert': 'Your gut lining processors expanded to compensate for insufficient dietary fuel'})
     if bifido == 0:
         evidence.append({'scientific': 'Complete Bifidobacteria absence suggests sustained oligosaccharide deficiency or prior antibiotic disruption', 'non_expert': 'The complete absence of Bifidobacteria suggests your gut experienced a significant disruption — either from medication or sustained dietary changes'})
 
@@ -602,7 +602,7 @@ def compute_feedback_loops(data: dict) -> list:
     if fiber < 30 and mucin > 4:
         loops.append({
             'name': {'scientific': 'Fiber Starvation → Mucin Compensation Cycle', 'non_expert': 'The Fiber Gap Cycle'},
-            'chain': ['Not enough fiber in the diet', 'Fiber-processing team shrinks', 'Other teams get less raw material', 'Mucus-layer team grows to fill the energy gap', 'Gut\'s protective lining gets worn down', 'System becomes reliant on its own lining for fuel'],
+            'chain': ['Not enough fiber in the diet', 'Fibre digesters team shrinks', 'Other teams get less raw material', 'Gut lining processors team grows to fill the energy gap', 'Gut\'s protective lining gets worn down', 'System becomes reliant on its own lining for fuel'],
             'health_impact': {'scientific': 'Chronic mucin degradation thins the mucus barrier, increasing intestinal permeability and risk of low-grade systemic inflammation.', 'non_expert': 'This can show up as irregular digestion, increased food sensitivities, or bloating — your gut barrier becomes thinner and more permeable over time, which may let irritants through.'},
             'status': 'active' if mucin > 8 else 'developing',
         })
@@ -611,7 +611,7 @@ def compute_feedback_loops(data: dict) -> list:
     if proteo > 5:
         loops.append({
             'name': {'scientific': 'Proteolytic Expansion → pH Alkalinization Loop', 'non_expert': 'The Protein Pressure Cycle'},
-            'chain': ['Too much protein reaching the gut', 'Protein-fermenting bacteria produce ammonia', 'Ammonia makes the gut environment more alkaline', 'Alkaline conditions favor even more protein fermenters', 'Beneficial bacteria get suppressed', 'Cycle keeps reinforcing itself'],
+            'chain': ['Too much protein reaching the gut', 'Protein recyclers produce ammonia', 'Ammonia makes the gut environment more alkaline', 'Alkaline conditions favor even more protein recyclers', 'Beneficial bacteria get suppressed', 'Cycle keeps reinforcing itself'],
             'health_impact': {'scientific': 'Elevated ammonia, H2S, and phenol production creates pro-inflammatory colonic environment, potentially affecting barrier function and systemic inflammation markers.', 'non_expert': 'You might notice more gas, bloating, or stronger body odor — these are signs of excess harsh compounds being produced in your gut that can irritate the lining.'},
             'status': 'active' if proteo > 10 else 'developing',
         })
@@ -620,7 +620,7 @@ def compute_feedback_loops(data: dict) -> list:
     if bifido == 0:
         loops.append({
             'name': {'scientific': 'Bifidobacteria Loss → Lactate Pathway Disruption Cascade', 'non_expert': 'The Missing Bridge'},
-            'chain': ['Bifidobacteria lost from the gut', 'No more lactate being produced', 'Intermediate processors lose their main fuel', 'Fermentation slows down overall', 'Less butyrate produced for gut lining', 'Gut barrier gets less energy support'],
+            'chain': ['Bifidobacteria lost from the gut', 'No more lactate being produced', 'Nutrient recyclers lose their main fuel', 'Fermentation slows down overall', 'Less butyrate produced for gut lining', 'Gut barrier gets less energy support'],
             'health_impact': {'scientific': 'Loss of lactate-mediated cross-feeding reduces SCFA output by 50-70%, compromising colonocyte energy supply and anti-inflammatory signaling.', 'non_expert': 'This reduces your gut\'s ability to produce its main protective compound (butyrate), which can lead to a less resilient gut barrier and increased susceptibility to inflammation.'},
             'status': 'active',
         })
@@ -629,7 +629,7 @@ def compute_feedback_loops(data: dict) -> list:
     if butyrate < 10:
         loops.append({
             'name': {'scientific': 'Butyrate Producer Depletion → Colonocyte Energy Deficit Spiral', 'non_expert': 'The Energy Drain'},
-            'chain': ['Gut-lining energy producers decline', 'Less butyrate available for gut lining cells', 'Gut lining gets weaker', 'Weakened barrier lets more irritants through', 'Increased inflammation further suppresses beneficial bacteria', 'Cycle deepens'],
+            'chain': ['Gut wall protectors decline', 'Less butyrate available for gut lining cells', 'Gut lining gets weaker', 'Weakened barrier lets more irritants through', 'Increased inflammation further suppresses beneficial bacteria', 'Cycle deepens'],
             'health_impact': {'scientific': 'Reduced butyrate supply compromises colonocyte metabolism, tight junction integrity, and Treg cell induction, creating cascading barrier and immune dysfunction.', 'non_expert': 'Your gut lining may not be getting enough energy to maintain itself properly — this can contribute to digestive discomfort, increased sensitivity to foods, and lower overall gut resilience.'},
             'status': 'active' if butyrate < 5 else 'developing',
         })
@@ -643,11 +643,11 @@ def compute_feedback_loops(data: dict) -> list:
             'status': 'active',
         })
 
-    # 6. Intermediate Processor Bottleneck
+    # 6. Nutrient Recycler Bottleneck
     if cross < 6 and fiber >= 15 and bifido >= 1:
         loops.append({
             'name': {'scientific': 'Cross-Feeder Depletion → Intermediate Accumulation Bottleneck', 'non_expert': 'The Processing Jam'},
-            'chain': ['Intermediate processors too few', 'Raw products from upstream pile up', 'Fermentation intermediates accumulate', 'Gas and bloating may increase', 'Final beneficial products reduced', 'Gut lining gets less protection'],
+            'chain': ['Nutrient recyclers too few', 'Raw products from upstream pile up', 'Fermentation intermediates accumulate', 'Gas and bloating may increase', 'Final beneficial products reduced', 'Gut lining gets less protection'],
             'health_impact': {'scientific': 'Depleted cross-feeding capacity creates metabolic dead ends — lactate and succinate accumulate rather than being efficiently converted to terminal SCFAs.', 'non_expert': 'This is like a traffic jam in your gut\'s production line — the raw materials are there, but not enough workers to process them. This can contribute to gas, bloating, and reduced production of the compounds that protect your gut.'},
             'status': 'active' if cross < 3 else 'developing',
         })
@@ -656,7 +656,7 @@ def compute_feedback_loops(data: dict) -> list:
     if fiber >= 30 and bifido >= 2 and proteo <= 5 and mucin <= 4:
         loops.append({
             'name': {'scientific': 'Healthy Fermentation Maintenance Cycle', 'non_expert': 'The Virtuous Cycle'},
-            'chain': ['Adequate dietary fiber available', 'Fiber-processing bacteria thrive', 'Bifidobacteria amplify production', 'Intermediate processors pass products efficiently', 'Gut-lining energy producers do their job', 'Healthy gut barrier maintained'],
+            'chain': ['Adequate dietary fiber available', 'Fibre digesters thrive', 'Bifidobacteria amplify production', 'Nutrient recyclers pass products efficiently', 'Gut wall protectors do their job', 'Healthy gut barrier maintained'],
             'health_impact': {'scientific': 'Optimal SCFA production with efficient cross-feeding networks — supports colonocyte energy, barrier integrity, immune homeostasis, and anti-inflammatory signaling.', 'non_expert': 'This supports steady digestion, consistent energy levels, and a strong immune response — your gut is running on its preferred fuel and producing the protective compounds your body needs.'},
             'status': 'stable',
         })
@@ -764,14 +764,14 @@ def compute_causal_narrative(data: dict, diagnostic_flags: list, metabolic_evide
     
     if fiber_clr is not None and fiber_clr > 0.3 and fiber < 30:
         clr_insights_sci.append(f"Fiber Degraders CLR {fiber_clr:+.2f} positive despite low abundance — substrate-limited rather than competition-limited")
-        clr_insights_ne.append(f"your fiber-processing bacteria can do more — they just aren't getting enough fiber to work with")
+        clr_insights_ne.append(f"your fibre digesters can do more — they just aren't getting enough fiber to work with")
     elif fiber_clr is not None and fiber_clr < -0.3 and fiber < 30:
         clr_insights_sci.append(f"Fiber Degraders CLR {fiber_clr:+.2f} negative with low abundance — both substrate-limited and losing competitive ground")
-        clr_insights_ne.append(f"your fiber-processing bacteria are both short-staffed and losing ground to other groups — a double challenge")
+        clr_insights_ne.append(f"your fibre digesters are both short-staffed and losing ground to other groups — a double challenge")
     
     if butyrate_clr is not None and butyrate_clr > 0.3:
         clr_insights_sci.append(f"Butyrate Producers CLR {butyrate_clr:+.2f} positive — competitively strong, efficient terminal processors")
-        clr_insights_ne.append(f"your gut-lining energy producers are strong and doing their job well — they just need enough raw materials from the teams above them")
+        clr_insights_ne.append(f"your gut wall protectors are strong and doing their job well — they just need enough raw materials from the teams above them")
     
     if clr_insights_sci:
         sci_parts.append("Competitive dynamics: " + ". ".join(clr_insights_sci) + ".")
@@ -812,7 +812,7 @@ def compute_causal_narrative(data: dict, diagnostic_flags: list, metabolic_evide
     
     if pattern == 'fiber_processing_deficit':
         cascade_sci.append("Causal chain: Fiber Degrader deficit → reduced substrate for downstream guilds → constrained Bifidobacteria amplification → limited SCFA terminal output despite functional fermentation cascade")
-        cascade_ne.append("Putting it all together: not enough fiber-processing bacteria → less raw material for the next team → Bifidobacteria can't do their job fully → and in the end, your gut makes fewer of the protective compounds it needs — even though the teams themselves are capable")
+        cascade_ne.append("Putting it all together: not enough fibre digesters → less raw material for the next team → Bifidobacteria can't do their job fully → and in the end, your gut makes fewer of the protective compounds it needs — even though the teams themselves are capable")
     elif pattern == 'bifidobacteria_loss_fiber_deficit':
         cascade_sci.append("Causal chain: Bifidobacteria loss eliminates lactate amplification pathway → Cross-Feeders lose primary substrate → terminal SCFA production reduced 50-70% → compounded by Fiber Degrader deficit limiting upstream input")
         cascade_ne.append("Putting it all together: a key team (Bifidobacteria) went missing → the teams that depend on them can't work properly → on top of that, not enough fiber-processors at the start → so your gut makes far fewer protective compounds than it should")
@@ -821,7 +821,7 @@ def compute_causal_narrative(data: dict, diagnostic_flags: list, metabolic_evide
         cascade_ne.append("Putting it all together: not enough fiber reaching your gut → bacteria turned to eating the protective lining instead → this creates a cycle where the lining gets thinner while the mucus-eating bacteria keep growing")
     elif pattern == 'protein_driven_dysbiosis':
         cascade_sci.append("Causal chain: Proteolytic guild expansion → ammonia/H2S production → colonic pH alkalinization → carbohydrate-fermenting guilds suppressed → further proteolytic advantage (feedback loop)")
-        cascade_ne.append("Putting it all together: protein-fermenting bacteria grew too large → their harsh byproducts changed the gut environment → this made it even harder for the beneficial bacteria to survive → creating a cycle that keeps getting worse")
+        cascade_ne.append("Putting it all together: protein recyclers grew too large → their harsh byproducts changed the gut environment → this made it even harder for the beneficial bacteria to survive → creating a cycle that keeps getting worse")
     elif pattern == 'fermentation_bottleneck':
         cascade_sci.append("Causal chain: Cross-Feeder depletion → intermediate metabolite accumulation → impaired lactate/acetate routing → terminal SCFA synthesis constrained despite adequate upstream substrate")
         cascade_ne.append("Putting it all together: the middle team in your gut's chain is understaffed → raw materials pile up without being processed → and the final protective compounds can't be made fast enough, even though there's plenty of raw material")

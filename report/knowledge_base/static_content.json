@@ -53,12 +53,12 @@
       "title": "How Bacteria Work Together as a Chain",
       "text": "Your gut bacteria process food in stages, like an assembly line. Each team passes its work to the next. If one team is understaffed, the whole production line slows down. Here are the six teams we assess, in the order they work:",
       "steps_summary": [
-        {"step": 1, "name": "Fiber-Processing Bacteria", "role": "Break down plant foods into raw materials for other teams"},
+        {"step": 1, "name": "Fibre Digesters", "role": "Break down plant foods into raw materials for other teams"},
         {"step": 2, "name": "Bifidobacteria", "role": "Convert sugars into lactate — fuel for downstream teams"},
-        {"step": 3, "name": "Intermediate Processors", "role": "Bridge the gap between raw materials and finished products"},
-        {"step": 4, "name": "Gut-Lining Energy Producers", "role": "Produce butyrate — the primary energy source for your gut lining"},
-        {"step": 5, "name": "Protein-Fermenting Bacteria", "role": "Process proteins — ideally kept in check"},
-        {"step": 6, "name": "Mucus-Layer Bacteria", "role": "Maintain your gut's protective mucus layer"}
+        {"step": 3, "name": "Nutrient Recyclers", "role": "Bridge the gap between raw materials and finished products"},
+        {"step": 4, "name": "Gut Wall Protectors", "role": "Produce butyrate — the primary energy source for your gut lining"},
+        {"step": 5, "name": "Protein Recyclers", "role": "Process proteins — ideally kept in check"},
+        {"step": 6, "name": "Gut Lining Processors", "role": "Maintain your gut's protective mucus layer"}
       ]
     },
     "capacity_explanation": "To help you understand each team's staffing level, we normalize all six teams to a scale of 100 ideal workers. This shows you at a glance how many workers each team has compared to its ideal size."

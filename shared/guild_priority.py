@@ -42,27 +42,29 @@ GUILD_DISPLAY_NAMES = {
 }
 
 # Client-facing (non-expert) display names
+# Canonical set: Fibre Digesters, Bifidobacteria, Nutrient Recyclers,
+#                Gut Wall Protectors, Protein Recyclers, Gut Lining Processors
 GUILD_CLIENT_NAMES = {
-    'Butyrate Producers': 'Gut-Lining Energy Producers',
-    'Fiber Degraders': 'Fiber-Processing Bacteria',
-    'Cross-Feeders': 'Intermediate Processors',
+    'Butyrate Producers': 'Gut Wall Protectors',
+    'Fiber Degraders': 'Fibre Digesters',
+    'Cross-Feeders': 'Nutrient Recyclers',
     'HMO/Oligosaccharide-Utilising Bifidobacteria': 'Bifidobacteria',
     'Bifidobacteria': 'Bifidobacteria',
-    'Mucin Degraders': 'Mucus-Layer Bacteria',
-    'Proteolytic Dysbiosis Guild': 'Protein-Fermenting Bacteria',
-    'Proteolytic Guild': 'Protein-Fermenting Bacteria',
+    'Mucin Degraders': 'Gut Lining Processors',
+    'Proteolytic Dysbiosis Guild': 'Protein Recyclers',
+    'Proteolytic Guild': 'Protein Recyclers',
 }
 
 # Non-expert names for narrative text (lowercase style)
 GUILD_NON_EXPERT_NAMES = {
-    'Butyrate Producers': 'gut-lining energy producers',
-    'Fiber Degraders': 'fiber-processing bacteria',
-    'Cross-Feeders': 'intermediate processors',
+    'Butyrate Producers': 'gut wall protectors',
+    'Fiber Degraders': 'fibre digesters',
+    'Cross-Feeders': 'nutrient recyclers',
     'HMO/Oligosaccharide-Utilising Bifidobacteria': 'Bifidobacteria',
     'Bifidobacteria': 'Bifidobacteria',
-    'Mucin Degraders': 'mucus-layer bacteria',
-    'Proteolytic Dysbiosis Guild': 'protein-fermenting bacteria',
-    'Proteolytic Guild': 'protein-fermenting bacteria',
+    'Mucin Degraders': 'gut lining processors',
+    'Proteolytic Dysbiosis Guild': 'protein recyclers',
+    'Proteolytic Guild': 'protein recyclers',
 }
 
 # Guild type classification (for formulation logic)
@@ -80,30 +82,35 @@ _IMPORTANCE_RAW = {
     "fiber_degraders": 1.0,
     "Fiber Degraders": 1.0,
     "Fiber-Processing Bacteria": 1.0,
+    "Fibre Digesters": 1.0,
     "butyrate_producers": 1.2,
     "Butyrate Producers": 1.2,
     "Gut-Lining Energy Producers": 1.2,
+    "Gut Wall Protectors": 1.2,
     "bifidobacteria": 0.9,
     "Bifidobacteria": 0.9,
     "HMO/Oligosaccharide-Utilising Bifidobacteria": 0.9,
     "cross_feeders": 1.1,
     "Cross-Feeders": 1.1,
     "Intermediate Processors": 1.1,
+    "Nutrient Recyclers": 1.1,
     "proteolytic": 1.1,
     "Proteolytic Guild": 1.1,
     "Proteolytic Dysbiosis Guild": 1.1,
     "Protein-Fermenting Bacteria": 1.1,
+    "Protein Recyclers": 1.1,
     "mucin_degraders": 0.6,
     "Mucin Degraders": 0.6,
     "Mucus-Layer Bacteria": 0.6,
+    "Gut Lining Processors": 0.6,
 }
 
 # Beneficial guild identifiers (all name variants)
 _BENEFICIAL_NAMES = {
-    "fiber_degraders", "Fiber Degraders", "Fiber-Processing Bacteria",
-    "butyrate_producers", "Butyrate Producers", "Gut-Lining Energy Producers",
+    "fiber_degraders", "Fiber Degraders", "Fiber-Processing Bacteria", "Fibre Digesters",
+    "butyrate_producers", "Butyrate Producers", "Gut-Lining Energy Producers", "Gut Wall Protectors",
     "bifidobacteria", "Bifidobacteria", "HMO/Oligosaccharide-Utilising Bifidobacteria",
-    "cross_feeders", "Cross-Feeders", "Intermediate Processors",
+    "cross_feeders", "Cross-Feeders", "Intermediate Processors", "Nutrient Recyclers",
 }
 
 # State values from 9-scenario matrix
@@ -118,6 +125,65 @@ CONTEXTUAL_STATE_VALUES = {
     "FAVORABLE": 0, "HEALTHY": 0, "THRIVING": 0,
     "UNDERSTAFFED": 0, "DEPLETED": 0, "SUBSTRATE LIMITED": 0, "UNDER PRESSURE": 0,
 }
+
+# ─── CLIENT-FACING SCENARIO LABELS (SINGLE SOURCE OF TRUTH) ────────────────
+# Maps internal scenario codes to non-expert display names.
+# All section builders import these — no renderer invents its own wording.
+
+# Beneficial guild labels: full 3×3 matrix, each cell is distinct
+BENEFICIAL_CLIENT_LABELS = {
+    "OVERGROWTH":       "Flourishing",        # above + enriched
+    "ABUNDANT":         "Abundant",            # above + balanced
+    "CROWDED":          "Abundant bloom",      # above + suppressed
+    "THRIVING":         "Thriving",            # within + enriched
+    "HEALTHY":          "Healthy",             # within + balanced
+    "UNDER PRESSURE":   "Struggling",          # within + suppressed
+    "SUBSTRATE LIMITED":"Hungry",              # below + enriched
+    "UNDERSTAFFED":     "Running low",         # below + balanced
+    "DEPLETED":         "Exhausted",           # below + suppressed
+}
+
+# Contextual (opportunistic) guild labels
+# FAVORABLE collapses within+below (both good), so range_tier disambiguates
+CONTEXTUAL_CLIENT_LABELS = {
+    "OVERGROWTH":       "Taking over",         # above + enriched — worst
+    "ABUNDANT":         "Elevated",            # above + balanced
+    "CROWDED":          "High but contained",  # above + suppressed
+}
+CONTEXTUAL_FAVORABLE_LABELS = {
+    "within":           "In check",            # within range — favorable
+    "below":            "Minimal",             # below range — favorable
+}
+
+# Special case: absent beneficial guild (abundance == 0)
+ABSENT_CLIENT_LABEL = "Missing"
+
+
+def client_label(scenario: str, beneficial: bool, range_tier: str,
+                 abundance: float = None) -> str:
+    """Return client-facing label for a scenario.
+
+    Args:
+        scenario: Internal scenario code from classify_scenario()
+        beneficial: True for beneficial guilds, False for contextual
+        range_tier: "above", "within", or "below"
+        abundance: Guild abundance (used to detect absent guilds)
+
+    Returns:
+        Non-expert display label string
+    """
+    # Absent beneficial guild
+    if beneficial and abundance is not None and abundance == 0:
+        return ABSENT_CLIENT_LABEL
+
+    if beneficial:
+        return BENEFICIAL_CLIENT_LABELS.get(scenario, scenario)
+
+    # Contextual guild
+    if scenario == "FAVORABLE":
+        return CONTEXTUAL_FAVORABLE_LABELS.get(range_tier, "In check")
+
+    return CONTEXTUAL_CLIENT_LABELS.get(scenario, scenario)
 
 
 # ─── CORE FUNCTIONS ──────────────────────────────────────────────────────────
@@ -142,6 +208,19 @@ def is_beneficial(guild_name: str) -> bool:
     return any(b.lower() == nl for b in _BENEFICIAL_NAMES)
 
 
+def get_range_tier(status: str, abundance: float) -> str:
+    """Derive range tier from status string and abundance.
+
+    Exposed as a helper so callers (e.g. client_label) can reuse
+    the same logic without duplicating it.
+    """
+    if "Below" in status or "Absent" in status or abundance == 0:
+        return "below"
+    elif "Above" in status:
+        return "above"
+    return "within"
+
+
 def classify_scenario(status: str, abundance: float, clr: Optional[float],
                       beneficial: bool) -> str:
     """Classify guild into 9-scenario matrix.
@@ -152,13 +231,7 @@ def classify_scenario(status: str, abundance: float, clr: Optional[float],
         clr: CLR value (None if undefined)
         beneficial: True for beneficial guilds, False for contextual
     """
-    # Range tier
-    if "Below" in status or "Absent" in status or abundance == 0:
-        range_tier = "below"
-    elif "Above" in status:
-        range_tier = "above"
-    else:
-        range_tier = "within"
+    range_tier = get_range_tier(status, abundance)
 
     # CLR tier
     if clr is None:
@@ -224,6 +297,7 @@ def compute_guild_priority(guild_name: str, abundance: float, status: str,
     importance = get_importance(guild_name)
     J = evenness if evenness is not None else 0.5
 
+    range_tier = get_range_tier(status, abundance)
     scenario = classify_scenario(status, abundance, clr, beneficial)
 
     if not beneficial:
@@ -234,12 +308,15 @@ def compute_guild_priority(guild_name: str, abundance: float, status: str,
     evenness_mod = compute_evenness_modifier(J, not beneficial, state_value)
     score = round(importance * state_value * evenness_mod, 2)
     label = score_to_label(score)
+    cl = client_label(scenario, beneficial, range_tier, abundance)
 
     return {
         "priority_level": label,
         "priority_score": score,
         "priority_rank": PRIORITY_RANK_MAP.get(label, 3),
         "scenario": scenario,
+        "client_label": cl,
+        "range_tier": range_tier,
         "color": PRIORITY_COLOR_MAP.get(label, "teal"),
         "color_hex": PRIORITY_HEX_MAP.get(label, "#2ecc71"),
         "importance_weight": importance,

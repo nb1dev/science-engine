@@ -757,12 +757,12 @@ def identify_key_opportunities(data: dict) -> list:
 
 # Display names for platform
 GUILD_DISPLAY_NAMES_SCENARIO = {
-    'Butyrate Producers': 'Gut-Lining Energy Producers',
-    'Fiber Degraders': 'Fiber-Processing Bacteria',
-    'Cross-Feeders': 'Intermediate Processors',
+    'Butyrate Producers': 'Gut Wall Protectors',
+    'Fiber Degraders': 'Fibre Digesters',
+    'Cross-Feeders': 'Nutrient Recyclers',
     'HMO/Oligosaccharide-Utilising Bifidobacteria': 'Bifidobacteria',
-    'Mucin Degraders': 'Mucus-Layer Bacteria',
-    'Proteolytic Dysbiosis Guild': 'Protein-Fermenting Bacteria',
+    'Mucin Degraders': 'Gut Lining Processors',
+    'Proteolytic Dysbiosis Guild': 'Protein Recyclers',
 }
 
 # 9-scenario matrix: (range_tier, clr_tier) → (scenario, action, severity)
