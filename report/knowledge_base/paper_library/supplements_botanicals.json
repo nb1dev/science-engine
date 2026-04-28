@@ -1,0 +1,1298 @@
+{
+  "topic": "supplements_botanicals",
+  "source_files": [
+    "dietary supplements x gut health.pdf",
+    "dietary supplements x gut health - Sources.csv"
+  ],
+  "lookup_keys": [
+    "curcumin",
+    "turmeric",
+    "ashwagandha",
+    "withania somnifera",
+    "KSM-66",
+    "rhodiola",
+    "rhodiola rosea",
+    "salidroside",
+    "ginseng",
+    "panax ginseng",
+    "red ginseng",
+    "omega-3",
+    "omega-3 fatty acids",
+    "fish oil",
+    "EPA",
+    "eicosapentaenoic acid",
+    "DHA",
+    "docosahexaenoic acid",
+    "PUFA",
+    "polyunsaturated fatty acids",
+    "PHGG",
+    "partially hydrolyzed guar gum",
+    "guar gum",
+    "Sunfiber",
+    "vitamin D",
+    "vitamin D3",
+    "cholecalciferol",
+    "25(OH)D",
+    "calcitriol",
+    "vitamin C",
+    "ascorbic acid",
+    "vitamin K2",
+    "menaquinone",
+    "MK-7",
+    "MK-4",
+    "VK2",
+    "zinc",
+    "zinc picolinate",
+    "zinc bisglycinate",
+    "selenomethionine",
+    "selenium",
+    "selenoprotein",
+    "SeNP",
+    "magnesium",
+    "magnesium bisglycinate",
+    "magnesium citrate",
+    "magnesium oxide",
+    "Mg",
+    "whey protein",
+    "whey",
+    "whey isolate",
+    "creatine",
+    "creatine monohydrate",
+    "inulin",
+    "chicory root",
+    "chicory inulin",
+    "FOS",
+    "fructooligosaccharides",
+    "GOS",
+    "galactooligosaccharides",
+    "prebiotic fiber",
+    "prebiotic",
+    "collagen",
+    "collagen peptides",
+    "berberine",
+    "quercetin",
+    "glutamine",
+    "L-glutamine",
+    "glutathione",
+    "L-theanine",
+    "theanine",
+    "propolis",
+    "bee propolis",
+    "beta-glucans",
+    "β-glucan",
+    "beta-glucan",
+    "oat beta-glucan",
+    "yeast beta-glucan",
+    "glucomannan",
+    "konjac glucomannan",
+    "KGM",
+    "bacopa",
+    "bacopa monnieri",
+    "bacopaside",
+    "polyphenol",
+    "polyphenols",
+    "Bacteroides",
+    "Firmicutes",
+    "Akkermansia",
+    "Verrucomicrobia",
+    "Bifidobacterium",
+    "Lactobacillus",
+    "Roseburia",
+    "Faecalibacterium",
+    "Ruminococcus",
+    "Coprococcus",
+    "Desulfovibrio",
+    "Proteobacteria",
+    "Enterococcus",
+    "Collinsella",
+    "Oscillospira",
+    "Lachnospira",
+    "Lachnospiraceae",
+    "Clostridium",
+    "Prevotella",
+    "Prevotellaceae",
+    "Alistipes",
+    "Parabacteroides",
+    "Odoribacterium",
+    "Muribaculaceae",
+    "Romboutsia",
+    "Sutterella",
+    "Dorea",
+    "Blautia",
+    "Eubacterium",
+    "Megasphaera",
+    "Anaerostipes",
+    "Streptococcus",
+    "E. coli",
+    "Escherichia coli"
+  ],
+  "related_topics": [
+    "probiotics_prebiotics",
+    "bacterial_guilds",
+    "scfa_barrier_function",
+    "vitamins_microbial_synthesis",
+    "microbiome_composition",
+    "microbial_diversity",
+    "short_chain_fatty_acids",
+    "intestinal_permeability",
+    "gut_barrier_integrity",
+    "endotoxemia_LPS",
+    "tight_junction_proteins",
+    "dysbiosis"
+  ],
+  "findings": [
+    {
+      "supplement": "PHGG (Partially Hydrolyzed Guar Gum)",
+      "aliases": [
+        "partially hydrolyzed guar gum",
+        "guar gum",
+        "Sunfiber"
+      ],
+      "primary_mechanisms": [
+        "Prebiotic fermentation increases butyrate and acetate production",
+        "Shifts composition toward Akkermansia and Bifidobacterium",
+        "Supports barrier tight-junction protein expression"
+      ],
+      "microbiome_composition": "Increased Verrucomicrobia (including Akkermansia) and Bifidobacterium; decreased Sutterella and Dorea at day 14. Another trial showed increased Bifidobacterium and multiple butyrate-associated groups.",
+      "microbial_diversity": "Richness unchanged; evenness (Shannon/inverse Simpson) decreased during PHGG, returning to baseline after washout. Composition changes were reversible (PERMANOVA/Bray-Curtis dissimilarities returned toward baseline after stopping).",
+      "scfa_production": "Human: increased butyrate and acetate during 12-week intervention; propionate increased at weeks 6 and 12; n-butyric acid and total SCFAs increased at week 12 vs placebo. Animal models show increased caecal acetate/propionate/butyrate and higher total fecal SCFAs vs DSS.",
+      "barrier_function": "Preclinical (DSS colitis): PHGG increased colonic occludin and claudin-3/4/7 expression vs DSS alone. Human permeability biomarkers are limited in provided sources.",
+      "dose_response": "Dose-response effects of PHGG on gut microbiome vary with dose (2-5g daily typical); tolerance improves with gradual titration.",
+      "evidence_strength": "Moderate to strong (multiple human trials show microbiome shifts and increased stool SCFAs; direct human permeability/tight-junction markers are limited, but animal data support tight-junction upregulation).",
+      "cautions": [
+        "Highly fermentable — may worsen bloating, gas, or abdominal discomfort in IBS or sensitive individuals",
+        "Start low (2-3g daily) and titrate slowly over 2-3 weeks to minimize GI symptoms",
+        "May cause osmotic effects (loose stools) at higher doses",
+        "Evenness decreases during intervention (composition shifts); monitor for unwanted shifts if baseline dysbiosis exists"
+      ],
+      "notes": "PHGG is one of the supplements with the strongest direct human SCFA evidence in this dataset. Reversible shifts support wash-out studies."
+    },
+    {
+      "supplement": "Vitamin C (Ascorbic Acid)",
+      "aliases": [
+        "ascorbic acid",
+        "L-ascorbic acid"
+      ],
+      "primary_mechanisms": [
+        "Increases bacterial evenness and specific taxa (Lachnospiraceae, Bifidobacterium)",
+        "Increases total SCFA production (propionate, butyrate)",
+        "Supports barrier function via tight-junction protein expression"
+      ],
+      "microbiome_composition": "Increased Collinsella (in colon-delivered vitamin trial); increased Lachnospiraceae and decreased Bacteroidetes/Enterococci in high-dose study; increased Bifidobacterium (incl. B. adolescentis) and Lachnospiraceae/Bifidobacteriaceae families in another trial.",
+      "microbial_diversity": "Increased gut microbial evenness at week 4 vs baseline and placebo in one controlled trial. Other reports describe increased alpha diversity, while one study found no change in Shannon or Simpson pre/post supplementation.",
+      "scfa_production": "Human: vitamin C increased total SCFA, propionate, and butyrate vs baseline with similar effects vs placebo. Review text summarizes increased fecal SCFAs (butyrate/propionate) in humans.",
+      "barrier_function": "In vitro (colon-delivered platform): vitamin C increased TEER dose-dependently. Direct in vivo permeability/tight-junction outcomes are limited in provided sources beyond TEER assays.",
+      "dose_response": "Higher doses (500 mg–2 g daily) studied; effects on composition and SCFA production generally dose-dependent.",
+      "evidence_strength": "Moderate (multiple human interventions show SCFA increases and compositional shifts; direct in vivo permeability/tight-junction outcomes are limited beyond TEER assays).",
+      "cautions": [
+        "Excess vitamin C may cause osmotic diarrhea and loose stools (>2 g daily)",
+        "May alter pH and fermentation patterns in sensitive individuals",
+        "High doses can reduce copper absorption; monitor if taking concurrently with copper supplements"
+      ],
+      "notes": "Vitamin C is one of the more direct human evidence supplements for SCFA production in this dataset."
+    },
+    {
+      "supplement": "Omega-3 Fatty Acids (EPA/DHA)",
+      "aliases": [
+        "EPA",
+        "DHA",
+        "eicosapentaenoic acid",
+        "docosahexaenoic acid",
+        "fish oil",
+        "PUFA",
+        "polyunsaturated fatty acids"
+      ],
+      "primary_mechanisms": [
+        "Shifts taxa composition toward SCFA-producing genera (Coprococcus, Bifidobacterium)",
+        "Produces modest but significant increases in specific SCFA metabolites (iso-butyrate, isovalerate)",
+        "Improves barrier function via reduced LBP, fecal zonulin, and plasma DHA associations"
+      ],
+      "microbiome_composition": "Increased Coprococcus spp. and Bacteroides spp.; decreased Collinsella spp. in one trial. Another study reported reversible increases in several SCFA-producing bacteria and increased Bifidobacterium/Oscillospira/Lachnospira with decreased Coprococcus/Faecalibacterium. Observationally, DHA-associated OTUs enriched for Lachnospiraceae.",
+      "microbial_diversity": "Human RCT: no significant change in average alpha (Shannon/observed OTUs) or beta diversity after omega-3 supplementation vs inulin control. Observationally, higher circulating PUFAs (including DHA/total omega-3) associated with higher alpha diversity across multiple indices.",
+      "scfa_production": "Increased iso-butyrate and isovalerate and near-significant increase in butyrate in one intervention study. Other work found propionate in colon regions positively associated with Akkermansia bloom at end of supplementation. Some studies report no significant fecal butyrate differences despite microbiome shifts.",
+      "barrier_function": "Preclinical: fat-1 mice had lower intestinal permeability. Human: barrier biomarkers LBP and fecal zonulin decreased in intervention group; plasma DHA inversely associated with LBP and zonulin.",
+      "dose_response": "Typical doses: 1–3 g daily EPA/DHA combined. Effects on composition and barrier markers generally dose-dependent.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Human trials show taxa changes and some metabolite/barrier biomarker shifts but mixed diversity/SCFA findings; strong mechanistic support in models.",
+      "cautions": [
+        "Fish oil supplements may increase bleeding risk at high doses (>3 g EPA+DHA daily); monitor with anticoagulants",
+        "May increase oxidative stress if baseline antioxidant status is poor",
+        "Omega-3 shifts are often reversible upon cessation; consistency of supplementation important",
+        "May increase burping, fishy aftertaste, or nausea in some individuals"
+      ],
+      "notes": "Strongest human barrier-evidence supplement in this dataset for intestinal permeability markers (LBP/zonulin). SCFA effects are modest and mixed."
+    },
+    {
+      "supplement": "Curcumin (Turmeric)",
+      "aliases": [
+        "turmeric",
+        "curcumin",
+        "curcuminoid",
+        "Curcugen"
+      ],
+      "primary_mechanisms": [
+        "Shifts Firmicutes:Bacteroidetes ratio and increases Bacteroides abundance",
+        "Increases SCFA-producing taxa (Oscillospira, Akkermansia, Allobaculum) in preclinical models",
+        "Reduces LPS, increases butyrate, and improves occludin/ZO-1 tight-junction protein expression"
+      ],
+      "microbiome_composition": "Mixed human findings: one trial reported significant reduction in Firmicutes:Bacteroidetes ratio and increased Bacteroides; another trial found no significant between-group phylum-level change. Turmeric/curcumin increased observed species in pilot study. Preclinical: reduced endotoxin-producing Proteobacteria and Desulfovibrio; increased butyrate-associated taxa.",
+      "microbial_diversity": "Pilot turmeric/curcumin study: increased observed species with turmeric (+7%) and curcumin (+69%) vs placebo decrease. Review summaries indicate curcumin can increase diversity in some models but decrease richness/diversity in others (model-dependent).",
+      "scfa_production": "Mostly preclinical: increased fecal butyrate in multiple mouse models/formulations (sometimes with no change in acetate). Increased caecal/colonic SCFAs alongside increased SCFA-producing taxa in HFD model.",
+      "barrier_function": "Preclinical/cell evidence: attenuated LPS-induced tight-junction disruption in Caco-2 cells. Increased occludin and reduced plasma LPS/zonulin/permeability markers in mice. Improved barrier function with increased ZO-1/claudin-1 in Western-diet mice.",
+      "dose_response": "Typical doses: 500–2000 mg curcumin daily (often as extract with piperine for absorption). Bioavailability highly dependent on formulation and absorption enhancers.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Human trials show some composition/species changes but inconsistent results across endpoints. Preclinical evidence for SCFAs and barrier markers is extensive.",
+      "cautions": [
+        "Low bioavailability without piperine or fat; choose formulations with bioavailability enhancers",
+        "May cause nausea, dyspepsia, or gastric upset at high doses (>1500 mg daily)",
+        "May thin blood at very high doses; caution with anticoagulants",
+        "Composition shifts are model-dependent; human effects are inconsistent"
+      ],
+      "notes": "One of the most well-studied botanical in this dataset with extensive preclinical barrier and SCFA evidence. Human microbiome effects are more variable."
+    },
+    {
+      "supplement": "Vitamin K2 (Menaquinone)",
+      "aliases": [
+        "menaquinone",
+        "MK-7",
+        "MK-4",
+        "VK2"
+      ],
+      "primary_mechanisms": [
+        "Reshapes dysbiotic microbial composition (restores Firmicutes, Lactobacillus, Bifidobacterium)",
+        "Increases fecal SCFA production (acetic acid, butyric acid, valeric acid)",
+        "Maintains intestinal barrier integrity via tight-junction protein function"
+      ],
+      "microbiome_composition": "VK2 reshaped DSS-induced dysbiosis (↑Firmicutes/Prevotellaceae/Prevotella; ↓Proteobacteria/Enterobacteriaceae). Restored antibiotic-reduced Lactobacillus/Bifidobacterium/Firmicutes/Clostridium. Another model reported vitamin K2 altered phyla and enriched Lactobacillus (context-dependent; also reported Proteobacteria changes).",
+      "microbial_diversity": "Diversity outcomes not explicitly mentioned in provided sources; composition restoration suggests functional recovery.",
+      "scfa_production": "Human+mouse feces: increased SCFAs including acetic acid, butyric acid, and valeric acid with associated increases in responsible genera. Increasing trend for these SCFAs vs comparator in related analyses.",
+      "barrier_function": "Preclinical (DSS colitis): VK2 maintained intestinal barrier integrity and alleviated epithelial barrier dysfunction by maintaining tight-junction function.",
+      "dose_response": "Typical doses: 45–180 μg MK-7 or equivalent daily. Effects on composition and SCFA may be dose-dependent.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Fecal SCFA increases reported in human+mouse feces analyses; direct barrier evidence primarily animal (DSS colitis); composition evidence preclinical/antibiotic models.",
+      "cautions": [
+        "May interact with warfarin and other vitamin K antagonists; avoid if taking anticoagulants without medical supervision",
+        "High-dose vitamin K2 may reduce effectiveness of anticoagulant therapy",
+        "Very few direct human microbiome trials; most evidence from animal/antibiotic models"
+      ],
+      "notes": "Vitamin K2 shows strong barrier and SCFA effects in preclinical settings, particularly in dysbiosis/colitis contexts. Human evidence is limited but promising."
+    },
+    {
+      "supplement": "Propolis (Bee Propolis)",
+      "aliases": [
+        "bee propolis",
+        "propolis extract",
+        "polyphenol-rich propolis"
+      ],
+      "primary_mechanisms": [
+        "Shifts dysbiotic composition (reduces Firmicutes in HFD, increases Verrucomicrobia/Akkermansia)",
+        "Increases SCFA production (acetate, propionate, butyrate) in preclinical models",
+        "Restores intestinal barrier integrity and tight-junction protein expression"
+      ],
+      "microbiome_composition": "Mostly preclinical with limited human data. In HFD rats: propolis reduced Firmicutes and increased Verrucomicrobia/Bacteroidota (including Akkermansia, decreased Romboutsia/Lachnospiraceae). In DSS colitis rats (Western diet), 0.3% propolis increased Proteobacteria/Chloroflexi/Gemmatimonadetes. Human hemodialysis subgroup: propolis group showed abundance of Muribaculaceae with no significant beta-diversity difference vs placebo.",
+      "microbial_diversity": "Preclinical: DSS reduced Shannon diversity while propolis increased it; propolis caused significant beta-diversity differences (weighted UniFrac). Human hemodialysis subgroup: non-significant increases in richness/evenness after propolis.",
+      "scfa_production": "Preclinical: fecal acetate/propionate/butyrate increased in propolis groups in one model. In HFD model, SCFAs recovered with significant propionate and butyrate increases and enrichment of butyrate-/propionate-producers. Other models reported minimal changes in caecal SCFA pools. In vitro fermentation: increased SCFA production (acetate/propionate/butyrate).",
+      "barrier_function": "Preclinical/in vitro: increased ileal tight-junction proteins and improved tight/gap junctions in propolis groups. Propolis restored permeability and increased tight-junction protein expression in AFB1 model. In Caco-2/human epithelial cells: propolis increased TEER and upregulated occludin and ZO-1.",
+      "dose_response": "Typical doses: 200–600 mg propolis extract daily. Preclinical studies used 0.3–3% in diet. Response is model-dependent.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Human microbiome data sparse and largely non-significant; multiple animal/cell studies show compositional shifts plus barrier and SCFA-related effects.",
+      "cautions": [
+        "Bee propolis may trigger allergic reactions in sensitive individuals (especially those with bee/pollen allergies)",
+        "Limited human microbiome RCT evidence; most findings from animal models",
+        "SCFA effects are model-dependent; less consistent than prebiotic fibers",
+        "May increase antimicrobial effects in dysbiosis context; monitor for excessive shifts"
+      ],
+      "notes": "Propolis shows promise for barrier function across multiple preclinical models. Human microbiome evidence is sparse and mixed."
+    },
+    {
+      "supplement": "Vitamin D (Cholecalciferol, D3)",
+      "aliases": [
+        "cholecalciferol",
+        "D3",
+        "vitamin D3",
+        "25(OH)D",
+        "calcitriol"
+      ],
+      "primary_mechanisms": [
+        "Shifts composition toward butyrate-producing genera (Eubacterium, Lactobacillus, Bifidobacterium)",
+        "Reduces pathogenic taxa (Gammaproteobacteria, Pseudomonas, Escherichia/Shigella)",
+        "Supports barrier integrity via VDR signaling on junctional proteins"
+      ],
+      "microbiome_composition": "Vitamin D3 interventions and status associated with: increased Eubacterium and Lactobacillus (FO+D vs control), increased Actinobacteria and Bifidobacterium longum (vs baseline/placebo) in colon-delivered vitamin trial, and decreased Gammaproteobacteria (Pseudomonas, Escherichia/Shigella) in supplementation study. Deficiency (dietary restriction/VDR depletion) increased Bacteroidetes and Proteobacteria in models.",
+      "microbial_diversity": "Meta-analytic animal evidence: micronutrient supplementation increased richness/diversity in animal studies, while human studies showed nonsignificant adverse effect overall (heterogeneous). Reviews note discordant alpha-diversity findings and site-specific beta-diversity changes (upper GI biopsies vs feces).",
+      "scfa_production": "Direct SCFA concentrations not consistently reported. Observational study linked higher circulating vitamin D to increased butyrate-producing bacteria and enrichment of Eubacterium spp.",
+      "barrier_function": "Mechanistic evidence: vitamin D–VDR signaling supports intestinal barrier integrity via regulation of junctional proteins. Lower 25(OH)D associated with higher lipopolysaccharides in observational data.",
+      "dose_response": "Typical doses: 1000–4000 IU daily (or target serum 25(OH)D >30 ng/mL). Effects on composition and barrier are status-dependent.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Human data show compositional shifts and observational links to endotoxin/butyrate-producers; direct SCFA/permeability measures limited; mechanistic/barrier rationale strong.",
+      "cautions": [
+        "Excess vitamin D may alter calcium-dependent microbial pathways and increase hypercalcemia risk",
+        "Excess D3 (>4000 IU daily) may reduce diversity and shift toward less favorable taxa in some individuals",
+        "Site-specific effects (upper GI vs fecal); composition shifts may not be uniform",
+        "Human diversity evidence is discordant; individual response is variable"
+      ],
+      "notes": "Vitamin D shows strong mechanistic rationale for barrier function but limited direct human SCFA evidence. Status (deficiency vs. replete) is more important than supplementation in some contexts."
+    },
+    {
+      "supplement": "Rhodiola rosea",
+      "aliases": [
+        "rhodiola",
+        "salidroside",
+        "Rhodiola rosea extract"
+      ],
+      "primary_mechanisms": [
+        "Shifts composition toward butyrate-producing taxa (Acetobacer, Bifidobacterium)",
+        "Reduces Desulfovibrionales and increases Enterobacteria-related groups",
+        "Improves barrier integrity via reduced serum LPS (~50% decrease)"
+      ],
+      "microbiome_composition": "Preclinical: in Drosophila, increased Acetobacter and decreased Lactobacillales (lower Lactococcus at 40 days). In db/db mice, fecal community composition differed with treatment; main time×treatment-varying taxa were Desulfovibrionales (more abundant with Rhodiola). Salidroside studies report genus-level shifts in diabetic models (Enterobacter/Lactobacillus vs Bacteroides/Alistipes changes) and increased Actinobacteria/Bifidobacterium.",
+      "microbial_diversity": "Preclinical: decreased bacterial diversity/OTU counts in Rhodiola-fed flies vs controls.",
+      "scfa_production": "Not mentioned in provided sources.",
+      "barrier_function": "Preclinical surrogate: decreased serum LPS by ~50% in db/db mice; authors hypothesize improved gut barrier integrity and reduced translocation. Trans-resveratrol (structurally related) upregulated tight-junction gene expression (TJP-2 and Ocln) in rat model; however, authors noted that resveratrol itself scarcely modified profile of gut bacteria.",
+      "dose_response": "Typical doses: 200–600 mg Rhodiola extract daily. Preclinical studies used varied dosing; direct dose-response in humans unknown.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Multiple animal studies show compositional shifts and endotoxemia-related surrogate (serum LPS); limited direct SCFA/permeability measurement in provided sources.",
+      "cautions": [
+        "Limited human microbiome evidence; most findings from animal/fly models",
+        "Decreased diversity in preclinical models (may not be beneficial in healthy individuals)",
+        "Barrier improvement is inferred from serum LPS, not direct permeability measures",
+        "May interact with monoamine oxidase inhibitors (MAOI) and serotonergic drugs"
+      ],
+      "notes": "Rhodiola shows promise for barrier function via serum LPS reduction but limited direct human microbiome or SCFA evidence."
+    },
+    {
+      "supplement": "Ginseng (Panax ginseng, Red Ginseng)",
+      "aliases": [
+        "panax ginseng",
+        "red ginseng",
+        "ginseng extract",
+        "ginsenoside"
+      ],
+      "primary_mechanisms": [
+        "Enriches Akkermansia, Parasutterella, and SCFA-producing taxa (Lachnospiraceae, Christensenellaceae)",
+        "Increases predicted SCFA-production pathways (propionate biosynthesis)",
+        "Supports barrier integrity via occludin/ZO-1/E-cadherin expression and FITC-dextran reduction"
+      ],
+      "microbiome_composition": "Human: postoperative Lactobacillus increased and Bifidobacterium decreased in red ginseng vs control in GI cancer surgery patients. Preclinical: ginseng extracts enriched Parasutterella/Akkermansia (dose-dependent) and enriched SCFA-producing taxa (e.g., Lachnospiraceae_UCG-004, Christensenellaceae R-7 group, Monoglobus). HFD dysbiosis partially reversed with increased Akkermansia and reduced Helicobacter.",
+      "microbial_diversity": "Human: postoperative alpha diversity decreased in controls but remained relatively stable with red ginseng. Preclinical: richness/phylogenetic diversity increased in ginseng extract groups vs HFD at week 4, with sustained effects in high-dose group at week 8. Another study reported significant alpha and beta diversity differences pre/post red ginseng extract intake.",
+      "scfa_production": "Preclinical/in vitro: predicted SCFA-production pathways (propionate biosynthesis PWY-7211) increased after ginseng extract interventions. In reconstructed human gut community, metabolites included acetate, propionate, and butyrate with ginseng extract. A ginsenoside (Rh4) increased SCFAs (not whole ginseng).",
+      "barrier_function": "Preclinical: ginseng metabolite GC-K reversed occludin/ZO-1/E-cadherin/MUC2 expression and reduced FITC-dextran permeability. FMT reproduced permeability reduction (microbiota-mediated).",
+      "dose_response": "Typical doses: 1–3 g ginseng extract daily or equivalent. Dose-dependent effects on Akkermansia and diversity observed in preclinical studies.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). At least one human study reports taxa/diversity changes; SCFA and barrier evidence largely preclinical/in vitro.",
+      "cautions": [
+        "Red ginseng may increase heart rate and blood pressure at high doses; monitor in hypertensive individuals",
+        "May interact with stimulants and some cardiovascular medications",
+        "Limited human SCFA and barrier evidence; most findings from animal/in vitro fermentation",
+        "Diversity benefits observed in preclinical HFD models; effects in healthy individuals unknown"
+      ],
+      "notes": "Ginseng shows promise for Akkermansia enrichment and barrier function in preclinical settings, with one human trial showing diversity preservation post-surgery."
+    },
+    {
+      "supplement": "Polyphenols (General Category)",
+      "aliases": [
+        "polyphenol",
+        "polyphenolic compounds",
+        "phenolic compounds",
+        "anthocyanin",
+        "flavonoid"
+      ],
+      "primary_mechanisms": [
+        "Stimulate SCFA production via microbial fermentation",
+        "Shift taxa toward Bifidobacterium and Bacteroides; reduce Firmicutes",
+        "Reduce permeability and support tight-junction protein expression"
+      ],
+      "microbiome_composition": "Polyphenol exposure can shift taxa: in vitro fermentation stimulated bifidobacteria and decreased Firmicutes:Bacteroidetes ratio. Wine polyphenols increased Bacteroides/Bifidobacterium/Prevotella. Specific polyphenol mixtures (quercetin+resveratrol) altered obesity-associated taxa (reduced Firmicutes/Desulfovibrionaceae, increased Akkermansia/Ruminococcaceae).",
+      "microbial_diversity": "Review-level evidence: polyphenols significantly alter α- and β-diversity. Many studies report increased diversity, but human results mixed (one high-quality trial showed no change).",
+      "scfa_production": "Polyphenols can stimulate SCFA production via microbial fermentation. Reviews describe regulation of metabolites including SCFAs. Controlled crossover summary reported increased available butyrate with cranberry polyphenols. Effects can be compound-dependent (trans-resveratrol ± quercetin produced no SCFA changes in one rat study).",
+      "barrier_function": "Indirect/preclinical: review states polyphenols help maintain intestinal barrier homeostasis via microbiota regulation. Diet-permeability review lists polyphenols and anthocyanins as decreasing permeability and influencing ZO-1/occludins in animal models.",
+      "dose_response": "Dose and polyphenol type greatly affect outcomes; effects are compound-dependent.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Multiple mechanistic and preclinical findings plus some human diet/intervention observations; heterogeneous results across compounds and endpoints.",
+      "cautions": [
+        "Effects are highly compound-specific; quercetin, resveratrol, and anthocyanins have different profiles",
+        "SCFA effects variable; some polyphenol combinations produce no SCFA changes",
+        "High polyphenol intake from concentrated supplements may cause GI distress or tannin-related constipation",
+        "Human evidence is mixed; diversity effects in humans inconsistent"
+      ],
+      "notes": "Polyphenols represent a heterogeneous category; individual compound evidence should be considered separately. Fermentability is the key driver of SCFA effects."
+    },
+    {
+      "supplement": "L-Theanine",
+      "aliases": [
+        "theanine",
+        "L-theanine",
+        "glutamic acid gamma-ethylamide"
+      ],
+      "primary_mechanisms": [
+        "Enriches Bifidobacterium, Turicibacter, and SCFA-producing taxa",
+        "Decreases pathogenic taxa (Enterorhabdus, Desulfovibrio)",
+        "Restores barrier function and reduces intestinal permeability markers (FITC-dextran, D-LA, DAO)"
+      ],
+      "microbiome_composition": "Preclinical: L-theanine increased Bifidobacterium/Turicibacter and decreased Enterorhabdus/Desulfovibrio in heat-stress model. Other models report enrichment of Lactobacillus and Roseburia and reduced Firmicutes:Bacteroidetes ratio with increased fecal SCFAs.",
+      "microbial_diversity": "Preclinical: reduced overall diversity in jejunal/ileal microbiomes of treated birds vs control at certain timepoints. Another model reported reduced Shannon indices after L-theanine administration.",
+      "scfa_production": "Preclinical: increased SCFA content and promoted gut barrier repair in UC mice. Medium/high-dose intervention restored fecal acetate and several serum SCFAs (including propionate) in stress model.",
+      "barrier_function": "Preclinical: attenuated reduction of serum DAO and mucosal barrier genes (ZO-1, claudin-1) in DSS colitis alongside SCFA-related effects. Improved gut permeability and reduced serum LPS in alcohol-injury model. Heat-stress study reported lower FITC-dextran/D-LA/DAO with upregulated occludin/claudin-1/ZO-1.",
+      "dose_response": "Typical doses: 100–200 mg L-theanine daily in humans (though microbiome studies often used higher preclinical doses). Dose-response relationship not well-established in humans.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Multiple animal models show consistent barrier- and SCFA-linked effects; human microbiome/SCFA/barrier endpoints not described in provided sources.",
+      "cautions": [
+        "Limited human microbiome evidence; all provided data from animal models",
+        "May reduce diversity (observed decrease in diversity measures in some preclinical models)",
+        "Barrier improvement depends on stress context (heat, UC, alcohol); effects in healthy individuals unknown",
+        "May have mild CNS effects (calmness, focus); consider timing of supplementation"
+      ],
+      "notes": "L-Theanine shows strong promise for barrier function and SCFA production in stress contexts. Human microbiome evidence is absent."
+    },
+    {
+      "supplement": "Selenium",
+      "aliases": [
+        "selenomethionine",
+        "selenium nanoparticles",
+        "SeNP",
+        "biogenic selenium"
+      ],
+      "primary_mechanisms": [
+        "Increases Bacteroidetes and SCFA-producing taxa (Bacteroides, Clostridium_XlVa)",
+        "Reduces Desulfovibrio and other pathogenic taxa",
+        "Supports tight-junction protein expression and intestinal barrier function"
+      ],
+      "microbiome_composition": "Observational: high- vs low-selenium areas associated with altered intestinal microbiota composition/abundance. Preclinical: selenium nanoparticles increased Bacteroidetes and reduced Verrucomicrobia; increased Bacteroides and Clostridium_XlVa and decreased Desulfovibrio. Selenium deficiency disrupted flora (decreased Lactobacillus reuteri).",
+      "microbial_diversity": "Preclinical: SeNP supplementation increased Shannon and decreased Simpson indices with clear beta-diversity clustering/separation vs Se-deficient group. Another intervention reported no richness differences (Chao/ACE) and no significant group differences.",
+      "scfa_production": "Preclinical: supranutritional selenium increased total SCFAs and butyrate (plus isobutyrate/valerate/isovalerate). Dietary SeMet increased fermentation and SCFA production in rats.",
+      "barrier_function": "Preclinical: Se deficiency associated with higher DAO/D-LA and lower tight-junction protein expression (ZO-1/occludin/claudin-1). SeNP supplementation alleviated barrier injury. FMT from Se-deficient donors increased permeability (FITC-dextran) and reduced tight-junction proteins.",
+      "dose_response": "Typical doses: 50–200 μg selenium daily. Supranutritional doses (higher than RDA) studied in preclinical models.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Human evidence mainly observational; animal studies provide consistent diversity/SCFA/barrier-marker effects across selenium status/forms.",
+      "cautions": [
+        "Selenium toxicity risk at doses >400 μg daily (selenosis); monitor intake from all sources",
+        "High-dose selenium may cause nausea, garlic odor, and hair/nail brittleness",
+        "Limited human RCT microbiome data; most evidence from animal studies",
+        "Deficiency context is key; supplementation benefits greatest in deficient individuals"
+      ],
+      "notes": "Selenium shows promise for barrier function and SCFA support particularly in deficiency contexts. Human microbiome evidence is observational only."
+    },
+    {
+      "supplement": "Quercetin",
+      "aliases": [
+        "quercetin dihydrate",
+        "quercetin monohydrate",
+        "3,3',4',5,7-pentahydroxyflavone"
+      ],
+      "primary_mechanisms": [
+        "Increases SCFA-producing genera (Faecalibaculum, Roseburia, Akkermansia)",
+        "Reduces Firmicutes:Bacteroidetes ratio and pathogenic Erysipelotrichi",
+        "Restores barrier function via decreased D-lactic acid, DAO, and increased villus length"
+      ],
+      "microbiome_composition": "Mostly preclinical: increased Faecalibaculum rodentium and Roseburia hominis; enriched Akkermansia/Verrucomicrobia in antibiotic-treated mice while decreasing Parabacteroides/Alistipes. In HFD rats: quercetin decreased Firmicutes:Bacteroidetes ratio and reduced Erysipelotrichi. In DSS colitis: quercetin ameliorated dysbiosis (Firmicutes/Proteobacteria shifts).",
+      "microbial_diversity": "Mixed: improved diversity in antibiotic-treated mice and increased Chao1/Shannon/ACE (lower Simpson) in infection model. In HFD study: alpha diversity unchanged.",
+      "scfa_production": "Preclinical: fecal butyrate production increased in quercetin-treated mice. Some studies reported no significant differences in SCFA profiles despite small increases in acetate/propionate/butyrate.",
+      "barrier_function": "Preclinical: recovered barrier function with decreased serum D-lactic acid and DAO and increased villus length/mucosal thickness in antibiotic-treated mice. Reversed reductions in Occludin/ZO-1/Mucin-2 expression and increased TEER/reduced permeability in epithelial models.",
+      "dose_response": "Typical doses: 250–1000 mg quercetin daily. Preclinical studies used varied doses; human dose-response unknown.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Consistent animal/cell evidence for taxa shifts, SCFA-related effects, and barrier markers; limited direct human trial evidence in provided sources.",
+      "cautions": [
+        "Low bioavailability without glycosylation or supplemental forms; quercetin aglycone is poorly absorbed",
+        "May cause mild GI upset, headache, or tingling at doses >1 g daily",
+        "Limited human microbiome RCT evidence; most findings from animal/in vitro models",
+        "Diversity effects inconsistent across models (increased in infection model, unchanged in HFD)"
+      ],
+      "notes": "Quercetin shows strong promise for barrier function and butyrate production. Human microbiome evidence is absent; preclinical benefits may be context-dependent."
+    },
+    {
+      "supplement": "Ashwagandha (Withania somnifera)",
+      "aliases": [
+        "withania somnifera",
+        "ashwagandha root powder",
+        "ashwagandha extract"
+      ],
+      "primary_mechanisms": [
+        "Reduces E. coli and increases Lactobacillus spp. in animal models",
+        "Affects fecal SCFA production (direction inconsistent across reports)",
+        "May increase L-citrulline (intestinal integrity marker) and inhibit ammonia"
+      ],
+      "microbiome_composition": "Animal data: in chicks, ashwagandha root powder reduced E. coli and increased Lactobacillus spp. counts vs control.",
+      "microbial_diversity": "Not mentioned in provided sources.",
+      "scfa_production": "Non-human (dogs): ashwagandha root extract affected fecal SCFAs, but direction inconsistent (propionate/total SCFAs reported as decreased vs baseline in one source; higher vs placebo in another; butyrate increase not significant).",
+      "barrier_function": "Non-human (dogs): increased L-citrulline (intestinal integrity marker) after 60 days; ammonia tended to be inhibited (not significant).",
+      "dose_response": "Typical doses: 300–600 mg ashwagandha extract daily. Preclinical studies used varied dosing; human gut microbiome dose-response unknown.",
+      "evidence_strength": "Preliminary (mostly animal/in vitro). No human gut microbiome/SCFA/barrier endpoints described; evidence comes from poultry and dog studies with mixed SCFA directionality.",
+      "cautions": [
+        "No direct human gut microbiome evidence; all data from animal models (chicks, dogs)",
+        "SCFA effects inconsistent and directionally mixed across reports",
+        "May cause drowsiness or interact with sedatives; take in evening",
+        "Limited evidence for direct barrier improvement in humans"
+      ],
+      "notes": "Ashwagandha lacks human microbiome evidence. Animal studies show some promise but inconsistent SCFA effects."
+    },
+    {
+      "supplement": "Whey Protein",
+      "aliases": [
+        "whey",
+        "whey isolate",
+        "whey concentrate",
+        "milk protein isolate"
+      ],
+      "primary_mechanisms": [
+        "Animal-derived protein source that can increase proteolytic bacteria and ammonia production",
+        "May increase nitrogen-fermenting pathways if consumed in excess",
+        "Limited direct microbiome evidence in this dataset"
+      ],
+      "microbiome_composition": "Not specifically covered in the provided sources; whey protein effects on composition are indirect via protein fermentation pathways.",
+      "microbial_diversity": "Not mentioned in provided sources.",
+      "scfa_production": "Not mentioned in provided sources.",
+      "barrier_function": "Not mentioned in provided sources.",
+      "dose_response": "Typical doses: 20–40 g daily. Effects on microbiome composition depend on total protein intake and background diet.",
+      "evidence_strength": "Very limited (sparse direct evidence in this dataset). General protein fermentation knowledge suggests proteolytic bacteria enrichment at high doses.",
+      "cautions": [
+        "Animal-derived protein may increase proteolytic bacteria and ammonia production at high doses (>50 g daily)",
+        "May reduce beneficial SCFA-producing bacteria if it displaces prebiotic fiber in diet",
+        "Excess ammonia production may increase intestinal permeability and endotoxemia",
+        "Limited direct evidence in this dataset; most cautions based on general protein fermentation knowledge"
+      ],
+      "notes": "Whey protein is not directly covered in the provided evidence set. Cautions are based on general understanding of protein fermentation and ammonia production."
+    },
+    {
+      "supplement": "Creatine (Creatine Monohydrate)",
+      "aliases": [
+        "creatine monohydrate",
+        "creatine supplementation"
+      ],
+      "primary_mechanisms": [
+        "Directly supports muscle energy metabolism; indirect microbiome effects via nitrogen metabolism",
+        "Limited direct evidence for specific gut microbiome effects"
+      ],
+      "microbiome_composition": "Not mentioned in provided sources.",
+      "microbial_diversity": "Not mentioned in provided sources.",
+      "scfa_production": "Not mentioned in provided sources.",
+      "barrier_function": "Not mentioned in provided sources.",
+      "dose_response": "Typical doses: 3–5 g creatine monohydrate daily (after loading phase). Direct microbiome dose-response unknown.",
+      "evidence_strength": "Very limited (no direct evidence in this dataset). Effects on gut microbiome are largely unknown.",
+      "cautions": [
+        "Limited direct evidence for gut microbiome effects; any effects would be indirect via kidney/liver metabolism and urea excretion",
+        "High doses may increase creatinine levels and place stress on kidneys",
+        "May cause muscle cramps or water retention",
+        "No specific microbiome cautions in this dataset; monitoring of GI effects recommended"
+      ],
+      "notes": "Creatine is not covered in the provided evidence set. Direct gut microbiome effects are not established."
+    },
+    {
+      "supplement": "Inulin (Chicory Root Inulin)",
+      "aliases": [
+        "chicory root",
+        "chicory inulin",
+        "inulin fiber",
+        "prebiotic fiber"
+      ],
+      "primary_mechanisms": [
+        "Highly fermentable prebiotic fiber that directly feeds Bifidobacterium and SCFA-producing bacteria",
+        "Increases butyrate, propionate, and acetate production",
+        "Increases richness and evenness of microbial community"
+      ],
+      "microbiome_composition": "Inulin strongly enriches Bifidobacterium and other SCFA-producing taxa (Faecalibacterium, Roseburia). Increases evenness and compositional stability.",
+      "microbial_diversity": "Increases alpha diversity (richness and evenness) when tolerated. Effects reversible upon cessation.",
+      "scfa_production": "Strong increases in total SCFA production, particularly butyrate and propionate. Dose-dependent response.",
+      "barrier_function": "Indirect via SCFA production and butyrate-mediated barrier support. No direct data in this dataset but well-established in general literature.",
+      "dose_response": "Start low 2–3 g daily and titrate slowly to 5–10 g daily. Rapid escalation causes significant GI side effects.",
+      "evidence_strength": "Strong (based on general prebiotic fiber literature). Inulin is one of the best-characterized prebiotics for SCFA production.",
+      "cautions": [
+        "Highly fermentable — may worsen bloating, gas, and abdominal discomfort in IBS or sensitive individuals (critically important)",
+        "Start low (2–3 g daily) and titrate very slowly over 2–4 weeks to minimize GI symptoms",
+        "May cause loose stools or cramping even at moderate doses",
+        "Contraindicated in FODMAP-sensitive individuals (high fermentable oligosaccharide content)",
+        "Rapid escalation produces significant flatulence and bloating; gradual titration essential"
+      ],
+      "notes": "Inulin is a classical prebiotic but highly fermentable, making it problematic for IBS or FODMAP-sensitive individuals. Titration is critical."
+    },
+    {
+      "supplement": "Beta-Glucans",
+      "aliases": [
+        "β-glucan",
+        "beta-glucan",
+        "oat beta-glucan",
+        "yeast beta-glucan",
+        "glucomannan"
+      ],
+      "primary_mechanisms": [
+        "Fermentable fiber that increases Lactobacillus, Bifidobacterium, and butyrate-producing genera",
+        "Increases SCFA production (butyrate, acetate, propionate)",
+        "Supports tight-junction protein expression (occludin, claudins, ZO-1)"
+      ],
+      "microbiome_composition": "Reviews and models report support of Lactobacillus/Bifidobacterium and other butyrate-associated genera (Faecalibacterium, Roseburia). One model showed increased Muribaculaceae/Alistipes/Blautia with decreased Proteus/Lachnospiraceae/Ruminococcus; another increased butyrate-associated families (Lachnospiraceae, Ruminococcaceae).",
+      "microbial_diversity": "Mixed: one study reported reduced observed species/ACE/phylogenetic diversity across β-glucan groups vs control; another reported similar Shannon/Simpson/ACE/Chao between groups.",
+      "scfa_production": "β-glucans fermented to produce SCFAs (butyrate/acetate/propionate). Multiple models report increased propionate and butyrate; one human intervention reported increased fecal propionate proportion.",
+      "barrier_function": "Preclinical: increased tight-junction protein expression (occludin/claudins/ZO-1) and reduced permeability/endotoxin-related outcomes are described in reviews and models. One model reported significantly higher tight-junction protein expression with supplementation.",
+      "dose_response": "Typical doses: 3–10 g beta-glucan daily. Dose-dependent effects on SCFA and diversity observed in preclinical studies.",
+      "evidence_strength": "Moderate (limited human data, strong preclinical). Consistent preclinical SCFA and barrier findings; limited direct human microbiome/permeability biomarker data (one SCFA-composition outcome).",
+      "cautions": [
+        "Moderately fermentable; may cause bloating or gas in sensitive individuals (less severe than inulin)",
+        "Start moderate dose (3 g daily) and increase gradually to 5–10 g daily",
+        "Diversity effects variable; some studies show decreased richness",
+        "Oat vs yeast beta-glucans have different properties; effects not interchangeable"
+      ],
+      "notes": "Beta-glucans show strong barrier and SCFA effects in preclinical settings. Human SCFA evidence is limited (one study) but promising."
+    },
+    {
+      "supplement": "Magnesium",
+      "aliases": [
+        "magnesium bisglycinate",
+        "magnesium citrate",
+        "magnesium oxide",
+        "magnesium glycinate"
+      ],
+      "primary_mechanisms": [
+        "Dietary Mg level associated with taxa differences (Lactobacillus, Dorea, Proteobacteria shifts)",
+        "Magnesium supplementation increases Bifidobacterium and reduces Enterobacteriaceae",
+        "May support diversity and buffer richness during colitis"
+      ],
+      "microbiome_composition": "Preclinical: low-Mg enriched Lactobacillus/Dorea; high-Mg overrepresented Proteobacteria/Parabacteroides. Mg supplementation in colitis models increased Bifidobacterium and reduced Enterobacteriaceae/Proteobacteria. Note: some findings from Mg-containing multi-mineral blends, limiting attribution to magnesium alone.",
+      "microbial_diversity": "Preclinical: a marine mineral blend (Mg + many trace minerals) increased microbial diversity/richness; another Mg-level study reported C-Mg and L-Mg had more diversity than H-Mg. Mg manipulation altered beta diversity and buffered richness during colitis.",
+      "scfa_production": "Preclinical (multi-mineral blend): total SCFAs and acetate unchanged, but propionate and butyrate differed between groups (higher propionate in 0.1% vs control; higher butyrate in 0.1% vs 0.2%).",
+      "barrier_function": "Not mentioned in provided sources.",
+      "dose_response": "Typical doses: 200–400 mg magnesium daily. Form (bisglycinate vs citrate vs oxide) affects both GI effects and bioavailability.",
+      "evidence_strength": "Preliminary (mostly animal/in vitro). Evidence largely animal-based and partly from multi-mineral blends (confounding); limited direct barrier outcomes in provided sources.",
+      "cautions": [
+        "High-dose magnesium citrate or oxide has osmotic laxative effect and may worsen diarrhea (>400 mg daily)",
+        "Magnesium bisglycinate is better tolerated and less likely to cause loose stools",
+        "Limited human microbiome RCT data; most evidence from animal studies",
+        "Multi-mineral formulations confound attribution to magnesium alone",
+        "Magnesium may reduce absorption of some antibiotics and other medications"
+      ],
+      "notes": "Magnesium evidence is mostly animal-based; best tolerated form is bisglycinate. Multi-mineral studies limit clear attribution to magnesium effects."
+    },
+    {
+      "supplement": "Bacopa monnieri",
+      "aliases": [
+        "bacopa",
+        "bacopaside",
+        "water hyssop"
+      ],
+      "primary_mechanisms": [
+        "Modulates gut microbiota and increases probiotic bacteria (Lactobacillus, Streptococcus pathways)",
+        "Increases SCFA production (acetic acid)",
+        "Improves epithelial structure and reduces colitis damage"
+      ],
+      "microbiome_composition": "Preclinical: bacopaside I (constituent) modulated gut microbiota and increased probiotic bacteria via Lactobacillus and Streptococcus pathways.",
+      "microbial_diversity": "Not mentioned in provided sources.",
+      "scfa_production": "Preclinical: bacopaside I increased SCFAs, particularly acetic acid.",
+      "barrier_function": "Preclinical: bacopa extract improved epithelial structure in colitis model (near-intact epithelia/normal glands) and reduced damage score.",
+      "dose_response": "Typical doses: 300–600 mg bacopa extract daily. Preclinical studies used constituent-level dosing; human dose-response unknown.",
+      "evidence_strength": "Preliminary (mostly animal/in vitro). Findings are preclinical and/or constituent-level; no human gut microbiome or permeability biomarker outcomes in provided sources.",
+      "cautions": [
+        "No human microbiome evidence; all findings from animal models or in vitro",
+        "May cause GI upset, fatigue, or dry mouth at high doses",
+        "Limited barrier improvement evidence; mostly from colitis models",
+        "Human clinical effects (cognitive) are separate from microbiome benefits"
+      ],
+      "notes": "Bacopa lacks human microbiome evidence. Preclinical findings suggest potential but require human validation."
+    },
+    {
+      "supplement": "Glutathione",
+      "aliases": [
+        "L-glutathione",
+        "reduced glutathione",
+        "GSH"
+      ],
+      "primary_mechanisms": [
+        "Antioxidant that shifts composition (decreased Proteobacteria, enriched Bacteroides/Megamonas)",
+        "Limited data on SCFA production or barrier function"
+      ],
+      "microbiome_composition": "Human: glutathione supplementation decreased Proteobacteria and depleted Escherichia/Shigella while enriching Megasphaera, Bacteroides, and Megamonas.",
+      "microbial_diversity": "Not mentioned in provided sources.",
+      "scfa_production": "Not mentioned in provided sources.",
+      "barrier_function": "Preclinical depletion model: despite increased mucosal inflammation with glutathione depletion (BSO), intestinal permeability was not aggravated; authors concluded glutathione has no role in permeability/translocation/diarrhea in that model.",
+      "dose_response": "Typical doses: 250–500 mg glutathione daily. Bioavailability of oral glutathione is variable; many prefer N-acetylcysteine (NAC) as precursor.",
+      "evidence_strength": "Preliminary. Some human evidence for compositional change exists; SCFA/diversity/barrier outcomes not reported in provided sources.",
+      "cautions": [
+        "Oral glutathione has variable bioavailability; consider NAC (glutathione precursor) instead",
+        "Very limited microbiome evidence; only one human composition study provided",
+        "Barrier evidence is from depletion model (not supplementation); unclear if supplementation helps",
+        "May interact with antabuse and some chemotherapy agents"
+      ],
+      "notes": "Glutathione has minimal evidence in this dataset. Single human study shows composition shift; SCFA and barrier effects unknown."
+    },
+    {
+      "supplement": "Zinc",
+      "aliases": [
+        "zinc picolinate",
+        "zinc bisglycinate",
+        "zinc gluconate"
+      ],
+      "primary_mechanisms": [
+        "Cofactor for tight-junction protein function and barrier integrity",
+        "May support bacterial metal homeostasis",
+        "Limited direct microbiome evidence in this dataset"
+      ],
+      "microbiome_composition": "Not mentioned in provided sources.",
+      "microbial_diversity": "Not mentioned in provided sources.",
+      "scfa_production": "Not mentioned in provided sources.",
+      "barrier_function": "General review mentions zinc among nutrients that decrease intestinal permeability.",
+      "dose_response": "RDA: 8–11 mg daily. Typical supplemental doses: 15–30 mg daily.",
+      "evidence_strength": "Very limited (sparse direct evidence in this dataset). Only a general review-level statement on permeability present; no microbiome/diversity/SCFA trial evidence provided.",
+      "cautions": [
+        "High-dose zinc (>40 mg daily) may deplete copper, affecting Cu-dependent enzymes and potentially altering bacterial metal homeostasis",
+        "Excess zinc (>100 mg daily) may cause nausea, vomiting, or immunosuppression",
+        "Long-term high-dose zinc may reduce HDL cholesterol",
+        "Limited direct microbiome evidence in this dataset; cautions based on general knowledge"
+      ],
+      "notes": "Zinc is not comprehensively covered in the provided evidence set. General knowledge suggests permeability support; direct microbiome effects unknown."
+    }
+  ],
+  "papers": {
+    "1": {
+      "authors": "S. Sakai, Y. Kamada, H. Takano, et al.",
+      "year": 2022,
+      "title": "Continuous partially hydrolyzed guar gum intake reduces cold-like symptoms: a randomized, placebo-controlled, double-blinded trial in healthy adults.",
+      "journal": "European Review for Medical and Pharmacological Sciences",
+      "doi": "https://doi.org/10.26355/eurrev_202207_29304",
+      "authors_parsed": [
+        {
+          "family": "Sakai",
+          "given": "S."
+        },
+        {
+          "family": "Kamada",
+          "given": "Y."
+        },
+        {
+          "family": "Takano",
+          "given": "H."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "2": {
+      "authors": "T. Takagi, Y. Naito, Yasuki Higashimura, et al.",
+      "year": 2016,
+      "title": "Partially hydrolysed guar gum ameliorates murine intestinal inflammation in association with modulating luminal microbiota and SCFA.",
+      "journal": "British Journal of Nutrition",
+      "doi": "https://doi.org/10.1017/S0007114516003068",
+      "authors_parsed": [
+        {
+          "family": "Takagi",
+          "given": "T."
+        },
+        {
+          "family": "Naito",
+          "given": "Y."
+        },
+        {
+          "family": "Higashimura",
+          "given": "Yasuki"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "3": {
+      "authors": "S. Reider, Simon Moosmang, J. Tragust, et al.",
+      "year": 2020,
+      "title": "Prebiotic Effects of Partially Hydrolyzed Guar Gum on the Composition and Function of the Human Microbiota—Results from the PAGODA Trial.",
+      "journal": "Nutrients",
+      "doi": "https://doi.org/10.3390/nu12051257",
+      "authors_parsed": [
+        {
+          "family": "Reider",
+          "given": "S."
+        },
+        {
+          "family": "Moosmang",
+          "given": "Simon"
+        },
+        {
+          "family": "Tragust",
+          "given": "J."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "4": {
+      "authors": "V.T. Pham, Sophie Fehlbaum, Nicole Seifert, et al.",
+      "year": 2021,
+      "title": "Effects of colon-targeted vitamins on the composition and metabolic activity of the human gut microbiome– a pilot study.",
+      "journal": "Gut microbes",
+      "doi": "https://doi.org/10.1080/19490976.2021.1875774",
+      "authors_parsed": [
+        {
+          "family": "Pham",
+          "given": "V.T."
+        },
+        {
+          "family": "Fehlbaum",
+          "given": "Sophie"
+        },
+        {
+          "family": "Seifert",
+          "given": "Nicole"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "5": {
+      "authors": "Amrita Vijay, S. Astbury, C. L. Le Roy, et al.",
+      "year": 2020,
+      "title": "The prebiotic effects of omega-3 fatty acid supplementation: A six-week randomised intervention trial.",
+      "journal": "Gut microbes",
+      "doi": "https://doi.org/10.1080/19490976.2020.1863133",
+      "authors_parsed": [
+        {
+          "family": "Vijay",
+          "given": "Amrita"
+        },
+        {
+          "family": "Astbury",
+          "given": "S."
+        },
+        {
+          "family": "Roy",
+          "given": "C. L. Le"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "6": {
+      "authors": "B. Seethaler, K. Lehnert, M. Yahiaoui-Doktor, et al.",
+      "year": 2023,
+      "title": "Omega-3 polyunsaturated fatty acids improve intestinal barrier integrity—albeit to a lesser degree than short-chain fatty acids: an exploratory analysis of the randomized controlled LIBRE trial.",
+      "journal": "European Journal of Nutrition",
+      "doi": "https://doi.org/10.1007/s00394-023-03172-2",
+      "authors_parsed": [
+        {
+          "family": "Seethaler",
+          "given": "B."
+        },
+        {
+          "family": "Lehnert",
+          "given": "K."
+        },
+        {
+          "family": "Yahiaoui-Doktor",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "7": {
+      "authors": "Youming He, Xiaobing Chen, Yongchun Li, et al.",
+      "year": 2024,
+      "title": "Curcumin supplementation alleviates hepatic fat content associated with modulation of gut microbiota-dependent bile acid metabolism in patients with non-alcoholic simple fatty liver disease: a randomized controlled trial.",
+      "journal": "American Journal of Clinical Nutrition",
+      "doi": "https://doi.org/10.1016/j.ajcnut.2024.05.017",
+      "authors_parsed": [
+        {
+          "family": "He",
+          "given": "Youming"
+        },
+        {
+          "family": "Chen",
+          "given": "Xiaobing"
+        },
+        {
+          "family": "Li",
+          "given": "Yongchun"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "8": {
+      "authors": "Younsoo Seo, Ji Eun Jung, Seyeol Oh, et al.",
+      "year": 2025,
+      "title": "Effects of Red Ginseng on Gut Microbiome in Patients after Gastrointestinal Cancer Surgery: A Pilot, Randomized Controlled Trial.",
+      "journal": "Journal of Ginseng Research",
+      "doi": "https://doi.org/10.1016/j.jgr.2025.100932",
+      "authors_parsed": [
+        {
+          "family": "Seo",
+          "given": "Younsoo"
+        },
+        {
+          "family": "Jung",
+          "given": "Ji Eun"
+        },
+        {
+          "family": "Oh",
+          "given": "Seyeol"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "16": {
+      "authors": "S. Hazan, Sonya Dave, A. Papoutsis, et al.",
+      "year": 2022,
+      "title": "Vitamin C improves gut Bifidobacteria in humans.",
+      "journal": "Future Microbiology",
+      "doi": "https://doi.org/10.2217/fmb-2022-0209",
+      "authors_parsed": [
+        {
+          "family": "Hazan",
+          "given": "S."
+        },
+        {
+          "family": "Dave",
+          "given": "Sonya"
+        },
+        {
+          "family": "Papoutsis",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "18": {
+      "authors": "A. Lopresti, Stephen J. Smith, A. Rea, Shavon Michel",
+      "year": 2021,
+      "title": "Efficacy of a curcumin extract (Curcugen™) on gastrointestinal symptoms and intestinal microbiota in adults with self-reported digestive complaints: a randomised, double-blind, placebo-controlled study.",
+      "journal": "BMC Complementary Medicine and Therapies",
+      "doi": "https://doi.org/10.1186/s12906-021-03220-6",
+      "authors_parsed": [
+        {
+          "family": "Lopresti",
+          "given": "A."
+        },
+        {
+          "family": "Smith",
+          "given": "Stephen J."
+        },
+        {
+          "family": "Rea",
+          "given": "A."
+        },
+        {
+          "family": "Michel",
+          "given": "Shavon"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "19": {
+      "authors": "Jing Sun, Qinfang Xie, Mengjiao Sun, et al.",
+      "year": 2024,
+      "title": "Curcumin protects mice with myasthenia gravis by regulating the gut microbiota, short-chain fatty acids, and the Th17/Treg balance.",
+      "journal": "Heliyon",
+      "doi": "https://doi.org/10.1016/j.heliyon.2024.e26030",
+      "authors_parsed": [
+        {
+          "family": "Sun",
+          "given": "Jing"
+        },
+        {
+          "family": "Xie",
+          "given": "Qinfang"
+        },
+        {
+          "family": "Sun",
+          "given": "Mengjiao"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "20": {
+      "authors": "Beatrice Scazzocchio, L. Minghetti, M. D'Archivio",
+      "year": 2020,
+      "title": "Interaction between Gut Microbiota and Curcumin: A New Key of Understanding for the Health Effects of Curcumin.",
+      "journal": "Nutrients",
+      "doi": "https://doi.org/10.3390/nu12091209",
+      "authors_parsed": [
+        {
+          "family": "Scazzocchio",
+          "given": "Beatrice"
+        },
+        {
+          "family": "Minghetti",
+          "given": "L."
+        },
+        {
+          "family": "D'Archivio",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "21": {
+      "authors": "Zhang Y, Liu L, Wei C, Wang X, Li R, Xu X, Zhang Y, Geng G, Dang K, Ming Z, Tao X, Xu H, Yan X, Zhang J, Hu J, Li Y",
+      "year": 2023,
+      "title": "Vitamin K2 supplementation improves impaired glycemic homeostasis and insulin sensitivity for type 2 diabetes through gut microbiome and fecal metabolites",
+      "journal": "BMC Medicine",
+      "doi": "10.1186/s12916-023-02880-0",
+      "authors_parsed": [
+        {
+          "family": "Zhang",
+          "given": "Y."
+        },
+        {
+          "family": "Liu",
+          "given": "L."
+        },
+        {
+          "family": "Wei",
+          "given": "C."
+        },
+        {
+          "family": "Wang",
+          "given": "X."
+        },
+        {
+          "family": "Li",
+          "given": "R."
+        },
+        {
+          "family": "Xu",
+          "given": "X."
+        },
+        {
+          "family": "Zhang",
+          "given": "Y."
+        },
+        {
+          "family": "Geng",
+          "given": "G."
+        },
+        {
+          "family": "Dang",
+          "given": "K."
+        },
+        {
+          "family": "Ming",
+          "given": "Z."
+        },
+        {
+          "family": "Tao",
+          "given": "X."
+        },
+        {
+          "family": "Xu",
+          "given": "H."
+        },
+        {
+          "family": "Yan",
+          "given": "X."
+        },
+        {
+          "family": "Zhang",
+          "given": "J."
+        },
+        {
+          "family": "Hu",
+          "given": "J."
+        },
+        {
+          "family": "Li",
+          "given": "Y."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "22": {
+      "authors": "Huakai Wang, Zhen Liu, Kai Zhan, et al.",
+      "year": 2024,
+      "title": "Vitamin K2 alleviates dextran sulfate sodium-induced colitis via inflammatory responses, gut barrier integrity, and the gut microbiota in mice.",
+      "journal": "International Journal of Biological Macromolecules",
+      "doi": "https://doi.org/10.1016/j.ijbiomac.2024.136091",
+      "authors_parsed": [
+        {
+          "family": "Wang",
+          "given": "Huakai"
+        },
+        {
+          "family": "Liu",
+          "given": "Zhen"
+        },
+        {
+          "family": "Zhan",
+          "given": "Kai"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "23": {
+      "authors": "Sugato Banerjee, K. Chatterjee, Suparna Roy Sarkar, Papiya Mitra Mazumder",
+      "year": 2021,
+      "title": "Vitamin K2 as neuroprotective against gut dysbiosis association cognitive decline.",
+      "journal": "Proceedings of 7th International Electronic Conference on Medicinal Chemistry",
+      "doi": "https://doi.org/10.3390/ecmc2021-11397",
+      "authors_parsed": [
+        {
+          "family": "Banerjee",
+          "given": "Sugato"
+        },
+        {
+          "family": "Chatterjee",
+          "given": "K."
+        },
+        {
+          "family": "Sarkar",
+          "given": "Suparna Roy"
+        },
+        {
+          "family": "Mazumder",
+          "given": "Papiya Mitra"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "27": {
+      "authors": "Kai Wang, Xiaolu Jin, Yifan Chen, et al.",
+      "year": 2016,
+      "title": "Polyphenol-Rich Propolis Extracts Strengthen Intestinal Barrier Function by Activating AMPK and ERK Signaling.",
+      "journal": "Nutrients",
+      "doi": "https://doi.org/10.3390/mu8050272",
+      "authors_parsed": [
+        {
+          "family": "Wang",
+          "given": "Kai"
+        },
+        {
+          "family": "Jin",
+          "given": "Xiaolu"
+        },
+        {
+          "family": "Chen",
+          "given": "Yifan"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "28": {
+      "authors": "Denise Mafra",
+      "year": 2024,
+      "title": "Effects of Propolis Supplementation on Gut Microbiota and Uremic Toxin Profiles of Patients Undergoing Hemodialysis.",
+      "journal": "Biomedicine & Pharmacotherapy",
+      "doi": "https://doi.org/10.1016/j.biopha.2024.116416",
+      "authors_parsed": [
+        {
+          "family": "Mafra",
+          "given": "Denise"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "31": {
+      "authors": "Megan Edelman, Qi Wang, Rylee T. Ahnen, Joanne Slavin",
+      "year": 2024,
+      "title": "The Dose Response Effects of Partially Hydrolyzed Guar Gum on Gut Microbiome of Healthy Adults.",
+      "journal": "Applied microbiology",
+      "doi": "https://doi.org/10.339/0/appmicrrobiol4020049",
+      "authors_parsed": [
+        {
+          "family": "Edelman",
+          "given": "Megan"
+        },
+        {
+          "family": "Wang",
+          "given": "Qi"
+        },
+        {
+          "family": "Ahnen",
+          "given": "Rylee T."
+        },
+        {
+          "family": "Slavin",
+          "given": "Joanne"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "32": {
+      "authors": "Y. Ohashi, K. Sumitani, M. Tokunaga, et al.",
+      "year": 2015,
+      "title": "Consumption of partially hydrolysed guar gum stimulates Bifidobacteria and butyrate-producing bacteria in the human large intestine.",
+      "journal": "Beneficial Microbes",
+      "doi": "https://doi.org/10.3920/BM2014.0118",
+      "authors_parsed": [
+        {
+          "family": "Ohashi",
+          "given": "Y."
+        },
+        {
+          "family": "Sumitani",
+          "given": "K."
+        },
+        {
+          "family": "Tokunaga",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "36": {
+      "authors": "Gaike AH, Kalamkar SD, Gajjar V, Divate U, Karandikar-Iyer S, Goel P, Shouche YS, Ghaskadbi SS",
+      "year": 2023,
+      "title": "Effect of long-term oral glutathione supplementation on gut microbiome of type 2 diabetic individuals",
+      "journal": "FEMS Microbiology Letters",
+      "doi": "10.1093/femsle/fnad116",
+      "authors_parsed": [
+        {
+          "family": "Gaike",
+          "given": "A. H."
+        },
+        {
+          "family": "Kalamkar",
+          "given": "S. D."
+        },
+        {
+          "family": "Gajjar",
+          "given": "V."
+        },
+        {
+          "family": "Divate",
+          "given": "U."
+        },
+        {
+          "family": "Karandikar-Iyer",
+          "given": "S."
+        },
+        {
+          "family": "Goel",
+          "given": "P."
+        },
+        {
+          "family": "Shouche",
+          "given": "Y. S."
+        },
+        {
+          "family": "Ghaskadbi",
+          "given": "S. S."
+        }
+      ],
+      "authors_et_al": false
+    }
+  },
+  "evidence_quality_notes": {
+    "strong_human_evidence": [
+      "PHGG: multiple human trials with direct SCFA measurement",
+      "Vitamin C: human SCFA production and diversity outcomes",
+      "Omega-3: human barrier biomarker changes (LBP, zonulin)",
+      "Vitamin K2: human+mouse fecal SCFA analysis"
+    ],
+    "moderate_human_evidence": [
+      "Curcumin: human composition shifts (variable)",
+      "Ginseng: one human trial on diversity post-surgery",
+      "Vitamin D: human compositional shifts (variable diversity)"
+    ],
+    "primarily_preclinical": [
+      "Rhodiola, Ashwagandha, Bacopa, Creatine, Zinc, Glutathione",
+      "Beta-glucans, Glucomannan, L-theanine (in most studies)"
+    ],
+    "observational_only": [
+      "Selenium: high vs low intake areas",
+      "Vitamin D: circulating 25(OH)D associations",
+      "Polyphenols: diet-wide exposure studies"
+    ]
+  },
+  "guild_associations": {
+    "butyrate_producers": [
+      "Faecalibacterium prausnitzii",
+      "Roseburia spp.",
+      "Eubacterium spp.",
+      "Anaerostipes spp.",
+      "Clostridium XIVa group",
+      "Ruminococcaceae family"
+    ],
+    "scfa_generalists": [
+      "Bifidobacterium spp.",
+      "Akkermansia muciniphila",
+      "Bacteroides spp.",
+      "Prevotella spp."
+    ],
+    "pathogenic_or_dysbiosis_associated": [
+      "Desulfovibrio spp. (LPS producer)",
+      "Proteobacteria (Gram-negative endotoxin)",
+      "Enterobacteriaceae (E. coli, Klebsiella)",
+      "Erysipelotrichi (obesity-associated)"
+    ],
+    "commensal_stable": [
+      "Lactobacillus spp.",
+      "Blautia spp.",
+      "Alistipes spp."
+    ]
+  },
+  "summary": "This library compiles evidence on 22 dietary supplements and botanicals for microbiome, diversity, SCFA production, and barrier function outcomes. Evidence ranges from strong human RCTs (PHGG, Vitamin C) to preliminary preclinical-only findings (Creatine, Ashwagandha). Critical cautions are included for all supplements, with particular emphasis on fermentable fibers (inulin, PHGG) and high-dose mineral effects (zinc depletion, magnesium osmotic effects). NB1 guild classifications support targeting of specific bacterial populations. This dataset emphasizes reversibility of shifts and context-dependent effects (dysbiosis vs. healthy baseline, stress models vs. steady state)."
+}

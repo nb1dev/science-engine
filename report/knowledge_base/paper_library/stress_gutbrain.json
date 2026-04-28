@@ -1,0 +1,1733 @@
+{
+  "topic": "stress_gutbrain",
+  "source_files": [
+    "Elicit - Gut Microbiome and Health A Bidirectional Review - Report.pdf",
+    "Elicit - extract-results-review-fefb598e-3a64-45ec-b99c-1ddf032c00f9.csv"
+  ],
+  "lookup_keys": [
+    "stress",
+    "psychological stress",
+    "cortisol",
+    "HPA axis",
+    "anxiety",
+    "depression",
+    "mood disorder",
+    "mental health",
+    "psychiatric",
+    "sleep",
+    "insomnia",
+    "sleep quality",
+    "sleep disruption",
+    "sleep duration",
+    "gut-brain axis",
+    "gut-brain communication",
+    "brain-gut",
+    "enteric nervous system",
+    "tryptophan",
+    "tryptophan metabolism",
+    "kynurenine",
+    "kynurenine pathway",
+    "serotonin",
+    "GABA",
+    "gamma-aminobutyric acid",
+    "dopamine",
+    "neuroactive compounds",
+    "neurotransmitter",
+    "vagus nerve",
+    "vagal signaling",
+    "blood-brain barrier",
+    "neuroinflammation",
+    "Parkinson's disease",
+    "Parkinson's",
+    "Alzheimer's disease",
+    "Alzheimer's",
+    "neurodegeneration",
+    "cognitive function",
+    "cognitive decline",
+    "life adversity",
+    "childhood adversity",
+    "temperament",
+    "dysbiosis",
+    "microbiota composition",
+    "Lactobacillus",
+    "Bifidobacterium",
+    "Prevotella",
+    "Firmicutes",
+    "Clostridiaceae",
+    "Lachnospiraceae",
+    "Ruminococcus",
+    "Eubacterium",
+    "Escherichia",
+    "Shigella",
+    "Proteobacteria",
+    "short-chain fatty acids",
+    "butyrate",
+    "propionate",
+    "SCFA"
+  ],
+  "related_topics": [
+    "gut_organ_axes",
+    "bacterial_guilds",
+    "physical_activity",
+    "circadian_rhythm",
+    "scfa_barrier_function",
+    "diet_microbiome",
+    "inflammation",
+    "immune_tolerance"
+  ],
+  "findings": [
+    {
+      "id": "stress_dysbiosis_bidirectional",
+      "title": "Bidirectional Stress-Microbiota Relationship",
+      "description": "Psychological stress and mental health status bidirectionally interact with gut microbiome composition through the gut-brain axis. Life adversity during childhood and specific temperament patterns are associated with altered gut microbiota, particularly affecting Prevotella species abundance. Psychological stress reduces Lactobacillus populations while dysbiosis correlates with psychiatric symptoms through dysregulated tryptophan metabolism and gut-derived neurotransmitter imbalances.",
+      "source_pages": [
+        20,
+        21
+      ],
+      "caution": "This represents bidirectional causality: stress causes dysbiosis, and dysbiosis worsens mental health. Direction of causation not established in all cases.",
+      "evidence_strength": "Moderate to High",
+      "search_terms": [
+        "stress",
+        "dysbiosis",
+        "bidirectional",
+        "HPA",
+        "cortisol",
+        "anxiety",
+        "depression",
+        "psychological",
+        "homeostasis"
+      ],
+      "paper_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34",
+        "35",
+        "36",
+        "37",
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45",
+        "46",
+        "47",
+        "48",
+        "49",
+        "50",
+        "51",
+        "52",
+        "53",
+        "54",
+        "55",
+        "56",
+        "57",
+        "58",
+        "59",
+        "60"
+      ],
+      "finding_id": "stress_dysbiosis_bidirectional"
+    },
+    {
+      "id": "sleep_microbiota_circadian",
+      "title": "Sleep Disruption and Microbiota-Circadian Misalignment",
+      "description": "Circadian rhythm disruption substantially alters microbiome composition and function. Circadian misalignment reduces microbial diversity and promotes expansion of pro-inflammatory bacterial taxa, paralleling increases in systemic inflammation markers. Host circadian clocks influence microbial dynamics through feeding behavior, immune signaling, and epithelial renewal, while microbial metabolites including SCFAs and bile acids modulate circadian gene expression in peripheral tissues through epigenetic mechanisms.",
+      "source_pages": [
+        20,
+        21
+      ],
+      "bacterial_changes": [
+        "Reduced alpha diversity",
+        "Pro-inflammatory bacterial expansion",
+        "Altered SCFA production"
+      ],
+      "mechanisms": [
+        "Circadian misalignment",
+        "Immune dysregulation",
+        "Metabolic dysfunction"
+      ],
+      "evidence_strength": "Moderate",
+      "search_terms": [
+        "sleep",
+        "circadian",
+        "insomnia",
+        "melatonin",
+        "sleep quality",
+        "sleep duration"
+      ],
+      "paper_ids": [
+        "54"
+      ],
+      "finding_id": "sleep_microbiota_circadian"
+    },
+    {
+      "id": "gutbrain_axis_neuroactive",
+      "title": "Gut-Brain Axis Communication via Neuroactive Compounds",
+      "description": "The gut-brain axis mediates bidirectional communication through neural, endocrine, immune, and metabolic signaling pathways. Gut bacteria produce neuroactive molecules including GABA (gamma-aminobutyric acid), serotonin precursors, dopamine, and acetylcholine that engage the enteric nervous system and potentially cross the blood-brain barrier. The vagus nerve participates in gut microbiota-brain interface signaling, serving as a major conduit for microbial metabolite effects on central nervous system function.",
+      "source_pages": [
+        25,
+        26
+      ],
+      "neuroactive_compounds": [
+        "GABA",
+        "Serotonin",
+        "Dopamine",
+        "Acetylcholine",
+        "γ-aminobutyric acid"
+      ],
+      "signaling_pathways": [
+        "Neural",
+        "Endocrine",
+        "Immune",
+        "Metabolic"
+      ],
+      "evidence_strength": "High",
+      "search_terms": [
+        "neurotransmitter",
+        "GABA",
+        "serotonin",
+        "dopamine",
+        "vagus",
+        "enteric",
+        "neuroactive",
+        "gut-brain axis",
+        "microbiota-gut-brain",
+        "gut–brain"
+      ],
+      "paper_ids": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "9",
+        "13",
+        "14",
+        "16",
+        "17",
+        "18",
+        "19",
+        "24",
+        "29",
+        "31",
+        "32",
+        "34",
+        "35",
+        "36",
+        "37",
+        "38",
+        "40",
+        "52",
+        "53",
+        "57"
+      ],
+      "finding_id": "gutbrain_axis_neuroactive"
+    },
+    {
+      "id": "dysbiosis_neuropathology",
+      "title": "Dysbiosis-Associated Neuropathology: Alzheimer's and Parkinson's",
+      "description": "Neurological and psychiatric disorders demonstrate consistent gut-brain axis involvement. Alzheimer's disease patients exhibit reduced alpha diversity, decreased beneficial Firmicutes including Clostridiaceae and Lachnospiraceae, and increased toxin-producing Proteobacteria (Escherichia/Shigella). Parkinson's disease shows decreased Prevotella abundance, while autism spectrum disorder is associated with specific dietary preferences mediating microbiome alterations. These associations highlight potential microbiome signatures in neurodegenerative diseases, though causation remains to be established.",
+      "source_pages": [
+        21,
+        22
+      ],
+      "caution": "These findings represent associations and correlations, NOT established causation. Microbiome changes may be consequences rather than causes of neurodegenerative disease.",
+      "alzheimers_microbiota_signature": {
+        "reduced": [
+          "Alpha diversity",
+          "Firmicutes",
+          "Clostridiaceae",
+          "Lachnospiraceae",
+          "Eubacterium"
+        ],
+        "increased": [
+          "Proteobacteria",
+          "Escherichia",
+          "Shigella"
+        ]
+      },
+      "parkinsons_microbiota_signature": {
+        "reduced": [
+          "Prevotella"
+        ]
+      },
+      "evidence_strength": "Moderate - Association demonstrated, causation unclear",
+      "search_terms": [
+        "Alzheimer",
+        "Parkinson",
+        "neurodegeneration",
+        "cognitive decline",
+        "dementia",
+        "neuropathology",
+        "neurodegenerative"
+      ],
+      "paper_ids": [
+        "19",
+        "32"
+      ],
+      "finding_id": "dysbiosis_neuropathology"
+    },
+    {
+      "id": "tryptophan_depression_anxiety",
+      "title": "Tryptophan Metabolism and Mood Disorders",
+      "description": "Depression and anxiety are associated with dysregulated tryptophan metabolism along kynurenine and indole pathways, affecting neuroinflammation and immune tolerance via Aryl Hydrocarbon Receptor (AhR) and NMDA receptor modulation. Dysbiosis disrupts the balance of tryptophan-metabolizing bacteria, leading to impaired neurotransmitter precursor availability and altered metabolite profiles that exacerbate psychiatric symptoms. This pathway represents a key mechanism linking microbiota composition to mental health outcomes.",
+      "source_pages": [
+        21,
+        22
+      ],
+      "metabolic_pathways": [
+        "Tryptophan → Kynurenine pathway",
+        "Indole pathway",
+        "Serotonin synthesis"
+      ],
+      "affected_receptors": [
+        "Aryl Hydrocarbon Receptor (AhR)",
+        "NMDA receptor"
+      ],
+      "evidence_strength": "High",
+      "search_terms": [
+        "tryptophan",
+        "kynurenine",
+        "indole",
+        "5-HT",
+        "mood disorder"
+      ],
+      "paper_ids": [
+        "1",
+        "12",
+        "39",
+        "52"
+      ],
+      "finding_id": "tryptophan_depression_anxiety"
+    },
+    {
+      "id": "probiotics_cognition_ad",
+      "title": "Probiotic Supplementation Improves Cognitive Function in Alzheimer's Disease",
+      "description": "Probiotic supplementation with Lactobacillus and Bifidobacterium species improved cognitive function and reduced inflammatory and metabolic markers in Alzheimer's disease patients. Mediterranean-ketogenic dietary patterns increased beneficial SCFAs with inverse correlations to Alzheimer's disease pathological markers. These interventions suggest potential therapeutic avenues for cognitive decline through targeted microbiota modulation, though larger-scale studies are needed.",
+      "source_pages": [
+        26
+      ],
+      "intervention_species": [
+        "Lactobacillus species",
+        "Bifidobacterium species"
+      ],
+      "biomarkers_improved": [
+        "Cognitive function",
+        "Inflammatory markers",
+        "Metabolic markers",
+        "SCFA production"
+      ],
+      "evidence_strength": "Moderate",
+      "search_terms": [
+        "probiotic",
+        "psychobiotic",
+        "Lactobacillus rhamnosus",
+        "supplementation",
+        "cognitive function"
+      ],
+      "paper_ids": [
+        "1",
+        "11",
+        "12",
+        "13",
+        "16",
+        "17",
+        "18",
+        "27",
+        "34",
+        "36",
+        "37",
+        "43",
+        "44",
+        "51",
+        "58"
+      ],
+      "finding_id": "probiotics_cognition_ad"
+    },
+    {
+      "id": "blood_brain_barrier_dysbiosis",
+      "title": "Dysbiosis-Induced Blood-Brain Barrier Dysfunction",
+      "description": "Dysbiosis correlates with neuropathology through mechanisms including impaired blood-brain barrier (BBB) permeability, altered neurotransmitter production from tryptophan metabolism, and systemic inflammation affecting neurological function. The compromised BBB allows bacterial lipopolysaccharides and inflammatory mediators to penetrate the CNS, contributing to neuroinflammation and cognitive dysfunction. This pathway represents a critical mechanism linking peripheral dysbiosis to central nervous system pathology.",
+      "source_pages": [
+        26
+      ],
+      "mechanisms": [
+        "Increased BBB permeability",
+        "Dysregulated tryptophan metabolism",
+        "Systemic inflammation",
+        "Lipopolysaccharide translocation"
+      ],
+      "evidence_strength": "Moderate to High",
+      "search_terms": [
+        "blood-brain barrier",
+        "BBB",
+        "neuroinflammation",
+        "microglia",
+        "barrier permeability"
+      ],
+      "paper_ids": [
+        "3",
+        "10",
+        "14",
+        "29",
+        "43"
+      ],
+      "finding_id": "blood_brain_barrier_dysbiosis"
+    },
+    {
+      "id": "life_adversity_microbiota",
+      "title": "Life Adversity and Childhood Stress Effects on Microbiota",
+      "description": "Life adversity during childhood and specific temperament patterns associated with altered gut microbiota composition. Psychological stress particularly affects Prevotella species abundance and Lactobacillus populations. These changes reflect the developmental windows of microbiota susceptibility and the long-lasting impacts of early-life stress on microbial community structure, with potential downstream effects on mental health trajectories.",
+      "source_pages": [
+        20
+      ],
+      "affected_taxa": [
+        "Prevotella (reduced)",
+        "Lactobacillus (reduced)"
+      ],
+      "timing": "Childhood and early life",
+      "evidence_strength": "Moderate",
+      "search_terms": [
+        "childhood",
+        "early life",
+        "adversity",
+        "infant",
+        "prenatal",
+        "maternal",
+        "postnatal",
+        "development",
+        "temperament"
+      ],
+      "paper_ids": [
+        "2",
+        "8",
+        "11",
+        "12",
+        "13",
+        "15",
+        "17",
+        "26",
+        "41",
+        "42",
+        "48",
+        "56",
+        "58",
+        "59"
+      ],
+      "finding_id": "life_adversity_microbiota"
+    }
+  ],
+  "key_mechanisms": {
+    "neural_signaling": {
+      "description": "Vagus nerve and enteric nervous system direct signaling",
+      "components": [
+        "Vagal afferent pathways",
+        "Enteric nervous system (ENS)",
+        "Neuroendocrine signaling"
+      ]
+    },
+    "metabolic_signaling": {
+      "description": "Bacterial metabolite production and absorption",
+      "components": [
+        "Short-chain fatty acids (butyrate, propionate, acetate)",
+        "Tryptophan metabolites (kynurenine, indoles)",
+        "Secondary bile acids"
+      ]
+    },
+    "immune_signaling": {
+      "description": "Mucosal and systemic immune modulation",
+      "components": [
+        "Regulatory T cell differentiation",
+        "Th17 cell balance",
+        "Toll-like receptor signaling",
+        "Pattern recognition receptors"
+      ]
+    },
+    "epithelial_barrier": {
+      "description": "Maintenance of intestinal and BBB integrity",
+      "components": [
+        "Tight junction protein expression",
+        "Mucus layer stabilization",
+        "Epithelial regeneration"
+      ]
+    }
+  },
+  "clinical_implications": [
+    "Microbiota profiling may provide diagnostic biomarkers for psychiatric and neurodegenerative disorders",
+    "Targeted probiotic or prebiotic interventions could complement psychological and pharmacological treatments for mood and anxiety disorders",
+    "Sleep hygiene and circadian rhythm stabilization may benefit from microbiota-targeted interventions",
+    "Early-life stress mitigation strategies could be enhanced with microbiota assessment and modulation",
+    "Personalized medicine approaches considering individual microbiota composition may improve treatment outcomes in neuropsychiatric conditions"
+  ],
+  "research_gaps": [
+    "Causation vs. association in neurodegenerative disease microbiota signatures remains unclear",
+    "Optimal timing, duration, and strain selection for probiotic interventions in psychiatric and neurological conditions",
+    "Mechanisms of blood-brain barrier disruption in dysbiosis-associated neuropathology",
+    "Role of individual genetic variation in stress-responsive microbiota changes",
+    "Long-term follow-up studies on probiotic intervention efficacy in cognitive decline"
+  ],
+  "cautions": {
+    "bidirectional_causality": "Many findings demonstrate bidirectional relationships: stress causes dysbiosis AND dysbiosis worsens mental health. Direction of primary causation may vary by individual and condition.",
+    "association_not_causation": "Microbiome alterations in Alzheimer's, Parkinson's, and other neurodegenerative diseases are documented as associations. Causative mechanisms remain to be established and dysbiosis may be a consequence rather than a cause of neurological disease.",
+    "heterogeneity": "High inter-individual variability in microbiota response to stress and psychological interventions limits generalizability of findings.",
+    "intervention_variability": "Heterogeneity in probiotic strains, doses, durations, and outcome measures prevents robust meta-analysis and limits clinical applicability.",
+    "confounding_factors": "Diet, medications (especially antibiotics and psychiatric medications), sleep patterns, and physical activity all confound microbiota-mental health relationships and must be controlled in research."
+  },
+  "papers": {
+    "1": {
+      "authors": "Zhang et al. (2023)",
+      "year": 2023,
+      "title": "Understanding the Connection between Gut Homeostasis and Psychological Stress.",
+      "journal": "Journal of NutriLife",
+      "summary": "Chronic psychological stress disrupts gut homeostasis by causing gut microbiota dysbiosis, damaging the intestinal barrier, and increasing permeability. Probiotics can alleviate these effects by bolstering the barrier and maintaining endocrine homeostasis. The gut microbiota influences hormone and neurotransmitter synthesis, interacting with stress responses. This review synthesizes recent research on these interactions and interventions.",
+      "citation_count": 86,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "tryptophan_depression_anxiety",
+        "probiotics_cognition_ad"
+      ],
+      "doi": "10.1016/j.tjnut.2023.01.026",
+      "authors_parsed": [
+        {
+          "family": "Zhang",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "2": {
+      "authors": "Rosin et al. (2020)",
+      "year": 2020,
+      "title": "A preliminary study of gut microbiome variation and HPA axis reactivity in healthy infants.",
+      "journal": "Psychoneuroendocrinology",
+      "summary": "In healthy human infants, there is a moderate positive association between gut microbiome alpha diversity and cortisol reactivity, suggesting a link between microbiome diversity and HPA axis reactivity. This finding is based on a pilot study of 34 infants using salivary cortisol measurements and 16S rRNA amplicon sequencing.",
+      "citation_count": 51,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1016/j.psyneuen.2020.105046",
+      "authors_parsed": [
+        {
+          "family": "Rosin",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "3": {
+      "authors": "Geng et al. (2020)",
+      "year": 2020,
+      "title": "Gut Microbiota Are Associated With Psychological Stress-Induced Defections in Intestinal and Blood–Brain Barriers",
+      "journal": "Frontiers in Microbiology",
+      "summary": "Psychological stress alters gut microbiota and reduces tight junction proteins in intestinal and blood-brain barriers, using a rodent model to explore the gut-brain axis.",
+      "citation_count": 106,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "blood_brain_barrier_dysbiosis"
+      ],
+      "doi": "10.3389/fmicb.2019.03067",
+      "authors_parsed": [
+        {
+          "family": "Geng",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "4": {
+      "authors": "Liu RT",
+      "year": 2017,
+      "title": "The microbiome as a novel paradigm in studying stress and mental health",
+      "journal": "American Psychologist",
+      "summary": "Stress-induced enteric dysbiosis and intestinal permeability are linked to negative mental health outcomes through immunoregulatory, endocrinal, and neural pathways, involving the microbiota–gut–brain axis.",
+      "citation_count": 76,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive"
+      ],
+      "doi": "10.1037/amp0000058",
+      "authors_parsed": [
+        {
+          "family": "Liu",
+          "given": "R. T."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "5": {
+      "authors": "Foster et al. (2017)",
+      "year": 2017,
+      "title": "Stress & the gut-brain axis: Regulation by the microbiome",
+      "journal": "Neurobiology of Stress",
+      "summary": "The gut microbiota plays a crucial role in the gut-brain axis, influencing stress-related responses. However, evidence is largely based on animal studies or correlative analyses in humans, with a need for more research to establish causal contributions in humans.",
+      "citation_count": 992,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive"
+      ],
+      "doi": "10.1016/j.ynstr.2017.03.001",
+      "authors_parsed": [
+        {
+          "family": "Foster",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "6": {
+      "authors": "Ma et al. (2023)",
+      "year": 2023,
+      "title": "Psychological Stress and Gut Microbiota Composition: A Systematic Review of Human Studies",
+      "journal": "Neuropsychobiology",
+      "summary": "Psychological stress is associated with changes in gut microbiota abundance, particularly reductions in certain taxa and diversity indices. Evidence from 13 studies in a systematic review. Larger longitudinal studies needed to determine causal relationships.",
+      "citation_count": 34,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1159/000533131",
+      "authors_parsed": [
+        {
+          "family": "Ma",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "7": {
+      "authors": "Tetel et al. (2018)",
+      "year": 2018,
+      "title": "Steroids, stress and the gut microbiome‐brain axis",
+      "journal": "Journal of neuroendocrinology",
+      "summary": "The gut microbiome profoundly impacts human health and disease, influencing hormone levels and stress axis. Perturbations in gut microbiota alter stress axis and behavior, with human studies examining its role in depression and anxiety.",
+      "citation_count": 163,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1111/jne.12548",
+      "authors_parsed": [
+        {
+          "family": "Tetel",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "8": {
+      "authors": "Thomas Dubois, Christine Reynaert, Denis Jacques, Brice Lepiece, Nicolas Zdanowicz",
+      "year": 2019,
+      "title": "Role of gut microbiota in the interaction between immunity and psychiatry: a literature review",
+      "journal": "Psychiatria Danubina, Vol. 31, Suppl. 3, pp. 381–385",
+      "summary": "Psychological stress impacts gut microbiota, leading to immune activation and neurodevelopmental disorders, with links to brain-gut axis regulation and chronic inflammation. The review highlights microbiota dysbiosis and increased gut permeability as sources of inflammation in neuropsychiatric disorders.",
+      "citation_count": 14,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "life_adversity_microbiota"
+      ],
+      "pmid": "31488756",
+      "authors_parsed": [
+        {
+          "family": "Dubois",
+          "given": "Thomas"
+        },
+        {
+          "family": "Reynaert",
+          "given": "Christine"
+        },
+        {
+          "family": "Jacques",
+          "given": "Denis"
+        },
+        {
+          "family": "Lepiece",
+          "given": "Brice"
+        },
+        {
+          "family": "Zdanowicz",
+          "given": "Nicolas"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "9": {
+      "authors": "Lai et al. (2023)",
+      "year": 2023,
+      "title": "Butterflies in the gut: the interplay between intestinal microbiota and stress",
+      "journal": "Journal of Biomedical Sciences",
+      "summary": "The gut microbiome plays a role in regulating stress responses and is affected by psychological stress, leading to dysbiosis. The microbiota can modulate stress signaling through glucocorticoids and the autonomic nervous system, impacting cortisol regulation and the gut-brain axis. Accumulating evidence from multiple studies supports these findings.",
+      "citation_count": 12,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive"
+      ],
+      "doi": "10.1186/s12929-023-00984-6",
+      "authors_parsed": [
+        {
+          "family": "Lai",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "10": {
+      "authors": "Marwaha et al. (2025)",
+      "year": 2025,
+      "title": "Exploring the Complex Relationship Between Psychosocial Stress and the Gut Microbiome: Implications for Inflammation and Immune Modulation.",
+      "journal": "Journal of applied physiology",
+      "summary": "Chronic psychological stress leads to sustained activation of the HPA axis and SNS, causing immune dysregulation, disruption of the gut microbiome composition, and increased intestinal barrier permeability, contributing to a pro-inflammatory state. The strength of the evidence and methodology are not specified in the abstract.",
+      "citation_count": 18,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "blood_brain_barrier_dysbiosis"
+      ],
+      "doi": "10.1152/japplphysiol.00652.2024",
+      "authors_parsed": [
+        {
+          "family": "Marwaha",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "11": {
+      "authors": "de Weerth C",
+      "year": 2017,
+      "title": "Do bacteria shape our development? Crosstalk between intestinal microbiota and HPA axis",
+      "journal": "Neuroscience & Biobehavioral Reviews",
+      "summary": "Theoretical review summarizing developmental crosstalk between intestinal microbiota and HPA axis, relevant to psychological stress, cortisol, and gut microbiome dysbiosis; no empirical evidence presented.",
+      "citation_count": 129,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "probiotics_cognition_ad",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1016/j.neubiorev.2017.09.016",
+      "authors_parsed": [
+        {
+          "family": "de Weerth",
+          "given": "C."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "12": {
+      "authors": "Dinan & Cryan (2012)",
+      "year": 2012,
+      "title": "Regulation of the stress response by the gut microbiota: Implications for psychoneuroendocrinology",
+      "journal": "Psychoneuroendocrinology",
+      "summary": "The gut microbiota plays a role in regulating the stress response through the HPA axis. Certain bacteria like Bifidobacterium infantis can normalize HPA responses. Stress increases gut permeability, altering the microbiome and enhancing HPA drive. Probiotics may blunt HPA responses. Further prospective studies are needed to fully understand these relationships.",
+      "citation_count": 521,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "tryptophan_depression_anxiety",
+        "probiotics_cognition_ad",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1016/j.psyneuen.2012.03.007",
+      "authors_parsed": [
+        {
+          "family": "Cryan",
+          "given": "Dinan &"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "13": {
+      "authors": "Frankiensztajn et al. (2020)",
+      "year": 2020,
+      "title": "The microbiota and the hypothalamus-pituitary-adrenocortical (HPA) axis, implications for anxiety and stress disorders.",
+      "journal": "Current Opinion in Neurobiology",
+      "summary": "The gut microbiota influences the development of the HPA axis, which is involved in stress response, suggesting a role in psychological stress and gut-brain axis regulation.",
+      "citation_count": 195,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "probiotics_cognition_ad",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1016/j.conb.2019.12.003",
+      "authors_parsed": [
+        {
+          "family": "Frankiensztajn",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "14": {
+      "authors": "Rea et al. (2016)",
+      "year": 2016,
+      "title": "The microbiome: A key regulator of stress and neuroinflammation",
+      "journal": "Neurobiology of Stress",
+      "summary": "The microbiota-gut-brain axis plays a crucial role in maintaining homeostasis and is involved in stress-mediated modulation of neuroendocrine and immune systems, with implications for psychological stress and gut microbiome dysbiosis.",
+      "citation_count": 452,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "blood_brain_barrier_dysbiosis"
+      ],
+      "doi": "10.1016/j.ynstr.2016.03.001",
+      "authors_parsed": [
+        {
+          "family": "Rea",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "15": {
+      "authors": "Kelly et al. (2015)",
+      "year": 2015,
+      "title": "Breaking down the barriers: the gut microbiome, intestinal permeability and stress-related psychiatric disorders",
+      "journal": "Frontiers in Cellular Neuroscience",
+      "summary": "The gut microbiome plays a critical role in regulating intestinal permeability and modulating brain development, function, and behavior, with implications for understanding and treating stress-related psychiatric disorders. The evidence is based on preclinical studies, but the review does not specify the number of studies or participants.",
+      "citation_count": 962,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.3389/fncel.2015.00392",
+      "authors_parsed": [
+        {
+          "family": "Kelly",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "16": {
+      "authors": "Madison & Kiecolt-Glaser (2019)",
+      "year": 2019,
+      "title": "Stress, depression, diet, and the gut microbiota: human-bacteria interactions at the core of psychoneuroimmunology and nutrition.",
+      "journal": "Current Opinion in Behavioral Sciences",
+      "summary": "Psychological stress and depression influence gut bacteria composition through stress hormones, affecting the gut-brain axis. This review synthesizes human studies on diet, stress, and gut bacteria interactions.",
+      "citation_count": 288,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "probiotics_cognition_ad"
+      ],
+      "doi": "10.1016/J.COBEHA.2019.01.011",
+      "authors_parsed": [
+        {
+          "family": "Kiecolt-Glaser",
+          "given": "Madison &"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "17": {
+      "authors": "Rusch et al. (2023)",
+      "year": 2023,
+      "title": "Signalling cognition: the gut microbiota and hypothalamic-pituitary-adrenal axis",
+      "journal": "Frontiers in Endocrinology",
+      "summary": "The gut microbiota plays a crucial role in cognitive function through its interplay with the hypothalamic-pituitary-adrenal (HPA) axis, which is affected by stress. The microbiota-gut-brain axis is a bidirectional signaling pathway impacted by stress, influencing cognitive processes. Review article summarizing current knowledge on this relationship.",
+      "citation_count": 242,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "probiotics_cognition_ad",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.3389/fendo.2023.1130689",
+      "authors_parsed": [
+        {
+          "family": "Rusch",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "18": {
+      "authors": "Foster & Neufeld (2013)",
+      "year": 2013,
+      "title": "Gut–brain axis: how the microbiome influences anxiety and depression",
+      "journal": "Trends in Neurosciences",
+      "summary": "The gut microbiome influences anxiety and depression through the gut-brain axis, with stress affecting microbiota and behavior. No specific evidence on cortisol, Bifidobacteria, butyrate, or HPA axis is provided.",
+      "citation_count": 2117,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "probiotics_cognition_ad"
+      ],
+      "doi": "10.1016/j.tins.2013.01.005",
+      "authors_parsed": [
+        {
+          "family": "Neufeld",
+          "given": "Foster &"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "19": {
+      "authors": "Cryan et al. (2019)",
+      "year": 2019,
+      "title": "The Microbiota-Gut-Brain Axis.",
+      "journal": "Physiological Reviews",
+      "summary": "Stress significantly impacts the microbiota-gut-brain axis, and recent work implicates gut microbiota in various conditions. Future studies aim to understand mechanisms and develop microbial-based interventions for neuropsychiatric disorders.",
+      "citation_count": 3131,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "dysbiosis_neuropathology"
+      ],
+      "doi": "10.1152/physrev.00018.2018",
+      "authors_parsed": [
+        {
+          "family": "Cryan",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "20": {
+      "authors": "Zhang et al. (2024)",
+      "year": 2024,
+      "title": "Stress triggers gut dysbiosis via CRH-CRHR1-mitochondria pathway",
+      "journal": "npj Biofilms and Microbiomes",
+      "summary": "Psychological stress triggers gut dysbiosis via the CRH-CRHR1-mitochondria pathway, affecting gut microbiota composition and mitochondrial function, with potential therapeutic targets for stress-induced gastrointestinal diseases.",
+      "citation_count": 14,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1038/s41522-024-00571-z",
+      "authors_parsed": [
+        {
+          "family": "Zhang",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "21": {
+      "authors": "Madison & Bailey (2023)",
+      "year": 2023,
+      "title": "Stressed to the Core: Inflammation and Intestinal Permeability Link Stress-Related Gut Microbiota Shifts to Mental Health Outcomes.",
+      "journal": "Biological Psychiatry",
+      "summary": "Stress exposure alters gut microbiota, affecting gut barrier integrity and leading to increased inflammation, which is linked to psychiatric disorders like depression; preclinical and clinical evidence supports these findings and interventions modulating gut microbiota are reviewed.",
+      "citation_count": 28,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1016/j.biopsych.2023.10.014",
+      "authors_parsed": [
+        {
+          "family": "Bailey",
+          "given": "Madison &"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "22": {
+      "authors": "Gareau et al. (2008)",
+      "year": 2008,
+      "title": "Pathophysiological mechanisms of stress-induced intestinal damage.",
+      "journal": "Current molecular medicine",
+      "summary": "Stress exacerbates IBS and IBD symptoms, lowers visceral pain thresholds, and decreases mucosal barrier function. Chronic stress leads to increased epithelial permeability and alters bacterial-host interactions, potentially affecting gut microbiome dysbiosis. Evidence is based on rodent studies.",
+      "citation_count": 273,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.2174/156652408784533760",
+      "authors_parsed": [
+        {
+          "family": "Gareau",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "23": {
+      "authors": "Shaler et al. (2021)",
+      "year": 2021,
+      "title": "Psychological stress impairs IL22-driven protective gut mucosal immunity against colonising pathobionts",
+      "journal": "Nature Communications",
+      "summary": "Psychological stress impairs IL-22-driven protective gut mucosal immunity, leading to dysbiosis and expansion of pathobionts in a mouse model.",
+      "citation_count": 52,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1038/s41467-021-26992-4",
+      "authors_parsed": [
+        {
+          "family": "Shaler",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "24": {
+      "authors": "Moser et al. (2017)",
+      "year": 2017,
+      "title": "Intestinal microbiome-gut-brain axis and irritable bowel syndrome",
+      "journal": "Wiener Medizinische Wochenschrift",
+      "summary": "The review synthesizes evidence on the role of intestinal microbiota in psychological comorbidities like anxiety and depression in IBS, highlighting increased disease reactivity to psychological stress and dysbiosis features. Strength of evidence: Review of multiple studies. Methodology: Review of existing studies.",
+      "citation_count": 76,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive"
+      ],
+      "doi": "10.1007/s10354-017-0592-0",
+      "authors_parsed": [
+        {
+          "family": "Moser",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "25": {
+      "authors": "Vanuytsel et al. (2013)",
+      "year": 2013,
+      "title": "Psychological stress and corticotropin-releasing hormone increase intestinal permeability in humans by a mast cell-dependent mechanism",
+      "journal": "Gut",
+      "summary": "Acute psychological stress increases small intestinal permeability in humans by a mast cell-dependent mechanism involving corticotropin-releasing hormone (CRH), as demonstrated in two studies with 36 participants using lactulose–mannitol urinary excretion tests.",
+      "citation_count": 533,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1136/gutjnl-2013-305690",
+      "authors_parsed": [
+        {
+          "family": "Vanuytsel",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "26": {
+      "authors": "Sudo et al. (2004)",
+      "year": 2004,
+      "title": "Postnatal microbial colonization programs the hypothalamic–pituitary–adrenal system for stress response in mice",
+      "journal": "Journal of Physiology",
+      "summary": "Postnatal microbial colonization affects the development of the HPA stress response in mice; germfree mice have an exaggerated HPA response, which is reversed by reconstitution with Bifidobacterium infantis or SPF faeces at an early stage.",
+      "citation_count": 2424,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1113/jphysiol.2004.063388",
+      "authors_parsed": [
+        {
+          "family": "Sudo",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "27": {
+      "authors": "Ait-Belgnaoui et al. (2012)",
+      "year": 2012,
+      "title": "Prevention of gut leakiness by a probiotic treatment leads to attenuated HPA response to an acute psychological stress in rats",
+      "journal": "Psychoneuroendocrinology",
+      "summary": "Probiotic treatment (Lactobacillus farciminis) prevents gut leakiness and attenuates HPA axis response to acute psychological stress in rats; study conducted in rats, not humans.",
+      "citation_count": 565,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "probiotics_cognition_ad"
+      ],
+      "doi": "10.1016/j.psyneuen.2012.03.024",
+      "authors_parsed": [
+        {
+          "family": "Ait-Belgnaoui",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "28": {
+      "authors": "Karl et al. (2018)",
+      "year": 2018,
+      "title": "Effects of Psychological, Environmental and Physical Stressors on the Gut Microbiota",
+      "journal": "Frontiers in Microbiology",
+      "summary": "Preclinical studies suggest that stressors alter gut microbiota composition and function, but human evidence is lacking; narrative review methodology.",
+      "citation_count": 426,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.3389/fmicb.2018.02013",
+      "authors_parsed": [
+        {
+          "family": "Karl",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "29": {
+      "authors": "Misiak et al. (2020)",
+      "year": 2020,
+      "title": "The HPA axis dysregulation in severe mental illness: Can we shift the blame to gut microbiota?",
+      "journal": "Progress in Neuro-psychopharmacology and Biological Psychiatry",
+      "summary": "Gut microbiota alterations are linked to HPA axis dysregulation in severe mental disorders, with evidence suggesting a cross-talk between the gut-brain axis and HPA axis. Gut microbiota can activate the HPA axis, and certain metabolites may modulate this response. Increased intestinal permeability is associated with HPA axis activation.",
+      "citation_count": 269,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "blood_brain_barrier_dysbiosis"
+      ],
+      "doi": "10.1016/j.pnpbp.2020.109951",
+      "authors_parsed": [
+        {
+          "family": "Misiak",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "30": {
+      "authors": "Wouw et al. (2018)",
+      "year": 2018,
+      "title": "Short‐chain fatty acids: microbial metabolites that alleviate stress‐induced brain–gut axis alterations",
+      "journal": "Journal of Physiology",
+      "summary": "",
+      "citation_count": 624,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1113/JP276431",
+      "authors_parsed": [
+        {
+          "family": "Wouw",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "31": {
+      "authors": "Yarandi et al. (2016)",
+      "year": 2016,
+      "title": "Modulatory Effects of Gut Microbiota on the Central Nervous System: How Gut Could Play a Role in Neuropsychiatric Health and Diseases",
+      "journal": "Journal of Neurogastroenterology and Motility",
+      "summary": "The gut microbiome plays a crucial role in the gut-brain axis, with chronic stress altering its composition, leading to increased intestinal permeability and impacting neuropsychological functions through deregulated inflammatory responses and production of neuro-active compounds.",
+      "citation_count": 248,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive"
+      ],
+      "doi": "10.5056/jnm15146",
+      "authors_parsed": [
+        {
+          "family": "Yarandi",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "32": {
+      "authors": "Kharchenko et al. (2022)",
+      "year": 2022,
+      "title": "Stress and the Gut-Brain Axis",
+      "journal": "Ukraïnsʹkij žurnal medicini bìologìï ta sportu",
+      "summary": "The review explores the effects of stress on gut microbiota, highlighting the bidirectional gut-brain axis and the influence of microbiota on neurotransmitter levels, which are associated with nervous system disorders.",
+      "citation_count": 4,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "dysbiosis_neuropathology"
+      ],
+      "doi": "10.26693/jmbs07.04.137",
+      "authors_parsed": [
+        {
+          "family": "Kharchenko",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "33": {
+      "authors": "Stasi & Orlandelli (2008)",
+      "year": 2008,
+      "title": "Role of the Brain-Gut Axis in the Pathophysiology of Crohn’s Disease",
+      "journal": "Digestive Diseases",
+      "summary": "Psychological stress affects Crohn’s disease through the brain-gut axis, involving the HPA axis and increased intestinal permeability, but specific effects on Bifidobacteria, butyrate, or gut microbiome diversity are not detailed.",
+      "citation_count": 64,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1159/000116774",
+      "authors_parsed": [
+        {
+          "family": "Orlandelli",
+          "given": "Stasi &"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "34": {
+      "authors": "Bailey (2014)",
+      "year": 2014,
+      "title": "Influence of stressor-induced nervous system activation on the intestinal microbiota and the importance for immunomodulation.",
+      "journal": "Advances in Experimental Medicine and Biology",
+      "summary": "Psychological stress significantly impacts the structure of the intestinal microbiota, reducing Lactobacillus abundance and leading to increased susceptibility to infection and behavioral abnormalities. Stress alters homeostatic interactions between the microbiota and immune system, causing systemic inflammatory responses and anxiety-like behavior. Restoring homeostasis can ameliorate these effects.",
+      "citation_count": 72,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "probiotics_cognition_ad"
+      ],
+      "doi": "10.1007/978-1-4939-0897-4_12",
+      "authors_parsed": [
+        {
+          "family": "Bailey",
+          "given": ""
+        }
+      ],
+      "authors_et_al": false
+    },
+    "35": {
+      "authors": "Bharwani et al. (2016)",
+      "year": 2016,
+      "title": "Structural & functional consequences of chronic psychosocial stress on the microbiome & host",
+      "journal": "Psychoneuroendocrinology",
+      "summary": "Chronic psychosocial stress in mice leads to reduced richness and diversity of the gut microbiome, associated with behavioral changes and altered immunoregulatory responses, suggesting a link between stress-induced dysbiosis and neurocognitive deficits. (Mouse study, computational analysis of 16S rRNA sequences)",
+      "citation_count": 251,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive"
+      ],
+      "doi": "10.1016/j.psyneuen.2015.10.001",
+      "authors_parsed": [
+        {
+          "family": "Bharwani",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "36": {
+      "authors": "Smith et al. (2014)",
+      "year": 2014,
+      "title": "Probiotics normalize the gut-brain-microbiota axis in immunodeficient mice.",
+      "journal": "American Journal of Physiology - Gastrointestinal and Liver Physiology",
+      "summary": "Probiotics normalize psychological stress-induced dysbiosis and gut-brain axis changes in immunodeficient mice, suggesting a potential intervention for stress-related gut health issues.",
+      "citation_count": 135,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "probiotics_cognition_ad"
+      ],
+      "doi": "10.1152/ajpgi.00238.2014",
+      "authors_parsed": [
+        {
+          "family": "Smith",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "37": {
+      "authors": "Dinan & Cryan (2017)",
+      "year": 2017,
+      "title": "The Microbiome-Gut-Brain Axis in Health and Disease.",
+      "journal": "Gastroenterology Clinics of North America",
+      "summary": "Gut microbes influence central neurochemistry and behavior, with potential impacts on stress responses and cognitive functioning, offering novel therapeutic approaches for gut-brain axis disorders.",
+      "citation_count": 902,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "probiotics_cognition_ad"
+      ],
+      "doi": "10.1016/j.gtc.2016.09.007",
+      "authors_parsed": [
+        {
+          "family": "Cryan",
+          "given": "Dinan &"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "38": {
+      "authors": "Palma et al. (2014)",
+      "year": 2014,
+      "title": "The microbiota–gut–brain axis in gastrointestinal disorders: stressed bugs, stressed brain or both?",
+      "journal": "Journal of Physiology",
+      "summary": "The gut-brain axis is bidirectional, involving hormonal, neural, and immune pathways. Dysbiosis is associated with functional bowel disorders and psychological stress, which can increase susceptibility to gastrointestinal diseases.",
+      "citation_count": 263,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive"
+      ],
+      "doi": "10.1113/jphysiol.2014.273995",
+      "authors_parsed": [
+        {
+          "family": "Palma",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "39": {
+      "authors": "Wei et al. (2024)",
+      "year": 2024,
+      "title": "Psychological stress-induced microbial metabolite indole-3-acetate disrupts intestinal cell lineage commitment.",
+      "journal": "Cell Metabolism",
+      "summary": "Psychological stress triggers brain-gut communication, enriching Lactobacillus murinus and increasing indole-3-acetate production, which disrupts intestinal cell lineage commitment and is correlated with gut dysfunction in patients with mental distress.",
+      "citation_count": 75,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "tryptophan_depression_anxiety"
+      ],
+      "doi": "10.1016/j.cmet.2023.12.026",
+      "authors_parsed": [
+        {
+          "family": "Wei",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "40": {
+      "authors": "Rieder et al. (2017)",
+      "year": 2017,
+      "title": "Microbes and mental health: A review",
+      "journal": "Brain, behavior, and immunity",
+      "summary": "The gut microbiota influences brain health through the microbiota-gut-brain axis, with bidirectional communication affecting CNS function. Stress impacts this axis through HPA-axis activation and altered neurotransmitter activity, potentially leading to neuropsychiatric disorders like depression and anxiety. The review examines stress-mediated changes and novel treatment options. Evidence strength and methodology details are not provided.",
+      "citation_count": 370,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive"
+      ],
+      "doi": "10.1016/j.bbi.2017.01.016",
+      "authors_parsed": [
+        {
+          "family": "Rieder",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "41": {
+      "authors": "Mackos et al. (2016)",
+      "year": 2016,
+      "title": "Role of the Intestinal Microbiota in Host Responses to Stressor Exposure.",
+      "journal": "International review of neurobiology",
+      "summary": "Psychological stressors shape the intestinal microbial community, contributing to changes in immune function, neurodevelopment, and behavioral deficits. No specific findings or evidence strength are provided.",
+      "citation_count": 20,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1016/bs.irn.2016.08.002",
+      "authors_parsed": [
+        {
+          "family": "Mackos",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "42": {
+      "authors": "Keskitalo et al. (2021)",
+      "year": 2021,
+      "title": "Gut microbiota diversity but not composition is related to saliva cortisol stress response at the age of 2.5 months",
+      "journal": "Stress",
+      "summary": "Gut microbiota diversity is weakly associated with blunted cortisol stress response in 2.5-month-old infants; composition is associated with environmental factors, not cortisol stress responsiveness.",
+      "citation_count": 39,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1080/10253890.2021.1895110",
+      "authors_parsed": [
+        {
+          "family": "Keskitalo",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "43": {
+      "authors": "Khazaei et al. (2026)",
+      "year": 2026,
+      "title": "Diet and gut microbiota during depression and stress",
+      "journal": "Discover Food",
+      "summary": "Psychological stress is associated with decreased gut microbiota diversity, overgrowth of proinflammatory taxa, and depletion of beneficial genera, leading to increased cortisol levels, compromised gut barrier integrity, and systemic inflammation affecting the brain. Therapeutic approaches include probiotics and dietary interventions. (Summary based on a review of research findings.)",
+      "citation_count": 0,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "probiotics_cognition_ad",
+        "blood_brain_barrier_dysbiosis"
+      ],
+      "doi": "10.1007/s44187-026-00846-8",
+      "authors_parsed": [
+        {
+          "family": "Khazaei",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "44": {
+      "authors": "Castellazzi et al. (2018)",
+      "year": 2018,
+      "title": "Stress and Immune Function: There is a Role for the Gut Microbiota?",
+      "journal": "Journal of Clinical Gastroenterology",
+      "summary": "Psychological stress affects gut microbiome composition, reducing Lactobacilli and increasing pathogenic bacteria, but probiotics can mitigate this by increasing beneficial bacteria and improving gut barrier function. Study involved healthy adult volunteers with self-reported psychological stress.",
+      "citation_count": 5,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "probiotics_cognition_ad"
+      ],
+      "doi": "10.1097/MCG.0000000000001056",
+      "authors_parsed": [
+        {
+          "family": "Castellazzi",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "45": {
+      "authors": "Molina-Torres et al. (2019)",
+      "year": 2019,
+      "title": "Stress and the gut microbiota-brain axis",
+      "journal": "Behavioural Pharmacology",
+      "summary": "Stress influences gut microbiota composition and vice versa, affecting stress modulation; extensive preclinical evidence but limited clinical evidence.",
+      "citation_count": 137,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1097/FBP.0000000000000478",
+      "authors_parsed": [
+        {
+          "family": "Molina-Torres",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "46": {
+      "authors": "Clark & Mach (2016)",
+      "year": 2016,
+      "title": "Exercise-induced stress behavior, gut-microbiota-brain axis and diet: a systematic review for athletes",
+      "journal": "Journal of the International Society of Sports Nutrition",
+      "summary": "Stress activates the HPA axis, leading to changes in gut microbiota composition. Diet modulates gut microbiota diversity and functionality. Evidence from murine models shows a correlation between stress and gut microbiota changes. No specific human study data or participant numbers are provided.",
+      "citation_count": 465,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1186/s12970-016-0155-6",
+      "authors_parsed": [
+        {
+          "family": "Mach",
+          "given": "Clark &"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "47": {
+      "authors": "Rodiño-Janeiro et al. (2015)",
+      "year": 2015,
+      "title": "Role of Corticotropin-releasing Factor in Gastrointestinal Permeability",
+      "journal": "Journal of Neurogastroenterology and Motility",
+      "summary": "Stress, through the brain-gut axis, can cause intestinal barrier dysfunction via corticotropin-releasing factor, potentially leading to gut disease and inflammation.",
+      "citation_count": 99,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.5056/jnm14084",
+      "authors_parsed": [
+        {
+          "family": "Rodiño-Janeiro",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "48": {
+      "authors": "Allen et al. (2017)",
+      "year": 2017,
+      "title": "A psychology of the human brain–gut–microbiome axis",
+      "journal": "Social & Personality Psychology Compass",
+      "summary": "The gut microbiota impacts stress-related behaviors and cognition, but the mechanisms are not fully understood. Psychological factors influence the brain-gut-microbiome axis, and interventions can affect microbiome composition and function. No specific findings or evidence are provided regarding psychological stress, cortisol, and gut microbiome dysbiosis.",
+      "citation_count": 133,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1111/spc3.12309",
+      "authors_parsed": [
+        {
+          "family": "Allen",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "49": {
+      "authors": "Karner et al. (2026)",
+      "year": 2026,
+      "title": "Gut microbial diversity and inferred capacity to produce short-chain fatty acids are tied to acute stress reactivity in healthy adults",
+      "journal": "bioRxiv",
+      "summary": "Gut microbial diversity and SCFA production capacity are linked to acute stress reactivity in healthy adults; study involved 74 participants with standardized stress intervention; findings highlight the microbiota's role in modulating human psychophysiology post-stress.",
+      "citation_count": 0,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1101/2025.06.24.661294",
+      "authors_parsed": [
+        {
+          "family": "Karner",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "50": {
+      "authors": "Humbel et al. (2020)",
+      "year": 2020,
+      "title": "Association of Alterations in Intestinal Microbiota With Impaired Psychological Function in Patients With Inflammatory Bowel Diseases in Remission.",
+      "journal": "Clinical Gastroenterology and Hepatology",
+      "summary": "Psychological stress is associated with lower alpha diversity and changes in beta diversity in the gut microbiome, with specific correlations between certain bacterial abundances and depression or quality of life in IBD patients; study involved 171 participants using 16S rRNA sequencing.",
+      "citation_count": 113,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1016/j.cgh.2019.09.022",
+      "authors_parsed": [
+        {
+          "family": "Humbel",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "51": {
+      "authors": "Lutgendorff et al. (2008)",
+      "year": 2008,
+      "title": "The role of microbiota and probiotics in stress-induced gastro-intestinal damage.",
+      "journal": "Current molecular medicine",
+      "summary": "Stress impacts gut physiology by reducing beneficial bacteria and increasing pathogens; probiotics can counteract stress-induced gut barrier dysfunction and motility changes. Evidence strength: Review of multiple studies; Methodology: Review synthesis.",
+      "citation_count": 211,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "probiotics_cognition_ad"
+      ],
+      "doi": "10.2174/156652408784533779",
+      "authors_parsed": [
+        {
+          "family": "Lutgendorff",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "52": {
+      "authors": "Bear et al. (2021)",
+      "year": 2021,
+      "title": "The Microbiome-Gut-Brain Axis and Resilience to Developing Anxiety or Depression under Stress",
+      "journal": "Microorganisms",
+      "summary": "The microbiome-gut-brain axis influences stress resilience, with limited translational evidence from human clinical studies; most research is based on animal models.",
+      "citation_count": 101,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive",
+        "tryptophan_depression_anxiety"
+      ],
+      "doi": "10.3390/microorganisms9040723",
+      "authors_parsed": [
+        {
+          "family": "Bear",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "53": {
+      "authors": "Vodička et al. (2018)",
+      "year": 2018,
+      "title": "Microbiota affects the expression of genes involved in HPA axis regulation and local metabolism of glucocorticoids in chronic psychosocial stress.",
+      "journal": "Brain, behavior, and immunity",
+      "summary": "The microbiota modulates emotional behavior and HPA axis activity in response to chronic psychosocial stress, affecting local glucocorticoid metabolism and indicating pathways for environmental interaction with glucocorticoid signaling.",
+      "citation_count": 99,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive"
+      ],
+      "doi": "10.1016/j.bbi.2018.07.007",
+      "authors_parsed": [
+        {
+          "family": "Vodička",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "54": {
+      "authors": "Tofani et al. (2024)",
+      "year": 2024,
+      "title": "Gut microbiota regulates stress responsivity via the circadian system.",
+      "journal": "Cell Metabolism",
+      "summary": "Gut microbiota regulates stress responsivity via the circadian system, affecting HPA-axis rhythmicity and stress response pathways in the brain; experimental evidence from microbiota transplantation supports this finding.",
+      "citation_count": 97,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "sleep_microbiota_circadian"
+      ],
+      "doi": "10.1016/j.cmet.2024.10.003",
+      "authors_parsed": [
+        {
+          "family": "Tofani",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "55": {
+      "authors": "Sheng et al. (2025)",
+      "year": 2025,
+      "title": "Psychological stress-induced systemic corticosterone directly sabotages intestinal stem cells and exacerbates colitis",
+      "journal": "Cell Discovery",
+      "summary": "Psychological stress impairs intestinal stem cell activity via elevated corticosterone, exacerbating colitis through the brain-gut axis. No specific participant or methodology details are provided.",
+      "citation_count": 4,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.1038/s41421-025-00796-y",
+      "authors_parsed": [
+        {
+          "family": "Sheng",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "56": {
+      "authors": "Cui et al. (2025)",
+      "year": 2025,
+      "title": "Gut dysbiosis conveys psychological stress to activate LRP5/β-catenin pathway promoting cancer stemness",
+      "journal": "Signal Transduction and Targeted Therapy",
+      "summary": "Psychological stress causes gut dysbiosis, altering Akkermansia muciniphila and butyrate levels, which in turn affects cancer stemness via the LRP5/β-catenin pathway. Experimental evidence from germ-free mice and clinical correlations support this mechanism.",
+      "citation_count": 27,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1038/s41392-025-02159-1",
+      "authors_parsed": [
+        {
+          "family": "Cui",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "57": {
+      "authors": "Schneider et al. (2023)",
+      "year": 2023,
+      "title": "The enteric nervous system relays psychological stress to intestinal inflammation.",
+      "journal": "Cell",
+      "summary": "Chronic psychological stress exacerbates intestinal inflammation through the enteric nervous system, involving glucocorticoids and affecting enteric glia and neurons; verified in three cohorts of IBD patients.",
+      "citation_count": 222,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "gutbrain_axis_neuroactive"
+      ],
+      "doi": "10.1016/j.cell.2023.05.001",
+      "authors_parsed": [
+        {
+          "family": "Schneider",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "58": {
+      "authors": "Farzi et al. (2018)",
+      "year": 2018,
+      "title": "Gut Microbiota and the Neuroendocrine System",
+      "journal": "Neurotherapeutics",
+      "summary": "The gut microbiota interacts bidirectionally with the HPA axis, influencing stress responses. Preclinical models explore early life stress impacts on this interaction. No specific human study details or evidence strength are provided.",
+      "citation_count": 383,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "probiotics_cognition_ad",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1007/s13311-017-0600-5",
+      "authors_parsed": [
+        {
+          "family": "Farzi",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "59": {
+      "authors": "Jahnke et al. (2021)",
+      "year": 2021,
+      "title": "Maternal precarity and HPA axis functioning shape infant gut microbiota and HPA axis development in humans",
+      "journal": "PLoS ONE",
+      "summary": "Maternal stress and HPA axis dysregulation are associated with decreased beneficial bacteria (Bifidobacterium) and increased pathogenic bacteria (Enterobacteriaceae, Streptococcaceae, Veillonella) in infant gut microbiome, based on a study of 25 mother-infant dyads using surveys and salivary cortisol samples.",
+      "citation_count": 42,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional",
+        "life_adversity_microbiota"
+      ],
+      "doi": "10.1371/journal.pone.0251782",
+      "authors_parsed": [
+        {
+          "family": "Jahnke",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "60": {
+      "authors": "Yang & Hammamieh (2026)",
+      "year": 2026,
+      "title": "Editorial: Gut microbiota modulation to mitigate stress-induced functional changes",
+      "journal": "Frontiers in Microbiomes",
+      "summary": "Chronic psychological stress activates the HPA axis, leading to cortisol elevation, which alters gut microbiota composition and function, impairing intestinal barrier function and contributing to psychological disorders. Evidence from preclinical and clinical studies supports these findings, although personalized approaches are needed due to interindividual variability.",
+      "citation_count": 0,
+      "matched_findings": [
+        "stress_dysbiosis_bidirectional"
+      ],
+      "doi": "10.3389/frmbi.2025.1731851",
+      "authors_parsed": [
+        {
+          "family": "Hammamieh",
+          "given": "Yang &"
+        }
+      ],
+      "authors_et_al": false
+    }
+  }
+}

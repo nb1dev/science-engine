@@ -1,0 +1,953 @@
+{
+  "topic": "opportunistic_pathogens",
+  "source_files": [
+    "opportunists x gut health.md",
+    "opportunists x gut health - Sources.csv"
+  ],
+  "lookup_keys": [
+    "16S rRNA",
+    "AUC",
+    "Actinobacteria",
+    "Bacteroides fragilis",
+    "Bifidobacterium",
+    "C. difficile",
+    "CDT",
+    "CRC",
+    "Clostridioides difficile",
+    "DNA damage",
+    "E. coli",
+    "EOCRC",
+    "ERK",
+    "ETBF",
+    "Enterobacteriaceae",
+    "Escherichia",
+    "Escherichia coli",
+    "Escherichia-Shigella",
+    "F. nucleatum",
+    "Faecalibacterium prausnitzii",
+    "Firmicutes",
+    "Fusobacterium",
+    "Fusobacterium nucleatum",
+    "IL-8",
+    "Klebsiella",
+    "Lachnospiraceae",
+    "Occludin",
+    "P. anaerobius",
+    "Parvimonas",
+    "Parvimonas micra",
+    "Peptostreptococcus",
+    "Peptostreptococcus anaerobius",
+    "Porphyromonas",
+    "Proteobacteria",
+    "Ruminococcaceae",
+    "S. bovis",
+    "S. gallolyticus",
+    "SCFA",
+    "Shigella",
+    "Streptococcus bovis",
+    "Streptococcus gallolyticus",
+    "TLR2",
+    "ZO-1",
+    "adenocarcinoma",
+    "adenoma",
+    "bacteremia",
+    "barrier disruption",
+    "biofilm",
+    "biomarker",
+    "butyrate",
+    "case-control",
+    "cohort",
+    "colibactin",
+    "colorectal cancer",
+    "cytolethal distending toxin",
+    "cytotoxin",
+    "diagnostic",
+    "dysbiosis",
+    "early-onset colorectal cancer",
+    "endocarditis",
+    "enterotoxigenic Bacteroides fragilis",
+    "epithelial barrier",
+    "genotoxin",
+    "immunosuppression",
+    "indolamine",
+    "infective endocarditis",
+    "inflammation",
+    "inflammatory mediator",
+    "intestinal permeability",
+    "meta-analysis",
+    "metagenomic",
+    "microbial enrichment",
+    "mucosal barrier",
+    "necrotizing enterocolitis",
+    "neutrophil",
+    "opportunist",
+    "oral bacteria",
+    "pathobiont",
+    "pks+",
+    "polymicrobial consortium",
+    "qPCR",
+    "secondary bile acid",
+    "sensitivity",
+    "septicemia",
+    "short-chain fatty acid",
+    "specificity",
+    "stool PCR",
+    "systematic review",
+    "tight junction",
+    "translocation"
+  ],
+  "related_topics": [
+    "scfa_barrier_function",
+    "bacterial_guilds",
+    "disease_dysbiosis_broad",
+    "colorectal_cancer_pathogenesis",
+    "microbiota_biomarkers",
+    "tight_junction_proteins",
+    "pathobiont_mechanisms"
+  ],
+  "findings": [
+    {
+      "organism": "Fusobacterium nucleatum",
+      "finding": "10-fold higher prevalence in CRC tissue vs healthy controls (pooled OR=10.06, 95% CI 4.48-22.58 across 6 studies)",
+      "evidence_type": "tissue and fecal",
+      "clinical_significance": "strong",
+      "reference": "Gethings-Behncke et al., 2020"
+    },
+    {
+      "organism": "Fusobacterium nucleatum",
+      "finding": "Polyp enrichment with 1.83-fold higher odds vs controls (95% CI 1.07-3.16 across 5 studies)",
+      "evidence_type": "tissue",
+      "clinical_significance": "moderate",
+      "reference": "Gethings-Behncke et al., 2020"
+    },
+    {
+      "organism": "Fusobacterium nucleatum",
+      "finding": "High tumor abundance associated with worse overall survival (pooled HR=1.87, 95% CI 1.12-3.11)",
+      "evidence_type": "prognostic",
+      "clinical_significance": "high",
+      "reference": "Gethings-Behncke et al., 2020"
+    },
+    {
+      "organism": "Fusobacterium nucleatum",
+      "finding": "F/nucleatum to beneficial bacteria ratio (F. nucleatum to Bifidobacterium + Faecalibacterium prausnitzii) achieved AUC 0.94 for CRC detection with 85% sensitivity and 92% specificity in 903-person validation",
+      "evidence_type": "biomarker",
+      "clinical_significance": "high",
+      "caution": "Detected 90% of stage I CRC - potential early detection utility",
+      "reference": "Guo et al., 2018"
+    },
+    {
+      "organism": "Fusobacterium nucleatum",
+      "finding": "Downregulates tight junction proteins ZO-1 and Occludin, increases intestinal permeability, recruits neutrophils via IL-8 secretion through TLR2/ERK pathway",
+      "evidence_type": "mechanistic",
+      "clinical_significance": "moderate",
+      "caution": "In vitro (Caco-2 monolayers) and DSS-colitis mouse models - not yet demonstrated in primary human tissue",
+      "reference": "Wang et al., 2024"
+    },
+    {
+      "organism": "Fusobacterium nucleatum",
+      "finding": "Promotes epithelial barrier breakdown as part of pro-tumorigenic mechanism in multiple reviews",
+      "evidence_type": "mechanistic review",
+      "clinical_significance": "moderate",
+      "reference": "Kendong et al., 2021; Bautista et al., 2026"
+    },
+    {
+      "organism": "Fusobacterium nucleatum",
+      "finding": "Consistently identified as one of top reproducible microbial biomarkers across geographic cohorts in metagenomic meta-analyses",
+      "evidence_type": "cross-population validation",
+      "clinical_significance": "high",
+      "reference": "Upadhyay et al., 2025; Alhhazmi et al., 2023"
+    },
+    {
+      "organism": "Escherichia-Shigella (composite 16S rRNA genus)",
+      "finding": "Significantly enriched in fecal microbiota of CRC patients vs healthy controls in 11-study meta-analysis of adenoma-carcinoma sequence",
+      "evidence_type": "cross-sectional meta-analysis",
+      "clinical_significance": "moderate",
+      "reference": "Wu et al., 2024"
+    },
+    {
+      "organism": "Escherichia-Shigella",
+      "finding": "Most representative genus within Enterobacteriaceae, specifically associated with malignancy (carcinoma) rather than pre-malignant lesions in 16S study",
+      "evidence_type": "tissue staging",
+      "clinical_significance": "moderate",
+      "reference": "Mori et al., 2018"
+    },
+    {
+      "organism": "E. coli (pks+)",
+      "finding": "Specific pks+ strains producing colibactin cause direct DNA damage and deteriorate tight junctions, promote inflammatory mediator infiltration",
+      "evidence_type": "mechanistic",
+      "clinical_significance": "high",
+      "caution": "16S resolution cannot distinguish pks+ pathogenic from harmless commensal strains - limits biomarker utility at genus level",
+      "reference": "Quaglio et al., 2022; Wu et al., 2024"
+    },
+    {
+      "organism": "E. coli (pks island)",
+      "finding": "pks island (not total E. coli abundance) increased at late-stage CRC specifically",
+      "evidence_type": "strain-specific detection",
+      "clinical_significance": "high",
+      "caution": "Demonstrates need for targeted virulence gene detection beyond 16S genus-level classification",
+      "reference": "Périchon et al., 2022"
+    },
+    {
+      "organism": "Streptococcus gallolyticus",
+      "finding": "70% of patients with S. gallolyticus bacteremia had colorectal neoplasia on colonoscopy (OR 5.1 vs symptomatic controls)",
+      "evidence_type": "case-control clinical",
+      "clinical_significance": "high",
+      "caution": "Strong clinical association but through bloodstream infection route, not stool screening",
+      "reference": "Corredoira-Sánchez et al., 2012"
+    },
+    {
+      "organism": "Streptococcus gallolyticus",
+      "finding": "Advanced adenomas (OR 3.5) and invasive carcinomas (OR 2.9) strongly associated with S. gallolyticus bacteremia",
+      "evidence_type": "case-control clinical",
+      "clinical_significance": "high",
+      "reference": "Corredoira-Sánchez et al., 2012"
+    },
+    {
+      "organism": "Streptococcus gallolyticus",
+      "finding": "40-year literature survey: 65% of patients with invasive S. gallolyticus infection had concomitant colorectal neoplasia, association strongest with early adenomas",
+      "evidence_type": "literature review",
+      "clinical_significance": "high",
+      "caution": "Functions as red flag marker when causing infection rather than as population stool screening biomarker",
+      "reference": "Pasquereau-Kotula et al., 2018"
+    },
+    {
+      "organism": "Streptococcus gallolyticus",
+      "finding": "Stool PCR detection associated with 4.7-fold odds of CRC after adjusting for other factors in Malaysian cohort",
+      "evidence_type": "case-control PCR",
+      "clinical_significance": "moderate-high",
+      "reference": "Ismail et al., 2023"
+    },
+    {
+      "organism": "Streptococcus gallolyticus",
+      "finding": "Rarely detected in healthy human intestine (2.5-15% prevalence); only 3.2% of 190 sporadic CRC tumors were S. gallolyticus-positive, all in early-stage disease",
+      "evidence_type": "tissue prevalence",
+      "clinical_significance": "low-moderate",
+      "caution": "Low intestinal prevalence limits utility as population-level stool screening biomarker",
+      "reference": "Franch, 2017"
+    },
+    {
+      "organism": "Streptococcus gallolyticus",
+      "finding": "Pili-mediated colonization and inflammatory signaling proposed mechanisms, but direct carcinogenic role vs opportunistic passenger in damaged mucosa remains debated",
+      "evidence_type": "mechanistic hypothesis",
+      "clinical_significance": "moderate",
+      "reference": "Pasquereau-Kotula et al., 2018"
+    },
+    {
+      "organism": "Enterotoxigenic Bacteroides fragilis (ETBF)",
+      "finding": "Strong and significant increase in toxigenic B. fragilis in patients with early-stage adenoma; detected simultaneously with other markers only in CRC patients",
+      "evidence_type": "stage-specific",
+      "clinical_significance": "high",
+      "caution": "Singled out as sole pathobiont detected at early adenoma stage - potential early detection marker",
+      "reference": "Périchon et al., 2022"
+    },
+    {
+      "organism": "Bacterial guild markers",
+      "finding": "Dysbiosis signature: reduced SCFA-producing bacteria, decreased anti-inflammatory bacteria, increased pro-inflammatory bacteria, elevation of bacteria with cytotoxic DNA-damaging effects",
+      "evidence_type": "meta-analysis CRC vs healthy",
+      "clinical_significance": "high",
+      "reference": "Wu et al., 2024"
+    },
+    {
+      "organism": "Enterobacteriaceae",
+      "finding": "Significantly increased in order Control-AD-CRC progression (Weighted Mean Difference progression across studies)",
+      "evidence_type": "adenoma-carcinoma sequence",
+      "clinical_significance": "moderate",
+      "reference": "Wu et al., 2024"
+    },
+    {
+      "organism": "Protective organisms",
+      "finding": "Bifidobacterium and Faecalibacterium prausnitzii reduced in CRC; Lachnospiraceae, Ruminococcaceae, Firmicutes phylum enriched in healthy/adenoma vs carcinoma",
+      "evidence_type": "comparative abundance",
+      "clinical_significance": "moderate",
+      "reference": "Wu et al., 2024"
+    },
+    {
+      "organism": "Polymicrobial consortia",
+      "finding": "CRC-associated dysbiosis characterized by enrichment of pathobionts: F. nucleatum, pks+ E. coli, enterotoxigenic B. fragilis; loss of protective SCFA producers",
+      "evidence_type": "ecological analysis",
+      "clinical_significance": "high",
+      "reference": "Bautista et al., 2026"
+    },
+    {
+      "organism": "Multi-marker panels",
+      "finding": "Microbiome-based biomarkers show promise, especially when combined with FIT (fecal immunochemical test)",
+      "evidence_type": "systematic review",
+      "clinical_significance": "moderate",
+      "caution": "Not yet ready for routine clinical screening use due to methodological heterogeneity",
+      "reference": "Zwezerijnen-Jiwa et al., 2022"
+    },
+    {
+      "organism": "Diagnostic performance overview",
+      "finding": "Fecal bacteria biomarkers: AUC 0.28-0.98 for adenomas, 0.54-0.89 for early CRC; Co-metabolome: AUC 0.69-0.84 for adenomas, 0.65-0.93 for early CRC",
+      "evidence_type": "systematic review 28 studies",
+      "clinical_significance": "moderate",
+      "caution": "High methodological heterogeneity; potential to complement but not replace established screening tools",
+      "reference": "Zwezerijnen-Jiwa et al., 2022"
+    },
+    {
+      "organism": "Strain-level pathogenicity",
+      "finding": "Multiple genetic and virulence factor toolkits identified for pathobiont colonization: F. nucleatum (adhesins, TLR2 signaling), E. coli (pks island, colibactin), B. fragilis (enterotoxin), S. gallolyticus (pili, phase-variable expression)",
+      "evidence_type": "molecular mechanistic",
+      "clinical_significance": "high",
+      "reference": "Wang et al., 2024; Périchon et al., 2022; Pasquereau-Kotula et al., 2018"
+    },
+    {
+      "organism": "Polymicrobial biofilm pathogenesis",
+      "finding": "CRC conceptualized as biofilm-structured, microbiome-driven ecosystem disease where polymicrobial consortia coordinate barrier breakdown, immune evasion, and metabolic cooperation",
+      "evidence_type": "integrative framework",
+      "clinical_significance": "high",
+      "reference": "Bautista et al., 2026"
+    },
+    {
+      "organism": "Microbiota-targeted therapeutics",
+      "finding": "Emerging strategies include dietary modulation, pre/probiotics, postbiotics, bacteriophage therapy, engineered live biotherapeutics, and fecal microbiota transplantation",
+      "evidence_type": "therapeutic review",
+      "clinical_significance": "moderate",
+      "caution": "Translating mechanistic insights into clinical interventions remains in development phase",
+      "reference": "Bautista et al., 2026"
+    },
+    {
+      "organism": "Mutual biomarker utility assessment",
+      "finding": "F. nucleatum: closest to clinical utility as stool biomarker with reproducible performance across populations and early-stage detection capability. Escherichia-Shigella: hampered by strain-level ambiguity at 16S resolution. S. gallolyticus: powerful neoplasia predictor in bloodstream infections but poor population stool screening utility",
+      "evidence_type": "comparative assessment",
+      "clinical_significance": "high",
+      "reference": "Gethings-Behncke et al., 2020; Wu et al., 2024; Pasquereau-Kotula et al., 2018"
+    }
+  ],
+  "papers": {
+    "Fusobacterium nucleatum in the Colorectum and Its Association with Cancer Risk and Survival: A Systematic Review and Meta-analysis": {
+      "authors": "Christian Gethings-Behncke, H. Coleman, H. Jordão, D. Longley, N. Crawford, L. Murray, A. Kunzmann",
+      "url": "https://pureadmin.qub.ac.uk/ws/files/183788758/Fuso.pdf",
+      "doi": "10.1158/1055-9965.epi-18-1295",
+      "published": "2020",
+      "summary": "Background: The gut microbiome, in particular Fusobacterium nucleatum, has been reported to play a role in colorectal cancer development and in patient prognosis. We aimed to perform a systematic review and meta-analysis of published studies to assess the prevalence of F. nucleatum in colorectal tumors and evaluate the association between F. nucleatum and colorectal cancer development and prognosis. Methods: MEDLINE, EMBASE, and Web of Science databases were systematically searched for studies published until January 2019. Random effects meta-analyses were used to assess the prevalence of F. nucleatum in patients with colorectal cancer or tissues relative to controls and survival in F. nucleatum–positive versus –negative patients. Results: Forty-five relevant articles were identified. Meta-analyses indicated higher odds of F. nucleatum being present in colorectal tissue samples from patients with colorectal cancer [n = 6 studies, pooled OR = 10.06; 95% confidence intervals (CI), 4.48–22.58] and individuals with colorectal polyps (n = 5 studies, pooled OR = 1.83; 95% CI, 1.07–3.16) compared with healthy controls. Similar results were apparent in fecal samples, and when comparing tumor with adjacent normal tissue. Meta-analyses indicated poorer survival in patients with colorectal cancer with high versus low F. nucleatum abundance (n = 5 studies, pooled HR = 1.87; 95% CI, 1.12–3.11). Conclusions: A consistent increase in the prevalence and/or abundance of F. nucleatum in colorectal cancer tissue and fecal samples compared with controls was apparent. High abundance of F. nucleatum in colorectal tumors was also associated with poorer overall survival. Impact: F. nucleatum could be useful as a diagnostic and prognostic marker for colorectal cancer or as a treatment target.",
+      "title": "Fusobacterium nucleatum in the Colorectum and Its Association with Cancer Risk and Survival: A Systematic Review and Meta-analysis",
+      "journal": "Cancer Epidemiology, Biomarkers & Prevention",
+      "year": 2020,
+      "authors_parsed": [
+        {
+          "family": "Gethings-Behncke",
+          "given": "Christian"
+        },
+        {
+          "family": "Coleman",
+          "given": "H."
+        },
+        {
+          "family": "Jordão",
+          "given": "H."
+        },
+        {
+          "family": "Longley",
+          "given": "D."
+        },
+        {
+          "family": "Crawford",
+          "given": "N."
+        },
+        {
+          "family": "Murray",
+          "given": "L."
+        },
+        {
+          "family": "Kunzmann",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Detection of Fusobacterium nucleatum in stool and colonic tissues from Norwegian colorectal cancer patients": {
+      "authors": "H. Tunsjø, Gro Gundersen, Fredrik Rangnes, J. C. Noone, Alexander Endres, V. Bemanian",
+      "url": "https://www.semanticscholar.org/paper/0546b4df42be3ffc6a570972b8c1bb0eef65bf77",
+      "doi": "10.1007/s10096-019-03562-7",
+      "published": "2019",
+      "summary": "Norway has one of the world's highest incidences of colorectal cancer (CRC). Accumulating research suggests that the intestinal microbiota may have an important role in initiation and progression of colorectal cancer. In order to evaluate microbiome-based biomarkers for non-invasive detection of CRC, the levels of Fusobacterium nucleatum and selected Escherichia coli toxin genes in stool and mucosa from a small cohort of Norwegian patients were investigated. The study cohort included 72 patients scheduled for colonoscopy. The patients were divided into three groups upon their examinations: cancer, polyp, and control groups. Levels of F. nucleatum in stool samples were significantly higher in the cancer group compared with the control group and the polyp group. High levels of F. nucleatum in stool reflected detection of F. nucleatum in the tumor tissues of colorectal cancer patients. However, no difference in the levels of E. coli toxin genes in neither stool nor biopsy samples between the patient groups was observed. This study suggests that a quantitative PCR assay targeting F. nucleatum in stool samples has the potential to be included in a larger panel of biomarkers for non-invasive testing for colorectal cancer.",
+      "title": "Detection of Fusobacterium nucleatum in stool and colonic tissues from Norwegian colorectal cancer patients",
+      "journal": "European Journal of Clinical Microbiology & Infectious Diseases",
+      "year": 2019,
+      "authors_parsed": [
+        {
+          "family": "Tunsjø",
+          "given": "H."
+        },
+        {
+          "family": "Gundersen",
+          "given": "Gro"
+        },
+        {
+          "family": "Rangnes",
+          "given": "Fredrik"
+        },
+        {
+          "family": "Noone",
+          "given": "J. C."
+        },
+        {
+          "family": "Endres",
+          "given": "Alexander"
+        },
+        {
+          "family": "Bemanian",
+          "given": "V."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "A Simple and Novel Fecal Biomarker for Colorectal Cancer: Ratio of Fusobacterium Nucleatum to Probiotics Populations, Based on Their Antagonistic Effect.": {
+      "authors": "Songhe Guo, Linfang Li, Banglao Xu, Manghui Li, Qiuyao Zeng, Han Xiao, Ying Xue, Yixian Wu, Yidan Wang, Wanli Liu, Ge Zhang",
+      "url": "https://academic.oup.com/clinchem/article-pdf/64/9/1327/32643140/clinchem1327.pdf",
+      "doi": "10.1373/clinchem.2018.289728",
+      "published": "2018",
+      "summary": "BACKGROUND\nGut microbial dysbiosis contributes to the development of colorectal cancer (CRC). We evaluated the utility of fecal bacterial biomarker candidates identified by our 16S rDNA sequencing analysis for CRC diagnosis.\n\n\nMETHODS\nWe measured the relative abundance of Fusobacterium nucleatum (Fn), Faecalibacterium prausnitzii (Fp), Bifidobacterium (Bb), and Lactobacillus (Lb) by quantitative PCR in fecal samples from 2 cohorts of 903 individuals. We evaluated and validated the diagnostic performance of these microbial ratios and investigated the antagonistic effect of Fn against 3 different indicator stains.\n\n\nRESULTS\nThe microbial ratio of Fn to Bb (Fn/Bb) had a superior sensitivity of 84.6% and specificity of 92.3% in detecting CRC (area under the curve, AUC = 0.911). The combination of Fn/Bb and Fn/Fp improved the diagnostic value (AUC = 0.943). Moreover, the combination of Fn/Bb and Fn/Fp offered 60.0% specificity and 90.0% sensitivity in detecting stage I of CRC (AUC = 0.804). In particular, Fn was negatively correlated with Fp in the CRC group. The performance for CRC diagnosis was confirmed in the validation cohort II. The culture supernatant from Fn exhibited strong bactericidal activity against probiotics Fp and Bb strains.\n\n\nCONCLUSIONS\nThis study found that Fn could play a role in microbiota dysbiosis via the secreted antagonistic substances against probiotics. Moreover, the ratio of Fn to the important probiotics Fp and Bb was identified as a valuable biomarker for screening early CRC.",
+      "title": "A Simple and Novel Fecal Biomarker for Colorectal Cancer: Ratio of Fusobacterium Nucleatum to Probiotics Populations Based on Their Antagonistic Effect",
+      "journal": "Clinical Chemistry",
+      "year": 2018,
+      "authors_parsed": [
+        {
+          "family": "Guo",
+          "given": "Songhe"
+        },
+        {
+          "family": "Li",
+          "given": "Linfang"
+        },
+        {
+          "family": "Xu",
+          "given": "Banglao"
+        },
+        {
+          "family": "Li",
+          "given": "Manghui"
+        },
+        {
+          "family": "Zeng",
+          "given": "Qiuyao"
+        },
+        {
+          "family": "Xiao",
+          "given": "Han"
+        },
+        {
+          "family": "Xue",
+          "given": "Ying"
+        },
+        {
+          "family": "Wu",
+          "given": "Yixian"
+        },
+        {
+          "family": "Wang",
+          "given": "Yidan"
+        },
+        {
+          "family": "Liu",
+          "given": "Wanli"
+        },
+        {
+          "family": "Zhang",
+          "given": "Ge"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Unraveling the Role of Gut Microbiota in Colorectal Cancer: A Global Perspectives and Biomarkers as Early Screening Tool for Colorectal Cancer": {
+      "authors": "Umashankar Upadhyay, Eshita Dhar, Sherali Bomrah, S. Syed-Abdul",
+      "url": "https://www.semanticscholar.org/paper/f7743e2a3f4b5f024a583ee821cdf9fdc8b345e2",
+      "doi": "10.3233/shti251018",
+      "published": "2025",
+      "summary": "Colorectal cancer (CRC), the second deadliest cancer globally, is closely tied to gut microbiota, opening doors for early detection and treatment. This review of 45 studies (2018-2024) highlights microbial biomarkers like Fusobacterium nucleatum, Bacteroides fragilis, and Parvimonas micra, with strong diagnostic accuracy (AUC >80%) across populations. Techniques like 16S rRNA sequencing, metagenomics, and shotgun sequencing revealed these links. Gut-based diagnostics offer a non-invasive, cost-effective alternative to colonoscopy and FIT for spotting early CRC and precancerous lesions. Yet, regional microbial differences and inconsistent methods-sample processing and sequencing-hinder comparability. Standardizing approaches and exploring fungi and viruses are key to unlocking microbiota's full potential in CRC prevention, diagnosis, and therapy.",
+      "title": "Unraveling the Role of Gut Microbiota in Colorectal Cancer: A Global Perspectives and Biomarkers as Early Screening Tool for Colorectal Cancer",
+      "journal": "Studies in Health Technology and Informatics",
+      "year": 2025,
+      "authors_parsed": [
+        {
+          "family": "Upadhyay",
+          "given": "Umashankar"
+        },
+        {
+          "family": "Dhar",
+          "given": "Eshita"
+        },
+        {
+          "family": "Bomrah",
+          "given": "Sherali"
+        },
+        {
+          "family": "Syed-Abdul",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Gut Microbial and Associated Metabolite Markers for Colorectal Cancer Diagnosis": {
+      "authors": "Areej A. Alhhazmi, Renad M. Alhamawi, Reema M. Almisned, H. Almutairi, Ahdab A. Jan, Shahad M. Kurdi, Y. A. Almutawif, W. Alsaui",
+      "url": "https://www.mdpi.com/2076-2607/11/8/2037/pdf?version=1691497880",
+      "doi": "10.3390/microorganisms11082037",
+      "published": "2023",
+      "summary": "Globally, colorectal cancer (CRC) is the second most common cause of mortality worldwide. Considerable evidence indicates that dysbiosis of the gut microbial community and its metabolite secretions play a fundamental role in advanced adenoma (ADA) and CRC development and progression. This study is a systematic review that aims to assess the clinical association between gut microbial markers and/or gut and circulating metabolites with ADA and CRC. Five electronic databases were searched by four independent reviewers. Only controlled trials that compared ADA and/or CRC with healthy control (HC) using either untargeted (16s rRNA gene or whole genome sequencing) or targeted (gene-based real-time PCR) identification methods for gut microbiome profile, or untargeted or targeted metabolite profiling approaches from the gut or serum/plasma, were eligible. Three independent reviewers evaluated the quality of the studies using the Cochrane Handbook for Systematic Reviews of Interventions. Twenty-four studies were eligible. We identified strong evidence of two microbial markers Fusobacterium and Porphyromonas for ADA vs. CRC, and nine microbial markers Lachnospiraceae-Lachnoclostridium, Ruminococcaceae-Ruminococcus, Parvimonas spp., Parvimonas micra, Enterobacteriaceae, Fusobacterium spp., Bacteroides, Peptostreptococcus-Peptostreptococcus stomatis, Clostridia spp.-Clostridium hylemonae, Clostridium symbiosum, and Porphyromonas-Porphyromonas asaccharolytica for CRC vs. HC. The remaining metabolite marker evidence between the various groups, including ADA vs. HC, ADA vs. HC, and CRC vs. HC, was not of sufficient quality to support additional findings. The identified gut microbial markers can be used in a panel for diagnosing ADA and/or CRC. Further research in the metabolite markers area is needed to evaluate the possibility to use in diagnostic or prognostic markers for colorectal cancer.",
+      "title": "Gut Microbial and Associated Metabolite Markers for Colorectal Cancer Diagnosis",
+      "journal": "Microorganisms",
+      "year": 2023,
+      "authors_parsed": [
+        {
+          "family": "Alhhazmi",
+          "given": "Areej A."
+        },
+        {
+          "family": "Alhamawi",
+          "given": "Renad M."
+        },
+        {
+          "family": "Almisned",
+          "given": "Reema M."
+        },
+        {
+          "family": "Almutairi",
+          "given": "H."
+        },
+        {
+          "family": "Jan",
+          "given": "Ahdab A."
+        },
+        {
+          "family": "Kurdi",
+          "given": "Shahad M."
+        },
+        {
+          "family": "Almutawif",
+          "given": "Y. A."
+        },
+        {
+          "family": "Alsaui",
+          "given": "W."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Fusobacterium Nucleatum Aggravates Intestinal Barrier Impairment and Colitis Through IL-8 Induced Neutrophil Chemotaxis by Activating Epithelial Cells": {
+      "authors": "Zhiyue Wang, Bowen Li, Liqing Bao, Yu Chen, Jinhua Yang, Fangqi Xu, Shang Shi, Wanlu Chen, Boding Wang, Yang Liu",
+      "url": "https://www.dovepress.com/article/download/97098",
+      "doi": "10.2147/jir.s470376",
+      "published": "2024",
+      "summary": "Background Inflammatory bowel disease (IBD) is affected by interactions between intestinal microbial factors, abnormal inflammation, and an impaired intestinal mucosal barrier. Neutrophils (NE) are key players in IBD. Fusobacterium nucleatum (F. nucleatum) is reported to contribute to IBD progression. However, the relationship between F. nucleatum, abnormal inflammation, and intestinal barrier impairment should be interpreted to understand the role of F. nucleatum in IBD. Methods Dextran sulfate sodium (DSS)-induced colitis model was established and mice were orally administered with F. nucleatum. F. nucleatum colonization was confirmed by fluorescence in situ hybridization (FISH) and PCR. Intestinal barrier impairment was investigated by tight junction protein expression. Immuno-histochemistry (IHC) for Ly6G and flow cytometry detection to measure NE chemotaxis in mouse colon tissues. Caco-2 monolayers were used to evaluate epithelial integrity and permeability in vitro. A transwell model involving caco-2 cells and NE co-culture was used to assess NE chemotaxis. NE chemokines were measured by ELISA. A mouse model of NE exhaustion using an anti-Ly6G antibody was used to identify the role of NEs in F. nucleatum-induced colitis. Transcriptome sequencing and bioinformatics analysis were applied to screen cytokines and signaling pathways. Results Administration of F. nucleatum aggravated colitis in the DSS model. F. nucleatum infection downregulates ZO-1 and Occludin expression and increases intestinal permeability. Additionally, F. nucleatum-induced NE chemotaxis decreases the integrity and permeability of the caco-2 monolayer. F. nucleatum-induced NE chemotaxis is dependent on IEC-derived interleukin 8 (IL-8) secretion, mediated by the TLR2/ERK signaling pathway. In addition, NE exhaustion in mice inhibited F. nucleatum-induced intestinal barrier impairment and colitis. Conclusion F. nucleatum improves NE chemotaxis by infecting intestinal epithelial cells (IECs) to secrete IL-8 and aggravate intestinal barrier impairment, contributing to the progression of intestinal inflammation. Examining and eliminating F. nucleatum could be a valuable microbiome-based method for IBD surveillance and prevention.",
+      "title": "Fusobacterium Nucleatum Aggravates Intestinal Barrier Impairment and Colitis Through IL-8 Induced Neutrophil Chemotaxis by Activating Epithelial Cells",
+      "journal": "Journal of Inflammation Research",
+      "year": 2024,
+      "authors_parsed": [
+        {
+          "family": "Wang",
+          "given": "Zhiyue"
+        },
+        {
+          "family": "Li",
+          "given": "Bowen"
+        },
+        {
+          "family": "Bao",
+          "given": "Liqing"
+        },
+        {
+          "family": "Chen",
+          "given": "Yu"
+        },
+        {
+          "family": "Yang",
+          "given": "Jinhua"
+        },
+        {
+          "family": "Xu",
+          "given": "Fangqi"
+        },
+        {
+          "family": "Shi",
+          "given": "Shang"
+        },
+        {
+          "family": "Chen",
+          "given": "Wanlu"
+        },
+        {
+          "family": "Wang",
+          "given": "Boding"
+        },
+        {
+          "family": "Liu",
+          "given": "Yang"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Gut Dysbiosis and Intestinal Barrier Dysfunction: Potential Explanation for Early-Onset Colorectal Cancer": {
+      "authors": "Siti Maryam Ahmad Kendong, R. A. Raja Ali, K. N. M. Nawawi, H. F. Ahmad, N. Mokhtar",
+      "url": "https://www.frontiersin.org/articles/10.3389/fcimb.2021.744606/pdf",
+      "doi": "10.3389/fcimb.2021.744606",
+      "published": "2021",
+      "summary": "Colorectal cancer (CRC) is a heterogeneous disease that commonly affects individuals aged more than 50 years old globally. Regular colorectal screening, which is recommended for individuals aged 50 and above, has decreased the number of cancer death toll over the years. However, CRC incidence has increased among younger population (below 50 years old). Environmental factors, such as smoking, dietary factor, urbanization, sedentary lifestyle, and obesity, may contribute to the rising trend of early-onset colorectal cancer (EOCRC) because of the lack of genetic susceptibility. Research has focused on the role of gut microbiota and its interaction with epithelial barrier genes in sporadic CRC. Population with increased consumption of grain and vegetables showed high abundance of Prevotella, which reduces the risk of CRC. Microbes, such as Fusobacterium nucleatum, Bacteroides fragilis and Escherichia coli deteriorate in the intestinal barrier, which leads to the infiltration of inflammatory mediators and chemokines. Gut dysbiosis may also occur following inflammation as clearly observed in animal model. Both gut dysbiosis pre- or post-inflammatory process may cause major alteration in the morphology and functional properties of the gut tissue and explain the pathological outcome of EOCRC. The precise mechanism of disease progression from an early stage until cancer establishment is not fully understood. We hypothesized that gut dysbiosis, which may be influenced by environmental factors, may induce changes in the genome, metabolome, and immunome that could destruct the intestinal barrier function. Also, the possible underlying inflammation may give impact microbial community leading to disruption of physical and functional role of intestinal barrier. This review explains the potential role of the interaction among host factors, gut microenvironment, and gut microbiota, which may provide an answer to EOCRC.",
+      "title": "Gut Dysbiosis and Intestinal Barrier Dysfunction: Potential Explanation for Early-Onset Colorectal Cancer",
+      "journal": "Frontiers in Cellular and Infection Microbiology",
+      "year": 2021,
+      "authors_parsed": [
+        {
+          "family": "Kendong",
+          "given": "Siti Maryam Ahmad"
+        },
+        {
+          "family": "Ali",
+          "given": "R. A. Raja"
+        },
+        {
+          "family": "Nawawi",
+          "given": "K. N. M."
+        },
+        {
+          "family": "Ahmad",
+          "given": "H. F."
+        },
+        {
+          "family": "Mokhtar",
+          "given": "N."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Gut microbiome–driven colorectal cancer via immune, metabolic, neural, and endocrine axes reprogramming": {
+      "authors": "Jhommara Bautista, M. Lamas-Maceiras, Camila Hidalgo-Tinoco, Antonio Guerra-Guerrero, Anapaula Betancourt-Velarde, André, et al.",
+      "url": "https://www.nature.com/articles/s41522-025-00883-8_reference.pdf",
+      "doi": "10.1038/s41522-025-00883-8",
+      "published": "2026",
+      "summary": "Colorectal cancer (CRC) is a leading cause of cancer mortality worldwide and is increasingly recognized as the outcome of complex host–microbe interactions. Beyond established genetic and environmental drivers, the gut microbiome has emerged as a causal and mechanistic contributor to CRC initiation, progression, and therapy response. This review synthesizes current molecular, ecological, and translational evidence to explain how gut microbial communities reprogram immune, metabolic, neural, and endocrine networks within the tumor microenvironment. CRC-associated dysbiosis is characterized by enrichment of pathobionts such as Fusobacterium nucleatum, pks⁺ Escherichia coli, and enterotoxigenic Bacteroides fragilis, and by loss of protective, short-chain-fatty-acid-producing commensals. These microbes promote carcinogenesis through genotoxin-induced DNA damage, epithelial barrier disruption, metabolic rewiring, and chronic inflammation that collectively sustain immune suppression and tumor growth. Defined mutational signatures from bacterial metabolites, including colibactin, cytolethal distending toxin, and indolimines, now directly link microbial exposures to human cancer genomes. By integrating these findings, this review conceptualizes CRC as a biofilm-structured, microbiome-driven ecosystem disease, where polymicrobial consortia coordinate barrier breakdown, immune evasion, and metabolic cooperation. Finally, we highlight emerging microbiota-targeted strategies, including dietary modulation, pre- and probiotics, postbiotics, bacteriophage therapy, engineered live biotherapeutics, and fecal microbiota transplantation, that translate these insights into precision prevention and therapy. Through this integrative framework, the review aims to reposition the microbiome from a correlative feature to a tractable determinant of CRC pathogenesis and treatment response.",
+      "title": "Gut microbiome–driven colorectal cancer via immune metabolic neural and endocrine axes reprogramming",
+      "journal": "npj Biofilms and Microbiomes",
+      "year": 2026,
+      "authors_parsed": [
+        {
+          "family": "Bautista",
+          "given": "Jhommara"
+        },
+        {
+          "family": "Lamas-Maceiras",
+          "given": "M."
+        },
+        {
+          "family": "Hidalgo-Tinoco",
+          "given": "Camila"
+        },
+        {
+          "family": "Guerra-Guerrero",
+          "given": "Antonio"
+        },
+        {
+          "family": "Betancourt-Velarde",
+          "given": "Anapaula"
+        },
+        {
+          "family": "André",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "Gut microbiota alterations in colorectal adenoma-carcinoma sequence based on 16S rRNA gene sequencing: A systematic review and meta-analysis.": {
+      "authors": "Yi-jun Wu, Jing-fang Xiong, Cheng Zhan, Hong Xu",
+      "url": "https://www.semanticscholar.org/paper/2371c9c80eb0058ef736e8558689dd63ad7c9a78",
+      "doi": "10.1016/j.micpath.2024.106889",
+      "published": "2024",
+      "summary": "BACKGROUND\nMost sporadic colorectal cancers (CRC) develop through the adenoma-carcinoma sequence. While dysbiosis of the intestinal flora contributes to CRC's pathogenesis, precise microbial taxa closely associated with the colorectal adenoma-carcinoma sequence remain elusive. This meta-analysis aimed to summarize the features of intestinal flora in patients with AD and CRC.\n\n\nMETHODS\nPubMed, Embase, Cochrane Library, and Web of Science were searched for case-control studies comparing the relative abundance of gut microbiota in the feces of patients with AD, CRC, and healthy controls (HC) from inception to January 2024. The weighted mean difference (WMD) with a 95 % confidence interval (CI) was used to display the results. The Newcastle-Ottawa Scale (NOS) was used to assess the quality of the entailed literature. Publication bias was evaluated with the Egger's and Begg's tests.\n\n\nRESULTS\nEleven studies were included, involving 477 CRC patients, 628 AD patients, and 864 healthy controls. Compared with HC, the patients with AD had a significantly lower Chao 1 index (WMD = -30.17, 95 % CI [-41.10, -19.23], P < 0.001) and Shannon index (WMD = -0.11 95 % CI [-0.18, -0.04], P = 0.002). Compared with AD, the CRC patients had a significantly higher Chao1 index (WMD = 22.09, 95 % CI [7.59, 36.00], P = 0.003) and Shannon index (WMD = 0.08, 95 % CI [0.00, 0.15], P = 0.037). Enterobacteriaceae (WMD = 0.03 95 % CI [0.00,0.05], P = 0.047; WMD = 0.02 95 % CI [0.00,0.04], P = 0.027) significantly increased in the order of Control-AD-CRC, while that of Blautia (WMD = -0.00 95 % CI [-0.01, -0.00], P = 0.001; WMD = -0.00 95 % CI [-0.00, -0.00], P = 0.002) was reduced. Compared with HC, the relative abundance of Proteobacteria (WMD = 0.05 95 % CI [0.03,0.07], P < 0.001), Fusobacteria (WMD = 0.02 95 % CI [0.00,0.03], P = 0.042), Streptococcaceae (WMD = 0.03 95 % CI [0.01,0.05], P = 0.017), Prevotellaceae (WMD = 0.02 95 % CI [0.00,0.04], P = 0.040), and Escherichia-Shigella (WMD = 0.06 95 % CI [0.01, 0.11], P = 0.021) was enriched in the CRC group. The relative abundance of Alistipes (WMD = 0.00 95 % CI [0.00,0.01], P = 0.032) and Streptococcus (WMD = 0.00 95 % CI [0.00,0.00], P = 0.001) was increased in the AD vs HC. The relative abundance of Firmicutes (WMD = -0.07 95 % CI [-0.12, -0.03], P = 0.003), Bifidobacteria (WMD = -0.03 95 % CI [-0.05, -0.01], P = 0.016), and Klebsiella (WMD = -0.01 95 % CI [-0.01, -0.00], P = 0.001) was decreased in the CRC vs HC. Compared with AD, the relative abundance of Firmicutes (WMD = -0.04 95 % CI [-0.07, -0.02], P = 0.002), Peptostreptococcaceae (WMD = -0.03 95 % CI [-0.05, -0.00], P = 0.021), Lachnospiraceae (WMD = -0.04 95 % CI [-0.08,-0.00], P = 0.037), Ruminococcaceae (WMD = -0.06 95 % CI [-0.09,-0.03], P < 0.001), Faecalibacterium (WMD = -0.01 95 % CI [-0.02, -0.01], P = 0.001), and Lachnoclostridium (WMD = -0.02 95 % CI [-0.03, -0.00], P = 0.040) was decreased in the CRC group, while Proteobacteria (WMD = 0.04 95 % CI [0.02,0.05], P < 0.001) was increased.\n\n\nCONCLUSIONS\nThe dysbiosis characterized by reduced levels of short-chain fatty acid (SCFA)-producing bacteria, decreased anti-inflammatory bacteria, increased pro-inflammatory bacteria, and an elevation of bacteria with cytotoxic effects damaging to DNA may represent the specific microbial signature of colorectal adenoma/carcinoma. Further research is required to elucidate the mechanisms by which gut dysbiosis leads to the progression from AD to CRC and to explore the potential of specific microbiota markers in clinical treatment and non-invasive screening.",
+      "title": "Gut microbiota alterations in colorectal adenoma-carcinoma sequence based on 16S rRNA gene sequencing: A systematic review and meta-analysis",
+      "journal": "Microbial Pathogenesis",
+      "year": 2024,
+      "authors_parsed": [
+        {
+          "family": "Wu",
+          "given": "Yi-jun"
+        },
+        {
+          "family": "Xiong",
+          "given": "Jing-fang"
+        },
+        {
+          "family": "Zhan",
+          "given": "Cheng"
+        },
+        {
+          "family": "Xu",
+          "given": "Hong"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Shifts of Faecal Microbiota During Sporadic Colorectal Carcinogenesis": {
+      "authors": "Giorgia Mori, S. Rampelli, B. Orena, C. Rengucci, Giulia De Maio, Giulia Barbieri, A. Passardi, A. Casadei Gardini, G. Frassineti, et al.",
+      "url": "https://www.nature.com/articles/s41598-018-28671-9.pdf",
+      "doi": "10.1038/s41598-018-28671-9",
+      "published": "2018",
+      "summary": "Gut microbiota has been implicated in the etiopathogenesis of colorectal cancer. The development of colorectal cancer is a multistep process by which healthy epithelium slowly develops into preneoplastic lesions, which in turn progress into malignant carcinomas over time. In particular, sporadic colorectal cancers can arise from adenomas (about 85% of cases) or serrated polyps through the \"adenoma-carcinoma\" or the \"serrated polyp-carcinoma\" sequences, respectively. In this study, we performed 16 S rRNA gene sequencing of bacterial DNA extracted from faecal samples to compare the microbiota of healthy subjects and patients with different preneoplastic and neoplastic lesions. We identified putative microbial biomarkers associated with stage-specific progression of colorectal cancer. In particular, bacteria belonging to the Firmicutes and Actinobacteria phyla, as well as members of the Lachnospiraceae family, proved to be specific of the faecal microbiota of patients with preneoplastic lesions, including adenomas and hyperplastic polyps. On the other hand, two families of the Proteobacteria phylum, Alcaligeneaceae and Enterobacteriaceae, with Sutterella and Escherichia/Shigella being the most representative genera, appeared to be associated with malignancy. These findings, once confirmed on larger cohorts of patients, can represent an important step towards the development of more effective diagnostic strategies.",
+      "title": "Shifts of Faecal Microbiota During Sporadic Colorectal Carcinogenesis",
+      "journal": "Scientific Reports",
+      "year": 2018,
+      "authors_parsed": [
+        {
+          "family": "Mori",
+          "given": "Giorgia"
+        },
+        {
+          "family": "Rampelli",
+          "given": "S."
+        },
+        {
+          "family": "Orena",
+          "given": "B."
+        },
+        {
+          "family": "Rengucci",
+          "given": "C."
+        },
+        {
+          "family": "Maio",
+          "given": "Giulia De"
+        },
+        {
+          "family": "Barbieri",
+          "given": "Giulia"
+        },
+        {
+          "family": "Passardi",
+          "given": "A."
+        },
+        {
+          "family": "Gardini",
+          "given": "A. Casadei"
+        },
+        {
+          "family": "Frassineti",
+          "given": "G."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "Gut microbiota, inflammatory bowel disease and colorectal cancer": {
+      "authors": "A. Quaglio, T. G. Grillo, Ellen Cristina de Oliveira, L. D. Di Stasi, L. Sassaki",
+      "url": "https://doi.org/10.3748/wjg.v28.i30.4053",
+      "doi": "10.3748/wjg.v28.i30.4053",
+      "published": "2022",
+      "summary": "The gut microbiota is a complex community of microorganisms that inhabit the digestive tracts of humans, living in symbiosis with the host. Dysbiosis, characterized by an imbalance between the beneficial and opportunistic gut microbiota, is associated with several gastrointestinal disorders, such as irritable bowel syndrome (IBS); inflammatory bowel disease (IBD), represented by ulcerative colitis and Crohn’s disease; and colorectal cancer (CRC). Dysbiosis can disrupt the mucosal barrier, resulting in perpetuation of inflammation and carcinogenesis. The increase in some specific groups of harmful bacteria, such as Escherichia coli (E. coli) and enterotoxigenic Bacteroides fragilis (ETBF), has been associated with chronic tissue inflammation and the release of pro-inflammatory and carcinogenic mediators, increasing the chance of developing CRC, following the inflammation-dysplasia-cancer sequence in IBD patients. Therefore, the aim of the present review was to analyze the correlation between changes in the gut microbiota and the development and maintenance of IBD, CRC, and IBD-associated CRC. Patients with IBD and CRC have shown reduced bacterial diversity and abundance compared to healthy individuals, with enrichment of Firmicute sand Bacteroidetes. Specific bacteria are also associated with the onset and progression of CRC, such as Fusobacterium nucleatum, E. coli, Enterococcus faecalis, Streptococcus gallolyticus, and ETBF. Future research can evaluate the advantages of modulating the gut microbiota as preventive measures in CRC high-risk patients, directly affecting the prognosis of the disease and the quality of life of patients.",
+      "title": "Gut microbiota, inflammatory bowel disease and colorectal cancer",
+      "journal": "World Journal of Gastroenterology",
+      "year": 2022,
+      "authors_parsed": [
+        {
+          "family": "Quaglio",
+          "given": "A."
+        },
+        {
+          "family": "Grillo",
+          "given": "T. G."
+        },
+        {
+          "family": "Oliveira",
+          "given": "Ellen Cristina de"
+        },
+        {
+          "family": "Stasi",
+          "given": "L. D. Di"
+        },
+        {
+          "family": "Sassaki",
+          "given": "L."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Detection of Streptococcus gallolyticus and Four Other CRC-Associated Bacteria in Patient Stools Reveals a Potential “Driver” Role for Enterotoxigenic Bacteroides fragilis": {
+      "authors": "B. Périchon, Julian Lichtl-Häfele, Emma Bergsten, Vincent Delage, P. Trieu-Cuot, P. Sansonetti, I. Sobhani, S. Dramsi",
+      "url": "https://www.frontiersin.org/articles/10.3389/fcimb.2022.794391/pdf",
+      "doi": "10.3389/fcimb.2022.794391",
+      "published": "2022",
+      "summary": "Purpose Streptococcus gallolyticus subspecies gallolyticus (SGG) is an opportunistic pathogen causing invasive infections in the elderly often associated with colon neoplasia. The prevalence of SGG in the stools of patients with normal colonoscopy (control) was compared with patients with colorectal adenomas (CRA) or with carcinomas (CRC) from stages I to IV. The presence of the pks island encoding colibactin as well as other CRC-associated bacteria such as toxicogenic Bacteroides fragilis, Fusobacterium nucleatum, and Parvimonas micra was also investigated. Patients and Methods Fecal samples collected in France between 2011 and 2016 from patients with normal colonoscopy (n = 25), adenoma (n = 23), or colorectal cancer at different stages (n = 81) were tested by PCR for the presence of SGG, B. fragilis, F. nucleatum, P. micra, and the pks island. Relative quantification of SGG, F. nucleatum, and P. micra in stools was performed by qPCR. Results SGG prevalence was significantly increased in the CRC group. Our results also revealed i) a strong and significant increase of toxinogenic B. fragilis in patients with early-stage adenoma and of pks island at late-stage CRC and ii) increased levels of F. nucleatum and P. micra in the stools of CRC patients. Furthermore, the simultaneous detection of these five bacterial markers was only found in CRC patients. Conclusions Our results indicate that the prevalence or relative levels of CRC-associated bacteria vary during CRC development. Among them, B. fragilis (bft+) was singled out as the sole pathobiont detected at the early adenoma stage.",
+      "title": "Detection of Streptococcus gallolyticus and Four Other CRC-Associated Bacteria in Patient Stools Reveals a Potential 'Driver' Role for Enterotoxigenic Bacteroides fragilis",
+      "journal": "Frontiers in Cellular and Infection Microbiology",
+      "year": 2022,
+      "authors_parsed": [
+        {
+          "family": "Périchon",
+          "given": "B."
+        },
+        {
+          "family": "Lichtl-Häfele",
+          "given": "Julian"
+        },
+        {
+          "family": "Bergsten",
+          "given": "Emma"
+        },
+        {
+          "family": "Delage",
+          "given": "Vincent"
+        },
+        {
+          "family": "Trieu-Cuot",
+          "given": "P."
+        },
+        {
+          "family": "Sansonetti",
+          "given": "P."
+        },
+        {
+          "family": "Sobhani",
+          "given": "I."
+        },
+        {
+          "family": "Dramsi",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Association between bacteremia due to Streptococcus gallolyticus subsp. gallolyticus (Streptococcus bovis I) and colorectal neoplasia: a case-control study.": {
+      "authors": "Juan Corredoira-Sánchez, F. García-Garrote, R. Rabuñal, L. López-Rosés, M. García-País, E. Castro, Roberto González-Soler, et al.",
+      "url": "https://academic.oup.com/cid/article-pdf/55/4/491/901308/cis434.pdf",
+      "doi": "10.1093/cid/cis434",
+      "published": "2012",
+      "summary": "BACKGROUND\nThe association between bacteremia by Streptococcus gallolyticus subsp. gallolyticus (SGG) and colorectal neoplasia (CRN) is well established but the frequency of the association varies widely in different studies. We conducted a case-control study to assess the association between SGG bacteremia and CRN.\n\n\nMETHODS\nAn analysis of all SGG bacteremias was performed during the period 1988-2011. The frequency of CRN in patients with SGG bacteremia was compared with the frequency of CRN in a symptomatic control group of patients matched at a 1:2 ratio for gender and age (±3 years) without S. bovis bacteremia and personal history of CRN and with increased risk of CRN (by the presence of symptoms, signs, or test suspicious of colonic pathology or by family history of CRN).\n\n\nRESULTS\nOne hundred nine cases of SGG bacteremia were detected (mean age, 66 years; 87% male). Colonoscopy was performed in 98 cases, diagnosing 69 cases of CRN: 57 adenomas (39 advanced adenomas) and 12 invasive carcinomas. Only 4 cases had suspected CRN before the blood culture. The prevalence of CRN was higher in patients with SGG bacteremia than in the 196 control patients (70% vs 32%; odds ratio [OR], 5.1; 95% confidence interval [CI], 3.0-8.6). This difference was not significant when comparing nonadvanced adenomas (19% vs 12%), but we found significant differences in advanced adenomas (40% vs 16%; OR, 3.5; 95% CI, 2.0-6.1) and invasive carcinomas (12% vs 5%; OR, 2.9; 95% CI, 1.2-6.9).\n\n\nCONCLUSIONS\nThe frequency of CRN among SGG infected patients is significantly increased compared with symptomatic age-matched controls, indicating that SGG infection is a strong indicator for underlying occult malignancy.",
+      "title": "Association between bacteremia due to Streptococcus gallolyticus subsp. gallolyticus (Streptococcus bovis I) and colorectal neoplasia: a case-control study",
+      "journal": "Clinical Infectious Diseases",
+      "year": 2012,
+      "authors_parsed": [
+        {
+          "family": "Corredoira-Sánchez",
+          "given": "Juan"
+        },
+        {
+          "family": "García-Garrote",
+          "given": "F."
+        },
+        {
+          "family": "Rabuñal",
+          "given": "R."
+        },
+        {
+          "family": "López-Rosés",
+          "given": "L."
+        },
+        {
+          "family": "García-País",
+          "given": "M."
+        },
+        {
+          "family": "Castro",
+          "given": "E."
+        },
+        {
+          "family": "González-Soler",
+          "given": "Roberto"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "Significance of Streptococcus gallolyticus subsp. gallolyticus Association With Colorectal Cancer": {
+      "authors": "Ewa Pasquereau-Kotula, Mariana Martins, L. Aymeric, S. Dramsi",
+      "url": "https://www.frontiersin.org/articles/10.3389/fmicb.2018.00614/pdf",
+      "doi": "10.3389/fmicb.2018.00614",
+      "published": "2018",
+      "summary": "Streptococcus gallolyticus subsp. gallolyticus Sgg (formerly known as S. bovis type I) is the main causative agent of septicemia and infective endocarditis (IE) in elderly and immunocompromised persons. It belongs to the few opportunistic bacteria, which have been strongly associated to colorectal cancer (CRC). A literature survey covering a period of 40 years (1970–2010) revealed that 65% of patients diagnosed with an invasive Sgg infection had a concomitant colorectal neoplasia. Sgg is associated mainly with early adenomas and may thus constitute an early marker for CRC screening. Sgg has been described as a normal inhabitant of the rumen of herbivores and in the digestive tract of birds. It is more rarely detected in human intestinal tract (2.5–15%). Recent molecular analyses indicate possible zoonotic transmission of Sgg. Thanks to the development of a genetic toolbox and to comparative genomics, a number of factors that are important for Sgg pathogenicity have been identified. This review will highlight the role of Sgg pili in host colonization and how their phase-variable expression contributes to mitigate the host immune responses and finally their use as serological diagnostic tool. We will then present experimental data addressing the core question whether Sgg is a cause or consequence of CRC. We will discuss a few recent studies examining the etiological versus non-etiological participation of Sgg in colorectal cancer with the underlying mechanisms.",
+      "title": "Significance of Streptococcus gallolyticus subsp. gallolyticus Association With Colorectal Cancer",
+      "journal": "Frontiers in Microbiology",
+      "year": 2018,
+      "authors_parsed": [
+        {
+          "family": "Pasquereau-Kotula",
+          "given": "Ewa"
+        },
+        {
+          "family": "Martins",
+          "given": "Mariana"
+        },
+        {
+          "family": "Aymeric",
+          "given": "L."
+        },
+        {
+          "family": "Dramsi",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Streptococcus gallolyticus infection: A neglected marker for colorectal cancer?": {
+      "authors": "Che Muhammad Khairul Hisyam Bin Ismail, Edre Bin Mohammad Aidid, Hairul Aini Binti Hamzah, Mohd Shaiful Ehsan Bin Shalihin",
+      "url": "https://www.semanticscholar.org/paper/8e880988ed2307cb5d7a775b63e32d0035fd3c89",
+      "doi": "10.1016/j.ajg.2023.02.002",
+      "published": "2023",
+      "summary": "BACKGROUND AND STUDY AIMS\nColorectal cancer (CRC) is the second most common cancer in Malaysia and mostly detected at advanced stages due to lack of awareness of CRC symptoms and signs. CRC pathogenesis is multifactorial, and there is ambiguous evidence on association of Streptococcus gallolyticus infection with CRC that needs further attention. Thus, a case-control study was conducted to determine whether S. gallolyticus infection is a predictor for CRC occurrence among patients attending Sultan Ahmad Shah Medical Centre@IIUM (SASMEC@IIUM).\n\n\nPATIENTS AND METHODS\nA total of 33 stool samples from patients diagnosed with CRC and 80 from patients without CRC attending surgical clinic of SASMEC@IIUM were collected and analyzed with iFOBT test and PCR assay to detect S. gallolyticus.\n\n\nRESULTS\nIn this study, the proportion of S. gallolyticus infection was higher among patients with CRC (48.5%) compared with the control group (20%). Univariate analysis shows that occult blood in stool, S. gallolyticus infection and family history were significantly associated with the development of CRC (P < 0.05). Using the multivariate logistic regression model, positive stool PCR for S. gallolyticus had the lowest relative standard error and almost five times the odds of developing CRC after adjusting other factors (adjusted odds ratio = 4.7, 95% confidence interval = 1.7-12.6, relative standard error = 59.6%).\n\n\nCONCLUSION\nThis finding suggests that S. gallolyticus infection was the strongest predictor of CRC's development in our study and potentially serves as a predictive marker for early detection of disease progression.",
+      "title": "Streptococcus gallolyticus infection: A neglected marker for colorectal cancer?",
+      "journal": "Arab Journal of Gastroenterology",
+      "year": 2023,
+      "authors_parsed": [
+        {
+          "family": "Ismail",
+          "given": "Che Muhammad Khairul Hisyam Bin"
+        },
+        {
+          "family": "Aidid",
+          "given": "Edre Bin Mohammad"
+        },
+        {
+          "family": "Hamzah",
+          "given": "Hairul Aini Binti"
+        },
+        {
+          "family": "Shalihin",
+          "given": "Mohd Shaiful Ehsan Bin"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Prevalence of Streptococcus gallolyticus in a non-selected cohort of colorectal cancer patients: clinical and pathological profile": {
+      "authors": "M. Franch",
+      "url": "https://www.semanticscholar.org/paper/efb2e4d61a472b3882a0fd8d045ee94576c06543",
+      "doi": "",
+      "published": "2017",
+      "summary": "Increasing evidence suggest that Streptococcus gallolyticus, an opportunistic pathogen previously known as Streptococcus bovis biotype I, may play a role in the colorectal cancer (CRC) carcinogenesis. Here, we perform a quantitative real-time PCR targeting sodA gene of Streptococcus gallolyticus to specifically amplify the three subspecies of S. gallolyticus (S. gallolyticus subsp gallolyticus, S. gallolyticus subsp pasteurianus and S. gallolyticus subsp macedonicus) to estimate the prevalence of S. gallolyticus (SG) in a total of 380 samples (tumour tissue and their corresponding normal colonic mucosa) derived from 190 patients from an unselected cohort with sporadic colorectal cancer. The major genetic pathways of CRC, chromosomal instability (CIN), microsatellite instability (MSI) and CpG island methilator phenotype (CIMP) were performed. And the presence of Epstein-Barr virus (EBV) and Citomegalovirus co-infection was also detected by PCR. The prevalence of SG in our cohort was 3.2%. All positive findings were obtained from tumour tissues and were significantly associated to earlier stages of the tumour and EBV co-infection. This low prevalence of SG might suggest a possible oncomodulator effect, possibly associated with other pathological variables analysed such as a negative CIMP status and microsatellite stability (MSS).",
+      "authors_parsed": [
+        {
+          "family": "Franch",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "A systematic review of microbiome-derived biomarkers for early colorectal cancer detection": {
+      "authors": "Florine H. Zwezerijnen-Jiwa, Hugo Sivov, Petra Paizs, Konstantina Zafeiropoulou, J. Kinross",
+      "url": "https://doi.org/10.1016/j.neo.2022.100868",
+      "doi": "10.1016/j.neo.2022.100868",
+      "published": "2022",
+      "summary": "Increasing evidence suggests a role of the gut microbiome in the development of colorectal cancer (CRC) and that it can serve as a biomarker for early diagnosis. This review aims to give an overview of the current status of published studies regarding the microbiome as a screening tool for early CRC detection. A literature search was conducted using PubMed and EMBASE in August 2022. Studies assessing the efficacy of microbiome-derived biomarkers based on noninvasive derived samples were included. Not relevant studies or studies not specifying the stage of CRC or grouping them together in the analysis were excluded. The risk of bias for screening tools was performed using the QUADAS-2 checklist. A total of 28 studies were included, ranging from 2 to 462 for CRC and 18 to 665 advanced adenoma patient inclusions, of which only two investigated the co-metabolome as biomarker. The diagnostic performance of faecal bacteria-derived biomarkers had an AUC ranging from 0.28-0.98 for precursor lesions such as advanced adenomas and 0.54-0.89 for early CRC. Diagnostic performance based on the co-metabolome showed an AUC ranging from 0.69 – 0.84 for precursor lesions and 0.65 – 0.93 for early CRC. All models improved when combined with established clinical early detection markers such as gFOBT. A high level of heterogeneity was seen in the number of inclusions and methodology used in the studies. The faecal and oral gut microbiome has the potential to complement existing CRC screening tools, however current evidence suggests that this is not yet ready for routine clinical use.",
+      "title": "A systematic review of microbiome-derived biomarkers for early colorectal cancer detection",
+      "journal": "Neoplasia",
+      "year": 2023,
+      "authors_parsed": [
+        {
+          "family": "Zwezerijnen-Jiwa",
+          "given": "Florine H."
+        },
+        {
+          "family": "Sivov",
+          "given": "Hugo"
+        },
+        {
+          "family": "Paizs",
+          "given": "Petra"
+        },
+        {
+          "family": "Zafeiropoulou",
+          "given": "Konstantina"
+        },
+        {
+          "family": "Kinross",
+          "given": "J."
+        }
+      ],
+      "authors_et_al": false
+    }
+  }
+}

@@ -1,0 +1,1069 @@
+{
+  "topic": "vitamins_microbial_synthesis",
+  "source_files": [
+    "gut bacteria x vitamin status.md",
+    "gut bacteria x vitamin status - Sources.csv"
+  ],
+  "lookup_keys": [
+    "folate",
+    "B12",
+    "cobalamin",
+    "biotin",
+    "vitamin K",
+    "vitamin biosynthesis",
+    "B vitamins",
+    "riboflavin",
+    "thiamine",
+    "niacin",
+    "pantothenate",
+    "pyridoxine",
+    "Bifidobacterium",
+    "Bifidobacterium longum",
+    "Bifidobacterium bifidum",
+    "Bifidobacterium adolescentis",
+    "Bifidobacterium pseudocatenulatum",
+    "Bifidobacterium breve",
+    "Bifidobacterium animalis",
+    "Bacteroides",
+    "Bacteroides fragilis",
+    "Bacteroides thetaiotaomicron",
+    "Lactobacillus",
+    "Lactobacillus reuteri",
+    "Lactobacillus plantarum",
+    "Prevotella",
+    "E. coli",
+    "Faecalibacterium",
+    "Akkermansia",
+    "Roseburia",
+    "microbial vitamin sharing",
+    "vitamin cross-feeding",
+    "prototrophs",
+    "auxotrophs",
+    "cobamide biosynthesis",
+    "folate scavenger",
+    "B12 consumer",
+    "vitamin deficiency",
+    "one-carbon metabolism",
+    "intrinsic factor",
+    "pABA",
+    "para-aminobenzoic acid"
+  ],
+  "related_topics": [
+    "bacterial_guilds",
+    "supplements_botanicals",
+    "dietary_patterns",
+    "dysbiosis",
+    "obesity_microbiome",
+    "intestinal_absorption",
+    "metabolic_cooperation",
+    "host_microbe_interactions"
+  ],
+  "findings": [
+    {
+      "id": "folate_producers",
+      "title": "Bifidobacterium as Folate Producers",
+      "content": "Folate biosynthesis is well-characterized in gut bacteria. Among 256 gut bacterial genomes assessed, 40-65% carry biosynthesis pathways for folate. Bifidobacteria are key producers, particularly B. adolescentis and B. pseudocatenulatum, which produce 41-82 ng/mL folate in folate-free medium. However, folate production is a strain-level trait, not genus-level. B. infantis RECb4 contains complete pathway genes but requires exogenous folate.",
+      "species_involved": [
+        "Bifidobacterium adolescentis",
+        "Bifidobacterium pseudocatenulatum",
+        "Bifidobacterium breve",
+        "Bifidobacterium longum",
+        "Bifidobacterium infantis"
+      ],
+      "vitamin": "folate",
+      "role": "producer",
+      "strength_of_evidence": "high",
+      "citations": [
+        "Magnúsdóttir_2015",
+        "Pompei_2006",
+        "D'Aimmo_2023",
+        "Celik_2022"
+      ]
+    },
+    {
+      "id": "folate_scavengers",
+      "title": "Bifidobacterium as Folate Scavengers",
+      "content": "Some bifidobacteria that possess complete folate biosynthesis genes act as scavengers when exogenous folate is available, consuming rather than releasing folate. B. breve ATCC 15701 demonstrated scavenger phenotype in the presence of folate-containing media. Genomic potential does not always translate to net folate supply.",
+      "species_involved": [
+        "Bifidobacterium breve",
+        "Bifidobacterium animalis subsp. lactis"
+      ],
+      "vitamin": "folate",
+      "role": "consumer/scavenger",
+      "strength_of_evidence": "moderate",
+      "citations": [
+        "Celik_2022"
+      ]
+    },
+    {
+      "id": "paba_dependent_folate",
+      "title": "PABA-Dependent Folate Synthesis",
+      "content": "Only 13% of 512 gastrointestinal reference genomes contain all genes for complete de novo folate synthesis. However, 39% can synthesize folate if supplied with para-aminobenzoic acid (pABA), an intermediate from other gut microbes or diet. This demonstrates the cooperative, cross-feeding nature of microbial vitamin metabolism.",
+      "species_involved": [
+        "Bifidobacterium adolescentis",
+        "Lactobacillus plantarum"
+      ],
+      "vitamin": "folate",
+      "role": "conditional_producer",
+      "key_cofactor": "pABA",
+      "strength_of_evidence": "high",
+      "citations": [
+        "Engevik_2019"
+      ]
+    },
+    {
+      "id": "folate_absorption",
+      "title": "Microbial Folate Bioavailability",
+      "content": "Rat trials showed probiotic folate-producing bifidobacteria increased plasma folate levels. Human trials showed folate-producing supplements raised fecal folate. However, fecal folate does not directly demonstrate colonic absorption, and human data on meaningful systemic contribution remains limited.",
+      "vitamin": "folate",
+      "strength_of_evidence": "low-moderate",
+      "citations": [
+        "Rossi_2011"
+      ]
+    },
+    {
+      "id": "b12_not_provisioned_to_host",
+      "title": "Cobalamin: Precious Resource Not Provisioned to Host",
+      "content": "Cobalamin biosynthesis requires ~30 enzymatic steps and is restricted to specific prokaryotes. Despite some gut microbes synthesizing B12, Degnan et al. argue it is a precious resource unlikely provisioned to the host in significant quantities. Most microbial B12 synthesis occurs in the colon, but B12 absorption occurs primarily in the ileum via intrinsic factor, creating a geographic mismatch that limits host benefit.",
+      "vitamin": "B12",
+      "strength_of_evidence": "high",
+      "citations": [
+        "Degnan_2014",
+        "Abavana"
+      ]
+    },
+    {
+      "id": "bacteroides_b12_consumer",
+      "title": "Bacteroides as B12 Consumers, Not Producers",
+      "content": "Bacteroides are sophisticated B12 consumers, not producers. B. thetaiotaomicron encodes multiple outer membrane transport systems for B12, including surface-exposed lipoproteins (BtuG) that bind B12 with femtomolar affinity—strong enough to strip B12 from human intrinsic factor. BtuH proteins represent functionally distinct transport machines. This means Bacteroides may reduce B12 availability to the host rather than enhance it.",
+      "species_involved": [
+        "Bacteroides thetaiotaomicron",
+        "Bacteroides fragilis"
+      ],
+      "vitamin": "B12",
+      "role": "consumer",
+      "strength_of_evidence": "high",
+      "citations": [
+        "Wexler_2018",
+        "Putnam_2022"
+      ]
+    },
+    {
+      "id": "b12_ecological_modulator",
+      "title": "Cobalamin as Ecological Modulator",
+      "content": "Competition for cobalamin shapes microbial community structure. Analysis of ~8,000 human gut metagenomes reveals cobalamin biosynthesis pathways play a key role in equilibrium establishment of adult gut communities, distinct from infant communities which are modulated by folate.",
+      "vitamin": "B12",
+      "strength_of_evidence": "high",
+      "citations": [
+        "Degnan_2014",
+        "Tarracchini_2024"
+      ]
+    },
+    {
+      "id": "biotin_production",
+      "title": "Biotin Production Across Gut Bacteria",
+      "content": "Biotin is predicted to be produced by 40-65% of gut microbes according to genome survey. Rodionov et al. identified significant cross-feeding of biotin between species across 2,228 bacterial genomes. However, detailed experimental studies on Bifidobacterium or Bacteroides biotin production are limited.",
+      "vitamin": "biotin",
+      "strength_of_evidence": "moderate",
+      "citations": [
+        "Magnúsdóttir_2015",
+        "Rodionov_2019"
+      ]
+    },
+    {
+      "id": "vitamin_k_production",
+      "title": "Vitamin K Biosynthesis in Gut Microbiota",
+      "content": "Vitamin K production is an important function of gut bacteria. Comprehensive assessment across 8,000 gut microbiomes shows vitamin K biosynthetic capacity varies with host-associated factors including age and geographical origin.",
+      "vitamin": "vitamin K",
+      "strength_of_evidence": "moderate",
+      "citations": [
+        "Tarracchini_2024",
+        "Nysten_2023"
+      ]
+    },
+    {
+      "id": "dietary_folate_association",
+      "title": "Dietary Folate and Microbiota Composition",
+      "content": "In 35 men, colonic bacterial composition and richness differed significantly by dietary folate and B-vitamin intake. Lower consumption was associated with lower abundance of Akkermansia (folate), Roseburia (B2), and Faecalibacterium (B2, B6, B12), but higher abundance of Erysipelatoclostridium (B2).",
+      "species_involved": [
+        "Akkermansia",
+        "Roseburia",
+        "Faecalibacterium",
+        "Erysipelatoclostridium"
+      ],
+      "vitamin": "folate",
+      "strength_of_evidence": "moderate",
+      "citations": [
+        "Gurwara_2019"
+      ]
+    },
+    {
+      "id": "mendelian_randomization_b12",
+      "title": "Causal Associations Between Microbiota and B12 Deficiency",
+      "content": "Mendelian randomization study of 8,000 individuals identified causal associations between specific gut microbiota features and B12 deficiency. Notably, Akkermansia and Verrucomicrobiae family taxa showed association, as did genera Coprococcus 2, Lactococcus, and Ruminococcaceae UCG002. Enterobacteriaceae and Rhodospirillaceae families also associated with B12 deficiency.",
+      "species_involved": [
+        "Akkermansia",
+        "Coprococcus 2",
+        "Lactococcus",
+        "Ruminococcaceae",
+        "Enterobacteriaceae",
+        "Rhodospirillaceae"
+      ],
+      "vitamin": "B12",
+      "strength_of_evidence": "high",
+      "citations": [
+        "Hou_2025"
+      ]
+    },
+    {
+      "id": "obesity_b12_depletion",
+      "title": "Obesity-Associated Depletion of B12-Producing Genes",
+      "content": "Mouse obesity models show significantly lower predicted abundance of enzymes and metabolic pathways for B12 biosynthesis. Enzyme depletion was most pronounced in severe obesity (db/db mice). Degree of obesity and correspondent microbiota composition are main contributors to genes and pathways for cobalamin biosynthesis.",
+      "vitamin": "B12",
+      "strength_of_evidence": "high",
+      "citations": [
+        "Zabolotneva_2024"
+      ]
+    },
+    {
+      "id": "b_vitamin_auxotrophs",
+      "title": "Auxotrophic Species Dependency on B-Vitamin Cross-Feeding",
+      "content": "More than 20% of gut community abundance consists of auxotrophic species strictly dependent on acquiring B-vitamins from prototrophs or diet. Gnotobiotic mouse studies showed gut communities remain remarkably stable under extreme B-vitamin dietary variation (zero to ~30-fold excess), suggesting microbial B-vitamin sharing buffers communities.",
+      "strength_of_evidence": "high",
+      "citations": [
+        "Sharma_2019",
+        "Rodionov_2019"
+      ]
+    },
+    {
+      "id": "microbial_contribution_estimate",
+      "title": "Estimated Microbial Contribution to Host B-Vitamin Status",
+      "content": "Gut microbiota estimated to contribute up to ~30% of recommended daily intake for B-vitamins depending on microbiome composition and diet. However, major caveat: most microbial synthesis occurs in the colon where absorption mechanisms for many vitamins (especially B12) are limited.",
+      "vitamin": "B vitamins",
+      "strength_of_evidence": "moderate",
+      "citations": [
+        "Nysten_2023"
+      ]
+    },
+    {
+      "id": "caution_supplemental_b12",
+      "title": "CAUTION: Supplemental B12 May Alter Microbial Competition",
+      "content": "Supplemental B12 availability can shift microbial competition dynamics. As B12 is a precious resource tightly competed for by Bacteroides and other species, exogenous supplementation may select for high-affinity B12 consumers (like Bacteroides), potentially reducing availability to host or beneficial bacteria. The ecological consequence of chronic B12 supplementation remains understudied.",
+      "vitamin": "B12",
+      "type": "caution",
+      "strength_of_evidence": "moderate-high",
+      "citations": [
+        "Degnan_2014",
+        "Wexler_2018",
+        "Putnam_2022"
+      ]
+    },
+    {
+      "id": "lactobacillus_folate",
+      "title": "Lactobacillus and Folate Biosynthesis",
+      "content": "Most wild-type lactobacilli cannot synthesize folate and require it for growth, providing negative contribution to folate levels. Exception: L. plantarum is capable of folate production in presence of pABA (para-aminobenzoic acid). L. reuteri modulates host folate receptors (RFC) when producing polyglutamylated folate forms.",
+      "species_involved": [
+        "Lactobacillus plantarum",
+        "Lactobacillus reuteri"
+      ],
+      "vitamin": "folate",
+      "strength_of_evidence": "moderate",
+      "citations": [
+        "Rossi_2011",
+        "Engevik_2019"
+      ]
+    },
+    {
+      "id": "other_b_vitamins",
+      "title": "Other B-Vitamins in Gut Microbiota",
+      "content": "B-vitamin biosynthesis pathways exist across gut bacteria: riboflavin, niacin, pantothenate, pyridoxine, and thiamine are produced de novo by 40-65% of gut microbes. Some bacteria produce in excess, notable sources include riboflavin, niacin, and cobalamin producers. Systemic contribution varies significantly.",
+      "vitamin": "riboflavin, niacin, pantothenate, pyridoxine, thiamine",
+      "strength_of_evidence": "moderate",
+      "citations": [
+        "Magnúsdóttir_2015",
+        "Rodionov_2019",
+        "Nysten_2023"
+      ]
+    }
+  ],
+  "papers": {
+    "Magnúsdóttir_2015": {
+      "title": "Systematic genome assessment of B-vitamin biosynthesis suggests co-operation among gut microbes",
+      "authors": "Stefanía Magnúsdóttir, D. Ravcheev, V. de Crécy-Lagard, I. Thiele",
+      "journal": "Frontiers in Genetics",
+      "year": 2015,
+      "doi": "10.3389/fgene.2015.00148",
+      "url": "https://www.frontiersin.org/articles/10.3389/fgene.2015.00148/pdf",
+      "key_findings": [
+        "40-65% of 256 gut bacteria have biosynthesis pathways for each of eight B-vitamins",
+        "Vitamin synthesis pathways are diverse and complementary",
+        "88% of genomic predictions match experimental data",
+        "Evidence for B-vitamin exchange between species"
+      ],
+      "relevance": "Foundational survey of B-vitamin biosynthetic capacity across gut microbiota",
+      "authors_parsed": [
+        {
+          "family": "Magnúsdóttir",
+          "given": "Stefanía"
+        },
+        {
+          "family": "Ravcheev",
+          "given": "D."
+        },
+        {
+          "family": "Crécy-Lagard",
+          "given": "V. de"
+        },
+        {
+          "family": "Thiele",
+          "given": "I."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Pompei_2006": {
+      "title": "Folate Production by Bifidobacteria as a Potential Probiotic Property",
+      "authors": "A. Pompei, Lisa Cordisco, Alberto Amaretti, Simona Zanoni, D. Matteuzzi, M. Rossi",
+      "journal": "Applied and Environmental Microbiology",
+      "year": 2006,
+      "doi": "10.1128/AEM.01763-06",
+      "url": "https://www.semanticscholar.org/paper/46297e3bd65119665881cb67d401f40269410745",
+      "key_findings": [
+        "Most of 76 Bifidobacterium strains required folate for growth",
+        "B. adolescentis and B. pseudocatenulatum produced 41-82 ng/mL folate",
+        "Folate production is strain-level, not species-level trait",
+        "B. adolescentis MB 239 showed consistent folate production across pH and carbon sources"
+      ],
+      "relevance": "Seminal work identifying folate-producing bifidobacterial strains",
+      "authors_parsed": [
+        {
+          "family": "Pompei",
+          "given": "A."
+        },
+        {
+          "family": "Cordisco",
+          "given": "Lisa"
+        },
+        {
+          "family": "Amaretti",
+          "given": "Alberto"
+        },
+        {
+          "family": "Zanoni",
+          "given": "Simona"
+        },
+        {
+          "family": "Matteuzzi",
+          "given": "D."
+        },
+        {
+          "family": "Rossi",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "D'Aimmo_2023": {
+      "title": "Folate-producing bifidobacteria: metabolism, genetics, and relevance",
+      "authors": "M. R. D'Aimmo, Maria Satti, D. Scarafile, M. Modesto, Stefano Pascarelli, Simone A Biagini, D. Luiselli, P. Mattarelli, T. Andlid",
+      "journal": "Microbiome Research Reports",
+      "year": 2023,
+      "doi": "10.20517/mrr.2023.59",
+      "url": "https://f.oaecdn.com/xmlpdf/b54982f8-339d-4f5c-a393-374da9609c80/mrr3059.pdf",
+      "key_findings": [
+        "Distribution of complete folate biosynthesis genes varies across bifidobacterial species",
+        "Folate production is strain-level trait within Bifidobacterium",
+        "Potential for folate-producing probiotics in fermented products",
+        "Opportunity to address folate deficiency in vulnerable populations"
+      ],
+      "relevance": "Recent comprehensive review of bifidobacterial folate metabolism",
+      "authors_parsed": [
+        {
+          "family": "D'Aimmo",
+          "given": "M. R."
+        },
+        {
+          "family": "Satti",
+          "given": "Maria"
+        },
+        {
+          "family": "Scarafile",
+          "given": "D."
+        },
+        {
+          "family": "Modesto",
+          "given": "M."
+        },
+        {
+          "family": "Pascarelli",
+          "given": "Stefano"
+        },
+        {
+          "family": "Biagini",
+          "given": "Simone A"
+        },
+        {
+          "family": "Luiselli",
+          "given": "D."
+        },
+        {
+          "family": "Mattarelli",
+          "given": "P."
+        },
+        {
+          "family": "Andlid",
+          "given": "T."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Celik_2022": {
+      "title": "Correlation of Gene Content in Selected Bifidobacteria with Folate Supplier or Scavenger Status During Growth in Laboratory Media",
+      "authors": "O. Celik, D. O'sullivan",
+      "journal": "Social Science Research Network",
+      "year": 2022,
+      "doi": "10.2139/ssrn.4268909",
+      "url": "https://www.semanticscholar.org/paper/8a605141251f0ab4c30982c91118fc3b568cdd55",
+      "key_findings": [
+        "Gene content cannot reliably predict folate phenotype in bifidobacteria",
+        "B. longum and B. breve can produce folate despite missing pathway genes",
+        "Some strains act as folate scavengers despite biosynthetic capacity",
+        "Critical to distinguish folate suppliers from scavengers for probiotic applications"
+      ],
+      "relevance": "Reveals genotype-phenotype discordance in bifidobacterial folate metabolism",
+      "authors_parsed": [
+        {
+          "family": "Celik",
+          "given": "O."
+        },
+        {
+          "family": "O'sullivan",
+          "given": "D."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Engevik_2019": {
+      "title": "Microbial Metabolic Capacity for Intestinal Folate Production and Modulation of Host Folate Receptors",
+      "authors": "Melinda A. Engevik, C. Morra, Daniel Röth, Kristen A. Engevik, J. Spinler, S. Devaraj, S. Crawford, M. Estes, M. Kalkum, J. Versalovic",
+      "journal": "Frontiers in Microbiology",
+      "year": 2019,
+      "doi": "10.3389/fmicb.2019.02305",
+      "url": "https://www.frontiersin.org/articles/10.3389/fmicb.2019.02305/pdf",
+      "key_findings": [
+        "13% of 512 GI genomes contain complete de novo folate synthesis genes",
+        "39% can synthesize folate if supplied with pABA",
+        "L. reuteri-derived folate modulates RFC expression in colonoid monolayers",
+        "Folate polyglutamylation increases during stationary phase"
+      ],
+      "relevance": "Demonstrates bacterial folate availability depends on intermediate provisioning and host-microbe interactions",
+      "authors_parsed": [
+        {
+          "family": "Engevik",
+          "given": "Melinda A."
+        },
+        {
+          "family": "Morra",
+          "given": "C."
+        },
+        {
+          "family": "Röth",
+          "given": "Daniel"
+        },
+        {
+          "family": "Engevik",
+          "given": "Kristen A."
+        },
+        {
+          "family": "Spinler",
+          "given": "J."
+        },
+        {
+          "family": "Devaraj",
+          "given": "S."
+        },
+        {
+          "family": "Crawford",
+          "given": "S."
+        },
+        {
+          "family": "Estes",
+          "given": "M."
+        },
+        {
+          "family": "Kalkum",
+          "given": "M."
+        },
+        {
+          "family": "Versalovic",
+          "given": "J."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Rossi_2011": {
+      "title": "Folate Production by Probiotic Bacteria",
+      "authors": "M. Rossi, Alberto Amaretti, S. Raimondi",
+      "journal": "Nutrients",
+      "year": 2011,
+      "doi": "10.3390/nu3010118",
+      "url": "https://www.mdpi.com/2072-6643/3/1/118/pdf?version=1295344133",
+      "key_findings": [
+        "Rat trials: folate-producing bifidobacteria increased plasma folate",
+        "Human trials: same supplement raised fecal folate",
+        "B. adolescentis and B. pseudocatenulatum are strongest folate producers",
+        "L. plantarum can produce folate in presence of pABA"
+      ],
+      "relevance": "Early in vivo evidence for microbial folate bioavailability",
+      "authors_parsed": [
+        {
+          "family": "Rossi",
+          "given": "M."
+        },
+        {
+          "family": "Amaretti",
+          "given": "Alberto"
+        },
+        {
+          "family": "Raimondi",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Abavana": {
+      "title": "Cobamide Biosynthesis",
+      "authors": "Amanda Abavana",
+      "journal": "Semantic Scholar",
+      "year": null,
+      "doi": "10.17918/00010604",
+      "url": "https://www.semanticscholar.org/paper/4cbf5ed17cadd22da5ff1870afbf0cda24cb38e5",
+      "key_findings": [
+        "Cobalamin biosynthesis requires ~30 enzymatic steps",
+        "Only certain prokaryotes produce cobamides",
+        "Gut bacteria utilize cobamides for methionine synthesis and propionic acid production",
+        "Host cannot absorb B12 across large intestine despite microbial production"
+      ],
+      "relevance": "Technical foundation for understanding B12 biosynthesis complexity",
+      "authors_parsed": [
+        {
+          "family": "Abavana",
+          "given": "Amanda"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Degnan_2014": {
+      "title": "Vitamin B12 as a modulator of gut microbial ecology",
+      "authors": "P. Degnan, M. Taga, A. Goodman",
+      "journal": "Cell Metabolism",
+      "year": 2014,
+      "doi": "10.1016/j.cmet.2014.10.002",
+      "url": "http://www.cell.com/article/S1550413114004495/pdf",
+      "key_findings": [
+        "B12 is a precious resource in gut, unlikely provisioned to host in significant quantities",
+        "Geographic mismatch: microbial B12 made in colon but absorbed in ileum",
+        "B12 competition shapes microbial community structure",
+        "B12 influences host-microbe symbioses"
+      ],
+      "relevance": "Seminal paper establishing B12 as ecological modulator, not host nutrient source",
+      "authors_parsed": [
+        {
+          "family": "Degnan",
+          "given": "P."
+        },
+        {
+          "family": "Taga",
+          "given": "M."
+        },
+        {
+          "family": "Goodman",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Wexler_2018": {
+      "title": "Human gut Bacteroides capture vitamin B12 via cell surface-exposed lipoproteins",
+      "authors": "A. Wexler, W. B. Schofield, P. Degnan, E. Folta-Stogniew, N. Barry, A. Goodman",
+      "journal": "eLife",
+      "year": 2018,
+      "doi": "10.7554/eLife.37138",
+      "url": "https://www.semanticscholar.org/paper/2b4d5fce245e1f25ecfe134e5713ed97278516ff",
+      "key_findings": [
+        "B. thetaiotaomicron uses BtuG lipoprotein for B12 capture",
+        "BtuG binds B12 with femtomolar affinity",
+        "Can strip B12 from human intrinsic factor",
+        "Bacteroides are consumers, not producers of B12"
+      ],
+      "relevance": "Reveals mechanism by which Bacteroides deplete B12 from host",
+      "authors_parsed": [
+        {
+          "family": "Wexler",
+          "given": "A."
+        },
+        {
+          "family": "Schofield",
+          "given": "W. B."
+        },
+        {
+          "family": "Degnan",
+          "given": "P."
+        },
+        {
+          "family": "Folta-Stogniew",
+          "given": "E."
+        },
+        {
+          "family": "Barry",
+          "given": "N."
+        },
+        {
+          "family": "Goodman",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Putnam_2022": {
+      "title": "Gut Commensal Bacteroidetes Encode a Novel Class of Vitamin B12-Binding Proteins",
+      "authors": "E. E. Putnam, J. Abellón-Ruiz, B. Killinger, J. Rosnow, A. Wexler, E. Folta-Stogniew, A. Wright, B. van den Berg, A. Goodman",
+      "journal": "mBio",
+      "year": 2022,
+      "doi": "10.1128/mbio.02845-21",
+      "url": "https://eprints.ncl.ac.uk/fulltext.aspx?url=281873/EC6DEDE7-25F2-4B8D-A1D1-625FA1CBB413.pdf&pub_id=281873",
+      "key_findings": [
+        "BtuH is novel B12-binding protein with unique C-terminal domain",
+        "Multiple functionally distinct B12 transport systems in Bacteroides",
+        "BtuH required for efficient B12 transport and competitive fitness",
+        "Multiple transport systems suggest redundancy for acquiring scarce B12"
+      ],
+      "relevance": "Characterizes additional B12 capture mechanisms in Bacteroides",
+      "authors_parsed": [
+        {
+          "family": "Putnam",
+          "given": "E. E."
+        },
+        {
+          "family": "Abellón-Ruiz",
+          "given": "J."
+        },
+        {
+          "family": "Killinger",
+          "given": "B."
+        },
+        {
+          "family": "Rosnow",
+          "given": "J."
+        },
+        {
+          "family": "Wexler",
+          "given": "A."
+        },
+        {
+          "family": "Folta-Stogniew",
+          "given": "E."
+        },
+        {
+          "family": "Wright",
+          "given": "A."
+        },
+        {
+          "family": "Berg",
+          "given": "B. van den"
+        },
+        {
+          "family": "Goodman",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Tarracchini_2024": {
+      "title": "Exploring the vitamin biosynthesis landscape of the human gut microbiota",
+      "authors": "C. Tarracchini, G. Lugli, L. Mancabelli, D. van Sinderen, F. Turroni, M. Ventura, C. Milani",
+      "journal": "mSystems",
+      "year": 2024,
+      "doi": "10.1128/msystems.00929-24",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11494892/pdf/msystems.00929-24.pdf",
+      "key_findings": [
+        "Analysis of ~8,000 human gut microbiomes",
+        "Host-associated factors (age, geography) influence vitamin biosynthesis pathways",
+        "Folate key in infant communities, cobalamin key in adult communities",
+        "Microbial co-associations reveal vitamin roles in community equilibrium"
+      ],
+      "relevance": "Large-scale analysis of vitamin biosynthesis across life course",
+      "authors_parsed": [
+        {
+          "family": "Tarracchini",
+          "given": "C."
+        },
+        {
+          "family": "Lugli",
+          "given": "G."
+        },
+        {
+          "family": "Mancabelli",
+          "given": "L."
+        },
+        {
+          "family": "Sinderen",
+          "given": "D. van"
+        },
+        {
+          "family": "Turroni",
+          "given": "F."
+        },
+        {
+          "family": "Ventura",
+          "given": "M."
+        },
+        {
+          "family": "Milani",
+          "given": "C."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Rodionov_2019": {
+      "title": "Micronutrient Requirements and Sharing Capabilities of the Human Gut Microbiome",
+      "authors": "D. Rodionov, Aleksandr A. Arzamasov, Matvei S. Khoroshkin, S. Iablokov, Semen A. Leyn, S. Peterson, P. Novichkov, A. Osterman",
+      "journal": "Frontiers in Microbiology",
+      "year": 2019,
+      "doi": "10.3389/fmicb.2019.01316",
+      "url": "https://www.frontiersin.org/articles/10.3389/fmicb.2019.01316/pdf",
+      "key_findings": [
+        "Classification of 2,228 bacterial genomes as prototrophs or auxotrophs for 8 B-vitamins",
+        "Identification of alternative vitamin pathways and intermediates",
+        "First estimate of B-vitamin requirements and production in human microbiome",
+        "Predictive phenotype profiling enables microbiome sample classification"
+      ],
+      "relevance": "Comprehensive reference for vitamin phenotyping across gut microbiota",
+      "authors_parsed": [
+        {
+          "family": "Rodionov",
+          "given": "D."
+        },
+        {
+          "family": "Arzamasov",
+          "given": "Aleksandr A."
+        },
+        {
+          "family": "Khoroshkin",
+          "given": "Matvei S."
+        },
+        {
+          "family": "Iablokov",
+          "given": "S."
+        },
+        {
+          "family": "Leyn",
+          "given": "Semen A."
+        },
+        {
+          "family": "Peterson",
+          "given": "S."
+        },
+        {
+          "family": "Novichkov",
+          "given": "P."
+        },
+        {
+          "family": "Osterman",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Gurwara_2019": {
+      "title": "Dietary Nutrients Involved in One-Carbon Metabolism and Colonic Mucosa-Associated Gut Microbiome in Individuals with an Endoscopically Normal Colon",
+      "authors": "Gurwara S, Ajami NJ, Jang A, Hessel FC, Chen L, Plew S, Wang Z, Graham DY, Hair C, White DL, Kramer J, Kourkoumpetis T, Hoffman K, Cole R, Hou J, Husain N, Jarbrink-Sehgal M, Hernaez R, Kanwal F, Ketwaroo G, Shah R, Velez M, Natarajan Y, El-Serag HB, Petrosino JF, Jiao L",
+      "journal": "Nutrients",
+      "year": 2019,
+      "doi": "10.3390/nu11030613",
+      "url": "https://www.mdpi.com/2072-6643/11/3/613/pdf?version=1552471745",
+      "key_findings": [
+        "Lower folate/B-vitamin intake associated with lower Akkermansia, Roseburia, Faecalibacterium",
+        "Higher intake associated with greater diversity of beneficial bacteria",
+        "Bacterial richness differs significantly by B-vitamin consumption",
+        "One-carbon metabolism nutrients shape colonic microbiota composition"
+      ],
+      "relevance": "Links dietary B-vitamins to microbiota composition changes",
+      "authors_parsed": [
+        {
+          "family": "Gurwara",
+          "given": "S."
+        },
+        {
+          "family": "Ajami",
+          "given": "N. J."
+        },
+        {
+          "family": "Jang",
+          "given": "A."
+        },
+        {
+          "family": "Hessel",
+          "given": "F. C."
+        },
+        {
+          "family": "Chen",
+          "given": "L."
+        },
+        {
+          "family": "Plew",
+          "given": "S."
+        },
+        {
+          "family": "Wang",
+          "given": "Z."
+        },
+        {
+          "family": "Graham",
+          "given": "D. Y."
+        },
+        {
+          "family": "Hair",
+          "given": "C."
+        },
+        {
+          "family": "White",
+          "given": "D. L."
+        },
+        {
+          "family": "Kramer",
+          "given": "J."
+        },
+        {
+          "family": "Kourkoumpetis",
+          "given": "T."
+        },
+        {
+          "family": "Hoffman",
+          "given": "K."
+        },
+        {
+          "family": "Cole",
+          "given": "R."
+        },
+        {
+          "family": "Hou",
+          "given": "J."
+        },
+        {
+          "family": "Husain",
+          "given": "N."
+        },
+        {
+          "family": "Jarbrink-Sehgal",
+          "given": "M."
+        },
+        {
+          "family": "Hernaez",
+          "given": "R."
+        },
+        {
+          "family": "Kanwal",
+          "given": "F."
+        },
+        {
+          "family": "Ketwaroo",
+          "given": "G."
+        },
+        {
+          "family": "Shah",
+          "given": "R."
+        },
+        {
+          "family": "Velez",
+          "given": "M."
+        },
+        {
+          "family": "Natarajan",
+          "given": "Y."
+        },
+        {
+          "family": "El-Serag",
+          "given": "H. B."
+        },
+        {
+          "family": "Petrosino",
+          "given": "J. F."
+        },
+        {
+          "family": "Jiao",
+          "given": "L."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Hou_2025": {
+      "title": "Causal Links Between Gut Microbiota and Vitamin Deficiencies: Evidence from Mendelian Randomization Analysis",
+      "authors": "Zimo Hou, Wen-jing Li, Rong Pi, Han Wang, Mengna Dai, Ouyang Yan, Suyun Li",
+      "journal": "Current Medical Science",
+      "year": 2025,
+      "doi": "10.1007/s11596-025-00038-y",
+      "url": "https://link.springer.com/content/pdf/10.1007/s11596-025-00038-y.pdf",
+      "key_findings": [
+        "Mendelian randomization reveals causal associations with B12 deficiency",
+        "Akkermansia, Verrucomicrobiae associated with B12 deficiency risk",
+        "Multiple genera (Coprococcus 2, Lactococcus, Ruminococcaceae) linked to deficiency",
+        "Lachnospiraceae and Lactococcus common risk factors for both B12 and D deficiency"
+      ],
+      "relevance": "Provides causal evidence for microbiota-vitamin deficiency associations",
+      "authors_parsed": [
+        {
+          "family": "Hou",
+          "given": "Zimo"
+        },
+        {
+          "family": "Li",
+          "given": "Wen-jing"
+        },
+        {
+          "family": "Pi",
+          "given": "Rong"
+        },
+        {
+          "family": "Wang",
+          "given": "Han"
+        },
+        {
+          "family": "Dai",
+          "given": "Mengna"
+        },
+        {
+          "family": "Yan",
+          "given": "Ouyang"
+        },
+        {
+          "family": "Li",
+          "given": "Suyun"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Zabolotneva_2024": {
+      "title": "The Obesogenic Gut Microbiota as a Crucial Factor Defining the Depletion of Predicted Enzyme Abundance for Vitamin B12 Synthesis in the Mouse Intestine",
+      "authors": "A. Zabolotneva, Irina M Kolesnikova, I. Vasiliev, T. Grigoryeva, Sergei A Roumiantsev, A. V. Shestopalov",
+      "journal": "Biomedicines",
+      "year": 2024,
+      "doi": "10.3390/biomedicines12061280",
+      "url": "https://www.mdpi.com/2227-9059/12/6/1280/pdf?version=1718156379",
+      "key_findings": [
+        "Obesity-associated depletion of B12 biosynthetic enzyme abundance",
+        "Severe obesity (db/db) shows most pronounced depletion",
+        "Microbial composition drives B12 synthesis capacity changes",
+        "Predicted enzyme abundance correlates with specific taxa in HFD mice"
+      ],
+      "relevance": "Links obesity-driven dysbiosis to vitamin B12 synthesis depletion",
+      "authors_parsed": [
+        {
+          "family": "Zabolotneva",
+          "given": "A."
+        },
+        {
+          "family": "Kolesnikova",
+          "given": "Irina M"
+        },
+        {
+          "family": "Vasiliev",
+          "given": "I."
+        },
+        {
+          "family": "Grigoryeva",
+          "given": "T."
+        },
+        {
+          "family": "Roumiantsev",
+          "given": "Sergei A"
+        },
+        {
+          "family": "Shestopalov",
+          "given": "A. V."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Sharma_2019": {
+      "title": "B-Vitamin Sharing Promotes Stability of Gut Microbial Communities",
+      "authors": "Vandana Sharma, D. Rodionov, Semen A. Leyn, David Tran, S. Iablokov, Hua Ding, D. Peterson, A. Osterman, S. Peterson",
+      "journal": "Frontiers in Microbiology",
+      "year": 2019,
+      "doi": "10.3389/fmicb.2019.01485",
+      "url": "https://www.frontiersin.org/articles/10.3389/fmicb.2019.01485/pdf",
+      "key_findings": [
+        "Gnotobiotic mice communities stable under extreme B-vitamin variation (0-30x)",
+        "Over 20% community abundance consists of auxotrophs strictly dependent on cross-feeding",
+        "Metabolic cooperation critical for auxotroph survival",
+        "B-vitamin sharing buffers communities against dietary perturbations"
+      ],
+      "relevance": "Demonstrates critical role of vitamin cross-feeding in community stability",
+      "authors_parsed": [
+        {
+          "family": "Sharma",
+          "given": "Vandana"
+        },
+        {
+          "family": "Rodionov",
+          "given": "D."
+        },
+        {
+          "family": "Leyn",
+          "given": "Semen A."
+        },
+        {
+          "family": "Tran",
+          "given": "David"
+        },
+        {
+          "family": "Iablokov",
+          "given": "S."
+        },
+        {
+          "family": "Ding",
+          "given": "Hua"
+        },
+        {
+          "family": "Peterson",
+          "given": "D."
+        },
+        {
+          "family": "Osterman",
+          "given": "A."
+        },
+        {
+          "family": "Peterson",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "Nysten_2023": {
+      "title": "Can we microbe-manage our vitamin acquisition for better health?",
+      "authors": "Jana Nysten, P. van Dijck",
+      "journal": "PLoS Pathogens",
+      "year": 2023,
+      "doi": "10.1371/journal.ppat.1011361",
+      "url": "https://journals.plos.org/plospathogens/article/file?id=10.1371/journal.ppat.1011361&type=printable",
+      "key_findings": [
+        "Microbiota estimated to produce up to 30% of recommended daily vitamin intake",
+        "Bacteria produce riboflavin, niacin, cobalamin in excess",
+        "Vitamins important in pathology of opportunistic pathogens",
+        "Microbes work together to modulate metabolic activity"
+      ],
+      "relevance": "Overview of microbiota vitamin contribution to human nutrition",
+      "authors_parsed": [
+        {
+          "family": "Nysten",
+          "given": "Jana"
+        },
+        {
+          "family": "Dijck",
+          "given": "P. van"
+        }
+      ],
+      "authors_et_al": false
+    }
+  }
+}

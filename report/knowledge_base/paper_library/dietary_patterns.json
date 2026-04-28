@@ -1,0 +1,803 @@
+{
+  "topic": "dietary_patterns",
+  "source_files": [
+    "Elicit - Gut Microbiome and Health A Bidirectional Review - Report.pdf"
+  ],
+  "lookup_keys": [
+    "Mediterranean",
+    "Mediterranean diet",
+    "high-fiber",
+    "high fiber diet",
+    "Western diet",
+    "Western",
+    "plant-based",
+    "plant based diet",
+    "plant-based diet",
+    "vegan",
+    "vegetarian",
+    "animal-based",
+    "animal based diet",
+    "ketogenic",
+    "ketogenic diet",
+    "keto",
+    "VLCKD",
+    "very low carbohydrate ketogenic diet",
+    "low-FODMAP",
+    "FODMAP",
+    "low FODMAP diet",
+    "calorie restriction",
+    "calorie restrictive",
+    "calorie deficit",
+    "calorie-restricted",
+    "low carb",
+    "low-carb",
+    "omnivore",
+    "fiber",
+    "dietary fiber",
+    "whole grains",
+    "protein",
+    "animal protein",
+    "plant protein",
+    "protein quality",
+    "fat",
+    "saturated fat",
+    "unsaturated fat",
+    "dairy",
+    "polyphenols",
+    "red wine",
+    "tea",
+    "artificial sweetener",
+    "salt",
+    "processed food",
+    "ultra-processed",
+    "refined carbohydrate",
+    "Agathobaculum",
+    "Anaerostipes",
+    "Faecalibacterium",
+    "Prevotella",
+    "Ruminococcus",
+    "Bacteroides",
+    "Bifidobacterium",
+    "Lactobacillus",
+    "Lachnospira",
+    "Roseburia",
+    "Coprococcus",
+    "Bilophila",
+    "Gemella",
+    "Citrobacter",
+    "Blautia",
+    "Christensenellaceae",
+    "Akkermansia",
+    "Euubacterium",
+    "Firmicutes",
+    "Lachnospiraceae",
+    "Butyricicoccus",
+    "Streptococcus"
+  ],
+  "related_topics": [
+    "bacterial_guilds",
+    "scfa_barrier_function",
+    "circadian_meal_timing",
+    "supplements_botanicals"
+  ],
+  "findings": [
+    {
+      "dietary_pattern": "Mediterranean diet",
+      "description": "Mediterranean dietary pattern characterized by high intake of plant-based foods, healthy fats, and moderate fish consumption",
+      "taxa_affected": [
+        "Agathobaculum",
+        "Anaerostipes",
+        "Faecalibacterium",
+        "Ruminococcaceae",
+        "Lachnospiraceae",
+        "Christensenellaceae"
+      ],
+      "guilds_affected": [
+        "SCFA-producing bacteria",
+        "butyrate-producing bacteria"
+      ],
+      "mechanisms": [
+        "Increased short-chain fatty acid (SCFA) production",
+        "Enhanced butyrate production",
+        "Reduced inflammatory markers",
+        "Improved metabolic health"
+      ],
+      "clinical_outcomes": [
+        "Reduced inflammatory markers (CRP, IL-1β, IL-6)",
+        "Improved metabolic health"
+      ],
+      "references": [
+        "aslam_2026"
+      ],
+      "cautions": []
+    },
+    {
+      "dietary_pattern": "High-fiber diet",
+      "description": "Diet rich in dietary fiber from whole grains, legumes, fruits, and vegetables",
+      "taxa_affected": [
+        "Bifidobacterium",
+        "Lactobacillus",
+        "Lachnospira",
+        "Coprococcus",
+        "Roseburia"
+      ],
+      "guilds_affected": [
+        "SCFA-producing bacteria",
+        "butyrate-producing bacteria",
+        "beneficial bacteria"
+      ],
+      "mechanisms": [
+        "Increased Bifidobacterium and Lactobacillus populations",
+        "Elevated butyrate producers",
+        "Enhanced microbial diversity (Shannon index)",
+        "Lowered fasting glucose and HbA1c"
+      ],
+      "clinical_outcomes": [
+        "Lowered fasting glucose and HbA1c",
+        "Improved lipid profiles"
+      ],
+      "threshold": "≥14g per 1000kcal",
+      "references": [
+        "aslam_2026"
+      ],
+      "cautions": []
+    },
+    {
+      "dietary_pattern": "Western diet",
+      "description": "Dietary pattern characterized by high intake of processed foods, refined carbohydrates, and animal fat products",
+      "taxa_affected": [
+        "Butyricicoccus",
+        "Lachnospiraceae",
+        "Bilophila",
+        "Gemella",
+        "Citrobacter"
+      ],
+      "guilds_affected": [
+        "pathogenic bacteria",
+        "opportunistic pathogens",
+        "dysbiosis-associated taxa"
+      ],
+      "mechanisms": [
+        "Reduced SCFA-producing bacteria",
+        "Increased pathobiont abundance",
+        "Reduced microbial diversity",
+        "Increased dysbiosis",
+        "Elevated inflammatory markers"
+      ],
+      "clinical_outcomes": [
+        "Increased dysbiosis",
+        "Elevated inflammatory markers"
+      ],
+      "references": [
+        "aslam_2026"
+      ],
+      "cautions": [
+        "Associated with dysbiosis and pro-inflammatory microbiota composition",
+        "Reduced beneficial taxa and SCFA production",
+        "Increased pathogenic and opportunistic bacteria"
+      ]
+    },
+    {
+      "dietary_pattern": "Plant-based diet",
+      "description": "Diet primarily composed of plant-derived foods including fruits, vegetables, legumes, and whole grains; may include dairy and eggs but excludes or minimizes animal flesh",
+      "taxa_affected": [
+        "Bacteroides",
+        "Prevotella",
+        "SCFA-producing bacteria",
+        "butyrate-producing bacteria"
+      ],
+      "guilds_affected": [
+        "SCFA-producing bacteria",
+        "anti-inflammatory bacteria",
+        "beneficial bacteria"
+      ],
+      "mechanisms": [
+        "Increased butyrogenesis",
+        "Enhanced anti-inflammatory bacterial communities",
+        "Elevated Prevotella species",
+        "Improved barrier function"
+      ],
+      "clinical_outcomes": [
+        "Improved metabolic profiles",
+        "Enhanced gut barrier function"
+      ],
+      "references": [
+        "aslam_2026"
+      ],
+      "cautions": []
+    },
+    {
+      "dietary_pattern": "Animal-based diet",
+      "description": "Diet composed primarily of animal-derived foods including meat, poultry, fish, and dairy products with minimal plant-based foods",
+      "taxa_affected": [
+        "Ruminococcus bromii",
+        "Eubacterium rectale",
+        "reduced SCFA-producing bacteria"
+      ],
+      "guilds_affected": [
+        "pathogenic bacteria",
+        "pro-inflammatory bacteria"
+      ],
+      "mechanisms": [
+        "Reduced butyrate production",
+        "Altered bile acid metabolism",
+        "Increased inflammation",
+        "Modified tight junction integrity"
+      ],
+      "clinical_outcomes": [
+        "Increased inflammation",
+        "Altered bile acid metabolism"
+      ],
+      "references": [
+        "aslam_2026"
+      ],
+      "cautions": [
+        "Reduced butyrate-producing bacteria",
+        "Increased inflammatory markers",
+        "Potential negative effects on barrier function"
+      ]
+    },
+    {
+      "dietary_pattern": "Ketogenic diet (VLCKD)",
+      "description": "Very low-carbohydrate, high-fat dietary pattern typically containing <5% carbohydrate and >70% fat",
+      "taxa_affected": [
+        "Akkermansia",
+        "Faecalibacterium",
+        "reduced Bifidobacterium"
+      ],
+      "guilds_affected": [
+        "SCFA-producing bacteria",
+        "mucus-degrading bacteria"
+      ],
+      "mechanisms": [
+        "Increased Akkermansia and F/B ratio",
+        "Reduced Bifidobacterium populations",
+        "Improved diversity metrics",
+        "Altered metabolic flexibility"
+      ],
+      "clinical_outcomes": [
+        "Improved diversity metrics",
+        "Reduced beneficial taxa despite improved metrics"
+      ],
+      "references": [
+        "wang_2025"
+      ],
+      "cautions": [
+        "Improved diversity metrics but reduced beneficial taxa",
+        "Decreased Bifidobacterium abundance may impact immune function",
+        "Long-term sustainability concerns"
+      ]
+    },
+    {
+      "dietary_pattern": "Low-FODMAP diet",
+      "description": "Dietary approach restricting fermentable oligosaccharides, disaccharides, monosaccharides, and polyols to reduce symptom burden in IBS",
+      "taxa_affected": [
+        "reduced SCFA-producing bacteria",
+        "FODMAP-fermenting bacteria"
+      ],
+      "guilds_affected": [
+        "SCFA-producing bacteria"
+      ],
+      "mechanisms": [
+        "Reduced SCFA-producing bacterial populations",
+        "Decreased microbial fermentation of substrates",
+        "Symptom reduction via decreased gas production",
+        "Potential reduction in bacterial diversity"
+      ],
+      "clinical_outcomes": [
+        "Symptom improvement in IBS",
+        "Improved metabolic markers"
+      ],
+      "references": [
+        "aslam_2026",
+        "lee_2026"
+      ],
+      "cautions": [
+        "Symptom improvement but microbial depletion risk",
+        "Reduced SCFA-producing bacteria despite symptom relief",
+        "Long-term restriction may compromise microbiota diversity and function"
+      ]
+    },
+    {
+      "dietary_pattern": "Calorie-restricted diet",
+      "description": "Dietary intervention with reduced total energy intake, typically 20-40% below baseline requirements",
+      "taxa_affected": [
+        "health-associated bacteria",
+        "beneficial bacteria"
+      ],
+      "guilds_affected": [
+        "metabolically beneficial bacteria"
+      ],
+      "mechanisms": [
+        "Enhanced health-associated bacterial communities",
+        "Improved metabolic markers",
+        "Increased microbial metabolic efficiency"
+      ],
+      "clinical_outcomes": [
+        "Improved metabolic markers",
+        "Enhanced metabolic health markers"
+      ],
+      "references": [
+        "aslam_2026"
+      ],
+      "cautions": []
+    },
+    {
+      "dietary_pattern": "Macronutrient composition",
+      "description": "Effects of specific macronutrient quality and quantity on microbial composition independent of dietary pattern",
+      "subtopics": {
+        "dietary_fiber": {
+          "description": "Soluble and insoluble fiber from whole grains, legumes, fruits, vegetables",
+          "threshold": "≥14g per 1000kcal",
+          "taxa_affected": [
+            "Coprococcus",
+            "Lachnospira",
+            "Roseburia",
+            "Faecalibacterium"
+          ],
+          "mechanisms": [
+            "Substrate for SCFA production",
+            "Increased microbial diversity",
+            "Enhanced butyrate production"
+          ],
+          "references": [
+            "aslam_2026"
+          ]
+        },
+        "protein_quality": {
+          "description": "Amino acid composition and source (animal vs plant protein)",
+          "taxa_affected": [
+            "Coprococcus",
+            "Lachnospira",
+            "Roseburia"
+          ],
+          "mechanisms": [
+            "Animal proteins increased proteolytic bacteria",
+            "Plant proteins promoted beneficial species"
+          ],
+          "references": [
+            "aslam_2026"
+          ]
+        },
+        "fat_composition": {
+          "description": "Saturated vs unsaturated fatty acid intake",
+          "taxa_affected": [
+            "Clostridioides",
+            "Bilophila",
+            "pathogenic bacteria"
+          ],
+          "mechanisms": [
+            "Unsaturated fatty acids affected microbial richness",
+            "Saturated fat increased pathogenic taxa"
+          ],
+          "references": [
+            "wang_2025"
+          ]
+        },
+        "dairy": {
+          "description": "Fermented and unfermented dairy products",
+          "taxa_affected": [
+            "Lactobacillaceae"
+          ],
+          "mechanisms": [
+            "Dairy consumption correlated with Lactobacillaceae abundance"
+          ],
+          "references": [
+            "wang_2025"
+          ]
+        },
+        "whole_grains": {
+          "description": "Intact cereal grains with bran and germ",
+          "taxa_affected": [
+            "beneficial bacteria"
+          ],
+          "mechanisms": [
+            "Associated inversely with microbial dysbiosis scores"
+          ],
+          "references": [
+            "wang_2025"
+          ]
+        },
+        "salt": {
+          "description": "Sodium chloride intake",
+          "taxa_affected": [
+            "Lactobacillaceae"
+          ],
+          "mechanisms": [
+            "Salt intake positively correlated with Lactobacillaceae"
+          ],
+          "references": [
+            "wang_2025"
+          ]
+        }
+      }
+    },
+    {
+      "dietary_pattern": "Polyphenol-rich foods",
+      "description": "Foods naturally enriched in polyphenolic compounds including red wine, tea, berries, nuts, and plant-derived foods",
+      "taxa_affected": [
+        "Bifidobacterium",
+        "Lactobacillus",
+        "Faecalibacterium prausnitzii",
+        "Akkermansia muciniphila"
+      ],
+      "guilds_affected": [
+        "butyrate-producing bacteria",
+        "anti-inflammatory bacteria"
+      ],
+      "mechanisms": [
+        "Selective bidegradation of polyphenols",
+        "Increased beneficial taxa populations",
+        "Reduced opportunistic pathogens",
+        "Enhanced metabolic production of bioactive metabolites"
+      ],
+      "subtopics": {
+        "red_wine": {
+          "description": "Polyphenol-rich wine containing resveratrol and other compounds",
+          "taxa_affected": [
+            "Bifidobacterium",
+            "Lactobacillus"
+          ],
+          "mechanisms": [
+            "Increased populations of polyphenol-fermenting bacteria"
+          ],
+          "references": [
+            "aslam_2026"
+          ]
+        },
+        "tea": {
+          "description": "Brewed leaves of Camellia sinensis containing catechins and theaflavins",
+          "taxa_affected": [
+            "Bifidobacterium",
+            "Lactobacillus"
+          ],
+          "mechanisms": [
+            "Increased populations of polyphenol-fermenting bacteria"
+          ],
+          "references": [
+            "aslam_2026"
+          ]
+        }
+      },
+      "clinical_outcomes": [
+        "Increased beneficial taxa",
+        "Reduced opportunistic pathogens including Streptococcus agalactiae"
+      ],
+      "references": [
+        "aslam_2026"
+      ],
+      "cautions": [
+        "Polyphenol effects dependent on gut microbiota composition and capacity to metabolize them",
+        "Host individual differences in enterotype and metabolic capacity"
+      ]
+    },
+    {
+      "dietary_pattern": "Artificial sweeteners",
+      "description": "Non-caloric or low-caloric sugar substitutes including aspartame, saccharin, sucralose, and others",
+      "taxa_affected": [],
+      "mechanisms": [
+        "Associated with significant differences in circulating lipid acid metabolites",
+        "Effects dependent on host enterotype"
+      ],
+      "clinical_outcomes": [
+        "Variable metabolic effects depending on microbiota composition"
+      ],
+      "references": [
+        "tang_2019"
+      ],
+      "cautions": [
+        "Microbiome composition mediates dietary effects of artificial sweeteners",
+        "Significant inter-individual heterogeneity in response"
+      ]
+    },
+    {
+      "dietary_pattern": "Temporal dynamics of dietary change",
+      "description": "Time-dependent effects of dietary interventions on microbial composition and functional capacity",
+      "mechanisms": [
+        "Adult microbiota exhibits remarkable compositional stability with transient fluctuations",
+        "Microbiota rapidly returns to baseline composition after short-term dietary challenges",
+        "Metabolic profiles change substantially within 24 hours despite modest taxonomic alterations",
+        "Functional flexibility allows different metabolic pathways activation independent of compositional shifts"
+      ],
+      "clinical_significance": [
+        "Explains why metaeomic signatures may respond more rapidly than taxonomic profiles",
+        "Suggests functional redundancy in microbiota metabolic capacity",
+        "Indicates potential for rapid activation of different metabolic pathways with dietary modification"
+      ],
+      "references": [
+        "aslam_2026"
+      ],
+      "cautions": [
+        "Metabolic plasticity exceeds taxonomic plasticity",
+        "Short-term microbiota shifts may not predict long-term compositional changes",
+        "Individual microbiota baseline composition affects dietary response trajectories"
+      ]
+    }
+  ],
+  "papers": {
+    "aslam_2026": {
+      "id": "aslam_2026",
+      "authors": "Hajara Aslam, G. Trakman, Thusharika Dissanayake, et al.",
+      "year": 2026,
+      "title": "Dietary interventions and the gut microbiota: a systematic literature review of 80 controlled clinical trials",
+      "journal": "Journal of Translational Medicine",
+      "doi": "https://doi.org/10.1186/s12967-025-07428-9",
+      "reference_number": 1,
+      "authors_parsed": [
+        {
+          "family": "Aslam",
+          "given": "Hajara"
+        },
+        {
+          "family": "Trakman",
+          "given": "G."
+        },
+        {
+          "family": "Dissanayake",
+          "given": "Thusharika"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "qureshi_2025": {
+      "id": "qureshi_2025",
+      "authors": "Umer Qureshi, Ali Bajwa, Zohaib Aslam, et al.",
+      "year": 2025,
+      "title": "Gut Microbiota Modulation in Type 2 Diabetes and Cardiometabolic Risk: A Systematic Review",
+      "journal": "Cureus",
+      "doi": "https://doi.org/10.7759/cureus.92020",
+      "reference_number": 2,
+      "authors_parsed": [
+        {
+          "family": "Qureshi",
+          "given": "Umer"
+        },
+        {
+          "family": "Bajwa",
+          "given": "Ali"
+        },
+        {
+          "family": "Aslam",
+          "given": "Zohaib"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "bolte_2021": {
+      "id": "bolte_2021",
+      "authors": "L. Bolte, A. Vich Vila, F. Imhann, et al.",
+      "year": 2021,
+      "title": "Long-term dietary patterns are associated with pro-inflammatory and anti-inflammatory features of the gut microbiome",
+      "journal": "Gut",
+      "doi": "https://doi.org/10.1136/gutjnl-2020-322670",
+      "reference_number": 3,
+      "authors_parsed": [
+        {
+          "family": "Bolte",
+          "given": "L."
+        },
+        {
+          "family": "Vila",
+          "given": "A. Vich"
+        },
+        {
+          "family": "Imhann",
+          "given": "F."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "czarnota_2025": {
+      "id": "czarnota_2025",
+      "authors": "Maksymilian Czarnota, Weronika Ossowska, Wiktoria Osztreiher",
+      "year": 2025,
+      "title": "Gut Microbiota Modulation to Enhance Exercise Performance and Recovery - Systematic Review",
+      "journal": "Quality in Sport",
+      "doi": "https://doi.org/10.12775/qs.2025.43.62420",
+      "reference_number": 4,
+      "authors_parsed": [
+        {
+          "family": "Czarnota",
+          "given": "Maksymilian"
+        },
+        {
+          "family": "Ossowska",
+          "given": "Weronika"
+        },
+        {
+          "family": "Osztreiher",
+          "given": "Wiktoria"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "zeng_2025": {
+      "id": "zeng_2025",
+      "authors": "Qin Zeng, Xianqiong Feng, Yanling Hu, Shaoyu Su",
+      "year": 2025,
+      "title": "The human gut microbiota is associated with host lifestyle: a comprehensive narrative review",
+      "journal": "Frontiers in Microbiology",
+      "doi": "https://doi.org/10.3389/fmicb.2025.1549160",
+      "reference_number": 5,
+      "authors_parsed": [
+        {
+          "family": "Zeng",
+          "given": "Qin"
+        },
+        {
+          "family": "Feng",
+          "given": "Xianqiong"
+        },
+        {
+          "family": "Hu",
+          "given": "Yanling"
+        },
+        {
+          "family": "Su",
+          "given": "Shaoyu"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "bautista_2025": {
+      "id": "bautista_2025",
+      "authors": "Jhommara Bautista, Sofia Ojeda-Mosquera, Adriana Altamirano-Colina, et al.",
+      "year": 2025,
+      "title": "Bidirectional interactions between circadian rhythms and the gut microbiome",
+      "journal": "Applied Microbiology and Biotechnology",
+      "doi": "https://doi.org/10.1007/s00253-025-13570-7",
+      "reference_number": 6,
+      "authors_parsed": [
+        {
+          "family": "Bautista",
+          "given": "Jhommara"
+        },
+        {
+          "family": "Ojeda-Mosquera",
+          "given": "Sofia"
+        },
+        {
+          "family": "Altamirano-Colina",
+          "given": "Adriana"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "wang_2025": {
+      "id": "wang_2025",
+      "authors": "Shun Wang, Zihan Bao, Mengqi Zhao, et al.",
+      "year": 2025,
+      "title": "Impact of Dietary Pattern Interventions on Gut Microbiota in Obesity: a Systematic Review and Meta-analysis",
+      "journal": "Biochemistry and Biophysics",
+      "doi": "https://doi.org/10.3724/j.pibb.2025.0327",
+      "reference_number": 37,
+      "authors_parsed": [
+        {
+          "family": "Wang",
+          "given": "Shun"
+        },
+        {
+          "family": "Bao",
+          "given": "Zihan"
+        },
+        {
+          "family": "Zhao",
+          "given": "Mengqi"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "lee_2026": {
+      "id": "lee_2026",
+      "authors": "T. Lee, S. Fehily, G. Trakman, et al.",
+      "year": 2026,
+      "title": "The Impact of dietary intervention on the gastrointestinal microbiome in Inflammatory Bowel Disease: a systematic review",
+      "journal": "Journal of Crohn's & Colitis",
+      "doi": "https://doi.org/10.1093/ecco-jcc/jjaf231.910",
+      "reference_number": 38,
+      "authors_parsed": [
+        {
+          "family": "Lee",
+          "given": "T."
+        },
+        {
+          "family": "Fehily",
+          "given": "S."
+        },
+        {
+          "family": "Trakman",
+          "given": "G."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "tang_2019": {
+      "id": "tang_2019",
+      "authors": "Zheng-Zheng Tang, Guanhua Chen, Q. Hong, et al.",
+      "year": 2019,
+      "title": "Multi-Omic Analysis of the Microbiome and Metabolome in Healthy Subjects Reveals Microbiome-Dependent Relationships Between Diet and Metabolites",
+      "journal": "Frontiers in Genetics",
+      "doi": "https://doi.org/10.3389/fgene.2019.00454",
+      "reference_number": 50,
+      "authors_parsed": [
+        {
+          "family": "Tang",
+          "given": "Zheng-Zheng"
+        },
+        {
+          "family": "Chen",
+          "given": "Guanhua"
+        },
+        {
+          "family": "Hong",
+          "given": "Q."
+        }
+      ],
+      "authors_et_al": true
+    }
+  },
+  "table_mapping": {
+    "description": "Dietary Pattern → Microbial Changes → Clinical Outcomes (extracted from Table on page 19)",
+    "rows": [
+      {
+        "dietary_pattern": "Mediterranean diet",
+        "reference": "[1]",
+        "microbial_changes": "Increased SCFA producers (Agathobaculum, Anaerostipes, Faecalibacterium) [1]",
+        "clinical_outcomes": "Reduced inflammatory markers (CRP, IL-1β, IL-6) [1]; improved metabolic health [2]"
+      },
+      {
+        "dietary_pattern": "High-fiber diet",
+        "reference": "[1]",
+        "microbial_changes": "Increased Bifidobacterium, Lactobacillus, Lachnospira [1]; elevated butyrate producers [2]",
+        "clinical_outcomes": "Lowered fasting glucose and HbA1c [2]; improved lipid profiles [2]"
+      },
+      {
+        "dietary_pattern": "Western diet",
+        "reference": "[1]",
+        "microbial_changes": "Reduced SCFA producers (Butyricicoccus, Lachnospiraceae) [1]; increased pathogens (Bilophila, Gemella) [1]",
+        "clinical_outcomes": "Increased dysbiosis [118]; elevated inflammatory markers [1]"
+      },
+      {
+        "dietary_pattern": "Plant-based diet",
+        "reference": "[1]",
+        "microbial_changes": "Increased butyrate and anti-inflammatory bacteria [1]; elevated Prevotella [47]",
+        "clinical_outcomes": "Improved metabolic profiles [47]; enhanced gut barrier function [3]"
+      },
+      {
+        "dietary_pattern": "Animal-based diet",
+        "reference": "[1]",
+        "microbial_changes": "Reduced butyrate producers (Ruminococcus bromii, Eubacterium rectale) [1]",
+        "clinical_outcomes": "Increased inflammation [3]; altered bile acid metabolism [50]"
+      },
+      {
+        "dietary_pattern": "Ketogenic diet (VLCKD)",
+        "reference": "[37]",
+        "microbial_changes": "Increased Akkermansia and F/B ratio [37]; reduced Bifidobacterium [37]",
+        "clinical_outcomes": "Improved diversity metrics but reduced beneficial taxa [37]"
+      },
+      {
+        "dietary_pattern": "Low-FODMAP diet",
+        "reference": "[1]",
+        "microbial_changes": "Reduced SCFA-producing bacteria [1, 38]",
+        "clinical_outcomes": "Symptom improvement in IBS [119] but microbial depletion [38]"
+      },
+      {
+        "dietary_pattern": "Calorie-restricted diet",
+        "reference": "[1]",
+        "microbial_changes": "Enhanced health-associated bacteria [1]",
+        "clinical_outcomes": "Improved metabolic markers [1]"
+      }
+    ]
+  },
+  "notes": {
+    "fiber_threshold": "≥14g per 1000kcal correlates positively with Coprococcus, Lachnospira, and Roseburia genera [45]",
+    "temporal_dynamics": "Adult gut microbiota exhibits remarkable compositional stability with transient fluctuations from short-term dietary changes [135]. Metabolic profiles change substantially within 24 hours despite modest compositional shifts, suggesting functional flexibility and rapid activation of different metabolic pathways independent of compositional changes [135]",
+    "polyphenol_effects": "Polyphenol-rich foods demonstrate selective bidogenic effects and promoted beneficial taxa. Red wine and tea polyphenols increased Bifidobacterium and Lactobacillus populations [72], while effects are dependent on gut enterotype [50]",
+    "cautions_summary": {
+      "low_fodmap": "Symptom improvement in IBS but risks microbial depletion and reduced SCFA-producing bacteria",
+      "ketogenic": "Improved diversity metrics but reduced beneficial taxa (Bifidobacterium); long-term sustainability concerns",
+      "western_diet": "Associated with dysbiosis, reduced beneficial taxa, increased pathogenic bacteria, and elevated inflammation",
+      "artificial_sweeteners": "Effects dependent on host enterotype; significant inter-individual heterogeneity in response"
+    }
+  }
+}

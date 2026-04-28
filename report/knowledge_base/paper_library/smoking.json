@@ -1,0 +1,516 @@
+{
+  "topic": "smoking",
+  "source_files": [
+    "smoking x microbiome.md",
+    "smoking x microbiome.csv"
+  ],
+  "lookup_keys": [
+    "smoking",
+    "tobacco",
+    "nicotine",
+    "cigarette",
+    "cessation",
+    "e-cigarette",
+    "vaping",
+    "pack-years",
+    "polycyclic aromatic hydrocarbons",
+    "PAHs",
+    "Prevotella",
+    "Desulfovibrio",
+    "Faecalibacterium prausnitzii",
+    "F. prausnitzii",
+    "Akkermansia muciniphila",
+    "A. muciniphila",
+    "Ruminococcus gnavus",
+    "Bifidobacteria",
+    "Lactococcus",
+    "Clostridium",
+    "Bacteroides",
+    "Eggerthella lenta",
+    "Bacteroides finegoldii",
+    "Lachnospiraceae",
+    "Veillonellaceae",
+    "Proteobacteria",
+    "Bacteroidetes",
+    "Firmicutes",
+    "Actinobacteria",
+    "diversity",
+    "dysbiosis",
+    "oxidative stress",
+    "tight junctions",
+    "mucin",
+    "SCFA",
+    "butyrate",
+    "bile acid",
+    "inflammatory"
+  ],
+  "related_topics": [
+    "bacterial_guilds",
+    "scfa_barrier_function",
+    "disease_dysbiosis_broad",
+    "colorectal_cancer",
+    "inflammatory_bowel_disease",
+    "cardiovascular_health"
+  ],
+  "findings": [
+    {
+      "finding_id": "smoking_diversity_loss",
+      "statement": "Smokers exhibit significantly reduced bacterial diversity in fecal samples compared to never-smokers. Multiple systematic reviews and observational studies consistently report this loss of alpha-diversity, representing a key dysbiotic signature of active smoking.",
+      "taxa_affected": {
+        "depleted": [
+          "Firmicutes",
+          "Actinobacteria",
+          "Bifidobacteria",
+          "Lactococcus",
+          "Faecalibacterium prausnitzii",
+          "Akkermansia muciniphila"
+        ],
+        "enriched": [
+          "Proteobacteria",
+          "Bacteroidetes",
+          "Prevotella",
+          "Desulfovibrio",
+          "Clostridium",
+          "Bacteroides"
+        ]
+      },
+      "guilds_affected": [
+        "Butyrate Producers",
+        "Cross-Feeders",
+        "Bifidobacteria"
+      ],
+      "mechanisms": [
+        "Oxidative stress from smoke-derived reactive oxygen species depletes oxygen-sensitive butyrate producers and anti-inflammatory species."
+      ],
+      "evidence_strength": "high",
+      "cautions": [],
+      "paper_ids": [
+        "antinozzi_2022",
+        "savin_2018",
+        "lee_2018",
+        "prakash_2021"
+      ]
+    },
+    {
+      "finding_id": "smoking_prevotella_proteobacteria_shift",
+      "statement": "Smoking induces a consistent phylum-level shift toward Proteobacteria and specific pathogenic enrichment: Prevotella is significantly increased in current and former smokers, while Desulfovibrio abundance increases in a dose-dependent manner with pack-years of smoking exposure.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": [
+          "Prevotella",
+          "Desulfovibrio",
+          "Proteobacteria",
+          "Bacteroidetes",
+          "Veillonellaceae"
+        ]
+      },
+      "guilds_affected": [
+        "Proteolytic Guild",
+        "Cross-Feeders"
+      ],
+      "mechanisms": [
+        "Altered intestinal pH and mucin composition favor proteolytic bacteria like Prevotella and sulfate-reducing bacteria like Desulfovibrio."
+      ],
+      "evidence_strength": "high",
+      "cautions": [],
+      "paper_ids": [
+        "antinozzi_2022",
+        "savin_2018",
+        "prakash_2021"
+      ]
+    },
+    {
+      "finding_id": "smoking_anti_inflammatory_depletion",
+      "statement": "Smoking significantly reduces key anti-inflammatory, butyrate-producing species including Faecalibacterium prausnitzii and Akkermansia muciniphila while enriching pro-inflammatory Ruminococcus gnavus, promoting a pro-inflammatory shift in the microbiota.",
+      "taxa_affected": {
+        "depleted": [
+          "Faecalibacterium prausnitzii",
+          "Akkermansia muciniphila"
+        ],
+        "enriched": [
+          "Ruminococcus gnavus"
+        ]
+      },
+      "guilds_affected": [
+        "Butyrate Producers",
+        "Mucin Degraders"
+      ],
+      "mechanisms": [
+        "Oxidative stress and impaired tight junction function diminish barrier-supporting mucin degraders and SCFA producers, reducing immune tolerance."
+      ],
+      "evidence_strength": "moderate",
+      "cautions": [],
+      "paper_ids": [
+        "yan_2021"
+      ]
+    },
+    {
+      "finding_id": "smoking_cessation_recovery",
+      "statement": "Former smokers show microbiota composition indistinguishable from never-smokers in large cross-sectional studies, suggesting the microbiome can recover after smoking cessation. However, the recovery process is complex: acute cessation triggers profound transient shifts toward Firmicutes and Actinobacteria (resembling obese microbiota) before normalization.",
+      "taxa_affected": {
+        "depleted": [
+          "Proteobacteria",
+          "Bacteroidetes"
+        ],
+        "enriched": [
+          "Firmicutes",
+          "Actinobacteria",
+          "Bacteroidetes"
+        ]
+      },
+      "guilds_affected": [
+        "Butyrate Producers",
+        "Bifidobacteria"
+      ],
+      "mechanisms": [
+        "Rapid reduction of oxidative stress and restoration of intestinal barrier function, allowing recovery of saccharolytic fermenters and SCFA producers."
+      ],
+      "evidence_strength": "high",
+      "cautions": [],
+      "paper_ids": [
+        "lee_2018",
+        "biedermann_2013",
+        "biedermann_2014",
+        "sublette_2020"
+      ]
+    },
+    {
+      "finding_id": "smoking_dose_response",
+      "statement": "Smoking demonstrates a dose-response relationship with microbiota composition: Desulfovibrio and other pathogenic taxa show increasing abundance with pack-years of cumulative exposure, while butyrate producers decline proportionally with smoking intensity.",
+      "taxa_affected": {
+        "depleted": [
+          "Butyrate Producers",
+          "SCFA-producing taxa"
+        ],
+        "enriched": [
+          "Desulfovibrio",
+          "Sulfate-reducing bacteria"
+        ]
+      },
+      "guilds_affected": [
+        "Butyrate Producers",
+        "Cross-Feeders"
+      ],
+      "mechanisms": [
+        "Cumulative exposure to toxic smoke components increases ROS burden and dysbiotic potential proportionally to lifetime smoking dose."
+      ],
+      "evidence_strength": "moderate",
+      "cautions": [],
+      "paper_ids": [
+        "antinozzi_2022"
+      ]
+    },
+    {
+      "finding_id": "smoking_colorectal_cancer_mechanism",
+      "statement": "Smoke-induced gut dysbiosis promotes colorectal cancer through a pathway involving enrichment of Eggerthella lenta, increased secondary bile acid production (TDCA), and activation of pro-tumoral MAPK/ERK signaling. This mechanism has been demonstrated in mouse models and is reversible with microbial ablation.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": [
+          "Eggerthella lenta"
+        ]
+      },
+      "guilds_affected": [
+        "Proteolytic Guild",
+        "Cross-Feeders"
+      ],
+      "mechanisms": [
+        "Enriched Eggerthella lenta produces secondary bile acids that activate FXR/TGR5 signaling and MAPK/ERK cascades, promoting epithelial proliferation and carcinogenesis.",
+        "Smoking-dysbiosis alters anti-tumor immune response by reducing butyrate-producing species and Th17-inducing commensals."
+      ],
+      "evidence_strength": "high",
+      "cautions": [],
+      "paper_ids": [
+        "bai_2020",
+        "sharma_2025"
+      ]
+    },
+    {
+      "finding_id": "smoking_bidirectional_causality",
+      "statement": "Mendelian randomization analysis provides evidence for bidirectional causal relationships between smoking and specific gut microbial taxa. Smoking causally influences certain bacterial lineages, while some taxa may reciprocally influence smoking behavior through neurotransmitter-associated metabolites (tryptophan, tyrosine) that affect dopamine signaling and reward circuits.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": []
+      },
+      "guilds_affected": [
+        "Cross-Feeders"
+      ],
+      "mechanisms": [
+        "Smoking alters tryptophan and tyrosine metabolism through dysbiotic shifts in amino acid-metabolizing taxa, affecting central nervous system dopamine and serotonin signaling that influences addiction behavior."
+      ],
+      "evidence_strength": "moderate",
+      "cautions": [],
+      "paper_ids": [
+        "fan_2023"
+      ]
+    },
+    {
+      "finding_id": "smoking_mechanistic_components",
+      "statement": "Specific smoke constituents (nicotine, polycyclic aromatic hydrocarbons, heavy metals) interact differentially with the microbiota. Heme metabolism emerges as a key mediator of smoking effects, with enrichment of heme-degrading taxa like Bacteroides finegoldii and Lachnospiraceae families. Mechanisms include oxidative stress, altered intestinal tight junctions, changes in mucin composition, and acid-base shifts.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": [
+          "Bacteroides finegoldii",
+          "Lachnospiraceae"
+        ]
+      },
+      "guilds_affected": [
+        "Proteolytic Guild",
+        "Fiber Degraders"
+      ],
+      "mechanisms": [
+        "Nicotine and PAHs damage intestinal tight junctions, increasing permeability and bacterial translocation.",
+        "Heme and iron dysmetabolism from smoking by-products selects for heme-degrading bacteria.",
+        "Smoke-induced ROS overwhelms mucosal antioxidant defenses and alters mucin glycosylation."
+      ],
+      "evidence_strength": "moderate",
+      "cautions": [],
+      "paper_ids": [
+        "chen_2024",
+        "gui_2021",
+        "li_2023"
+      ]
+    }
+  ],
+  "papers": {
+    "antinozzi_2022": {
+      "title": "Cigarette Smoking and Human Gut Microbiota in Healthy Adults: A Systematic Review",
+      "authors": "M. Antinozzi et al.",
+      "year": 2022,
+      "doi": "10.3390/biomedicines10020510",
+      "venue": "Biomedicines",
+      "study_type": "systematic_review",
+      "authors_parsed": [
+        {
+          "family": "Antinozzi",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Biomedicines"
+    },
+    "savin_2018": {
+      "title": "Smoking and the intestinal microbiome",
+      "authors": "Z. Savin et al.",
+      "year": 2018,
+      "doi": "10.1007/s00203-018-1506-2",
+      "venue": "Archives of Microbiology",
+      "study_type": "narrative_review",
+      "authors_parsed": [
+        {
+          "family": "Savin",
+          "given": "Z."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Archives of Microbiology"
+    },
+    "lee_2018": {
+      "title": "Association between Cigarette Smoking Status and Composition of Gut Microbiota: Population-Based Cross-Sectional Study",
+      "authors": "S. H. Lee et al.",
+      "year": 2018,
+      "doi": "10.3390/jcm7090282",
+      "venue": "Journal of Clinical Medicine",
+      "study_type": "cross_sectional",
+      "authors_parsed": [
+        {
+          "family": "Lee",
+          "given": "S. H."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Journal of Clinical Medicine"
+    },
+    "prakash_2021": {
+      "title": "Tobacco Smoking and the Fecal Microbiome in a Large, Multi-ethnic Cohort",
+      "authors": "A. Prakash et al.",
+      "year": 2021,
+      "doi": "10.1158/1055-9965.EPI-20-1417",
+      "venue": "Cancer Epidemiology, Biomarkers and Prevention",
+      "study_type": "cross_sectional",
+      "authors_parsed": [
+        {
+          "family": "Prakash",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Cancer Epidemiology, Biomarkers and Prevention"
+    },
+    "biedermann_2013": {
+      "title": "Smoking Cessation Induces Profound Changes in the Composition of the Intestinal Microbiota in Humans",
+      "authors": "L. Biedermann et al.",
+      "year": 2013,
+      "doi": "10.1371/journal.pone.0059260",
+      "venue": "PLoS ONE",
+      "study_type": "cohort",
+      "authors_parsed": [
+        {
+          "family": "Biedermann",
+          "given": "L."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "PLoS ONE"
+    },
+    "biedermann_2014": {
+      "title": "Smoking Cessation Alters Intestinal Microbiota: Insights from Quantitative Investigations on Human Fecal Samples Using FISH",
+      "authors": "L. Biedermann et al.",
+      "year": 2014,
+      "doi": "10.1097/MIB.0000000000000129",
+      "venue": "Inflammatory Bowel Diseases",
+      "study_type": "cohort",
+      "authors_parsed": [
+        {
+          "family": "Biedermann",
+          "given": "L."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Inflammatory Bowel Diseases"
+    },
+    "yan_2021": {
+      "title": "Effects of Smoking on Inflammatory Markers in a Healthy Population as Analyzed via the Gut Microbiota",
+      "authors": "S. Yan et al.",
+      "year": 2021,
+      "doi": "10.3389/fcimb.2021.633242",
+      "venue": "Frontiers in Cellular and Infection Microbiology",
+      "study_type": "cross_sectional",
+      "authors_parsed": [
+        {
+          "family": "Yan",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Frontiers in Cellular and Infection Microbiology"
+    },
+    "fan_2023": {
+      "title": "Cross-talks between gut microbiota and tobacco smoking: a two-sample Mendelian randomization study",
+      "authors": "J. Fan et al.",
+      "year": 2023,
+      "doi": "10.1186/s12916-023-02863-1",
+      "venue": "BMC Medicine",
+      "study_type": "meta_analysis",
+      "authors_parsed": [
+        {
+          "family": "Fan",
+          "given": "J."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "BMC Medicine"
+    },
+    "bai_2020": {
+      "title": "Cigarette smoke promotes colorectal cancer through modulation of gut microbiota and related metabolites",
+      "authors": "X. Bai et al.",
+      "year": 2020,
+      "doi": "10.1136/gutjnl-2021-325021",
+      "venue": "Gut",
+      "study_type": "cohort",
+      "authors_parsed": [
+        {
+          "family": "Bai",
+          "given": "X."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Gut"
+    },
+    "sublette_2020": {
+      "title": "Effects of Smoking and Smoking Cessation on the Intestinal Microbiota",
+      "authors": "M. G. Sublette et al.",
+      "year": 2020,
+      "doi": "10.3390/jcm9092963",
+      "venue": "Journal of Clinical Medicine",
+      "study_type": "rct",
+      "authors_parsed": [
+        {
+          "family": "Sublette",
+          "given": "M. G."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Journal of Clinical Medicine"
+    },
+    "chen_2024": {
+      "title": "When smoke meets gut: deciphering the interactions between tobacco smoking and gut microbiota in disease development",
+      "authors": "B. Chen et al.",
+      "year": 2024,
+      "doi": "10.1007/s11427-023-2446-y",
+      "venue": "Science China Life Sciences",
+      "study_type": "narrative_review",
+      "authors_parsed": [
+        {
+          "family": "Chen",
+          "given": "B."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Science China Life Sciences"
+    },
+    "gui_2021": {
+      "title": "Effect of Cigarette Smoke on Gut Microbiota: State of Knowledge",
+      "authors": "X. Gui et al.",
+      "year": 2021,
+      "doi": "10.3389/fphys.2021.673341",
+      "venue": "Frontiers in Physiology",
+      "study_type": "narrative_review",
+      "authors_parsed": [
+        {
+          "family": "Gui",
+          "given": "X."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Frontiers in Physiology"
+    },
+    "li_2023": {
+      "title": "Heme metabolism mediates the effects of smoking on gut microbiome",
+      "authors": "J. Li et al.",
+      "year": 2023,
+      "doi": "10.1093/ntr/ntad209",
+      "venue": "Nicotine & Tobacco Research",
+      "study_type": "cross_sectional",
+      "authors_parsed": [
+        {
+          "family": "Li",
+          "given": "J."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Nicotine & Tobacco Research"
+    },
+    "opstelten_2016": {
+      "title": "Gut Microbial Diversity Is Reduced in Smokers with Crohn's Disease",
+      "authors": "J. Opstelten et al.",
+      "year": 2016,
+      "doi": "10.1097/MIB.0000000000000875",
+      "venue": "Inflammatory Bowel Diseases",
+      "study_type": "cross_sectional",
+      "authors_parsed": [
+        {
+          "family": "Opstelten",
+          "given": "J."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "Inflammatory Bowel Diseases"
+    },
+    "sharma_2025": {
+      "title": "Smoking-induced gut microbial dysbiosis mediates cancer progression through modulation of anti-tumor immune response",
+      "authors": "P. Sharma et al.",
+      "year": 2025,
+      "doi": "10.1016/j.isci.2025.112002",
+      "venue": "iScience",
+      "study_type": "cohort",
+      "authors_parsed": [
+        {
+          "family": "Sharma",
+          "given": "P."
+        }
+      ],
+      "authors_et_al": true,
+      "journal": "iScience"
+    }
+  }
+}

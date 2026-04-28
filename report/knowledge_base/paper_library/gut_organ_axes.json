@@ -1,0 +1,750 @@
+{
+  "topic": "gut_organ_axes",
+  "source_files": [
+    "Elicit - Gut Microbiome and Health A Bidirectional Review - Report.pdf"
+  ],
+  "lookup_keys": [
+    "gut-liver",
+    "gut-brain",
+    "gut-immune",
+    "gut-skin",
+    "gut-lung",
+    "gut-renal",
+    "gut-bladder",
+    "estrogen",
+    "estrobolome",
+    "beta-glucuronidase",
+    "bile acids",
+    "hepatic",
+    "liver",
+    "NAFLD",
+    "cirrhosis",
+    "fatty liver disease",
+    "brain",
+    "vagus nerve",
+    "neurotransmitter",
+    "dopamine",
+    "GABA",
+    "serotonin",
+    "mood",
+    "anxiety",
+    "depression",
+    "cognitive function",
+    "Alzheimer's",
+    "dementia",
+    "immune",
+    "Treg",
+    "regulatory T cells",
+    "Th17",
+    "mucosal immunity",
+    "antimicrobial peptide",
+    "inflammation",
+    "gut barrier",
+    "intestinal permeability",
+    "leaky gut",
+    "skin",
+    "psoriasis",
+    "atopic dermatitis",
+    "eczema",
+    "rosacea",
+    "acne",
+    "alopecia",
+    "skin breakouts",
+    "skin inflammation",
+    "dermatitis",
+    "skin infections",
+    "hair loss",
+    "lung",
+    "respiratory",
+    "asthma",
+    "COPD",
+    "breathing issues",
+    "respiratory infection",
+    "airway inflammation",
+    "lung disease",
+    "renal",
+    "kidney",
+    "UTI",
+    "urinary tract infection",
+    "bladder",
+    "kidney disease",
+    "kidney function",
+    "uremia",
+    "menopause",
+    "estradiol",
+    "progesterone",
+    "hormonal balance",
+    "menstrual cycle",
+    "hormone metabolism",
+    "microbial metabolites",
+    "butyrate",
+    "propionate",
+    "short-chain fatty acids",
+    "SCFA",
+    "lipopolysaccharide",
+    "LPS",
+    "endotoxin",
+    "cytokines",
+    "TNF-alpha",
+    "IL-6",
+    "CRP",
+    "C-reactive protein",
+    "dysbiosis",
+    "microbiome imbalance",
+    "bacterial diversity",
+    "microbial composition"
+  ],
+  "related_topics": [
+    "stress_gutbrain",
+    "disease_dysbiosis_broad",
+    "bacterial_guilds",
+    "scfa_barrier_function"
+  ],
+  "findings": [
+    {
+      "axis": "gut-liver",
+      "title": "Bidirectional Communication via Bile Acids and Microbial Metabolites",
+      "summary": "The gut microbiome exerts systemic effects through the hepatic axis, where hepatic secretions shape intestinal microbial ecology while microbial metabolites influence hepatic gene expression and metabolism. Microbial metabolites including butyrate and propionate serve as epigenetic modifiers affecting hepatic gene expression rhythmicity. Dysregulation of this axis contributes to alcoholic liver disease, non-alcoholic steatohepatitis (NAFLD), liver cirrhosis, cholangitis, and hepatocellular carcinoma.",
+      "mechanism": [
+        "Bile acid circulation influences microbial composition and metabolism",
+        "Microbial production of butyrate and propionate affects hepatic gene expression",
+        "Dysbiosis impairs hepatic glucose metabolism and increases fatty liver risk",
+        "Bacterial metabolites regulate cytochrome P450-mediated xenobiotic metabolism"
+      ],
+      "clinical_outcomes": [
+        "NAFLD/fatty liver disease",
+        "Cirrhosis",
+        "Altered liver function",
+        "Metabolic dysfunction",
+        "Reduced bile acid metabolism"
+      ],
+      "patient_facing_terms": [
+        "fatty liver",
+        "liver disease",
+        "liver function",
+        "liver damage",
+        "metabolic dysfunction"
+      ]
+    },
+    {
+      "axis": "gut-brain",
+      "title": "Neural, Endocrine, Immune, and Metabolic Signaling",
+      "summary": "The gut-brain axis mediates bidirectional communication through neural, endocrine, immune, and metabolic signaling pathways. Gut bacteria produce neuroactive molecules including GABA, serotonin precursors, and dopamine that engage the enteric nervous system and potentially cross the blood-brain barrier via vagal afferent signaling. Dysbiosis correlates with neuropsychiatric conditions through mechanisms including impaired blood-brain barrier permeability, altered neurotransmitter production, and systemic inflammation affecting neurological function.",
+      "mechanism": [
+        "Vagus nerve-mediated neural communication between gut and central nervous system",
+        "Bacterial production of neurotransmitters: GABA, serotonin precursors, dopamine",
+        "Dysbiosis impairs blood-brain barrier integrity through reduced short-chain fatty acid production",
+        "Altered neuroimmune signaling and systemic inflammation affecting neurological function"
+      ],
+      "clinical_outcomes": [
+        "Improved cognitive function with probiotic supplementation",
+        "Reduced inflammatory markers in Alzheimer's disease patients",
+        "Inverse correlations with anxiety and depression",
+        "Altered neurotransmitter production in dysbiosis",
+        "Neuroinflammation and neurodegeneration"
+      ],
+      "patient_facing_terms": [
+        "brain health",
+        "mood",
+        "anxiety",
+        "depression",
+        "cognitive function",
+        "memory",
+        "mental clarity",
+        "stress response",
+        "Alzheimer's risk",
+        "neurological health"
+      ]
+    },
+    {
+      "axis": "gut-immune",
+      "title": "Continuous Mucosal Crosstalk Affecting Systemic Immunity",
+      "summary": "The gut-immune axis involves continuous molecular crosstalk affecting both mucosal and systemic immunity. Gut microbiota shape immune system development and function through multiple mechanisms: commensal bacteria induce tolerogenic inflammatory regulatory T cells (Treg) while others promote pro-inflammatory Th17 cells. Short-chain fatty acids (SCFAs) promoted regulatory T cell differentiation and modulated cytokine production. In autoimmune conditions, dysbiosis promoted Th17 cell differentiation, influenced regulatory T-cell balance, and triggered autobody production through molecular mimicry and pathogen-associated molecular patterns (PAMPs).",
+      "mechanism": [
+        "Commensal bacteria induce tolerogenic anti-inflammatory Treg cells",
+        "Dysbiotic bacteria promote pro-inflammatory Th17 cell differentiation",
+        "Short-chain fatty acids (butyrate, propionate) promote Treg differentiation",
+        "Microbial metabolites regulate mucosal barrier function and antimicrobial peptide secretion",
+        "Dysbiosis triggers pathogenic immune responses and autoantibody production"
+      ],
+      "clinical_outcomes": [
+        "Dysbiosis promotes Th17 cell differentiation in autoimmune conditions",
+        "Reduced mucosal immunity in dysbiotic states",
+        "Increased systemic inflammation and immune dysregulation",
+        "Altered intestinal epithelial barrier function",
+        "IBD remission via dysbiosis intervention"
+      ],
+      "patient_facing_terms": [
+        "immune function",
+        "inflammation",
+        "autoimmune disease",
+        "gut barrier health",
+        "gut permeability",
+        "leaky gut",
+        "immune strength",
+        "infection risk",
+        "allergy",
+        "food sensitivity"
+      ]
+    },
+    {
+      "axis": "gut-skin",
+      "title": "Immune Modulation and Short-Chain Fatty Acid Production",
+      "summary": "The gut-skin axis connects intestinal microbial balance with dermatological health outcomes. Gut dysbiosis associates with psoriasis, atopic dermatitis, acne vulgaris, rosacea, alopecia areata, and hidradenitis suppurativa. Mechanisms involve immune dysregulation, altered metabolic profiles, and reduced short-chain fatty acid production. Bifidobacterium infantis supplementation reduced plasma levels of inflammatory cytokines TNF-alpha, IL-6, and CRP with associated improvement in psoriasis symptoms. The gut-skin connection operates through immune modulation and production of short-chain fatty acids that maintained gut barrier function and reduced systemic inflammation affecting skin homeostasis.",
+      "mechanism": [
+        "Dysbiosis impairs short-chain fatty acid production affecting barrier integrity",
+        "Increased systemic inflammation spreads from dysbiotic gut to skin",
+        "Altered immune response (Th17 promotion) affects skin inflammation",
+        "Dysbiosis-associated increased intestinal permeability elevates systemic LPS and inflammatory markers",
+        "Reduced antimicrobial peptide secretion increases pathogenic skin colonization"
+      ],
+      "clinical_outcomes": [
+        "Psoriasis symptom improvement with probiotic supplementation",
+        "Acne vulgaris associated with dysbiosis",
+        "Atopic dermatitis linked to dysbiotic microbiota",
+        "Reduced inflammatory cytokines in skin with improved microbiota",
+        "Hair loss (alopecia) associated with dysbiosis",
+        "Rosacea flares correlate with gut dysbiosis"
+      ],
+      "patient_facing_terms": [
+        "skin breakouts",
+        "acne",
+        "eczema",
+        "psoriasis",
+        "rosacea",
+        "skin rashes",
+        "skin inflammation",
+        "hives",
+        "itchy skin",
+        "skin infections",
+        "hair loss",
+        "alopecia",
+        "skin barrier",
+        "atopic dermatitis"
+      ]
+    },
+    {
+      "axis": "gut-lung",
+      "title": "Microbial Composition and Respiratory Outcomes",
+      "summary": "The gut-lung axis links respiratory disorders with intestinal microbial composition, with airway symptoms among the most common extra-intestinal manifestations of IBD. Individual bacterial families either increased or decreased lung disease risk through systemic immune modulation. Dysbiosis shows preliminary associations between dysbiosis and tract conditions, though mechanisms remain less characterized than other organ axes.",
+      "mechanism": [
+        "Dysbiosis-driven systemic inflammation spreads to respiratory mucosa",
+        "Altered immune tolerance in dysbiotic states increases airway inflammation",
+        "Reduced short-chain fatty acid production impairs respiratory barrier function",
+        "Dysbiosis-associated increased intestinal permeability elevates systemic LPS exposure"
+      ],
+      "clinical_outcomes": [
+        "Dysbiosis associated with asthma and allergic airway disease",
+        "IBD patients with respiratory symptoms and dysbiosis",
+        "COPD exacerbation risk linked to dysbiosis",
+        "Altered immune tolerance in dysbiotic states",
+        "Respiratory infection susceptibility in dysbiosis"
+      ],
+      "patient_facing_terms": [
+        "breathing issues",
+        "asthma",
+        "allergies",
+        "respiratory infection",
+        "cough",
+        "lung health",
+        "COPD",
+        "wheezing",
+        "shortness of breath",
+        "airway inflammation"
+      ]
+    },
+    {
+      "axis": "gut-renal",
+      "title": "Dysbiosis and Urinary Tract Dysfunction",
+      "summary": "The gut-renal and gut-bladder axes remain less characterized than other organ systems, showing preliminary associations between dysbiosis and urinary tract conditions. Evidence remains preliminary with limited mechanistic understanding compared to the hepatic, neural, immune, and cutaneous axes.",
+      "mechanism": [
+        "Dysbiosis-associated metabolite dysregulation affects urinary composition",
+        "Altered systemic inflammation may impact renal function",
+        "Dysbiosis increases pathogenic bacterial translocation to urinary tract",
+        "Dysbiosis-driven changes in urinary metabolite profiles promote UTI risk"
+      ],
+      "clinical_outcomes": [
+        "Preliminary associations between dysbiosis and urinary tract infections",
+        "Dysbiosis may impair kidney function through systemic inflammation",
+        "Altered urinary metabolite profiles in dysbiosis",
+        "Limited mechanistic understanding compared to other axes"
+      ],
+      "patient_facing_terms": [
+        "kidney function",
+        "kidney health",
+        "UTI",
+        "urinary tract infection",
+        "bladder issues",
+        "urinary symptoms",
+        "kidney disease"
+      ]
+    },
+    {
+      "axis": "estrogen-gut-microbiome",
+      "title": "Beta-Glucuronidase-Mediated Estrogen Conjugation",
+      "summary": "The estrogen-gut microbiome axis revealed that gut bacteria regulate circulating estrogen levels through beta-glucuronidase secretion. Dysbiosis impairs estrogen deconjugation and recirculation, contributing to metabolic, reproductive, cardiovascular, and cognitive conditions in post-menopausal women. The estrobolome (estrogen-metabolizing microbial genes) mediates estrogen metabolism, reabsorption, and systemic bioavailability. Dysbiosis reduces beta-glucuronidase activity, lowering circulating estrogen and contributing to menopausal symptom severity and post-menopausal health complications.",
+      "mechanism": [
+        "Microbial beta-glucuronidase deconjugates estrogen metabolites for reabsorption",
+        "Dysbiosis reduces beta-glucuronidase activity, lowering circulating estrogen",
+        "Dysbiosis impairs estrogen entero-hepatic circulation",
+        "Dysbiosis-associated dysregulation affects estrogen-dependent metabolic processes",
+        "Reduced estrogen bioavailability increases menopausal symptoms in dysbiotic women"
+      ],
+      "clinical_outcomes": [
+        "Dysbiosis impairs estrogen metabolism and increases menopausal symptoms",
+        "Reduced circulating estrogen in dysbiotic post-menopausal women",
+        "Dysbiosis contributes to metabolic dysfunction in post-menopause",
+        "Dysbiosis increases cardiovascular risk in post-menopausal women",
+        "Dysbiosis-driven cognitive decline in estrogen-deficient states"
+      ],
+      "patient_facing_terms": [
+        "menopause",
+        "hormonal balance",
+        "hormone metabolism",
+        "estrogen levels",
+        "menopausal symptoms",
+        "hot flashes",
+        "mood changes",
+        "hormone-related bloating",
+        "menstrual cycle",
+        "progesterone",
+        "estradiol"
+      ]
+    }
+  ],
+  "papers": {
+    "gut_microbiome_multi_axis": {
+      "citation": "Elicit - Gut Microbiome and Health A Bidirectional Review - Report.pdf, Pages 25-26",
+      "title": "Gut Microbiome and Multi-Organ Axis Communication",
+      "year": 2025,
+      "reference_index": null
+    },
+    "dietary_interventions": {
+      "title": "Dietary interventions and the gut microbiota: a systematic literature review of 80 controlled clinical trials",
+      "journal": "Journal of Translational Medicine",
+      "year": 2026,
+      "authors": "Hajara Aslam, et al",
+      "citation_provenance": "[1] Hajara Aslam, et al (2026)",
+      "authors_parsed": [
+        {
+          "family": "Aslam",
+          "given": "Hajara"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "type2_diabetes_microbiota": {
+      "title": "Gut Microbiota Modulation in Type 2 Diabetes and Cardiometabolic Risk: A Systematic Review",
+      "journal": "Cureus",
+      "year": 2025,
+      "authors": "Umer Qureshi, et al",
+      "citation_provenance": "[2] Umer Qureshi, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Qureshi",
+          "given": "Umer"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "dietary_patterns_microbiota": {
+      "title": "Long-term dietary patterns are associated with pro-inflammatory and anti-inflammatory features of the gut microbiome",
+      "journal": "Gut",
+      "year": 2021,
+      "authors": "L. Bolte, et al",
+      "citation_provenance": "[3] L. Bolte, et al (2021)",
+      "authors_parsed": [
+        {
+          "family": "Bolte",
+          "given": "L."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "exercise_microbiota": {
+      "title": "Gut Microbiota Modulation to Enhance Exercise Performance and Recovery - Systematic Review",
+      "journal": "Quality in Sport",
+      "year": 2025,
+      "authors": "Maksymilian Czarnota, et al",
+      "citation_provenance": "[4] Maksymilian Czarnota, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Czarnota",
+          "given": "Maksymilian"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "lifestyle_microbiota": {
+      "title": "The human gut microbiota is associated with host lifestyle: a comprehensive narrative review",
+      "journal": "Frontiers in Microbiology",
+      "year": 2025,
+      "authors": "Qin Zeng, et al",
+      "citation_provenance": "[5] Qin Zeng, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Zeng",
+          "given": "Qin"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "circadian_rhythms_microbiota": {
+      "title": "Bidirectional interactions between circadian rhythms and the gut microbiome",
+      "journal": "Applied Microbiology and Biotechnology",
+      "year": 2025,
+      "authors": "Jhommara Bautista, et al",
+      "citation_provenance": "[6] Jhommara Bautista, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Bautista",
+          "given": "Jhommara"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "antibiotic_microbiota": {
+      "title": "Antibiotic Exposures and Dietary Intakes Are Associated with Changes in Microbiota Compositions in Allogeneic Hematopoietic Stem Cell Transplant Patients",
+      "journal": "Blood",
+      "year": 2019,
+      "authors": "Chi L Nguyen, et al",
+      "citation_provenance": "[7] Chi L Nguyen, et al (2019)",
+      "authors_parsed": [
+        {
+          "family": "Nguyen",
+          "given": "Chi L"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "gut_microbiota_immunotherapy": {
+      "title": "The impact of gut microbiota modulation on responses to immune checkpoint inhibitors in cancer",
+      "journal": "Acta Microbiologica et Immunologica Hungarica",
+      "year": 2025,
+      "authors": "Zheying Ni, D. Ye",
+      "citation_provenance": "[8] Zheying Ni, D. Ye (2025)",
+      "authors_parsed": [
+        {
+          "family": "Ni",
+          "given": "Zheying"
+        },
+        {
+          "family": "Ye",
+          "given": "D."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "microbiome_metabolic_health": {
+      "title": "Human microbiome and metabolic health: An overview of systematic reviews",
+      "journal": "Obesity Reviews",
+      "year": 2022,
+      "authors": "N. Michels, et al",
+      "citation_provenance": "[9] N. Michels, et al (2022)",
+      "authors_parsed": [
+        {
+          "family": "Michels",
+          "given": "N."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "gut_health_autoimmune": {
+      "title": "Exploring the Relationship Between Gut Health and Autoimmune Diseases: A Systematic Review and Meta-Analysis",
+      "journal": "Cureus",
+      "year": 2025,
+      "authors": "Allenki Vineesh, et al",
+      "citation_provenance": "[10] Allenki Vineesh, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Vineesh",
+          "given": "Allenki"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "nafld_microbiota": {
+      "title": "Gut Microbiota and NAFLD: Pathogenetic Mechanisms, Microbiota Signatures, and Therapeutic Interventions",
+      "journal": "Microorganisms",
+      "year": 2021,
+      "authors": "T. Hrncir, et al",
+      "citation_provenance": "[11] T. Hrncir, et al (2021)",
+      "authors_parsed": [
+        {
+          "family": "Hrncir",
+          "given": "T."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "microbiome_therapeutic_targets": {
+      "title": "Translating the microbiome - what's the target?",
+      "journal": "Gastroenterology",
+      "year": 2023,
+      "authors": "P. O'Toole, et al",
+      "citation_provenance": "[12] P. O'Toole, et al (2023)",
+      "authors_parsed": [
+        {
+          "family": "O'Toole",
+          "given": "P."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "probiotics_prebiotics_comparison": {
+      "title": "S2073 Comparison of Probiotic vs Prebiotic Supplementation in Gut Microbiome Reconstitution: Systematic Review and Meta-Analysis",
+      "journal": "American Journal of Gastroenterology",
+      "year": 2025,
+      "authors": "Chandana Tudigotla, et al",
+      "citation_provenance": "[13] Chandana Tudigotla, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Tudigotla",
+          "given": "Chandana"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "microbiota_systemic_inflammation": {
+      "title": "Efficacy of Gut Microbiome-Targeted Therapies in Modulating Systemic Inflammation and Low-Grade Chronic Inflammatory States in Adults With Metabolic Disorders: A Systematic Review",
+      "journal": "Cureus",
+      "year": 2025,
+      "authors": "A. Al-Juhani, et al",
+      "citation_provenance": "[14] A. Al-Juhani, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Al-Juhani",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "bifidobacterium_metabolic_health": {
+      "title": "Keystone Species Restoration: Therapeutic Effects of Bifidobacterium infantis and Lactobacillus reuteri on Metabolic Regulation and Mucosal IL-10 Signaling—A Qualitative Systematic Review",
+      "journal": "Gastrointestinal Disorders",
+      "year": 2025,
+      "authors": "Michael Enwere, et al",
+      "citation_provenance": "[15] Michael Enwere, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Enwere",
+          "given": "Michael"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "microbiota_systemic_diseases": {
+      "title": "THE ROLE OF GUT MICROBIOTA MODULATION IN PREVENTING AND MANAGING SYSTEMIC DISEASES: A MULTISPECIALTY META-ANALYSIS OF EMERGING THERAPEUTIC AND DIAGNOSTIC APPROACHES",
+      "journal": "Insights-Journal of Health and Rehabilitation",
+      "year": 2024,
+      "authors": "Moazma Khan, et al",
+      "citation_provenance": "[16] Moazma Khan, et al (2024)",
+      "authors_parsed": [
+        {
+          "family": "Khan",
+          "given": "Moazma"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "probiotics_ibd": {
+      "title": "Clinical effects and gut microbiota changes of using probiotics, prebiotics or synbiotics in inflammatory bowel disease: a systematic review and meta-analysis",
+      "journal": "European Journal of Nutrition",
+      "year": 2021,
+      "authors": "Xiaofeng Zhang, et al",
+      "citation_provenance": "[17] Xiaofeng Zhang, et al (2021)",
+      "authors_parsed": [
+        {
+          "family": "Zhang",
+          "given": "Xiaofeng"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "vitamin_d_microbiota": {
+      "title": "Effect of Vitamin D Supplementation on Human Gut Microbiota: A Systematic Review of Randomized Controlled Trials",
+      "journal": "Nutrition reviews",
+      "year": 2025,
+      "authors": "Falak Zeb, et al",
+      "citation_provenance": "[18] Falak Zeb, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Zeb",
+          "given": "Falak"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "microbial_metabolites_host": {
+      "title": "Biochemically Active Metabolites of Gut Bacteria: Their Influence on Host Metabolism, Neurotransmission, and Immunity",
+      "journal": "Science International",
+      "year": 2025,
+      "authors": "Anih, et al",
+      "citation_provenance": "[19] Anih, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Anih",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "microbiota_neuropsychiatric": {
+      "title": "From Microbial Homeostasis to Systemic Pathogenesis: A Narrative Review on Gut Flora's Role in Neuropsychiatric, Metabolic, and Cancer Disorders",
+      "journal": "Journal of Inflammation Research",
+      "year": 2025,
+      "authors": "Xili Yan, et al",
+      "citation_provenance": "[20] Xili Yan, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Yan",
+          "given": "Xili"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "liver_microbiota": {
+      "title": "Remote Sensing Between Liver and Intestine: Importance of Microbial Metabolites",
+      "journal": "Current Pharmacology Reports",
+      "year": 2017,
+      "authors": "Z. Fu, J. Cui",
+      "citation_provenance": "[21] Z. Fu, J. Cui (2017)",
+      "authors_parsed": [
+        {
+          "family": "Fu",
+          "given": "Z."
+        },
+        {
+          "family": "Cui",
+          "given": "J."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "microbiota_health_markers": {
+      "title": "Health and disease markers correlate with gut microbiome composition across thousands of people",
+      "journal": "Nature Communications",
+      "year": 2020,
+      "authors": "Ohad Manor, et al",
+      "citation_provenance": "[22] Ohad Manor, et al (2020)",
+      "authors_parsed": [
+        {
+          "family": "Manor",
+          "given": "Ohad"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "gi_microbiota_health": {
+      "title": "Gastrointestinal Microbiome and Multiple Health Outcomes: Umbrella Review",
+      "journal": "Nutrients",
+      "year": 2022,
+      "authors": "Chengting Chang, et al",
+      "citation_provenance": "[23] Chengting Chang, et al (2022)",
+      "authors_parsed": [
+        {
+          "family": "Chang",
+          "given": "Chengting"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "diet_microbiota_research": {
+      "title": "Best Practices and Considerations for Conducting Research on Diet-Gut Microbiome Interactions and Their Impact on Health in Adult Populations: An Umbrella Review",
+      "journal": "Advances in Nutrition",
+      "year": 2025,
+      "authors": "Tatiana Diacova, et al",
+      "citation_provenance": "[24] Tatiana Diacova, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Diacova",
+          "given": "Tatiana"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "dietary_intake_metabolites": {
+      "title": "Gut microbiota is associated with dietary intake and metabolic markers in healthy individuals",
+      "journal": "Food & Nutrition Research",
+      "year": 2022,
+      "authors": "Line Gaundal, et al",
+      "citation_provenance": "[25] Line Gaundal, et al (2022)",
+      "authors_parsed": [
+        {
+          "family": "Gaundal",
+          "given": "Line"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "host_genetics_microbiota": {
+      "title": "Effect of host genetics on the gut microbiome in 7,738 participants of the 1 Dutch Microbiome Project 2.3",
+      "year": 2021,
+      "authors": "E. A. Lopera-Maya, et al",
+      "citation_provenance": "[26] E. A. Lopera-Maya, et al (2021)",
+      "authors_parsed": [
+        {
+          "family": "Lopera-Maya",
+          "given": "E. A."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "diet_metabolites_outcomes": {
+      "title": "Diet-Related and Gut-Derived Metabolites and Health Outcomes: A Scoping Review",
+      "journal": "Current Developments in Nutrition",
+      "year": 2022,
+      "authors": "Yuanxi Jia, et al",
+      "citation_provenance": "[27] Yuanxi Jia, et al (2022)",
+      "authors_parsed": [
+        {
+          "family": "Jia",
+          "given": "Yuanxi"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "colorectal_cancer_microbiota": {
+      "title": "Microbiome modulation in the prevention and management of colorectal cancer: a systematic review of clinical interventions",
+      "journal": "Medicine and Pharmacy Reports",
+      "year": 2022,
+      "authors": "Teodora D Frătilă, et al",
+      "citation_provenance": "[28] Teodora D Frătilă, et al (2022)",
+      "authors_parsed": [
+        {
+          "family": "Frătilă",
+          "given": "Teodora D"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "infant_dysbiosis_mental_health": {
+      "title": "microbiome signatures of infants with dysbiosis and of adults with mental health disorders",
+      "year": 2025,
+      "authors": "Livia Cavalcanti de Morais Gama Gui",
+      "citation_provenance": "[29] Livia Cavalcanti de Morais Gama Gui (2025)",
+      "authors_parsed": [
+        {
+          "family": "Gui",
+          "given": "Livia Cavalcanti de Morais Gama"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "gut_neurological_disorders": {
+      "title": "Assessing the relationship of gut microbiota with neurological, psychiatric, and neurodegenerative disorders: a narrative review",
+      "journal": "World Journal of Biological Psychiatry",
+      "year": 2025,
+      "authors": "Maria Batagianni, et al",
+      "citation_provenance": "[30] Maria Batagianni, et al (2025)",
+      "authors_parsed": [
+        {
+          "family": "Batagianni",
+          "given": "Maria"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "_key_references_lifted": true
+  }
+}

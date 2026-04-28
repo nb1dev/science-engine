@@ -1,0 +1,215 @@
+{
+  "topic": "disease_dysbiosis_broad",
+  "source_files": [
+    "Elicit - Gut Microbiome and Health A Bidirectional Review - Report.pdf"
+  ],
+  "lookup_keys": [
+    "IBD",
+    "inflammatory bowel disease",
+    "Crohn's disease",
+    "ulcerative colitis",
+    "UC",
+    "IBS",
+    "irritable bowel syndrome",
+    "bloating",
+    "obesity",
+    "BMI",
+    "overweight",
+    "type 2 diabetes",
+    "T2D",
+    "diabetes",
+    "insulin resistance",
+    "metabolic syndrome",
+    "NAFLD",
+    "fatty liver",
+    "MASLD",
+    "autoimmune",
+    "lupus",
+    "SLE",
+    "systemic lupus erythematosus",
+    "rheumatoid arthritis",
+    "RA",
+    "multiple sclerosis",
+    "MS",
+    "type 1 diabetes",
+    "T1D",
+    "psoriasis",
+    "cardiovascular",
+    "heart failure",
+    "heart disease",
+    "atherosclerosis",
+    "LPS",
+    "endotoxemia",
+    "Faecalibacterium",
+    "Fusobacterium",
+    "Ruminococcus gnavus",
+    "Prevotella copri",
+    "Akkermansia",
+    "Methanobrevibacter",
+    "Bacteroides",
+    "Escherichia",
+    "Shigella",
+    "Alistipes",
+    "Clostridium",
+    "Lactobacillus",
+    "Bifidobacterium",
+    "Firmicutes",
+    "Proteobacteria",
+    "Lachnospiraceae",
+    "Ruminococcaceae",
+    "Enterobacteriaceae",
+    "Prevotella",
+    "butyrate",
+    "short-chain fatty acids",
+    "SCFA",
+    "dysbiosis",
+    "microbiome diversity",
+    "alpha diversity"
+  ],
+  "related_topics": [
+    "bacterial_guilds",
+    "scfa_barrier_function",
+    "gut_organ_axes",
+    "dysbiosis_conditions_specific",
+    "medication_effects_microbiome"
+  ],
+  "findings": [
+    {
+      "disease": "Inflammatory Bowel Disease (IBD)",
+      "pattern": "Reduced overall diversity, depleted beneficial Lachnospiraceae and Ruminococcaceae families, expansion of Proteobacteria including pathogenic Enterobacteriaceae. UC and Crohn's show consistent reductions in Faecalibacterium prausnitzii, a keystone butyrate producer with established anti-inflammatory properties. Adherent invasive Escherichia coli colonization associated specifically with ileal Crohn's disease.",
+      "mechanism": "Intestinal dysbiosis coupled with reduced SCFA-producing capacity and barrier dysfunction",
+      "study_type": "Cross-sectional and mechanistic studies",
+      "caution": "Many associations from cross-sectional studies; correlation vs causation not established"
+    },
+    {
+      "disease": "Irritable Bowel Syndrome (IBS)",
+      "pattern": "Lower alpha diversity and enrichment of Gram-negative bacteria compared to healthy controls. Shiella species associated significantly with IBS; Bifidobacterium rectale and Faecalibacterium prausnitzii reduced in some populations. Dysphysiological pathophysiology suggested altered gut-brain signaling.",
+      "mechanism": "Dysregulation of gut-brain axis via altered microbial metabolite production; increased intestinal motility perturbations, permeability, visceral hypersensitivity",
+      "study_type": "Cross-sectional comparison studies",
+      "caution": "Whether microbiome changes represent causative factors or consequences of underlying pathophysiology remains incompletely resolved"
+    },
+    {
+      "disease": "Obesity",
+      "pattern": "Increased Fusobacterium, Lactobacillus reuteri, Bacteroides fragilis, and Staphylococcus aureus with lower Methanobrevibacter, Lachnospira plantarum, and Akkermansia muciphila. Distinct dysbiotic signature from other metabolic diseases.",
+      "mechanism": "Altered metabolic capacity and energy harvest mechanisms; reduced SCFA production",
+      "study_type": "Comparative dysbiosis analysis across metabolic disorders",
+      "caution": "~50% overlap in microbiome changes across metabolic diseases; distinct signatures not absolute"
+    },
+    {
+      "disease": "Type 2 Diabetes",
+      "pattern": "Higher Fusobacterium and Ruminococcus albus, elevated Clostridium clusters, lower Akkermansia muciphila, Faecalibacterium, Roseburia, and Bacteroides vulgatus. Several Bifidobacterium species reduced. More granular analysis identifies increased Proteobacteria phylum, Enterobacteriaceae family, and Escherichia.",
+      "mechanism": "Reduced SCFA production; increased endotoxemia (LPS) from Gram-negative expansion; impaired glucose homeostasis signaling",
+      "study_type": "Metabolic profiling and comparative dysbiosis studies",
+      "caution": "Cross-sectional overlap with obesity and NAFLD dysbiosis (~50%); causality unclear"
+    },
+    {
+      "disease": "Non-Alcoholic Fatty Liver Disease (NAFLD)",
+      "pattern": "Lower Firmicutes, Rikenellaceae, and Ruminococcaceae families with elevated Escherichia and Lactobacillus. More granular analysis identified increased Proteobacteria phylum, Enterobacteriaceae family, and Escherichia species, with elevated genera Rikenellaceae, Ruminococcaceae, Faecalibacterium, Coprococcus, Anaerostipes, and Eubacterium.",
+      "mechanism": "Altered lipid metabolism signaling; increased bacterial lipopolysaccharide (LPS) translocation; reduced short-chain fatty acid production",
+      "study_type": "Comparative metabolic dysbiosis analysis",
+      "caution": "Distinct yet overlapping with obesity and T2D dysbiosis; ~50% microbiome overlap across metabolic disorders"
+    },
+    {
+      "disease": "Autoimmune Conditions (SLE, RA, MS, T1D, Psoriasis)",
+      "pattern": "Shared common dysbiotic features: reduction in microbial diversity, increased intestinal permeability, expansion of pro-inflammatory species like Ruminococcus gnavus. Systemic analysis across lupus erythematosus, rheumatoid arthritis, multiple sclerosis, type 1 diabetes, and psoriasis revealed reduced microbial diversity, increased intestinal permeability, and expansion of pro-inflammatory species. Specific dysbiosis patterns connected with autoimmune uveitis, ocular Sjögren's syndrome, and dermatological manifestations of immune dysregulation.",
+      "mechanism": "Pro-inflammatory species expansion drives IL-6, IL-10, and TNF-alpha production; impaired regulatory T cell (Treg) and TH17 differentiation; molecular mimicry mechanisms",
+      "study_type": "Systematic cross-disease analysis and mechanistic studies",
+      "caution": "~50% microbiome overlap across autoimmune diseases; many associations from cross-sectional studies"
+    },
+    {
+      "disease": "Cardiovascular Disease",
+      "pattern": "Increased abundance of Prevotella and Clostridium with lower levels of Alistipes finegoldii and Lactobacillus. Heart failure characterized by reduced alpha diversity correlated with elevated inflammatory biomarkers and endotoxemia (lipopolysaccharide levels). Higher Shannon diversity index values associated with lower inflammation and endotoxemia.",
+      "mechanism": "Increased bacterial translocation of lipopolysaccharide (LPS); enhanced systemic endotoxemia and inflammatory responses; impaired short-chain fatty acid production; altered trimethylamine (TMA) and trimethylamine N-oxide (TMAO) metabolism",
+      "study_type": "Cross-sectional diversity and mechanistic studies; advanced intervention trials",
+      "caution": "Correlation between microbiota diversity and inflammatory markers; causality remains to be established in intervention studies"
+    },
+    {
+      "disease": "Shared Dysbiosis Patterns Across Diseases",
+      "pattern": "Approximately 50% overlap in microbiome alterations across distinct disease categories. Common features include: reduced alpha diversity; decreased beneficial Lachnospiraceae, Ruminococcaceae, Faecalibacterium; increased Proteobacteria and pathogenic Gram-negatives (Enterobacteriaceae, Escherichia); elevated LPS-producing bacteria; reduced SCFA-producing capacity.",
+      "mechanism": "Common pathways: barrier dysfunction via reduced butyrate; increased bacterial lipopolysaccharide translocation and endotoxemia; dysregulated immune tolerance mechanisms; altered tryptophan metabolite (indole derivative) signaling",
+      "study_type": "Comparative meta-analyses across disease categories",
+      "caution": "High heterogeneity across studies; distinct dysbiotic signatures reflect disease-specific immune responses overlaid on common dysbiotic foundation"
+    },
+    {
+      "disease": "Medication Effects on Microbiome",
+      "pattern": "Antibiotic exposure induces substantial perturbations: reduced diversity (β = -0.87, P < 0.05), increased Streptococcus-dominated states (β = 1.83, P < 0.05) and meropenem transitions to Enterococcus-dominated communities (β = 3.69, P < 0.05). Metformin alters composition in T2D patients. Proton pump inhibitors disrupt diversity and increase Clostridium difficile risk. Vitamin D supplementation increases anti-inflammatory bacteria including Bifidobacterium and Faecalibacterium, with elevated Bacteroides-to-Firmicutes ratio.",
+      "mechanism": "Selective pressure on bacterial communities; altered pharmacokinetics and microbiome-mediated drug metabolism; host immune modulation",
+      "study_type": "Intervention and observational studies",
+      "caution": "Medication effects often confound disease-microbiome associations in cross-sectional studies; distinguishing medication vs disease effects challenging"
+    }
+  ],
+  "papers": {
+    "key_references": [
+      {
+        "ref_num": 10,
+        "authors": "Allenki Vineesh, Shivani Shah, Kinjal Shah, et al",
+        "year": 2025,
+        "title": "Exploring the Relationship Between Gut Health and Autoimmune Diseases: A Systematic Review and Meta-Analysis",
+        "journal": "Cureus",
+        "doi": "https://doi.org/10.7759/cureus.89300"
+      },
+      {
+        "ref_num": 11,
+        "authors": "T. Hrncir, L. Hrncirova, M. Kverka, et al",
+        "year": 2021,
+        "title": "Gut Microbiota and NAFLD: Pathogenetic Mechanisms, Microbiota Signatures, and Therapeutic Interventions",
+        "journal": "Microorganisms",
+        "doi": "https://doi.org/10.3390/microorganisms9050957"
+      },
+      {
+        "ref_num": 14,
+        "authors": "A. Al-Juhani, Mahmoud S Desoky, Amaal A Almuhaimid, et al",
+        "year": 2025,
+        "title": "Efficacy of Gut Microbiome-Targeted Therapies in Modulating Systemic Inflammation and Low-Grade Chronic Inflammatory States in Adults With Metabolic Disorders: A Systematic Review",
+        "journal": "Cureus",
+        "doi": "https://doi.org/10.7759/cureus.92881"
+      },
+      {
+        "ref_num": 16,
+        "authors": "Moazma Khan, Haider Hasnain, Mohammed Saad, et al",
+        "year": 2024,
+        "title": "THE ROLE OF GUT MICROBIOTA MODULATION IN PREVENTING AND MANAGING SYSTEMIC DISEASES: A MULTISPECIALTY META-ANALYSIS OF EMERGING THERAPEUTIC AND DIAGNOSTIC APPROACHES",
+        "journal": "Insights-Journal of Health and Rehabilitation",
+        "doi": "https://doi.org/10.7100/dtzf2h67"
+      },
+      {
+        "ref_num": 36,
+        "authors": "S. Madan, M. Mehra",
+        "year": 2020,
+        "title": "The heart-gut microbiome axis in advanced heart failure",
+        "journal": "The Journal of Heart and Lung Transplantation",
+        "doi": "https://doi.org/10.1016/j.healun.2020.04.003"
+      },
+      {
+        "ref_num": 38,
+        "authors": "T. Lee, S. Fehily, G. Trakman, et al",
+        "year": 2026,
+        "title": "The Impact of dietary intervention on the gastrointestinal microbiome in Inflammatory Bowel Disease: a systematic review",
+        "journal": "Journal of Crohn's & Colitis",
+        "doi": "https://doi.org/10.1093/ecco-jcc/jjaf231.910"
+      },
+      {
+        "ref_num": 39,
+        "authors": "Yee Teng Lee, Ayça Akan, Dilara Beyza Önel, et al",
+        "year": 2025,
+        "title": "Impacts of Lifestyle and Microbiota-Targeted Interventions for Overweight and Obesity on the Human Gut Microbiome: A Systematic Review",
+        "journal": "Obesity Reviews",
+        "doi": "https://doi.org/10.1111/obr.70037"
+      }
+    ]
+  },
+  "data_quality_notes": {
+    "study_design_cautions": [
+      "Approximately 50% overlap in microbiome alterations across distinct disease categories limits disease-specific diagnostic value",
+      "Many associations derived from cross-sectional studies; correlation does not establish causation",
+      "Heterogeneous intervention trial designs and meta-analysis limitations prevent robust comparative efficacy conclusions"
+    ],
+    "methodological_limitations": [
+      "Sample size requirements for adequately powered microbiome studies exceed most published investigations",
+      "Taxonomic profiling inadequately captures microbiome metabolic activity; bacteria detected via DNA sequencing may be dead, dormant, or metabolically inactive",
+      "Low-abundance species difficult to detect due to sequencing depth limitations; these organisms could exert disproportionate ecosystem influence",
+      "Food composition databases lack comprehensive data on resistant starch, oligosaccharide content, and polyphenol profiles"
+    ],
+    "interpretation_guidance": "Dysbiotic signatures reflect disease-specific immune responses overlaid on common dysbiotic foundation. Shared pathways include barrier dysfunction via reduced butyrate production, increased bacterial lipopolysaccharide (LPS) translocation, dysregulated immune tolerance, and altered tryptophan metabolite signaling. Distinct dysbiotic signatures do not represent disease-specific biomarkers but rather disease-specific inflammatory responses to common dysbiotic patterns."
+  }
+}

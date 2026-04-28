@@ -1,0 +1,1160 @@
+{
+  "topic": "dysbiosis_conditions_specific",
+  "description": "Microbiome signatures and associations in 8 specific disease conditions",
+  "source_files": [
+    "dysbiosis x autoimmune.md",
+    "dysbiosis x autoimmune - Sources.csv"
+  ],
+  "created_date": "2026-04-08T20:36:06.347707",
+  "lookup_keys": [
+    "Hashimoto",
+    "Hashimoto's",
+    "thyroiditis",
+    "hypothyroid",
+    "thyroid",
+    "autoimmune thyroiditis",
+    "thyroid antibodies",
+    "TPO",
+    "thyroglobulin",
+    "rUTI",
+    "recurrent UTI",
+    "urinary tract infection",
+    "UTI",
+    "bacteriuria",
+    "uropathogenic",
+    "UPEC",
+    "cystitis",
+    "urethra",
+    "iron deficiency",
+    "IDA",
+    "anemia",
+    "iron",
+    "ferritin",
+    "hemoglobin",
+    "sideropenia",
+    "hypochromic",
+    "microcytic",
+    "celiac",
+    "celiac disease",
+    "coeliac",
+    "gluten",
+    "gluten-free diet",
+    "GFD",
+    "gliadin",
+    "transglutaminase",
+    "tTG",
+    "tissue transglutaminase",
+    "cholecystectomy",
+    "gallbladder removal",
+    "gallbladder",
+    "bile acid",
+    "biliary",
+    "postcholecystectomy",
+    "post-surgical",
+    "bariatric",
+    "bariatric surgery",
+    "gastric bypass",
+    "sleeve gastrectomy",
+    "Roux-en-Y",
+    "weight loss surgery",
+    "metabolic surgery",
+    "food allergy",
+    "allergy",
+    "IgE",
+    "allergenic",
+    "allergic sensitization",
+    "oral tolerance",
+    "atopy",
+    "type 2 immunity",
+    "histamine",
+    "histamine intolerance",
+    "DAO",
+    "diamine oxidase",
+    "mast cell",
+    "histaminogenic",
+    "histamine-secreting",
+    "Faecalibacterium",
+    "Bifidobacterium",
+    "Lactobacillus",
+    "Bacteroides",
+    "Escherichia",
+    "Proteobacteria",
+    "Firmicutes",
+    "Bacteroidetes",
+    "Ruminococcus",
+    "Prevotella",
+    "Blautia",
+    "Romboutsia",
+    "Clostridium perfringens",
+    "Staphylococcus",
+    "Enterococcus",
+    "butyrate",
+    "short-chain fatty acids",
+    "SCFA",
+    "zonulin",
+    "intestinal permeability",
+    "leaky gut",
+    "tight junction",
+    "dysbiosis",
+    "dysbiotic",
+    "microbial diversity",
+    "microbial richness",
+    "Firmicutes/Bacteroidetes ratio",
+    "F/B ratio"
+  ],
+  "related_topics": [
+    "bacterial_guilds",
+    "gut_organ_axes",
+    "medications",
+    "dietary_patterns"
+  ],
+  "findings": [
+    {
+      "condition": "Hashimoto's thyroiditis",
+      "finding_number": 1,
+      "description": "Increased Escherichia-Shigella, Parasutterella, Blautia, and Romboutsia; decreased Faecalibacterium, Bacteroides, Prevotella, and Bifidobacterium",
+      "microbial_signature": {
+        "increased_taxa": [
+          "Escherichia-Shigella",
+          "Parasutterella",
+          "Blautia",
+          "Romboutsia"
+        ],
+        "decreased_taxa": [
+          "Faecalibacterium",
+          "Bacteroides",
+          "Prevotella",
+          "Bifidobacterium"
+        ]
+      },
+      "mechanism": "Increased intestinal permeability (elevated serum zonulin); reduced hydrogen sulfide production via attenuated dissimilatory sulfate reduction pathway",
+      "evidence_strength": "High - multiple cross-sectional studies (Ishaq 2017, Zhao 2018, Liu 2022) plus causal FMT evidence in mice (Zhang 2023)",
+      "papers": [
+        "j.biopha.2017.08.101",
+        "thy.2017.0395",
+        "s12866-022-02739-z",
+        "fimmu.2021.579140",
+        "dgad588"
+      ]
+    },
+    {
+      "condition": "Hashimoto's thyroiditis",
+      "finding_number": 2,
+      "description": "FMT from HT patients worsens autoimmune thyroiditis in mice through reduced hydrogen sulfide production",
+      "microbial_signature": {
+        "key_pathway": "Dissimilatory sulfate reduction (DSR)",
+        "decreased_H2S_production": "H2S alleviation reduces thyroiditis severity"
+      },
+      "mechanism": "Altered DSR pathway reduces H2S production; H2S deficiency promotes Th1 and Th17 cell differentiation and increases thyroiditis score",
+      "evidence_strength": "Very High - causal evidence from FMT mouse model with mechanistic validation",
+      "cautions": "Mouse model of experimentally-induced autoimmune thyroiditis (EAT), not spontaneous HT; may not fully recapitulate human disease",
+      "papers": [
+        "dgad588"
+      ]
+    },
+    {
+      "condition": "Recurrent urinary tract infections (rUTI)",
+      "finding_number": 1,
+      "description": "Significantly depleted microbial richness and butyrate-producing bacteria; reduced diversity despite normal E. coli gut abundance",
+      "microbial_signature": {
+        "key_depletion": "Butyrate-producing bacteria (including Faecalibacterium)",
+        "normal_abundances": [
+          "Escherichia coli"
+        ],
+        "diversity_reduction": "Alpha diversity indices reduced"
+      },
+      "mechanism": "Broader dysbiosis affecting systemic immunity rather than simple uropathogen overgrowth; impaired short-chain fatty acid production compromises intestinal barrier and regulatory T cell development",
+      "evidence_strength": "High - year-long longitudinal multi-omics study (Worby 2022, n=15 rUTI, n=16 controls)",
+      "papers": [
+        "s41564-022-01107-x"
+      ]
+    },
+    {
+      "condition": "Recurrent urinary tract infections (rUTI)",
+      "finding_number": 2,
+      "description": "Even 1% relative gut abundance of Escherichia is an independent risk factor for bacteriuria and UTI; strain-level continuity between gut and urinary tract",
+      "microbial_signature": {
+        "pathogenic_marker": "Escherichia >1% relative abundance",
+        "enriched_features": "Antimicrobial resistance genes (ARG) enriched in UTI microbiomes"
+      },
+      "mechanism": "Uropathogenic E. coli (UPEC) strains can asymptomatically colonize both gut and urinary tract; post-antibiotic blooms facilitate UPEC expansion and recurrence",
+      "evidence_strength": "High - multi-center longitudinal study (Choi 2024, n=125) confirms rUTI microbiome enrichment for ARG; kidney transplant cohort (Magruder 2019, n=168) demonstrates prospective risk",
+      "papers": [
+        "s41467-019-13467-w",
+        "j.eclinm.2024.102490"
+      ]
+    },
+    {
+      "condition": "Iron deficiency anemia (IDA)",
+      "finding_number": 1,
+      "description": "Bidirectional relationship: iron supplementation alters colonic microflora (suppresses Lactobacillus and Bifidobacterium, promotes pathogens); dysbiosis may impair iron absorption",
+      "microbial_signature": {
+        "iron_supplementation_effects": {
+          "promoted": "Pathogenic species",
+          "suppressed": [
+            "Lactobacillus",
+            "Bifidobacterium"
+          ]
+        }
+      },
+      "mechanism": "Iron modifies colonic pH and redox potential, selecting for pathogenic taxa; dysbiotic microbiota impairs iron absorption via reduced beneficial bacteria",
+      "evidence_strength": "Moderate - limited direct human evidence linking dysbiotic pattern to IDA as primary cause; evidence primarily from iron supplementation effects",
+      "cautions": "Direct human evidence linking specific dysbiosis patterns to IDA etiology remains thin; most data describes secondary effects of iron treatment on microbiota",
+      "papers": []
+    },
+    {
+      "condition": "Celiac disease (CD)",
+      "finding_number": 1,
+      "description": "Increased gram-negative bacteria (Bacteroides, E. coli, Staphylococcus) and decreased Bifidobacterium, Lactobacillus, and Faecalibacterium prausnitzii",
+      "microbial_signature": {
+        "increased_taxa": [
+          "Bacteroides",
+          "Escherichia coli",
+          "Staphylococcus"
+        ],
+        "decreased_taxa": [
+          "Bifidobacterium",
+          "Lactobacillus",
+          "Faecalibacterium prausnitzii"
+        ]
+      },
+      "mechanism": "Gram-negative bacteria produce or metabolize gluten peptides to immunogenic forms; dysbiosis persists even on gluten-free diet (GFD), suggesting non-dietary component",
+      "evidence_strength": "High - consistent across multiple reviews and cross-sectional studies (Girbovan 2017, Marasco 2016, Cénit 2015, Rossi 2023)",
+      "papers": [
+        "s00430-017-0496-z",
+        "s10620-015-4020-2",
+        "nu7085314",
+        "cells12060823"
+      ]
+    },
+    {
+      "condition": "Celiac disease (CD)",
+      "finding_number": 2,
+      "description": "Pseudomonas aeruginosa synergistically escalates gluten-induced intestinal inflammation; Proteobacteria expansion enhances gluten immunopathology in mice",
+      "microbial_signature": {
+        "pathogenic_amplifier": "Pseudomonas aeruginosa",
+        "dysbiotic_phylum": "Proteobacteria expansion"
+      },
+      "mechanism": "PA enzymes may generate immunogenic gluten peptides; Proteobacteria-enriched microbiota (induced by antibiotics) amplifies intestinal inflammation and intraepithelial lymphocyte responses to gluten",
+      "evidence_strength": "High - mouse model demonstrating causal role of microbiota composition (Galipeau 2015); germ-free and SPF mouse comparison shows clean microbiota attenuates gluten pathology",
+      "cautions": "Mouse model data; PA effect described mechanistically but tissue-specific localization not confirmed in human studies",
+      "papers": [
+        "j.ajpath.2015.07.018"
+      ]
+    },
+    {
+      "condition": "Post-cholecystectomy",
+      "finding_number": 1,
+      "description": "Reduced Bifidobacterium and Lactobacillus; increased E. coli, Clostridium perfringens, and elevated Firmicutes/Bacteroidetes ratio independently associated with 3-fold higher risk of postoperative diarrhea",
+      "microbial_signature": {
+        "decreased_taxa": [
+          "Bifidobacterium",
+          "Lactobacillus"
+        ],
+        "increased_taxa": [
+          "Escherichia coli",
+          "Clostridium perfringens"
+        ],
+        "dysbiotic_ratio": "Elevated Firmicutes/Bacteroidetes ratio"
+      },
+      "mechanism": "Cholecystectomy disrupts bile acid enterohepatic circulation, which selectively shapes microbial composition; dysbiosis-associated reduced barrier function and increased intestinal inflammation",
+      "evidence_strength": "Moderate-High - retrospective case-control (Li 2026, n=75) with microbiota profiling; systematic review (Kurbonnazarova 2024) across 13 studies confirms dysbiosis signature",
+      "papers": [
+        "00031348261419759",
+        "issn.2689-0690_rdw.stratford_research_da"
+      ]
+    },
+    {
+      "condition": "Post-cholecystectomy",
+      "finding_number": 2,
+      "description": "Cholecystectomy decreases Bifidobacterium breve and increases Ruminococcus gnavus with altered bile acid metabolism (elevated GUDCA/TUDCA), disrupting FXR signaling and promoting colorectal tumorigenesis",
+      "microbial_signature": {
+        "keystone_decrease": "Bifidobacterium breve",
+        "keystone_increase": "Ruminococcus gnavus",
+        "metabolite_changes": {
+          "increased": [
+            "Glycoursodeoxycholic acid (GUDCA)",
+            "Tauroursodeoxycholic acid (TUDCA)"
+          ]
+        }
+      },
+      "mechanism": "Altered bile acid metabolism impairs farnesoid X receptor (FXR) signaling, disrupts FXR/β-catenin interaction, exacerbates intestinal inflammation and neoplastic progression",
+      "evidence_strength": "Very High - mechanistic proof via FXR agonist (obeticholic acid) prevention of cholecystectomy-related tumorigenesis; metagenomic + metabolomic + functional validation",
+      "cautions": "Mouse tumor models (AOM/DSS and APCmin/+); human epidemiological association with CRC exists but causality confirmed only in preclinical models",
+      "papers": [
+        "s41467-025-62956-8"
+      ]
+    },
+    {
+      "condition": "Food allergy",
+      "finding_number": 1,
+      "description": "Reduced microbial diversity, lower Bifidobacteria, Faecalibacteria, and Clostridia, with higher Escherichia and Enterococcaceae; dysbiosis likely precedes allergy development",
+      "microbial_signature": {
+        "decreased_taxa": [
+          "Bifidobacteria",
+          "Faecalibacteria",
+          "Clostridia"
+        ],
+        "increased_taxa": [
+          "Escherichia",
+          "Enterococcaceae"
+        ],
+        "alpha_diversity": "Reduced"
+      },
+      "mechanism": "Early-life dysbiosis impairs regulatory T cell development via reduced short-chain fatty acid production; compromised intestinal barrier function and altered oral tolerance",
+      "evidence_strength": "High - prospective cohort data suggesting dysbiosis precedes allergic sensitization; consistent across multiple studies (Mares 2025 review of 31 studies)",
+      "papers": [
+        "j.anai.2018.12.012",
+        "nu17183009"
+      ]
+    },
+    {
+      "condition": "Food allergy",
+      "finding_number": 2,
+      "description": "1.5-year-old food-allergic children show increased Escherichia and decreased Bacteroides, Oscillibacter, and Ruminococcus with predicted increases in intestinal pathogenicity gene expression",
+      "microbial_signature": {
+        "increased_taxa": [
+          "Escherichia"
+        ],
+        "decreased_taxa": [
+          "Bacteroides",
+          "Oscillibacter",
+          "Ruminococcus"
+        ],
+        "functional_prediction": "Elevated pathogenicity gene expression"
+      },
+      "mechanism": "Pathogenic taxa produce virulence factors that compromise intestinal epithelial integrity; loss of commensal taxa impairs immune tolerance and SCFA production",
+      "evidence_strength": "High - recent cohort study (Hara 2024, n=29 food-allergic, n=19 healthy controls, age 1.5 years) with functional prediction analysis",
+      "papers": [
+        "j.alit.2024.03.004"
+      ]
+    },
+    {
+      "condition": "Histamine intolerance",
+      "finding_number": 1,
+      "description": "Reduced Prevotellaceae, Ruminococcus, Faecalibacterium, and F. prausnitzii (health-associated taxa); significantly increased histamine-secreting bacteria including Staphylococcus, Proteus, Enterobacteriaceae, C. perfringens, and E. faecalis",
+      "microbial_signature": {
+        "decreased_taxa": [
+          "Prevotellaceae",
+          "Ruminococcus",
+          "Faecalibacterium prausnitzii"
+        ],
+        "histamine_secreting_taxa": [
+          "Staphylococcus",
+          "Proteus",
+          "Enterobacteriaceae",
+          "Clostridium perfringens",
+          "Enterococcus faecalis"
+        ]
+      },
+      "mechanism": "Greater abundance of histaminogenic bacteria leads to higher gut histamine production, exceeding the degradation capacity of diamine oxidase (DAO), resulting in systemic histamine accumulation",
+      "evidence_strength": "Moderate - one of few direct sequencing studies in histamine intolerance (Sánchez-Pérez 2022, n=25 histamine intolerance, n=26 healthy controls); mechanism plausible but human causality not yet proven",
+      "cautions": "DAO deficiency can be genetic, pharmacological, or pathological; dysbiosis may be cause or consequence; animal studies supporting histaminogenic potential exist but human intervention trials lacking",
+      "papers": [
+        "nu14091774"
+      ]
+    }
+  ],
+  "papers": {
+    "j.biopha.2017.08.101": {
+      "title": "Molecular estimation of alteration in intestinal microbial composition in Hashimoto's thyroiditis patients",
+      "authors": "H. M. Ishaq, I. Mohammad, Hui Guo, M. Shahzad, Y. Hou, Chaofeng Ma, Zahid Naseem, Xiaokang Wu, Peijie Shi, Jiru Xu",
+      "doi": "10.1016/j.biopha.2017.08.101",
+      "year": 2017,
+      "url": "https://ars.els-cdn.com/content/image/1-s2.0-S075333221732721X-fx1_lrg.jpg",
+      "journal": "Biomedicine & Pharmacotherapy",
+      "authors_parsed": [
+        {
+          "family": "Ishaq",
+          "given": "H. M."
+        },
+        {
+          "family": "Mohammad",
+          "given": "I."
+        },
+        {
+          "family": "Guo",
+          "given": "Hui"
+        },
+        {
+          "family": "Shahzad",
+          "given": "M."
+        },
+        {
+          "family": "Hou",
+          "given": "Y."
+        },
+        {
+          "family": "Ma",
+          "given": "Chaofeng"
+        },
+        {
+          "family": "Naseem",
+          "given": "Zahid"
+        },
+        {
+          "family": "Wu",
+          "given": "Xiaokang"
+        },
+        {
+          "family": "Shi",
+          "given": "Peijie"
+        },
+        {
+          "family": "Xu",
+          "given": "Jiru"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "thy.2017.0395": {
+      "title": "Alterations of the Gut Microbiota in Hashimoto's Thyroiditis Patients",
+      "authors": "Fuya Zhao, Jing Feng, Jun Li, Lei Zhao, Yang Liu, Huinan Chen, Ye Jin, Biqiang Zhu, Yunwei Wei",
+      "doi": "10.1089/thy.2017.0395",
+      "year": 2018,
+      "url": "https://www.semanticscholar.org/paper/a10616ba27025b6df03d6dec409f65c99e2de337",
+      "journal": "Thyroid",
+      "authors_parsed": [
+        {
+          "family": "Zhao",
+          "given": "Fuya"
+        },
+        {
+          "family": "Feng",
+          "given": "Jing"
+        },
+        {
+          "family": "Li",
+          "given": "Jun"
+        },
+        {
+          "family": "Zhao",
+          "given": "Lei"
+        },
+        {
+          "family": "Liu",
+          "given": "Yang"
+        },
+        {
+          "family": "Chen",
+          "given": "Huinan"
+        },
+        {
+          "family": "Jin",
+          "given": "Ye"
+        },
+        {
+          "family": "Zhu",
+          "given": "Biqiang"
+        },
+        {
+          "family": "Wei",
+          "given": "Yunwei"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "s12866-022-02739-z": {
+      "title": "Analysis of gut microbiota diversity in Hashimoto's thyroiditis patients",
+      "authors": "Jilai Liu, Xuejun Qin, Boxi Lin, J. Cui, J. Liao, Fu Zhang, Q. Lin",
+      "doi": "10.1186/s12866-022-02739-z",
+      "year": 2022,
+      "url": "https://bmcmicrobiol.biomedcentral.com/counter/pdf/10.1186/s12866-022-02739-z",
+      "journal": "BMC Microbiology",
+      "authors_parsed": [
+        {
+          "family": "Liu",
+          "given": "Jilai"
+        },
+        {
+          "family": "Qin",
+          "given": "Xuejun"
+        },
+        {
+          "family": "Lin",
+          "given": "Boxi"
+        },
+        {
+          "family": "Cui",
+          "given": "J."
+        },
+        {
+          "family": "Liao",
+          "given": "J."
+        },
+        {
+          "family": "Zhang",
+          "given": "Fu"
+        },
+        {
+          "family": "Lin",
+          "given": "Q."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "fimmu.2021.579140": {
+      "title": "Detection of Alterations in the Gut Microbiota and Intestinal Permeability in Patients With Hashimoto Thyroiditis",
+      "authors": "Leonardo C. F. Cayres, Larissa Vedovato Vilela de Salis, G. S. Rodrigues, A. Lengert, A. Biondi, L. Sargentini, J. L. Brisotti, et al.",
+      "doi": "10.3389/fimmu.2021.579140",
+      "year": 2021,
+      "url": "https://www.frontiersin.org/articles/10.3389/fimmu.2021.579140/pdf",
+      "journal": "Frontiers in Immunology",
+      "authors_parsed": [
+        {
+          "family": "Cayres",
+          "given": "Leonardo C. F."
+        },
+        {
+          "family": "Salis",
+          "given": "Larissa Vedovato Vilela de"
+        },
+        {
+          "family": "Rodrigues",
+          "given": "G. S."
+        },
+        {
+          "family": "Lengert",
+          "given": "A."
+        },
+        {
+          "family": "Biondi",
+          "given": "A."
+        },
+        {
+          "family": "Sargentini",
+          "given": "L."
+        },
+        {
+          "family": "Brisotti",
+          "given": "J. L."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "dgad588": {
+      "title": "Gut microecology may be involved in pathogenesis of Hashimoto's thyroiditis by reducing production of hydrogen sulfide",
+      "authors": "Shangqing Zhang, Xue Zhao, Xiuli Wang, Hongfang Jin, Lei Chen, Yuanyuan Ma, Y. Chi, Jixin Zhang, Junqing Zhang, Ying Gao",
+      "doi": "10.1210/clinem/dgad588",
+      "year": 2023,
+      "url": "https://www.semanticscholar.org/paper/0be084777c97bb369c068cc09e39ba3543a0ace5",
+      "journal": "The Journal of Clinical Endocrinology & Metabolism",
+      "authors_parsed": [
+        {
+          "family": "Zhang",
+          "given": "Shangqing"
+        },
+        {
+          "family": "Zhao",
+          "given": "Xue"
+        },
+        {
+          "family": "Wang",
+          "given": "Xiuli"
+        },
+        {
+          "family": "Jin",
+          "given": "Hongfang"
+        },
+        {
+          "family": "Chen",
+          "given": "Lei"
+        },
+        {
+          "family": "Ma",
+          "given": "Yuanyuan"
+        },
+        {
+          "family": "Chi",
+          "given": "Y."
+        },
+        {
+          "family": "Zhang",
+          "given": "Jixin"
+        },
+        {
+          "family": "Zhang",
+          "given": "Junqing"
+        },
+        {
+          "family": "Gao",
+          "given": "Ying"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "s41564-022-01107-x": {
+      "title": "Longitudinal multi-omics analyses link gut microbiome dysbiosis with recurrent urinary tract infections in women",
+      "authors": "C. Worby, H. L. Schreiber, T. J. Straub, Lucas R. van Dijk, R. Bronson, Benjamin S. Olson, J. Pinkner, C. Obernuefemann, et al.",
+      "doi": "10.1038/s41564-022-01107-x",
+      "year": 2022,
+      "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9136705",
+      "journal": "Nature Microbiology",
+      "authors_parsed": [
+        {
+          "family": "Worby",
+          "given": "C."
+        },
+        {
+          "family": "Schreiber",
+          "given": "H. L."
+        },
+        {
+          "family": "Straub",
+          "given": "T. J."
+        },
+        {
+          "family": "Dijk",
+          "given": "Lucas R. van"
+        },
+        {
+          "family": "Bronson",
+          "given": "R."
+        },
+        {
+          "family": "Olson",
+          "given": "Benjamin S."
+        },
+        {
+          "family": "Pinkner",
+          "given": "J."
+        },
+        {
+          "family": "Obernuefemann",
+          "given": "C."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "j.eclinm.2024.102490": {
+      "title": "Gut microbiome correlates of recurrent urinary tract infection: a longitudinal multi-center study",
+      "authors": "JooHee Choi, Robert Thänert, K. Reske, Katelin B. Nickel, Margaret A A Olsen, T. Hink, Anna Thänert, Meghan A. Wallace, et al.",
+      "doi": "10.1016/j.eclinm.2024.102490",
+      "year": 2024,
+      "url": "http://www.thelancet.com/article/S2589537024000695/pdf",
+      "journal": "eClinicalMedicine",
+      "authors_parsed": [
+        {
+          "family": "Choi",
+          "given": "JooHee"
+        },
+        {
+          "family": "Thänert",
+          "given": "Robert"
+        },
+        {
+          "family": "Reske",
+          "given": "K."
+        },
+        {
+          "family": "Nickel",
+          "given": "Katelin B."
+        },
+        {
+          "family": "Olsen",
+          "given": "Margaret A A"
+        },
+        {
+          "family": "Hink",
+          "given": "T."
+        },
+        {
+          "family": "Thänert",
+          "given": "Anna"
+        },
+        {
+          "family": "Wallace",
+          "given": "Meghan A."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "s41467-019-13467-w": {
+      "title": "Gut uropathogen abundance is a risk factor for development of bacteriuria and urinary tract infection",
+      "authors": "Matthew Magruder, A. Sholi, C. Gong, Lisa T. Zhang, E. Edusei, Jennifer Huang, S. Albakry, M. Satlin, L. Westblade, C. Crawford, et al.",
+      "doi": "10.1038/s41467-019-13467-w",
+      "year": 2019,
+      "url": "https://www.nature.com/articles/s41467-019-13467-w.pdf",
+      "journal": "Nature Communications",
+      "authors_parsed": [
+        {
+          "family": "Magruder",
+          "given": "Matthew"
+        },
+        {
+          "family": "Sholi",
+          "given": "A."
+        },
+        {
+          "family": "Gong",
+          "given": "C."
+        },
+        {
+          "family": "Zhang",
+          "given": "Lisa T."
+        },
+        {
+          "family": "Edusei",
+          "given": "E."
+        },
+        {
+          "family": "Huang",
+          "given": "Jennifer"
+        },
+        {
+          "family": "Albakry",
+          "given": "S."
+        },
+        {
+          "family": "Satlin",
+          "given": "M."
+        },
+        {
+          "family": "Westblade",
+          "given": "L."
+        },
+        {
+          "family": "Crawford",
+          "given": "C."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "s00430-017-0496-z": {
+      "title": "Dysbiosis a risk factor for celiac disease",
+      "authors": "Anamaria Girbovan, G. Sur, G. Samașca, I. Lupan",
+      "doi": "10.1007/s00430-017-0496-z",
+      "year": 2017,
+      "url": "https://www.semanticscholar.org/paper/4a80c81d6ceb53292c3006fcdf6c0266824e7ed9",
+      "journal": "Medical Microbiology and Immunology",
+      "authors_parsed": [
+        {
+          "family": "Girbovan",
+          "given": "Anamaria"
+        },
+        {
+          "family": "Sur",
+          "given": "G."
+        },
+        {
+          "family": "Samașca",
+          "given": "G."
+        },
+        {
+          "family": "Lupan",
+          "given": "I."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "s10620-015-4020-2": {
+      "title": "Gut Microbiota and Celiac Disease",
+      "authors": "G. Marasco, A. D. Biase, R. Schiumerini, L. Eusebi, L. Iughetti, F. Ravaioli, E. Scaioli, A. Colecchia, D. Festi",
+      "doi": "10.1007/s10620-015-4020-2",
+      "year": 2016,
+      "url": "https://www.semanticscholar.org/paper/52b748a190797ca94128b5666d0ce1c1de6ea6e6",
+      "journal": "Digestive Diseases and Sciences",
+      "authors_parsed": [
+        {
+          "family": "Marasco",
+          "given": "G."
+        },
+        {
+          "family": "Biase",
+          "given": "A. D."
+        },
+        {
+          "family": "Schiumerini",
+          "given": "R."
+        },
+        {
+          "family": "Eusebi",
+          "given": "L."
+        },
+        {
+          "family": "Iughetti",
+          "given": "L."
+        },
+        {
+          "family": "Ravaioli",
+          "given": "F."
+        },
+        {
+          "family": "Scaioli",
+          "given": "E."
+        },
+        {
+          "family": "Colecchia",
+          "given": "A."
+        },
+        {
+          "family": "Festi",
+          "given": "D."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "nu7085314": {
+      "title": "Intestinal Microbiota and Celiac Disease: Cause Consequence or Co-Evolution?",
+      "authors": "M. Cénit, M. Olivares, P. Codoñer-Franch, Y. Sanz",
+      "doi": "10.3390/nu7085314",
+      "year": 2015,
+      "url": "https://www.mdpi.com/2072-6643/7/8/5314/pdf?version=1439827548",
+      "journal": "Nutrients",
+      "authors_parsed": [
+        {
+          "family": "Cénit",
+          "given": "M."
+        },
+        {
+          "family": "Olivares",
+          "given": "M."
+        },
+        {
+          "family": "Codoñer-Franch",
+          "given": "P."
+        },
+        {
+          "family": "Sanz",
+          "given": "Y."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "cells12060823": {
+      "title": "Interaction between Gut Microbiota and Celiac Disease: From Pathogenesis to Treatment",
+      "authors": "R. Rossi, Giulia Dispinzieri, A. Elvevi, S. Massironi",
+      "doi": "10.3390/cells12060823",
+      "year": 2023,
+      "url": "https://www.mdpi.com/2073-4409/12/6/823/pdf?version=1678153144",
+      "journal": "Cells",
+      "authors_parsed": [
+        {
+          "family": "Rossi",
+          "given": "R."
+        },
+        {
+          "family": "Dispinzieri",
+          "given": "Giulia"
+        },
+        {
+          "family": "Elvevi",
+          "given": "A."
+        },
+        {
+          "family": "Massironi",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "j.ajpath.2015.07.018": {
+      "title": "Intestinal microbiota modulates gluten-induced immunopathology in humanized mice",
+      "authors": "H. Galipeau, Justin L. McCarville, S. Huebener, Owen Litwin, Marlies Meisel, B. Jabri, Y. Sanz, J. Murray, M. Jordana, A. Alaedini, et al.",
+      "doi": "10.1016/j.ajpath.2015.07.018",
+      "year": 2015,
+      "url": "http://ajp.amjpathol.org/article/S0002944015004769/pdf",
+      "journal": "The American Journal of Pathology",
+      "authors_parsed": [
+        {
+          "family": "Galipeau",
+          "given": "H."
+        },
+        {
+          "family": "McCarville",
+          "given": "Justin L."
+        },
+        {
+          "family": "Huebener",
+          "given": "S."
+        },
+        {
+          "family": "Litwin",
+          "given": "Owen"
+        },
+        {
+          "family": "Meisel",
+          "given": "Marlies"
+        },
+        {
+          "family": "Jabri",
+          "given": "B."
+        },
+        {
+          "family": "Sanz",
+          "given": "Y."
+        },
+        {
+          "family": "Murray",
+          "given": "J."
+        },
+        {
+          "family": "Jordana",
+          "given": "M."
+        },
+        {
+          "family": "Alaedini",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "00031348261419759": {
+      "title": "Association Between Post-Cholecystectomy Gut Microbiota Dysbiosis and Adverse Clinical Outcomes: A Single-Center Retrospective Study",
+      "authors": "Zhenhong Li, Fang Zhang, Xiaoyi Sun",
+      "doi": "10.1177/00031348261419759",
+      "year": 2026,
+      "url": "https://www.semanticscholar.org/paper/875c2c8095ae68b6acc5de6abb869be31927a59e",
+      "journal": "The American Surgeon",
+      "authors_parsed": [
+        {
+          "family": "Li",
+          "given": "Zhenhong"
+        },
+        {
+          "family": "Zhang",
+          "given": "Fang"
+        },
+        {
+          "family": "Sun",
+          "given": "Xiaoyi"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "issn.2689-0690_rdw.stratford_research_da": {
+      "title": "Gut Microbiota Changes After Cholecystectomy: Unraveling the Microbial Mysteries - A Systematic Review",
+      "authors": "Maftuna Kurbonnazarova, Arthi Rameshkumar, Olivia R. Siciliano, Samrat Gollapudi, Katarina Rusinak, A. O’Neill",
+      "doi": "10.31986/issn.2689-0690_rdw.stratford_research_day.97_2024",
+      "year": 2024,
+      "url": "https://www.semanticscholar.org/paper/0c240d4553e472090d3725a214f52115e2533414",
+      "authors_parsed": [
+        {
+          "family": "Kurbonnazarova",
+          "given": "Maftuna"
+        },
+        {
+          "family": "Rameshkumar",
+          "given": "Arthi"
+        },
+        {
+          "family": "Siciliano",
+          "given": "Olivia R."
+        },
+        {
+          "family": "Gollapudi",
+          "given": "Samrat"
+        },
+        {
+          "family": "Rusinak",
+          "given": "Katarina"
+        },
+        {
+          "family": "O’Neill",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "s41467-025-62956-8": {
+      "title": "Cholecystectomy-related gut microbiota dysbiosis exacerbates colorectal tumorigenesis",
+      "authors": "Bo Tang, Shen Li, Xin Li, Jialin He, An Zhou, Lingyi Wu, Xu Xiao, Sumin Wang, Hongfei Jiang, Jincheng Jian, Zhanjie Hou, et al.",
+      "doi": "10.1038/s41467-025-62956-8",
+      "year": 2025,
+      "url": "https://www.nature.com/articles/s41467-025-62956-8.pdf",
+      "journal": "Nature Communications",
+      "authors_parsed": [
+        {
+          "family": "Tang",
+          "given": "Bo"
+        },
+        {
+          "family": "Li",
+          "given": "Shen"
+        },
+        {
+          "family": "Li",
+          "given": "Xin"
+        },
+        {
+          "family": "He",
+          "given": "Jialin"
+        },
+        {
+          "family": "Zhou",
+          "given": "An"
+        },
+        {
+          "family": "Wu",
+          "given": "Lingyi"
+        },
+        {
+          "family": "Xiao",
+          "given": "Xu"
+        },
+        {
+          "family": "Wang",
+          "given": "Sumin"
+        },
+        {
+          "family": "Jiang",
+          "given": "Hongfei"
+        },
+        {
+          "family": "Jian",
+          "given": "Jincheng"
+        },
+        {
+          "family": "Hou",
+          "given": "Zhanjie"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "j.anai.2018.12.012": {
+      "title": "The gut microbiome in food allergy",
+      "authors": "William Zhao, Hsi-en Ho, S. Bunyavanich",
+      "doi": "10.1016/j.anai.2018.12.012",
+      "year": 2019,
+      "url": "http://www.annallergy.org/article/S1081120618315321/pdf",
+      "journal": "Annals of Allergy, Asthma & Immunology",
+      "authors_parsed": [
+        {
+          "family": "Zhao",
+          "given": "William"
+        },
+        {
+          "family": "Ho",
+          "given": "Hsi-en"
+        },
+        {
+          "family": "Bunyavanich",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "nu17183009": {
+      "title": "Gut Microbiota and Food Allergy: A Review of Mechanisms and Microbiota-Targeted Interventions",
+      "authors": "R. Mares, M. Săsăran, C. O. Mǎrginean",
+      "doi": "10.3390/nu17183009",
+      "year": 2025,
+      "url": "https://www.semanticscholar.org/paper/ba881f7ea1cac5f338373d9357aa6486a305c8a5",
+      "journal": "Nutrients",
+      "authors_parsed": [
+        {
+          "family": "Mares",
+          "given": "R."
+        },
+        {
+          "family": "Săsăran",
+          "given": "M."
+        },
+        {
+          "family": "Mǎrginean",
+          "given": "C. O."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "j.alit.2024.03.004": {
+      "title": "Gut microbiota of one-and-a-half-year-old food-allergic and healthy children",
+      "authors": "Monami Hara, Hisato Suzuki, Daisuke Hayashi, Wataru Morii, Takako Nakamura, Kaori Kiyoki, Hideki Hara, Ryota Ishii, Emiko Noguchi, et al.",
+      "doi": "10.1016/j.alit.2024.03.004",
+      "year": 2024,
+      "url": "https://doi.org/10.1016/j.alit.2024.03.004",
+      "journal": "Allergology International",
+      "authors_parsed": [
+        {
+          "family": "Hara",
+          "given": "Monami"
+        },
+        {
+          "family": "Suzuki",
+          "given": "Hisato"
+        },
+        {
+          "family": "Hayashi",
+          "given": "Daisuke"
+        },
+        {
+          "family": "Morii",
+          "given": "Wataru"
+        },
+        {
+          "family": "Nakamura",
+          "given": "Takako"
+        },
+        {
+          "family": "Kiyoki",
+          "given": "Kaori"
+        },
+        {
+          "family": "Hara",
+          "given": "Hideki"
+        },
+        {
+          "family": "Ishii",
+          "given": "Ryota"
+        },
+        {
+          "family": "Noguchi",
+          "given": "Emiko"
+        }
+      ],
+      "authors_et_al": true
+    },
+    "nu14091774": {
+      "title": "Intestinal Dysbiosis in Patients with Histamine Intolerance",
+      "authors": "Sònia Sánchez-Pérez, Oriol Comas-Basté, Adriana Duelo, M. T. Veciana-Nogués, M. Berlanga, M. Latorre-Moratalla, M. Vidal-Carou",
+      "doi": "10.3390/nu14091774",
+      "year": 2022,
+      "url": "https://www.mdpi.com/2072-6643/14/9/1774/pdf?version=1651713395",
+      "journal": "Nutrients",
+      "authors_parsed": [
+        {
+          "family": "Sánchez-Pérez",
+          "given": "Sònia"
+        },
+        {
+          "family": "Comas-Basté",
+          "given": "Oriol"
+        },
+        {
+          "family": "Duelo",
+          "given": "Adriana"
+        },
+        {
+          "family": "Veciana-Nogués",
+          "given": "M. T."
+        },
+        {
+          "family": "Berlanga",
+          "given": "M."
+        },
+        {
+          "family": "Latorre-Moratalla",
+          "given": "M."
+        },
+        {
+          "family": "Vidal-Carou",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": false
+    }
+  },
+  "metadata": {
+    "total_papers": 20,
+    "total_conditions": 8,
+    "total_findings": 12,
+    "notes": [
+      "All 8 conditions share overlapping dysbiotic features: loss of diversity, depletion of SCFA-producers (Faecalibacterium, Bifidobacterium), and enrichment of Proteobacteria",
+      "HT and cholecystectomy have strongest causal evidence (FMT and mechanistic studies)",
+      "Food allergy and UTI have prospective/longitudinal data suggesting dysbiosis may precede/predict disease",
+      "Celiac and post-bariatric remain primarily cross-sectional; bariatric literature underrepresented in current search",
+      "IDA has weakest direct microbiome evidence; most data describes secondary effects of iron supplementation",
+      "Histamine intolerance represents emerging area with limited human studies"
+    ]
+  }
+}

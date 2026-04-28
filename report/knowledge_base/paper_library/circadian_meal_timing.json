@@ -1,0 +1,943 @@
+{
+  "topic": "circadian_meal_timing",
+  "source_files": [
+    "breakfast, circadian x microbiome.md",
+    "breakfast, circadian x microbiome - Sources.csv"
+  ],
+  "lookup_keys": [
+    "breakfast",
+    "breakfast_skip",
+    "breakfast_skipping",
+    "meal_timing",
+    "meal_frequency",
+    "circadian",
+    "circadian_rhythm",
+    "circadian_disruption",
+    "circadian_misalignment",
+    "time-restricted_feeding",
+    "time_restricted_feeding",
+    "TRF",
+    "TRE",
+    "time-restricted_eating",
+    "intermittent_fasting",
+    "fasting",
+    "Ramadan",
+    "evening_eating",
+    "late_eating",
+    "nighttime_eating",
+    "early_meal_loading",
+    "early-time-restricted_feeding",
+    "eTRF",
+    "chrononutrition",
+    "clock_genes",
+    "clock_gene_expression",
+    "metabolic_synchronization",
+    "circadian_clock",
+    "Akkermansia",
+    "Akkermansia_muciniphila",
+    "Prevotellaceae",
+    "Bacteroidaceae",
+    "Faecalibacterium",
+    "Roseburia",
+    "Lactobacillus",
+    "Lactobacillus_johnsonii",
+    "Ruminococcaceae",
+    "Ruminococcus_torques",
+    "Firmicutes",
+    "Verrucomicrobia",
+    "Bacteroides",
+    "TM7",
+    "Fusobacteria",
+    "Rikenellaceae",
+    "Parabacteroides",
+    "short-chain_fatty_acids",
+    "SCFA",
+    "butyrate",
+    "propionate",
+    "acetate",
+    "gut_barrier",
+    "intestinal_barrier",
+    "tight_junction_proteins",
+    "intestinal_permeability",
+    "LPS",
+    "lipopolysaccharide",
+    "bile_acid",
+    "bile_acids",
+    "secondary_bile_acids",
+    "microbial_diversity",
+    "microbial_richness",
+    "microbial_composition",
+    "dysbiosis",
+    "gut_dysbiosis",
+    "microbiota_oscillation",
+    "microbiota_rhythm",
+    "salivary_microbiota",
+    "fecal_microbiota",
+    "host_circadian_clock",
+    "hepatic_clock",
+    "clock_gene_expression",
+    "Per1",
+    "Per2",
+    "Cry1",
+    "Cry2",
+    "Clock",
+    "Bmal1",
+    "Rev-erbα",
+    "Sirt1",
+    "metabolic_endotoxemia",
+    "germ-free_mice",
+    "circadian_desynchrony",
+    "secretory_IgA",
+    "SIgA",
+    "immune_repertoire",
+    "senescent_T_cells",
+    "CD4+_senescent_T_cells",
+    "Th1",
+    "Treg",
+    "Tfh",
+    "B_cells",
+    "TCR",
+    "BCR",
+    "immunoglobulin",
+    "IgA",
+    "IgM",
+    "anti-inflammatory_bacteria",
+    "proinflammatory_taxa",
+    "probiotics",
+    "obesity",
+    "type_2_diabetes",
+    "T2D",
+    "metabolic_syndrome",
+    "hyperglycemia",
+    "glucose_metabolism",
+    "weight_loss",
+    "weight_gain",
+    "lipid_metabolism",
+    "dyslipidemia",
+    "hepatic_clock_genes",
+    "shift_work",
+    "social_jet_lag",
+    "constant_light",
+    "light-dark_cycle",
+    "shift_workers",
+    "alpha_diversity",
+    "beta_diversity",
+    "microbial_functionality"
+  ],
+  "related_topics": [
+    "dietary_patterns",
+    "bacterial_guilds",
+    "scfa_barrier_function",
+    "circadian_disruption",
+    "metabolic_health",
+    "immune_function",
+    "gut_health",
+    "obesity_prevention",
+    "diabetes_management"
+  ],
+  "findings": [
+    {
+      "finding_id": "gut_microbiome_circadian_rhythmicity",
+      "statement": "The gut microbiome exhibits intrinsic circadian rhythmicity in both composition and metabolic activity. Microbial metabolites, particularly short-chain fatty acids, directly modulate hepatic clock gene expression, establishing bidirectional host-microbe circadian communication.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": []
+      },
+      "guilds_affected": [
+        "Butyrate Producers",
+        "SCFA Producers"
+      ],
+      "mechanisms": [
+        "SCFA-mediated clock gene modulation",
+        "hepatic circadian clock regulation",
+        "metabolic synchronization"
+      ],
+      "evidence_strength": "high",
+      "cautions": [],
+      "paper_ids": [
+        "leone_2015",
+        "bajaj_2025",
+        "romanenko_2025"
+      ]
+    },
+    {
+      "finding_id": "breakfast_skipping_dysbiosis",
+      "statement": "Skipping breakfast creates circadian misalignment between meal timing and endogenous clock genes, leading to gut microbiome dysbiosis that promotes obesity and hyperglycemia. Breakfast has a particularly strong resetting effect on the clock gene network.",
+      "taxa_affected": {
+        "depleted": [
+          "Lactobacillus johnsonii"
+        ],
+        "enriched": [
+          "proinflammatory taxa"
+        ]
+      },
+      "guilds_affected": [
+        "Butyrate Producers",
+        "Cross-Feeders"
+      ],
+      "mechanisms": [
+        "clock gene desynchronization",
+        "oscillation disruption of microbiota and metabolites",
+        "impaired circadian gene expression"
+      ],
+      "evidence_strength": "high",
+      "cautions": [
+        "Skipping breakfast may be especially problematic for individuals with type 2 diabetes or obesity",
+        "rapid metabolic adjustment when reestablishing breakfast patterns"
+      ],
+      "paper_ids": [
+        "jakubowicz_2024"
+      ]
+    },
+    {
+      "finding_id": "circadian_misalignment_metabolic_disruption",
+      "statement": "Circadian misalignment from irregular eating patterns disrupts short-chain fatty acid production, lipid metabolism, and gut barrier integrity via changes in tight junction proteins. Microbial functionality appears more sensitive to circadian disruption than composition alone.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": []
+      },
+      "guilds_affected": [
+        "Butyrate Producers",
+        "SCFA Producers",
+        "Fiber Degraders"
+      ],
+      "mechanisms": [
+        "SCFA synthesis reduction",
+        "tight junction protein alteration",
+        "lipid metabolism disruption",
+        "barrier function impairment"
+      ],
+      "evidence_strength": "high",
+      "cautions": [
+        "Human studies show inconsistent composition changes; functional changes may be more pronounced",
+        "circadian disruption effects may vary by individual chronotype"
+      ],
+      "paper_ids": [
+        "bajaj_2025",
+        "romanenko_2025"
+      ]
+    },
+    {
+      "finding_id": "early_trf_microbial_diversity",
+      "statement": "Early-time-restricted feeding (eTRF) enhances microbial diversity and functions particularly beneficial for microbiota health by synchronizing with circadian cycles. eTRF promotes improved barrier function and metabolic synchronization.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": [
+          "Prevotellaceae",
+          "Bacteroidaceae",
+          "Rikenellaceae",
+          "Akkermansia"
+        ]
+      },
+      "guilds_affected": [
+        "Fiber Degraders",
+        "Mucin Degraders"
+      ],
+      "mechanisms": [
+        "circadian alignment",
+        "microbial diversity enrichment",
+        "circadian gene activation"
+      ],
+      "evidence_strength": "high",
+      "cautions": [],
+      "paper_ids": [
+        "bajaj_2025"
+      ]
+    },
+    {
+      "finding_id": "late_eating_rhythm_inversion",
+      "statement": "Eating the main meal late inverts the daily rhythm of salivary microbiota diversity and increases proinflammatory taxa, leading to dysbiosis and potential metabolic dysfunction.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": [
+          "proinflammatory taxa",
+          "TM7",
+          "Fusobacteria"
+        ]
+      },
+      "guilds_affected": [
+        "Proteolytic Guild"
+      ],
+      "mechanisms": [
+        "circadian rhythm inversion",
+        "increased proinflammatory taxa",
+        "salivary microbiota dysbiosis"
+      ],
+      "evidence_strength": "moderate",
+      "cautions": [
+        "Study limited to salivary microbiota; fecal effects may differ",
+        "small sample size (n=10)"
+      ],
+      "paper_ids": [
+        "collado_2017"
+      ]
+    },
+    {
+      "finding_id": "trf_akkermansia_enrichment",
+      "statement": "Time-restricted eating via 16:8 protocol increases anti-inflammatory bacteria including Akkermansia and other beneficial taxa, alongside improved immune markers and reduced senescence in immune cells.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": [
+          "Akkermansia",
+          "Rikenellaceae",
+          "anti-inflammatory bacteria"
+        ]
+      },
+      "guilds_affected": [
+        "Mucin Degraders",
+        "Butyrate Producers"
+      ],
+      "mechanisms": [
+        "immune system rejuvenation",
+        "reduced senescent T cells",
+        "upregulated anti-inflammatory metabolites",
+        "improved immune repertoire diversity"
+      ],
+      "evidence_strength": "high",
+      "cautions": [],
+      "paper_ids": [
+        "chen_2024"
+      ]
+    },
+    {
+      "finding_id": "trf_lipid_improvement",
+      "statement": "Time-restricted feeding enhances microbial richness, particularly Prevotellaceae and Bacteroidaceae, and improves serum lipid profiles and circadian gene expression, likely mediated by Sirt1 activation.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": [
+          "Prevotellaceae",
+          "Bacteroidaceae"
+        ]
+      },
+      "guilds_affected": [
+        "Fiber Degraders",
+        "Cross-Feeders"
+      ],
+      "mechanisms": [
+        "Sirt1 activation",
+        "circadian gene upregulation",
+        "lipid profile improvement",
+        "microbial richness enhancement"
+      ],
+      "evidence_strength": "high",
+      "cautions": [],
+      "paper_ids": [
+        "zeb_2020"
+      ]
+    },
+    {
+      "finding_id": "circadian_disruption_barrier_dysfunction",
+      "statement": "Constant light-induced circadian disruption increases Ruminococcus torques (barrier-degrading species) and decreases Lactobacillus johnsonii (barrier-protective), with upregulation of LPS synthesis genes and increased intestinal dysfunction.",
+      "taxa_affected": {
+        "depleted": [
+          "Lactobacillus johnsonii"
+        ],
+        "enriched": [
+          "Ruminococcus torques"
+        ]
+      },
+      "guilds_affected": [
+        "Mucin Degraders",
+        "Proteolytic Guild",
+        "Butyrate Producers"
+      ],
+      "mechanisms": [
+        "barrier integrity loss",
+        "LPS synthesis upregulation",
+        "downregulation of host beneficial immune pathways",
+        "intestinal dysfunction"
+      ],
+      "evidence_strength": "high",
+      "cautions": [
+        "findings from mouse models; human applicability requires validation"
+      ],
+      "paper_ids": [
+        "deaver_2018"
+      ]
+    },
+    {
+      "finding_id": "daytime_feeding_desynchrony",
+      "statement": "Feeding during rest phase (analogous to nighttime eating in humans) desynchronizes hepatic clock genes and alters bile acid profiles alongside microbiota composition shifts. Daytime feeding abolished rhythmic Per1, Cry1/2, and Rev-erbα expression.",
+      "taxa_affected": {
+        "depleted": [
+          "Verrucomicrobia",
+          "Akkermansia"
+        ],
+        "enriched": [
+          "Firmicutes",
+          "Parabacteroides"
+        ]
+      },
+      "guilds_affected": [
+        "Fiber Degraders",
+        "Mucin Degraders"
+      ],
+      "mechanisms": [
+        "hepatic clock desynchrony",
+        "bile acid metabolism disruption",
+        "F/B ratio elevation",
+        "Akkermansia reduction"
+      ],
+      "evidence_strength": "high",
+      "cautions": [
+        "findings from mouse models with 12h daytime feeding; human equivalency unclear"
+      ],
+      "paper_ids": [
+        "cui_2022"
+      ]
+    },
+    {
+      "finding_id": "feeding_rhythm_secretory_iga",
+      "statement": "Loss of daily feeding rhythms causes striking loss of secretory IgA rhythms and diminished microbiota oscillations and microbial-derived SCFA production, even though intrinsic intestinal epithelial clocks persist.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": []
+      },
+      "guilds_affected": [
+        "SCFA Producers",
+        "Butyrate Producers"
+      ],
+      "mechanisms": [
+        "loss of rhythmic secretory IgA",
+        "diminished microbiota oscillation",
+        "reduced SCFA rhythmicity",
+        "immune regulation disruption"
+      ],
+      "evidence_strength": "moderate",
+      "cautions": [
+        "interval feeding design may not directly translate to human shift work or irregular eating"
+      ],
+      "paper_ids": [
+        "hunter_2025"
+      ]
+    },
+    {
+      "finding_id": "trf_minimal_composition_change",
+      "statement": "An 8-hour TRE intervention over 12 weeks showed no significant microbiome composition or diversity changes despite weight loss, suggesting that circadian alignment effects may be composition-independent or require longer interventions.",
+      "taxa_affected": {
+        "depleted": [],
+        "enriched": []
+      },
+      "guilds_affected": [],
+      "mechanisms": [
+        "weight loss without microbial compositional shifts"
+      ],
+      "evidence_strength": "moderate",
+      "cautions": [
+        "small sample size (n=16, only 5 with both pre/post samples)",
+        "only two sampling time points",
+        "12 weeks may be insufficient for microbiota changes",
+        "limited dietary data collection"
+      ],
+      "paper_ids": [
+        "johnson_2025"
+      ]
+    }
+  ],
+  "papers": {
+    "leone_2015": {
+      "title": "Effects of diurnal variation of gut microbes and high-fat feeding on host circadian clock function and metabolism",
+      "authors": "V. Leone, S. Gibbons, K. Martinez, Alan L. Hutchison, Edmond Y. Huang, C. Cham, J. Pierre, A. Heneghan, A. Nadimpalli, N. Hubert, Elizabeth Zale, Yunwei Wang, Yong Huang, B. Theriault, A. Dinner, M. Musch, K. Kudsk, B. Prendergast, J. Gilbert, E. Chang",
+      "year": 2015,
+      "doi": "10.1016/j.chom.2015.03.006",
+      "venue": "Cell Host & Microbe",
+      "study_type": "Mechanistic mouse model",
+      "authors_parsed": [
+        {
+          "family": "Leone",
+          "given": "V."
+        },
+        {
+          "family": "Gibbons",
+          "given": "S."
+        },
+        {
+          "family": "Martinez",
+          "given": "K."
+        },
+        {
+          "family": "Hutchison",
+          "given": "Alan L."
+        },
+        {
+          "family": "Huang",
+          "given": "Edmond Y."
+        },
+        {
+          "family": "Cham",
+          "given": "C."
+        },
+        {
+          "family": "Pierre",
+          "given": "J."
+        },
+        {
+          "family": "Heneghan",
+          "given": "A."
+        },
+        {
+          "family": "Nadimpalli",
+          "given": "A."
+        },
+        {
+          "family": "Hubert",
+          "given": "N."
+        },
+        {
+          "family": "Zale",
+          "given": "Elizabeth"
+        },
+        {
+          "family": "Wang",
+          "given": "Yunwei"
+        },
+        {
+          "family": "Huang",
+          "given": "Yong"
+        },
+        {
+          "family": "Theriault",
+          "given": "B."
+        },
+        {
+          "family": "Dinner",
+          "given": "A."
+        },
+        {
+          "family": "Musch",
+          "given": "M."
+        },
+        {
+          "family": "Kudsk",
+          "given": "K."
+        },
+        {
+          "family": "Prendergast",
+          "given": "B."
+        },
+        {
+          "family": "Gilbert",
+          "given": "J."
+        },
+        {
+          "family": "Chang",
+          "given": "E."
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "Cell Host & Microbe"
+    },
+    "jakubowicz_2024": {
+      "title": "Interaction Between Early Meals (Big-Breakfast Diet), Clock Gene mRNA Expression, and Gut Microbiome to Regulate Weight Loss and Glucose Metabolism in Obesity and Type 2 Diabetes",
+      "authors": "D. Jakubowicz, Yael Matz, Z. Landau, Rachel Chava Rosenblum, O. Twito, J. Wainstein, S. Tsameret",
+      "year": 2024,
+      "doi": "10.3390/ijms252212355",
+      "venue": "International Journal of Molecular Sciences",
+      "study_type": "Review",
+      "authors_parsed": [
+        {
+          "family": "Jakubowicz",
+          "given": "D."
+        },
+        {
+          "family": "Matz",
+          "given": "Yael"
+        },
+        {
+          "family": "Landau",
+          "given": "Z."
+        },
+        {
+          "family": "Rosenblum",
+          "given": "Rachel Chava"
+        },
+        {
+          "family": "Twito",
+          "given": "O."
+        },
+        {
+          "family": "Wainstein",
+          "given": "J."
+        },
+        {
+          "family": "Tsameret",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "International Journal of Molecular Sciences"
+    },
+    "bajaj_2025": {
+      "title": "Chrononutrition and Gut Health: Exploring the Relationship Between Meal Timing and the Gut Microbiome",
+      "authors": "Priya Bajaj, Mahak Sharma",
+      "year": 2025,
+      "doi": "10.1007/s13668-025-00670-z",
+      "venue": "Current Nutrition Reports",
+      "study_type": "Review (31 studies analyzed)",
+      "authors_parsed": [
+        {
+          "family": "Bajaj",
+          "given": "Priya"
+        },
+        {
+          "family": "Sharma",
+          "given": "Mahak"
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "Current Nutrition Reports"
+    },
+    "romanenko_2025": {
+      "title": "Gut microbiota and circadian disruption in humans: Is there a rationale for metabolic disorders?",
+      "authors": "Mariana Romanenko, M. Bartsch, L. Piven, Andreas Hahn, Mattea Mueller",
+      "year": 2025,
+      "doi": "10.1080/07420528.2025.2536521",
+      "venue": "Chronobiology International",
+      "study_type": "Review",
+      "authors_parsed": [
+        {
+          "family": "Romanenko",
+          "given": "Mariana"
+        },
+        {
+          "family": "Bartsch",
+          "given": "M."
+        },
+        {
+          "family": "Piven",
+          "given": "L."
+        },
+        {
+          "family": "Hahn",
+          "given": "Andreas"
+        },
+        {
+          "family": "Mueller",
+          "given": "Mattea"
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "Chronobiology International"
+    },
+    "collado_2017": {
+      "title": "Timing of food intake impacts daily rhythms of human salivary microbiota: a randomized, crossover study",
+      "authors": "M. Collado, P. Engen, C. Bandín, R. Cabrera-Rubio, Robin M. Voigt, S. Green, A. Naqib, A. Keshavarzian, F. Scheer, M. Garaulet",
+      "year": 2017,
+      "doi": "10.1096/fj.201700697RR",
+      "venue": "The FASEB Journal",
+      "study_type": "Randomized crossover human trial (n=10)",
+      "authors_parsed": [
+        {
+          "family": "Collado",
+          "given": "M."
+        },
+        {
+          "family": "Engen",
+          "given": "P."
+        },
+        {
+          "family": "Bandín",
+          "given": "C."
+        },
+        {
+          "family": "Cabrera-Rubio",
+          "given": "R."
+        },
+        {
+          "family": "Voigt",
+          "given": "Robin M."
+        },
+        {
+          "family": "Green",
+          "given": "S."
+        },
+        {
+          "family": "Naqib",
+          "given": "A."
+        },
+        {
+          "family": "Keshavarzian",
+          "given": "A."
+        },
+        {
+          "family": "Scheer",
+          "given": "F."
+        },
+        {
+          "family": "Garaulet",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "The FASEB Journal"
+    },
+    "zeb_2020": {
+      "title": "Effect of Time Restricted Feeding on Metabolic Risk and Circadian Rhythm Associated with Gut Microbiome in Healthy Males",
+      "authors": "Falak Zeb, Xiaoyue Wu, Lijun Chen, S. Fatima, I. Haq, Aochang Chen, F. Majeed, Qing Feng, Min Li",
+      "year": 2020,
+      "doi": "10.1017/S0007114519003428",
+      "venue": "British Journal of Nutrition",
+      "study_type": "Observational human study (n=80)",
+      "authors_parsed": [
+        {
+          "family": "Zeb",
+          "given": "Falak"
+        },
+        {
+          "family": "Wu",
+          "given": "Xiaoyue"
+        },
+        {
+          "family": "Chen",
+          "given": "Lijun"
+        },
+        {
+          "family": "Fatima",
+          "given": "S."
+        },
+        {
+          "family": "Haq",
+          "given": "I."
+        },
+        {
+          "family": "Chen",
+          "given": "Aochang"
+        },
+        {
+          "family": "Majeed",
+          "given": "F."
+        },
+        {
+          "family": "Feng",
+          "given": "Qing"
+        },
+        {
+          "family": "Li",
+          "given": "Min"
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "British Journal of Nutrition"
+    },
+    "chen_2024": {
+      "title": "Time-restricted eating reveals a \"younger\" immune system and reshapes the intestinal microbiome in human",
+      "authors": "Yiran Chen, Xi Li, Ming Yang, C. Jia, Zhenghao He, Suqing Zhou, Pinglang Ruan, Yikun Wang, Congli Tang, Wenjing Pan, H. Long, M. Zhao, Liwei Lu, Weijun Peng, Arne N Akbar, Irene Xy Wu, Song Li, Haijing Wu, Qianjin Lu",
+      "year": 2024,
+      "doi": "10.1016/j.redox.2024.103422",
+      "venue": "Redox Biology",
+      "study_type": "Single-arm clinical trial (n=49, 30-day 16:8 TRE)",
+      "authors_parsed": [
+        {
+          "family": "Chen",
+          "given": "Yiran"
+        },
+        {
+          "family": "Li",
+          "given": "Xi"
+        },
+        {
+          "family": "Yang",
+          "given": "Ming"
+        },
+        {
+          "family": "Jia",
+          "given": "C."
+        },
+        {
+          "family": "He",
+          "given": "Zhenghao"
+        },
+        {
+          "family": "Zhou",
+          "given": "Suqing"
+        },
+        {
+          "family": "Ruan",
+          "given": "Pinglang"
+        },
+        {
+          "family": "Wang",
+          "given": "Yikun"
+        },
+        {
+          "family": "Tang",
+          "given": "Congli"
+        },
+        {
+          "family": "Pan",
+          "given": "Wenjing"
+        },
+        {
+          "family": "Long",
+          "given": "H."
+        },
+        {
+          "family": "Zhao",
+          "given": "M."
+        },
+        {
+          "family": "Lu",
+          "given": "Liwei"
+        },
+        {
+          "family": "Peng",
+          "given": "Weijun"
+        },
+        {
+          "family": "Akbar",
+          "given": "Arne N"
+        },
+        {
+          "family": "Wu",
+          "given": "Irene Xy"
+        },
+        {
+          "family": "Li",
+          "given": "Song"
+        },
+        {
+          "family": "Wu",
+          "given": "Haijing"
+        },
+        {
+          "family": "Lu",
+          "given": "Qianjin"
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "Redox Biology"
+    },
+    "johnson_2025": {
+      "title": "A Randomized Pilot Study of Time-Restricted Eating Shows Minimal Microbiome Changes",
+      "authors": "Abigail J. Johnson, Alison C. Alvear, Dan Knights, L. Chow, Anne E Bantle",
+      "year": 2025,
+      "doi": "10.3390/nu17010185",
+      "venue": "Nutrients",
+      "study_type": "Randomized controlled trial secondary analysis (n=16)",
+      "authors_parsed": [
+        {
+          "family": "Johnson",
+          "given": "Abigail J."
+        },
+        {
+          "family": "Alvear",
+          "given": "Alison C."
+        },
+        {
+          "family": "Knights",
+          "given": "Dan"
+        },
+        {
+          "family": "Chow",
+          "given": "L."
+        },
+        {
+          "family": "Bantle",
+          "given": "Anne E"
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "Nutrients"
+    },
+    "deaver_2018": {
+      "title": "Circadian Disruption Changes Gut Microbiome Taxa and Functional Gene Composition",
+      "authors": "Jessica A. Deaver, S. Eum, M. Toborek",
+      "year": 2018,
+      "doi": "10.3389/fmicb.2018.00737",
+      "venue": "Frontiers in Microbiology",
+      "study_type": "Mechanistic mouse model (constant light disruption)",
+      "authors_parsed": [
+        {
+          "family": "Deaver",
+          "given": "Jessica A."
+        },
+        {
+          "family": "Eum",
+          "given": "S."
+        },
+        {
+          "family": "Toborek",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "Frontiers in Microbiology"
+    },
+    "cui_2022": {
+      "title": "Daytime restricted feeding Promotes Circadian Desynchrony and Metabolic Disruption with Changes in Bile Acids profiles and Gut Microbiota in C57BL/6 Male Mice",
+      "authors": "Yuan Cui, Shilan Li, Yan Yin, Xinran Li, Xinli Li",
+      "year": 2022,
+      "doi": "10.1016/j.jnutbio.2022.109121",
+      "venue": "Journal of Nutritional Biochemistry",
+      "study_type": "Mechanistic mouse model (n=60, 3 feeding regimens)",
+      "authors_parsed": [
+        {
+          "family": "Cui",
+          "given": "Yuan"
+        },
+        {
+          "family": "Li",
+          "given": "Shilan"
+        },
+        {
+          "family": "Yin",
+          "given": "Yan"
+        },
+        {
+          "family": "Li",
+          "given": "Xinran"
+        },
+        {
+          "family": "Li",
+          "given": "Xinli"
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "Journal of Nutritional Biochemistry"
+    },
+    "hunter_2025": {
+      "title": "Meal timing is a critical factor for maintenance of gut homeostasis around the clock",
+      "authors": "F. Hunter, P. Downton, Andrea Luengas-Martinez, Suzanna H. Dickson, J. Cain, K. Else, M. Hepworth, Julie E Gibbs",
+      "year": 2025,
+      "doi": "10.1101/2025.08.12.669757",
+      "venue": "bioRxiv",
+      "study_type": "Mechanistic mouse model (interval feeding)",
+      "authors_parsed": [
+        {
+          "family": "Hunter",
+          "given": "F."
+        },
+        {
+          "family": "Downton",
+          "given": "P."
+        },
+        {
+          "family": "Luengas-Martinez",
+          "given": "Andrea"
+        },
+        {
+          "family": "Dickson",
+          "given": "Suzanna H."
+        },
+        {
+          "family": "Cain",
+          "given": "J."
+        },
+        {
+          "family": "Else",
+          "given": "K."
+        },
+        {
+          "family": "Hepworth",
+          "given": "M."
+        },
+        {
+          "family": "Gibbs",
+          "given": "Julie E"
+        }
+      ],
+      "authors_et_al": false,
+      "journal": "bioRxiv"
+    }
+  }
+}

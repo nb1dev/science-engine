@@ -1,0 +1,299 @@
+{
+  "topic": "bacterial_guilds",
+  "source_files": [
+    "Elicit - Gut Microbiome and Health A Bidirectional Review - Report.pdf"
+  ],
+  "source_pages": "22-23",
+  "lookup_keys": [
+    "Bifidobacteria",
+    "Bifidobacterium",
+    "Bifidobacterium longum",
+    "Bifidobacterium bifidum",
+    "Bifidobacterium adolescentis",
+    "Butyrate Producers",
+    "Faecalibacterium prausnitzii",
+    "Roseburia intestinalis",
+    "Roseburia hominis",
+    "Eubacterium rectale",
+    "Eubacterium hallii",
+    "Anaerostipes",
+    "Coprococcus",
+    "Mucin Degraders",
+    "Akkermansia muciniphila",
+    "Ruminococcus gnavus",
+    "Ruminococcus torques",
+    "Fiber Degraders",
+    "Prevotella copri",
+    "Ruminococcus bromii",
+    "Bacteroides ovatus",
+    "Bacteroides thetaiotaomicron",
+    "Cross-Feeders",
+    "cross-feeding",
+    "trophic cascade",
+    "Proteolytic Guild",
+    "proteolytic",
+    "E. coli",
+    "ammonia",
+    "p-cresol",
+    "branched-chain fatty acids",
+    "BCFA",
+    "butyrate",
+    "acetate",
+    "lactate",
+    "propionate",
+    "SCFA",
+    "functional redundancy",
+    "guild balance",
+    "monoculture"
+  ],
+  "related_topics": [
+    "scfa_barrier_function",
+    "dietary_patterns",
+    "vitamins_microbial_synthesis",
+    "probiotics_prebiotics"
+  ],
+  "findings": [
+    {
+      "guild_name": "Bifidobacteria (Lactate/Acetate Producers)",
+      "key_species": [
+        "Bifidobacterium longum",
+        "Bifidobacterium bifidum",
+        "Bifidobacterium adolescentis"
+      ],
+      "primary_function": "Primary lactate and acetate producers; initiate cross-feeding cascades that sustain butyrate-producing communities",
+      "metabolic_products": [
+        "lactate",
+        "acetate"
+      ],
+      "health_benefits": [
+        "Reduced systemic inflammation",
+        "Enhanced epithelial barrier integrity",
+        "Associated with clinical benefits via prebiotic supplementation"
+      ],
+      "enriched_by": [
+        "Prebiotic supplementation",
+        "Inulin-type fructans",
+        "Galactooligosaccharides",
+        "Resistant starch"
+      ],
+      "depleted_by": [
+        "Depletion associated with increased inflammatory markers",
+        "Metabolic dysfunction across obesity, diabetes, and inflammatory conditions"
+      ],
+      "imbalance_consequences": "Loss of bifidobacteria disrupts the initiation of cross-feeding networks, reducing SCFA production capacity and compromising barrier integrity",
+      "clinical_significance": "Consistently increased Bifidobacterium abundance shows clinical benefits; depletion correlates with inflammatory bowel disease and metabolic dysfunction"
+    },
+    {
+      "guild_name": "Butyrate Producers",
+      "key_species": [
+        "Faecalibacterium prausnitzii",
+        "Roseburia intestinalis",
+        "Roseburia hominis",
+        "Eubacterium rectale",
+        "Eubacterium hallii",
+        "Anaerostipes",
+        "Coprococcus"
+      ],
+      "primary_function": "Critical mediators of intestinal homeostasis and systemic health; ferment dietary fibers to generate butyrate, the primary energy source for colonocytes",
+      "metabolic_products": [
+        "butyrate"
+      ],
+      "health_benefits": [
+        "Key regulator of intestinal barrier function",
+        "Improved metabolic markers and inflammation",
+        "Improved gut barrier function across multiple disease states"
+      ],
+      "enriched_by": [
+        "Dietary fiber supplementation (particularly inulin-type fructans, galactooligosaccharides, resistant starch)",
+        "High-fiber plant-rich diets"
+      ],
+      "depleted_by": [
+        "IBD (reduced in IBS patients; characterized dysbiosis involves dysregulation)",
+        "NAFLD (associated with decreased Ruminococcaceae and butyrate-producing genera)",
+        "Aging populations (reduced SCFA-producing capacity)",
+        "Low-fiber diets",
+        "Antibiotic exposure"
+      ],
+      "imbalance_consequences": "Dysbiosis characterized by depletion of Faecalibacterium prausnitzii and Roseburia species shows alterations in intestinal motility, gut permeability, visceral hypersensitivity, and microbiota composition. Loss of butyrate production reduces colonocyte energy and impairs barrier function.",
+      "clinical_significance": "Dysbiosis in IBS, NAFLD, and aging is characterized by reduced butyrate producer abundance. Intervention studies show dietary fiber supplementation selectively enriches these species with improvements in metabolic markers, inflammation, and gut barrier function."
+    },
+    {
+      "guild_name": "Mucin Degraders",
+      "key_species": [
+        "Akkermansia muciniphila",
+        "Ruminococcus gnavus",
+        "Ruminococcus torques"
+      ],
+      "primary_function": "Mucin-degrading specialist with unique health-promoting properties; degrades host-secreted mucus glycoproteins, occupying a distinct ecological niche at the mucus-epithelium interface",
+      "metabolic_products": [
+        "favorable glucose metabolism",
+        "secondary fermentation products"
+      ],
+      "health_benefits": [
+        "Higher Akkermansia abundance associated with favorable glucose metabolism",
+        "Inverse correlations between Akkermansia levels and fasting glucose, glycated hemoglobin",
+        "Therapeutic potential extended to cancer immunotherapy where Akkermansia enrichment associated with improved overall survival"
+      ],
+      "enriched_by": [
+        "Mediterranean diet",
+        "High-fiber plant-rich diet",
+        "Regular exercise",
+        "Polyphenol-rich diets (cranberry, blueberry)"
+      ],
+      "depleted_by": [
+        "High-fat, low-fiber diets",
+        "Very-low-calorie ketogenic diet",
+        "Caloric restriction"
+      ],
+      "imbalance_consequences": "Low Akkermansia abundance associated with impaired glucose metabolism and metabolic dysfunction. High-protein diets increase levels of this specialist taxon, with effects varying by diet composition.",
+      "clinical_significance": "Multiple dietary interventions enriched Akkermansia in both healthy and diseased states. Akkermansia muciniphila enrichment shows association with improved cancer immunotherapy outcomes (HR 0.62, 95% CI 0.51-0.76) and progression-free survival (HR 0.69, 95% CI 0.55-0.83) in patients receiving immune checkpoint inhibitors."
+    },
+    {
+      "guild_name": "Fiber Degraders",
+      "key_species": [
+        "Prevotella copri",
+        "Ruminococcus bromii",
+        "Bacteroides ovatus",
+        "Bacteroides thetaiotaomicron"
+      ],
+      "primary_function": "High substrate specificity for complex carbohydrates; ferment resistant starch and oligosaccharides, releasing primary degradation products that fuel cross-feeding networks, sustaining secondary fermenters and butyrate producers",
+      "metabolic_products": [
+        "oligosaccharides",
+        "secondary fermentation substrates"
+      ],
+      "health_benefits": [
+        "Sustained secondary fermentation and butyrate production through trophic cascades",
+        "Expansion in response to specific complex carbohydrate substrates"
+      ],
+      "enriched_by": [
+        "High-fiber plant-rich diets",
+        "Strict vegetarians (elevated Prevotella abundance)",
+        "Resistant starch consumption",
+        "Complex oligosaccharide substrates"
+      ],
+      "depleted_by": [
+        "Low-fiber diets",
+        "Lacto-ovo-vegetarian diets show reduced Prevotella compared to omnivores"
+      ],
+      "imbalance_consequences": "Loss of Ruminococcus bromii specialized capacity reduces resistant starch degradation and secondary fermentation networks. Ruminococcus bromii specializes in resistant starch degradation, expanding in response to specific complex carbohydrate substrates. Primary degraders release oligosaccharides and metabolites that fuel cross-feeding networks.",
+      "clinical_significance": "Prevotella dominated in high-fiber plant-rich diet populations; Ruminococcus bromii showed strict dietary specificity for resistant starches and complex carbohydrates. Guild balance is critical for sustained butyrate production through trophic cascades."
+    },
+    {
+      "guild_name": "Cross-Feeding Networks",
+      "key_species": [
+        "Bifidobacterium species (initiators)",
+        "Butyrate producers (recipients)",
+        "Secondary fermenters (participants)"
+      ],
+      "primary_function": "Fundamental organizing principle of gut microbiome ecology; Bifidobacterium species convert dietary carbohydrates to acetate and lactate, which serve as substrates for cross-feeding bacteria that subsequently produce butyrate and other SCFA",
+      "metabolic_products": [
+        "lactate",
+        "acetate",
+        "butyrate",
+        "propionate"
+      ],
+      "health_benefits": [
+        "Functional redundancy within the ecosystem",
+        "Microbiome resilience through trophic cascade sustainability"
+      ],
+      "enriched_by": [
+        "Prebiotic supplementation (inulin, fructans, galactooligosaccharides, resistant starch)",
+        "Intact cross-feeding network function"
+      ],
+      "depleted_by": [
+        "Restrictive diets through simultaneous depletion of multiple guild members",
+        "Antibiotic exposure disrupting cross-feeding networks",
+        "Loss of individual species could be compensated by functionally equivalent taxa"
+      ],
+      "imbalance_consequences": "Simultaneous depletion of multiple guild members through restrictive diets or antibiotic exposure disrupts these networks, reducing SCFA production capacity and compromising barrier integrity. Trophic cascade failure reduces secondary fermenter populations and butyrate production.",
+      "clinical_significance": "Cross-feeding networks emerged as fundamental organizing principle in gut microbiome ecology. This metabolic interdependence created functional redundancy within the ecosystem, where loss of individual species could be compensated by functionally equivalent taxa, contributing to microbiome resilience. Functional redundancy means simultaneous depletion of multiple guild members through restrictive diets or antibiotic exposure is required to substantially disrupt the ecosystem."
+    },
+    {
+      "guild_name": "Proteolytic Guild",
+      "key_species": [
+        "Escherichia coli",
+        "Proteobacteria (elevated in high-protein diets)"
+      ],
+      "primary_function": "Respond to high protein intake, particularly animal-derived proteins; generate potentially harmful metabolites from protein fermentation",
+      "metabolic_products": [
+        "ammonia",
+        "branched-chain fatty acids (BCFA)",
+        "p-cresol",
+        "other proteolytic metabolites"
+      ],
+      "health_benefits": "Limited direct benefits; role is predominantly pathogenic when imbalanced",
+      "enriched_by": [
+        "High-protein diets (particularly animal-derived proteins)",
+        "Low carbohydrate intake"
+      ],
+      "depleted_by": [
+        "High-fiber diets",
+        "Balanced carbohydrate intake",
+        "Dietary pattern shift toward plant-based foods"
+      ],
+      "imbalance_consequences": "High-protein diets increase Escherichia coli and decrease beneficial Bifidobacterium, Prevotella, Ruminococcus bromii, and Roseburia/Eubacterium rectale. The balance between saccharolytic (carbohydrate-fermenting) and proteolytic (protein-fermenting) bacterial activity influenced colonic pH, barrier function, and inflammatory signaling. Excessive proteolytic fermentation contributes to increased intestinal permeability and systemic endotoxemia.",
+      "clinical_significance": "High-protein diets increased Escherichia coli while decreasing beneficial taxa. Excessive proteolytic fermentation generating ammonia, branched-chain fatty acids, and p-cresol associated with increased intestinal permeability and systemic endotoxemia. Guild balance between saccharolytic and proteolytic activity is critical for maintaining colonic pH, barrier function, and inflammatory tone."
+    }
+  ],
+  "papers": {
+    "131": {
+      "reference_number": 131,
+      "topic": "Cross-feeding networks and functional redundancy in butyrate-producing communities"
+    },
+    "93": {
+      "reference_number": 93,
+      "topic": "Increased Bifidobacterium abundance with clinical benefits"
+    },
+    "9": {
+      "reference_number": 9,
+      "topic": "Metabolic disorders and dysbiotic signatures across obesity, diabetes, and NAFLD"
+    },
+    "52": {
+      "reference_number": 52,
+      "topic": "Butyrate as primary energy source for colonocytes and gut barrier regulation"
+    },
+    "11": {
+      "reference_number": 11,
+      "topic": "Dysbiosis in NAFLD with reduced butyrate-producing genera"
+    },
+    "109": {
+      "reference_number": 109,
+      "topic": "Reduced SCFA production and metabolic dysfunction in dysbiosis"
+    },
+    "125": {
+      "reference_number": 125,
+      "topic": "Dietary fiber supplementation enriching butyrate producers"
+    },
+    "47": {
+      "reference_number": 47,
+      "topic": "Prevotella dominance in high-fiber plant-rich diets"
+    },
+    "86": {
+      "reference_number": 86,
+      "topic": "Ruminococcus species dietary specificity"
+    },
+    "8": {
+      "reference_number": 8,
+      "topic": "Akkermansia enrichment in cancer immunotherapy outcomes"
+    },
+    "37": {
+      "reference_number": 37,
+      "topic": "Dietary manipulation and Akkermansia abundance"
+    },
+    "47-86": {
+      "reference_number": "47, 86",
+      "topic": "Fiber-degrading guild substrate specificity and dietary responses"
+    },
+    "118": {
+      "reference_number": 118,
+      "topic": "Proteolytic bacterial balance and metabolite generation in high-protein diets"
+    }
+  },
+  "metadata": {
+    "creation_date": "2026-04-08",
+    "document_focus": "NB1 bacterial guilds and their critical role in mapping microbiome deviations",
+    "critical_note": "This file is the MOST IMPORTANT for NB1 reports since every deviation maps to a guild. Each finding details: what the guild does, which species are key members, what depletes/enriches them, and what happens when they are imbalanced.",
+    "guild_count": 6,
+    "total_species_covered": 30
+  }
+}

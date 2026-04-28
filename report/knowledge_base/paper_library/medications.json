@@ -1,0 +1,1832 @@
+{
+  "topic": "medications",
+  "source_files": [
+    "Elicit - How Common Medications Alter the Human Gut Microbiome - Report.pdf"
+  ],
+  "lookup_keys": [
+    "PPI",
+    "proton pump inhibitor",
+    "omeprazole",
+    "pantoprazole",
+    "lansoprazole",
+    "esomeprazole",
+    "metformin",
+    "glucophage",
+    "SSRI",
+    "SNRI",
+    "antidepressant",
+    "escitalopram",
+    "sertraline",
+    "fluoxetine",
+    "vortioxetine",
+    "statin",
+    "atorvastatin",
+    "rosuvastatin",
+    "simvastatin",
+    "corticosteroid",
+    "glucocorticoid",
+    "prednisone",
+    "prednisolone",
+    "dexamethasone",
+    "oral contraceptive",
+    "OC",
+    "COC",
+    "hormonal contraception",
+    "polypharmacy",
+    "Streptococcus",
+    "Streptococcus salivarius",
+    "Rothia",
+    "Lachnospiraceae",
+    "Ruminococcaceae",
+    "Escherichia",
+    "Shigella",
+    "E. coli",
+    "Faecalibacterium",
+    "Bifidobacterium",
+    "Roseburia",
+    "Subdoligranulum",
+    "Intestinibacter",
+    "Romboutsia",
+    "Parasutterella",
+    "Blautia",
+    "Collinsella",
+    "Clostridium",
+    "Bacteroides",
+    "Prevotella",
+    "Lactobacillus",
+    "Haemophilus",
+    "Enterococcaceae",
+    "Micrococcaceae",
+    "Actinomycetales",
+    "Clostridiaceae",
+    "Turicibacter",
+    "Barnesiella",
+    "Akkermansia",
+    "Dialister",
+    "Fusicatenibacter",
+    "Ruminococcus",
+    "Eggerthella",
+    "Gemella",
+    "Gordonibacter",
+    "Eubacterium",
+    "Coprococcus",
+    "Anaerostipes",
+    "Parabacteroides",
+    "Veillonella",
+    "Dysosmobacter",
+    "Anaerotignium",
+    "Collinsella",
+    "Aeromonas",
+    "Alistipes",
+    "Enterobacteriaceae"
+  ],
+  "related_topics": [
+    "bacterial_guilds",
+    "scfa_barrier_function",
+    "disease_dysbiosis_broad",
+    "supplements_botanicals"
+  ],
+  "findings": [
+    {
+      "drug_class": "PPIs",
+      "generic_names": [
+        "omeprazole",
+        "pantoprazole",
+        "lansoprazole",
+        "esomeprazole"
+      ],
+      "finding_id": "ppi_diversity",
+      "title": "PPIs reduce alpha and beta diversity",
+      "description": "Across multiple human studies and meta-analyses, PPI exposure is repeatedly associated with altered gut community structure (beta diversity) and, in several datasets, lower alpha diversity (Shannon diversity p=0.01, species richness p=0.02). Short-term interventional studies sometimes report no within-individual alpha-diversity change.",
+      "key_taxa": [
+        {
+          "taxon": "Streptococcus",
+          "direction": "increased",
+          "effect_size": "β = 0.47"
+        },
+        {
+          "taxon": "Rothia",
+          "direction": "increased",
+          "effect_size": "β = 0.45"
+        },
+        {
+          "taxon": "Lachnospiraceae",
+          "direction": "decreased",
+          "effect_size": "β = -0.35"
+        },
+        {
+          "taxon": "Ruminococcaceae",
+          "direction": "decreased",
+          "effect_size": "β = -0.26"
+        },
+        {
+          "taxon": "Streptococcaceae",
+          "direction": "increased",
+          "fold_change": ">10-fold"
+        },
+        {
+          "taxon": "Clostridiaceae",
+          "direction": "decreased",
+          "change": "median 44% decrease"
+        }
+      ],
+      "cautions": [
+        "Increased CDI (Clostridium difficile infection) risk",
+        "Reduced colonization resistance",
+        "Enrichment of taxa associated with enteric infections"
+      ]
+    },
+    {
+      "drug_class": "PPIs",
+      "finding_id": "ppi_function_infection",
+      "title": "PPIs alter metabolic functions linked to pathogenic overgrowth",
+      "description": "PPI-associated functional shifts include increases in functional genes related to metabolic pathways and altered predicted metabolic genes/pathways. Functional evidence supports ecological changes predisposing to CDI and other enteric infections, with specific CDI-associated taxa (increased Enterococcaceae and Streptococcaceae, decreased Clostridiales) shifting during PPI use.",
+      "key_taxa": [
+        {
+          "taxon": "Enterococcaceae",
+          "direction": "increased",
+          "context": "CDI-associated"
+        },
+        {
+          "taxon": "Micrococcaceae",
+          "direction": "increased",
+          "context": "gastrointestinal bacterial overgrowth associated"
+        },
+        {
+          "taxon": "Staphylococcaceae",
+          "direction": "increased",
+          "context": "gastrointestinal bacterial overgrowth associated"
+        }
+      ],
+      "metabolic_changes": [
+        "Increased predicted fructose-1,6-bisphosphatase (fbp)",
+        "Increased fumarate reductase (frdA, frdC)",
+        "Increased IL-10, decreased IGF-1",
+        "Bile acids often unchanged in some mechanistic trials"
+      ],
+      "cautions": [
+        "Ecological shifts predispose to CDI",
+        "Reduced colonization resistance to pathogens",
+        "Risk of enteric bacterial overgrowth"
+      ]
+    },
+    {
+      "drug_class": "Metformin",
+      "generic_names": [
+        "metformin",
+        "glucophage"
+      ],
+      "finding_id": "metformin_diversity",
+      "title": "Metformin produces minimal alpha diversity changes but detectable taxonomic shifts",
+      "description": "In randomized placebo-controlled contexts, metformin did not produce large shifts in overall alpha diversity or gross community separation, suggesting that metformin's microbiome effects may be more detectable at the level of specific taxa and functions. Overall microbiota differences were more dependent on inter-individual variation than intervention.",
+      "key_taxa": [
+        {
+          "taxon": "Escherichia/Shigella",
+          "direction": "increased",
+          "context": "prominent enrichment across studies"
+        },
+        {
+          "taxon": "E. coli",
+          "direction": "increased",
+          "context": "confirmed by metagenomic sequencing"
+        },
+        {
+          "taxon": "Peptostreptococcaceae",
+          "direction": "decreased",
+          "duration": "detectable at 1 week"
+        },
+        {
+          "taxon": "Clostridiaceae",
+          "direction": "decreased",
+          "duration": "detectable at 1 week"
+        },
+        {
+          "taxon": "Romboutsia",
+          "direction": "decreased",
+          "duration": "sustained decreases at 6-12 months"
+        },
+        {
+          "taxon": "Intestinibacter bartlettii",
+          "direction": "decreased",
+          "duration": "detectable at 6 and 12 months"
+        },
+        {
+          "taxon": "Roseburia",
+          "direction": "decreased",
+          "duration": "sustained decreases at 12 months"
+        }
+      ],
+      "cautions": [
+        "GI side effects linked to E. coli enrichment",
+        "Increased gas metabolism and fermentation-related genes",
+        "Higher E. coli abundance correlates with higher incidence of side effects"
+      ]
+    },
+    {
+      "drug_class": "Metformin",
+      "finding_id": "metformin_metabolism",
+      "title": "Metformin enhances SCFA-related metabolism while producing gas-metabolism enrichment",
+      "description": "Multiple human studies report that metformin is associated with shifts in microbial functional potential and measured metabolites consistent with enhanced SCFA-related metabolism in some settings, alongside functional changes that may relate to gastrointestinal side effects. Functional shifts include enrichment of virulence factors and gas metabolism genes, largely attributable to increased Escherichia abundance.",
+      "metabolic_changes": [
+        {
+          "metabolite": "Butyrate",
+          "direction": "increased",
+          "context": "production potential enhanced; measured increases at 4 months in men"
+        },
+        {
+          "metabolite": "Propionate",
+          "direction": "increased",
+          "context": "production potential enhanced; measured increases at 4 months in men"
+        },
+        {
+          "metabolite": "Lactate",
+          "direction": "increased",
+          "context": "fecal lactate increased with trend toward increased succinate"
+        },
+        {
+          "metabolite": "Bile acids",
+          "direction": "minimal change",
+          "context": "fecal bile acids did not show substantial changes; plasma bile acids increased"
+        },
+        {
+          "pathway": "Bile salt hydrolase",
+          "direction": "increased",
+          "context": "bsh genes increased after metformin exposure"
+        }
+      ],
+      "clinical_evidence": "Fecal transfer from metformin-treated donors to germ-free mice improved glucose tolerance in recipients, supporting microbiota-mediated glucose regulation",
+      "cautions": [
+        "GI side effects arise from microbial fermentation and gas production",
+        "E. coli enrichment linked to virulence factors and gas-metabolism genes",
+        "Increased E. coli abundance correlates with higher side effect incidence"
+      ]
+    },
+    {
+      "drug_class": "SSRIs and Antidepressants",
+      "generic_names": [
+        "SSRI",
+        "SNRI",
+        "escitalopram",
+        "sertraline",
+        "fluoxetine",
+        "vortioxetine",
+        "antidepressant"
+      ],
+      "finding_id": "ssri_diversity",
+      "title": "SSRIs show consistent beta-diversity differences but heterogeneous alpha-diversity effects",
+      "description": "Across human studies and reviews, antidepressant and SSRI exposure is most consistently associated with differences in beta diversity (community structure), while alpha diversity effects are mixed and sometimes absent depending on study design, population, and duration. Pooled longitudinal data showed significant differences in beta diversity but not alpha diversity after antidepressant treatment.",
+      "key_taxa": [
+        {
+          "taxon": "Faecalibacterium",
+          "direction": "decreased",
+          "context": "consistent depletion in antidepressant-treated MDD patients"
+        },
+        {
+          "taxon": "Parasutterella",
+          "direction": "decreased",
+          "context": "consistent depletion in antidepressant-treated MDD patients"
+        },
+        {
+          "taxon": "Bifidobacterium",
+          "direction": "increased",
+          "context": "enrichment in antidepressant-treated MDD patients"
+        },
+        {
+          "taxon": "Ruminococcus",
+          "direction": "increased",
+          "context": "higher abundance in SSRI responders"
+        },
+        {
+          "taxon": "Blautia",
+          "direction": "increased",
+          "context": "higher abundance in SSRI responders"
+        },
+        {
+          "taxon": "Subdoligranulum",
+          "direction": "increased",
+          "context": "higher abundance in SSRI responders"
+        },
+        {
+          "taxon": "Dialister",
+          "direction": "increased",
+          "context": "higher abundance in non-responders"
+        },
+        {
+          "taxon": "Streptococcus",
+          "direction": "increased",
+          "context": "higher abundance in non-responders"
+        }
+      ],
+      "cautions": [
+        "Responder vs non-responder microbiome signatures exist",
+        "Heterogeneous taxonomic changes depending on drug type",
+        "Treatment response not universally predictable from baseline microbiota"
+      ]
+    },
+    {
+      "drug_class": "SSRIs and Antidepressants",
+      "finding_id": "ssri_biomarker",
+      "title": "SSRI treatment response linked to microbiome-derived biomarkers and metabolic pathways",
+      "description": "Functional results in SSRI/antidepressant studies frequently rely on predicted functional inference and multi-omics profiling, with studies reporting large-scale pathway shifts after treatment and differential metabolic pathway enrichment linked to clinical response. Baseline increased alpha diversity and higher baseline abundance of Roseburia and Faecalibacterium are associated with antidepressant response.",
+      "metabolic_changes": [
+        {
+          "pathway": "Acetate degradation",
+          "direction": "upregulated",
+          "context": "in responders"
+        },
+        {
+          "pathway": "Neurotransmitter-related pathways",
+          "direction": "upregulated",
+          "context": "in responsive group"
+        },
+        {
+          "pathway": "Biosynthesis of unsaturated fatty acids",
+          "direction": "upregulated",
+          "context": "in responders"
+        },
+        {
+          "pathway": "ABC transporters",
+          "direction": "downregulated",
+          "context": "in non-responders"
+        },
+        {
+          "metabolite": "Indole-3-propionic acid (I3PA)",
+          "direction": "increased",
+          "context": "gut microbiota-derived tryptophan metabolite in escitalopram study"
+        }
+      ],
+      "predictive_performance": {
+        "description": "Random forest ROC analysis on microbiota/metabolomics achieved high AUC values; baseline genes achieved AUC of 0.71 for remission prediction",
+        "assessment": "Remitters had higher baseline microbial richness and more complex community structure"
+      },
+      "cautions": [
+        "Responder vs non-responder microbiome signatures present",
+        "Multiple microbiome pathways altered; response heterogeneous",
+        "Predictive models require baseline characterization"
+      ]
+    },
+    {
+      "drug_class": "Statins",
+      "generic_names": [
+        "statin",
+        "atorvastatin",
+        "rosuvastatin",
+        "simvastatin"
+      ],
+      "finding_id": "statin_diversity_enterotype",
+      "title": "Statins show modest diversity effects with enterotype-dependent and bile acid-linked outcomes",
+      "description": "Human studies suggest statins have small or inconsistent associations with alpha diversity and modest but statistically detectable associations with beta diversity, with evidence that statin effects interact with baseline microbiome states (e.g., enterotypes). Statin-associated taxonomic signals are described in terms of microbiome configurations linked to SCFA-producing commensals and dysbiosis-related enterotypes rather than a single universal signature.",
+      "key_taxa": [
+        {
+          "taxon": "Faecalibacterium",
+          "direction": "variable",
+          "context": "SCFA-producer; increased in some response groups"
+        },
+        {
+          "taxon": "Subdoligranulum",
+          "direction": "variable",
+          "context": "SCFA-producer; depletion in dysbiosis enterotype"
+        },
+        {
+          "taxon": "Bifidobacterium",
+          "direction": "increased",
+          "context": "in ACS patients; 'healthier status' shift"
+        },
+        {
+          "taxon": "Bifidobacterium longum subsp. longum",
+          "direction": "increased",
+          "context": "ACS cohort"
+        },
+        {
+          "taxon": "Anaerostipes hadrus",
+          "direction": "increased",
+          "context": "ACS cohort"
+        },
+        {
+          "taxon": "Ruminococcus obeum",
+          "direction": "increased",
+          "context": "ACS cohort"
+        },
+        {
+          "taxon": "Parabacteroides merdae",
+          "direction": "decreased",
+          "context": "potentially pathogenic; modulated downward in ACS"
+        },
+        {
+          "taxon": "Clostridium",
+          "direction": "decreased",
+          "context": "linked to bile acid axis dysregulation"
+        }
+      ],
+      "enterotype_effects": "Dysbiosis-related Bac.2 enterotype characterized by decreased alpha diversity and depletion of SCFA-producing commensals; statin effects vary by baseline enterotype",
+      "cautions": [
+        "Glucose intolerance risk via microbiome-mediated mechanism",
+        "Enterotype-dependent response variability",
+        "Bile acid axis involvement in hyperglycemic effects",
+        "Heterogeneous lipid-lowering response depending on microbiome state"
+      ]
+    },
+    {
+      "drug_class": "Statins",
+      "finding_id": "statin_bile_acid_metabolism",
+      "title": "Statins modulate bile acids and choline/betaine-TMA pathway, affecting metabolic outcomes",
+      "description": "Statins show comparatively strong links to microbiome-associated metabolic axes, particularly bile acids and microbial functions related to the choline/betaine-TMA pathway, which may help explain heterogeneity in metabolic outcomes and adverse effects. Statin-induced hyperglycemic effects are proposed to involve a Clostridium-bile acid axis.",
+      "metabolic_changes": [
+        {
+          "pathway": "Bile acid profile",
+          "direction": "altered",
+          "context": "both serum and fecal bile acids affected"
+        },
+        {
+          "pathway": "Choline/betaine-TMA pathway",
+          "direction": "reduced gene functions",
+          "context": "rosuvastatin trial; functions related to cellular transport and metabolism reduced"
+        },
+        {
+          "metabolite": "Betaine",
+          "direction": "increased",
+          "context": "rosuvastatin trial"
+        },
+        {
+          "metabolite": "γ-butyrobetaine",
+          "direction": "increased",
+          "context": "rosuvastatin trial"
+        },
+        {
+          "metabolite": "TMAO",
+          "direction": "unchanged",
+          "context": "despite betaine increases in rosuvastatin trial"
+        }
+      ],
+      "clinical_mechanism": "Atorvastatin-induced hyperglycemia attributed to Clostridium-bile acid axis dysregulation; UDCA proposed as adjuvant strategy",
+      "cautions": [
+        "Glucose intolerance risk via bile acid-mediated mechanism",
+        "Enterotype-dependent response variability",
+        "Type 2 diabetes risk associated with specific taxa (e.g., Ruminococcus torques, Blautia obeum)",
+        "Lipid-lowering response heterogeneity based on microbiome features"
+      ]
+    },
+    {
+      "drug_class": "Corticosteroids",
+      "generic_names": [
+        "corticosteroid",
+        "glucocorticoid",
+        "prednisone",
+        "prednisolone",
+        "dexamethasone"
+      ],
+      "finding_id": "corticosteroid_route_dependent",
+      "title": "Corticosteroid effects on microbiome are route- and context-dependent",
+      "description": "Human evidence suggests corticosteroid effects on microbiome diversity are context- and route-dependent. Intramuscular dosing produces minimal microbiota changes, while oral or high-dose regimens show detectable compositional and functional shifts. Minimal changes observed in 7-day trials with intramuscular treatment; significant shifts reported in pediatric IBD and Graves' ophthalmopathy patients receiving high-dose glucocorticoids.",
+      "key_taxa": [
+        {
+          "taxon": "Blautia",
+          "direction": "increased",
+          "context": "oral glucocorticoid treatment; minimal with IM"
+        },
+        {
+          "taxon": "Collinsella",
+          "direction": "increased",
+          "context": "oral glucocorticoid treatment; minimal with IM"
+        },
+        {
+          "taxon": "Dysosmobacter welbionis",
+          "direction": "decreased",
+          "context": "oral glucocorticoid treatment"
+        },
+        {
+          "taxon": "Anaerotignium faecicola",
+          "direction": "decreased",
+          "context": "oral glucocorticoid treatment"
+        },
+        {
+          "taxon": "Bacteroides ovatus",
+          "direction": "increased",
+          "context": "pediatric IBD post-treatment"
+        },
+        {
+          "taxon": "Bacteroides fragilis",
+          "direction": "increased",
+          "context": "pediatric IBD post-treatment"
+        },
+        {
+          "taxon": "Prevotella copri",
+          "direction": "decreased",
+          "context": "pediatric IBD post-treatment"
+        },
+        {
+          "taxon": "Alistipes finegoldia",
+          "direction": "decreased",
+          "context": "pediatric IBD post-treatment"
+        }
+      ],
+      "route_effects": "Intramuscular treatment produces minimal microbiota changes; oral treatment produces detectable shifts in composition and function",
+      "cautions": [
+        "Route-dependent effects (oral vs IM); IM shows minimal effects",
+        "High-dose glucocorticoids show stronger microbiota effects",
+        "Context-dependent (e.g., IBD patients, Graves' ophthalmopathy)",
+        "Reduced SCFA-producing capacity in some patient populations"
+      ]
+    },
+    {
+      "drug_class": "Corticosteroids",
+      "finding_id": "corticosteroid_metabolism",
+      "title": "Corticosteroids reduce SCFA-producing capacity and alter metabolic pathways",
+      "description": "Several corticosteroid studies implicate changes in microbial metabolic pathways and reduced SCFA-related functional capacity, with some cohorts reporting altered gut metabolites. High-dose glucocorticoids decrease SCFA-producing ability and increase 5-hydroxytryptamine (serotonin). Integrated multi-omics work describes the osrABC reductive steroid hormone pathway, and experimental evidence in gnotobiotic mice shows colonization can decrease prednisolone bioavailability.",
+      "metabolic_changes": [
+        {
+          "pathway": "Glycolysis",
+          "direction": "altered",
+          "context": "oral corticosteroid treatment"
+        },
+        {
+          "pathway": "Lipid metabolism",
+          "direction": "altered",
+          "context": "oral corticosteroid treatment"
+        },
+        {
+          "metabolite": "Hypoxanthine",
+          "direction": "predicted change",
+          "context": "oral corticosteroid treatment"
+        },
+        {
+          "metabolite": "Phenylacetate",
+          "direction": "predicted change",
+          "context": "oral corticosteroid treatment"
+        },
+        {
+          "pathway": "SCFA-producing ability",
+          "direction": "decreased",
+          "context": "Graves' ophthalmopathy after high-dose glucocorticoids"
+        },
+        {
+          "metabolite": "5-hydroxytryptamine (5-HT/serotonin)",
+          "direction": "increased",
+          "context": "Graves' ophthalmopathy after high-dose glucocorticoids"
+        },
+        {
+          "pathway": "osrABC reductive steroid hormone pathway",
+          "direction": "activated",
+          "context": "selection for steroid-processing bacterial capacity; 9.6% vs 2.4% osrA homolog prevalence"
+        }
+      ],
+      "drug_bioavailability_effect": "Colonization with steroid-reducing bacteria can decrease prednisolone bioavailability (demonstrated in gnotobiotic mice)",
+      "cautions": [
+        "SCFA-producing capacity reduced, especially with high-dose exposure",
+        "Route-dependent effects; oral more pronounced than IM",
+        "Altered metabolic pathways may relate to known side effects (hypertension, hyperglycemia, osteoporosis)",
+        "Microbiome may modulate corticosteroid bioavailability"
+      ]
+    },
+    {
+      "drug_class": "Oral Contraceptives",
+      "generic_names": [
+        "oral contraceptive",
+        "OC",
+        "COC",
+        "hormonal contraception"
+      ],
+      "finding_id": "oc_minimal_effects",
+      "title": "Oral contraceptives frequently show minimal or null effects on diversity",
+      "description": "Across human studies, oral contraceptive (OC) use is frequently reported to have minimal or null effects on overall gut microbiome diversity and broad community composition, though some studies find cycle- or context-dependent richness differences. Longitudinal studies show no changes in diversity or composition over time.",
+      "key_taxa": [
+        {
+          "taxon": "Lachnospiraceae",
+          "direction": "increased",
+          "context": "in some OC user cohorts; null in others"
+        },
+        {
+          "taxon": "Barnesiella",
+          "direction": "increased",
+          "context": "in some OC user cohorts; null in others"
+        },
+        {
+          "taxon": "Faecalibacterium",
+          "direction": "increased",
+          "context": "in some OC user cohorts; null in others"
+        },
+        {
+          "taxon": "Clostridium",
+          "direction": "variable",
+          "context": "lifetime OC use linked to decreased Clostridia ASVs"
+        },
+        {
+          "taxon": "Clostridia",
+          "direction": "decreased",
+          "context": "16 of 25 Firmicutes ASVs belonged to Clostridia; decreased with lifetime OC duration"
+        }
+      ],
+      "cycle_effects": "Some studies report cycle-dependent effects on species richness (day 21) but not composition",
+      "cautions": [
+        "Minimal or null effects in most studies",
+        "Context-dependent effects when present",
+        "Limited direct metabolite evidence",
+        "Heterogeneous results across cohorts"
+      ]
+    },
+    {
+      "drug_class": "Oral Contraceptives",
+      "finding_id": "oc_functional",
+      "title": "Oral contraceptives show inferred functional enrichments but lack direct metabolite assessment",
+      "description": "OC studies rarely quantify fecal SCFAs, bile acids, or comprehensive metabolomic endpoints, so functional claims often rest on inferred pathways or physiological proxies such as breath gas production. Initiation of OC use associated with enrichments in microbial functions including amino-acid biosynthesis and peptidoglycan biosynthesis. Clinical implications are largely indirect with discussion of symptom relevance via gas production rather than direct infection or efficacy outcomes.",
+      "inferred_functions": [
+        {
+          "pathway": "Amino-acid biosynthesis",
+          "direction": "enriched",
+          "examples": [
+            "l-lysine",
+            "l-threonine",
+            "l-methionine",
+            "l-tryptophan"
+          ]
+        },
+        {
+          "pathway": "Peptidoglycan biosynthesis",
+          "direction": "enriched"
+        },
+        {
+          "pathway": "Coenzyme metabolism",
+          "direction": "enriched",
+          "context": "during oxidation reactions"
+        },
+        {
+          "marker": "Breath H2/CH4 production",
+          "association": "correlated with OC use and menstrual cycle",
+          "limitation": "physiological proxy rather than direct SCFA quantification"
+        }
+      ],
+      "clinical_markers": [
+        {
+          "marker": "Intestinal permeability",
+          "finding": "Higher lactulose-to-rhamnose ratio in OC users vs other groups",
+          "context": "dual sugar absorption technique"
+        },
+        {
+          "marker": "Pill cycle effect",
+          "finding": "Permeability not impacted by pill cycle in one study"
+        }
+      ],
+      "cautions": [
+        "Minimal or null effects in most studies",
+        "Limited direct functional metabolite endpoints",
+        "Inferred functions lack direct validation",
+        "No established microbiome-mediated clinical endpoints (infection, treatment efficacy)"
+      ]
+    },
+    {
+      "drug_class": "Cross-cutting",
+      "finding_id": "polypharmacy",
+      "title": "Polypharmacy accumulates medication signals with additive dysbiotic effects",
+      "description": "Medication signals accumulate under polypharmacy, where additive drug effects are associated with altered community structure, enrichment of upper gastrointestinal/oral taxa, depletion of SCFA producers, and reduced SCFA metabolism. Polypharmacy-exposed individuals show increased Streptococcus and Lactobacillus species with depletion of the Shannon index and SCFA-producing capacity.",
+      "key_effects": [
+        {
+          "effect": "Community structure alteration",
+          "direction": "altered beta diversity",
+          "context": "additive drug effects"
+        },
+        {
+          "effect": "Oral/upper-GI taxa enrichment",
+          "taxa": [
+            "Streptococcus",
+            "Lactobacillus"
+          ]
+        },
+        {
+          "effect": "SCFA-producer depletion",
+          "consequence": "reduced short-chain fatty acid production potential"
+        },
+        {
+          "effect": "Shannon index depletion",
+          "consequence": "reduced species evenness"
+        },
+        {
+          "effect": "Reduced SCFA metabolism",
+          "context": "prospective polypharmacy analysis"
+        },
+        {
+          "effect": "Increased bacterial stress responses",
+          "context": "polypharmacy exposure"
+        },
+        {
+          "effect": "Antimicrobial resistance potential increase",
+          "context": "significant correlation with non-antibiotic drugs under polypharmacy"
+        },
+        {
+          "effect": "Nosocomial pathobiont enrichment",
+          "consequence": "harbor more abundant upper-GI species and pathobionts"
+        }
+      ],
+      "mechanistic_summary": "SCFA depletion can increase gut permeability and heighten CDI risk; elevated gut pH under PPI use facilitates overgrowth of taxa like Streptococcus and Rothia and pathogenic bacteria like C. difficile",
+      "cautions": [
+        "Additive effects of multiple medications",
+        "Reduced SCFA production and increased permeability",
+        "Increased antimicrobial resistance potential",
+        "Enhanced colonization by pathobionts"
+      ]
+    }
+  ],
+  "papers": {
+    "1": {
+      "authors": "Aasmetset al.",
+      "year": 2025,
+      "title": "Medications used years before sample collection",
+      "journal": "mSystems",
+      "doi": "10.1128/msystems.00541-25",
+      "authors_parsed": [
+        {
+          "family": "Aasmets",
+          "given": ""
+        }
+      ],
+      "authors_et_al": true
+    },
+    "2": {
+      "authors": "Orho-Melander, Marju",
+      "year": 2024,
+      "title": "New connections of medication use and polypharmacy with the gut microbiota composition and functional potential in a large population",
+      "journal": "Scientific Reports",
+      "doi": "10.1038/s41598-024-71571-4",
+      "authors_parsed": [
+        {
+          "family": "Orho-Melander",
+          "given": "Marju"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "3": {
+      "authors": "Borgiani G, Possidente C, Fabbri C, et al",
+      "year": 2024,
+      "title": "The bidirectional interaction between antidepressants and the gut microbiota: are there implications for treatment response?",
+      "journal": "International Clinical Psychopharmacology",
+      "doi": "10.1097/YIC.0000000000000533",
+      "authors_parsed": [
+        {
+          "family": "Borgiani",
+          "given": "G."
+        },
+        {
+          "family": "Possidente",
+          "given": "C."
+        },
+        {
+          "family": "Fabbri",
+          "given": "C."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "4": {
+      "authors": "Imhann F, Bonder M, Vich Vila A, et al",
+      "year": 2015,
+      "title": "Proton pump inhibitors affect the gut microbiome",
+      "journal": "Gut",
+      "doi": "10.1136/gutjnl-2015-310376",
+      "authors_parsed": [
+        {
+          "family": "Imhann",
+          "given": "F."
+        },
+        {
+          "family": "Bonder",
+          "given": "M."
+        },
+        {
+          "family": "Vich Vila",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "5": {
+      "authors": "Jackson M, Goodrich J, Maxan ME, et al",
+      "year": 2015,
+      "title": "Proton pump inhibitors alter the composition of the gut microbiota",
+      "journal": "Gut",
+      "doi": "10.1136/gutjnl-2015-310861",
+      "authors_parsed": [
+        {
+          "family": "Jackson",
+          "given": "M."
+        },
+        {
+          "family": "Goodrich",
+          "given": "J."
+        },
+        {
+          "family": "Maxan",
+          "given": "M. E."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "6": {
+      "authors": "Freedberg D, Toussaint NC, Chen S, et al",
+      "year": 2015,
+      "title": "Proton Pump Inhibitors Alter Specific Taxa in the Human Gastrointestinal Microbiome: A Crossover Trial",
+      "journal": "Gastroenterology",
+      "doi": "10.1053/j.gastro.2015.06.043",
+      "authors_parsed": [
+        {
+          "family": "Freedberg",
+          "given": "D."
+        },
+        {
+          "family": "Toussaint",
+          "given": "N. C."
+        },
+        {
+          "family": "Chen",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "7": {
+      "authors": "Elbere I, Kalnina I, Silamikeli I, et al",
+      "year": 2018,
+      "title": "Association of metformin administration with gut microbiome dysbiosis in healthy volunteers",
+      "journal": "PLoS ONE",
+      "doi": "10.1371/journal.pone.0204317",
+      "authors_parsed": [
+        {
+          "family": "Elbere",
+          "given": "I."
+        },
+        {
+          "family": "Kalnina",
+          "given": "I."
+        },
+        {
+          "family": "Silamikeli",
+          "given": "I."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "8": {
+      "authors": "Forslund K, Hildebrand F, Nielsen T, et al",
+      "year": 2015,
+      "title": "Disentangling the effects of type 2 diabetes and metformin on the human gut microbiota",
+      "journal": "Nature",
+      "doi": "10.1038/nature15766",
+      "authors_parsed": [
+        {
+          "family": "Forslund",
+          "given": "K."
+        },
+        {
+          "family": "Hildebrand",
+          "given": "F."
+        },
+        {
+          "family": "Nielsen",
+          "given": "T."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "9": {
+      "authors": "Wu H, Esteve E, Tremaroli V, et al",
+      "year": 2017,
+      "title": "Metformin alters the gut microbiome of individuals with treatment-naive type 2 diabetes, contributing to the therapeutic effects of the drug",
+      "journal": "Nature Medicine",
+      "doi": "10.1038/nm.4345",
+      "authors_parsed": [
+        {
+          "family": "Wu",
+          "given": "H."
+        },
+        {
+          "family": "Esteve",
+          "given": "E."
+        },
+        {
+          "family": "Tremaroli",
+          "given": "V."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "10": {
+      "authors": "Gamboa J, Le G, Wong S, et al",
+      "year": 2024,
+      "title": "Impact of antidepressants on the composition of the gut microbiome: A systematic review and meta-analysis of in vivo studies",
+      "journal": "Journal of Affective Disorders",
+      "doi": "10.1016/j.jad.2024.10.042",
+      "authors_parsed": [
+        {
+          "family": "Gamboa",
+          "given": "J."
+        },
+        {
+          "family": "Le",
+          "given": "G."
+        },
+        {
+          "family": "Wong",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "11": {
+      "authors": "Jiang Y, Qu Y, Shi L, et al",
+      "year": 2024,
+      "title": "The role of gut microbiota and metabolomic pathways in modulating the efficacy of SSRIs for major depressive disorder",
+      "journal": "Translational Psychiatry",
+      "doi": "10.1038/s41398-024-03208-z",
+      "authors_parsed": [
+        {
+          "family": "Jiang",
+          "given": "Y."
+        },
+        {
+          "family": "Qu",
+          "given": "Y."
+        },
+        {
+          "family": "Shi",
+          "given": "L."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "12": {
+      "authors": "Wilmanski T, Kornilov S, Diener C, et al",
+      "year": 2021,
+      "title": "Heterogeneity in statin responses explained by variation in the human gut microbiome",
+      "journal": "medRxiv",
+      "doi": "10.1101/2021.12.02.21267193",
+      "authors_parsed": [
+        {
+          "family": "Wilmanski",
+          "given": "T."
+        },
+        {
+          "family": "Kornilov",
+          "given": "S."
+        },
+        {
+          "family": "Diener",
+          "given": "C."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "13": {
+      "authors": "She J, Tuerhongjiang G, Guo M, et al",
+      "year": 2024,
+      "title": "Statins aggravate insulin resistance through reduced blood glucagon-like peptide-1 levels in a microbiota-dependent manner",
+      "journal": "Cell Metabolism",
+      "doi": "10.1016/j.cmet.2023.12.027",
+      "authors_parsed": [
+        {
+          "family": "She",
+          "given": "J."
+        },
+        {
+          "family": "Tuerhongjiang",
+          "given": "G."
+        },
+        {
+          "family": "Guo",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "14": {
+      "authors": "Lyu L, Fan Y, Bryrup T, et al",
+      "year": 2025,
+      "title": "Glucocorticoid-induced changes of the gut microbiota and metabolic markers in healthy young men: Outcome of a randomized controlled trial",
+      "journal": "Cell Reports Medicine",
+      "doi": "10.1016/j.xcrm.2025.102426",
+      "authors_parsed": [
+        {
+          "family": "Lyu",
+          "given": "L."
+        },
+        {
+          "family": "Fan",
+          "given": "Y."
+        },
+        {
+          "family": "Bryrup",
+          "given": "T."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "15": {
+      "authors": "Su X, Tian Z, Fang Y, et al",
+      "year": 2025,
+      "title": "Effects of high-dose glucocorticoids on gut microbiota in the treatment of Graves' ophthalmopathy",
+      "journal": "Microbiology Spectrum",
+      "doi": "10.1128/spectrum.02467-24",
+      "authors_parsed": [
+        {
+          "family": "Su",
+          "given": "X."
+        },
+        {
+          "family": "Tian",
+          "given": "Z."
+        },
+        {
+          "family": "Fang",
+          "given": "Y."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "16": {
+      "authors": "Hua X, Cao Y, Morgan DM, et al",
+      "year": 2022,
+      "title": "Longitudinal analysis of the impact of oral contraceptive use on the gut microbiome",
+      "journal": "Journal of Medical Microbiology",
+      "doi": "10.1099/jmm.0.001512",
+      "authors_parsed": [
+        {
+          "family": "Hua",
+          "given": "X."
+        },
+        {
+          "family": "Cao",
+          "given": "Y."
+        },
+        {
+          "family": "Morgan",
+          "given": "D. M."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "17": {
+      "authors": "Krog M, Hugerth L, Fransson E, et al",
+      "year": 2021,
+      "title": "The healthy female microbiome across body sites: effect of hormonal contraceptives and the menstrual cycle",
+      "journal": "Human Reproduction",
+      "doi": "10.21203/rs.3.rs-696563/v2",
+      "authors_parsed": [
+        {
+          "family": "Krog",
+          "given": "M."
+        },
+        {
+          "family": "Hugerth",
+          "given": "L."
+        },
+        {
+          "family": "Fransson",
+          "given": "E."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "18": {
+      "authors": "Hua X, Cao Y, Morgan DM, et al",
+      "year": 2022,
+      "title": "Longitudinal analysis of the impact of oral contraceptive use on the gut microbiome",
+      "journal": "Journal of Medical Microbiology",
+      "doi": "10.1099/jmm.0.001512",
+      "authors_parsed": [
+        {
+          "family": "Hua",
+          "given": "X."
+        },
+        {
+          "family": "Cao",
+          "given": "Y."
+        },
+        {
+          "family": "Morgan",
+          "given": "D. M."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "20": {
+      "authors": "Reveles K, Moore R, Cosimi R, et al",
+      "year": 2017,
+      "title": "Impact of Proton Pump Inhibitor Use on Gut Microbiota Composition and Other Markers of Health in Older Adults",
+      "journal": "Open Forum Infectious Diseases",
+      "doi": "10.1093/OFID/OFX163.491",
+      "authors_parsed": [
+        {
+          "family": "Reveles",
+          "given": "K."
+        },
+        {
+          "family": "Moore",
+          "given": "R."
+        },
+        {
+          "family": "Cosimi",
+          "given": "R."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "21": {
+      "authors": "Zhang J, Zhang C, Zhang Q, et al",
+      "year": 2023,
+      "title": "Meta-analysis of the effects of proton pump inhibitors on the human gut microbiota",
+      "journal": "BMC Microbiology",
+      "doi": "10.1186/s12866-023-02895-w",
+      "authors_parsed": [
+        {
+          "family": "Zhang",
+          "given": "J."
+        },
+        {
+          "family": "Zhang",
+          "given": "C."
+        },
+        {
+          "family": "Zhang",
+          "given": "Q."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "22": {
+      "authors": "Ejtahed H, Tito R, Siadat S, et al",
+      "year": 2019,
+      "title": "Metformin induces weight loss associated with gut microbiota alteration in non-diabetic obese women: a randomized double-blind clinical trial",
+      "journal": "European Journal of Endocrinology",
+      "doi": "10.1530/EJE-18-0826",
+      "authors_parsed": [
+        {
+          "family": "Ejtahed",
+          "given": "H."
+        },
+        {
+          "family": "Tito",
+          "given": "R."
+        },
+        {
+          "family": "Siadat",
+          "given": "S."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "23": {
+      "authors": "Mueller N, Differding M, Zhang M, et al",
+      "year": 2021,
+      "title": "Metformin Affects Gut Microbiome Composition and Function and Circulating Short-Chain Fatty Acids: A Randomized Trial",
+      "journal": "Diabetes Care",
+      "doi": "10.2337/dc20-2257",
+      "authors_parsed": [
+        {
+          "family": "Mueller",
+          "given": "N."
+        },
+        {
+          "family": "Differding",
+          "given": "M."
+        },
+        {
+          "family": "Zhang",
+          "given": "M."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "24": {
+      "authors": "Gao Y, Zhao T, Lv N, et al",
+      "year": 2024,
+      "title": "Metformin-induced changes of the gut microbiota in patients with type 2 diabetes mellitus: results from a prospective cohort study",
+      "journal": "Endocrine",
+      "doi": "10.1007/s12020-024-03828-x",
+      "authors_parsed": [
+        {
+          "family": "Gao",
+          "given": "Y."
+        },
+        {
+          "family": "Zhao",
+          "given": "T."
+        },
+        {
+          "family": "Lv",
+          "given": "N."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "25": {
+      "authors": "Klovins J",
+      "year": 2019,
+      "title": "Metformin mediated gut microbiome modulation in T2D patients and controls induces specific changes in bacterial content",
+      "doi": "10.26226/morressier.5d9b6230ea541d6ca8493f1a",
+      "authors_parsed": [
+        {
+          "family": "Klovins",
+          "given": "J."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "26": {
+      "authors": "Klimek N, Liebert A, Wilska H, et al",
+      "year": 2025,
+      "title": "Metformin and the gut microbiota: changes and clinical implications - a literature review",
+      "journal": "International Journal of Innovative Technologies in Social Science",
+      "doi": "10.31435/ijitss.3(47).2025.3679",
+      "authors_parsed": [
+        {
+          "family": "Klimek",
+          "given": "N."
+        },
+        {
+          "family": "Liebert",
+          "given": "A."
+        },
+        {
+          "family": "Wilska",
+          "given": "H."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "27": {
+      "authors": "Brown LC, Bobo W, Gall CA, et al",
+      "year": 2023,
+      "title": "Pharmacomicrobiomics of Antidepressants in Depression: A Systematic Review",
+      "journal": "Journal of Personalized Medicine",
+      "doi": "10.3390/jpm13071086",
+      "authors_parsed": [
+        {
+          "family": "Brown",
+          "given": "L. C."
+        },
+        {
+          "family": "Bobo",
+          "given": "W."
+        },
+        {
+          "family": "Gall",
+          "given": "C. A."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "28": {
+      "authors": "Desorcy-Scherer K, McNamara K, Luellwitz R, et al",
+      "year": 2026,
+      "title": "Early Insights Into Maternal Antidepressant Use and the Human Infant Gut Microbiome",
+      "journal": "Biological Research for Nursing",
+      "doi": "10.1177/10998004261423546",
+      "authors_parsed": [
+        {
+          "family": "Desorcy-Scherer",
+          "given": "K."
+        },
+        {
+          "family": "McNamara",
+          "given": "K."
+        },
+        {
+          "family": "Luellwitz",
+          "given": "R."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "29": {
+      "authors": "Lin S, Chen HC, Chen C, et al",
+      "year": 2023,
+      "title": "Exploring the human gut microbiota targets in relation to the use of contemporary antidepressants",
+      "journal": "Journal of Affective Disorders",
+      "doi": "10.1016/j.jad.2023.10.016",
+      "authors_parsed": [
+        {
+          "family": "Lin",
+          "given": "S."
+        },
+        {
+          "family": "Chen",
+          "given": "H. C."
+        },
+        {
+          "family": "Chen",
+          "given": "C."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "30": {
+      "authors": "Kai S, Lin K, Chen HC, et al",
+      "year": 2025,
+      "title": "Investigation of gut microbiota composition alterations in depressive patients prescribed with vortioxetine",
+      "journal": "International Journal of Neuropsychopharmacology",
+      "doi": "10.1093/ijnp/pyae059.557",
+      "authors_parsed": [
+        {
+          "family": "Kai",
+          "given": "S."
+        },
+        {
+          "family": "Lin",
+          "given": "K."
+        },
+        {
+          "family": "Chen",
+          "given": "H. C."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "31": {
+      "authors": "Wang Y",
+      "year": 2023,
+      "title": "Multi-omics reveal microbial determinants impacting the treatment outcome of antidepressants in major depressive disorder",
+      "journal": "Microbiome Journal",
+      "doi": "10.1186/s40168-023-01635-6",
+      "authors_parsed": [
+        {
+          "family": "Wang",
+          "given": "Y."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "32": {
+      "authors": "Kummen M, Solberg O, Storm-Larsen C, et al",
+      "year": 2020,
+      "title": "Rosuvastatin alters the genetic composition of the human gut microbiome",
+      "journal": "Scientific Reports",
+      "doi": "10.1038/s41598-020-62261-y",
+      "authors_parsed": [
+        {
+          "family": "Kummen",
+          "given": "M."
+        },
+        {
+          "family": "Solberg",
+          "given": "O."
+        },
+        {
+          "family": "Storm-Larsen",
+          "given": "C."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "33": {
+      "authors": "Jacobs J",
+      "year": 2020,
+      "title": "Faculty Opinions recommendation of Statin therapy is associated with lower prevalence of gut microbiota dysbiosis",
+      "journal": "Faculty Opinions",
+      "doi": "10.3410/f.737903980.793575353",
+      "authors_parsed": [
+        {
+          "family": "Jacobs",
+          "given": "J."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "34": {
+      "authors": "Hu X, Li H, Zhao X, et al",
+      "year": 2021,
+      "title": "Multi-omics study reveals that statin therapy is associated with restoration of gut microbiota homeostasis and improvement in outcomes in patients with acute coronary syndrome",
+      "journal": "Theranostics",
+      "doi": "10.7150/thno.55946",
+      "authors_parsed": [
+        {
+          "family": "Hu",
+          "given": "X."
+        },
+        {
+          "family": "Li",
+          "given": "H."
+        },
+        {
+          "family": "Zhao",
+          "given": "X."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "35": {
+      "authors": "Sun B, Li L, Zhou X",
+      "year": 2018,
+      "title": "Comparative analysis of the gut microbiota in distinct statin response patients in East China",
+      "journal": "Journal of Microbiology",
+      "doi": "10.1007/s12275-018-8152-x",
+      "authors_parsed": [
+        {
+          "family": "Sun",
+          "given": "B."
+        },
+        {
+          "family": "Li",
+          "given": "L."
+        },
+        {
+          "family": "Zhou",
+          "given": "X."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "36": {
+      "authors": "Liu Y, Song X, Zhou H, et al",
+      "year": 2018,
+      "title": "Gut Microbiome Associates With Lipid-Lowering Effect of Rosuvastatin in Vivo",
+      "journal": "Frontiers in Microbiology",
+      "doi": "10.3389/fmicb.2018.00530",
+      "authors_parsed": [
+        {
+          "family": "Liu",
+          "given": "Y."
+        },
+        {
+          "family": "Song",
+          "given": "X."
+        },
+        {
+          "family": "Zhou",
+          "given": "H."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "37": {
+      "authors": "Koponen K, et al.",
+      "year": 2024,
+      "title": "Role of Gut Microbiota in Statin-Associated New-Onset Diabetes",
+      "journal": "Arteriosclerosis, Thrombosis, and Vascular Biology",
+      "doi": "10.1161/atvbaha.123.319458",
+      "authors_parsed": [
+        {
+          "family": "Koponen",
+          "given": "K."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "38": {
+      "authors": "Various",
+      "year": 2025,
+      "title": "Glucocorticoid-induced changes of the gut microbiota and metabolic markers in healthy young men: Outcome of a randomized controlled trial",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12711672/",
+      "journal": "Cell Reports Medicine",
+      "doi": "10.1016/j.xcrm.2025.102426",
+      "authors_parsed": [
+        {
+          "family": "Various",
+          "given": ""
+        }
+      ],
+      "authors_et_al": false
+    },
+    "39": {
+      "authors": "Singh P, Sundararajan S, Terranegra A, et al",
+      "year": 2023,
+      "title": "Corticosteroid treatment in pediatric IBD patients reshapes the gut microbiota",
+      "journal": "Journal of Crohn's & Colitis",
+      "doi": "10.1093/ecco-jcc/jjac190.1057",
+      "authors_parsed": [
+        {
+          "family": "Singh",
+          "given": "P."
+        },
+        {
+          "family": "Sundararajan",
+          "given": "S."
+        },
+        {
+          "family": "Terranegra",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "40": {
+      "authors": "Singh P, Sundararajan S, Terranegra A, et al",
+      "year": 2023,
+      "title": "Corticosteroid treatment in pediatric IBD patients reshapes the gut microbiota",
+      "journal": "Journal of Crohn's & Colitis",
+      "doi": "10.1093/ecco-jcc/jjac190.1057",
+      "authors_parsed": [
+        {
+          "family": "Singh",
+          "given": "P."
+        },
+        {
+          "family": "Sundararajan",
+          "given": "S."
+        },
+        {
+          "family": "Terranegra",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "41": {
+      "authors": "Jacoby C, Scorza K, Ecker L, et al",
+      "year": 2024,
+      "title": "Gut Bacteria Metabolize Natural and Synthetic Steroid Hormones via the Reductive OsrABC Pathway",
+      "journal": "bioRxiv",
+      "doi": "10.1101/2024.10.08.617280",
+      "authors_parsed": [
+        {
+          "family": "Jacoby",
+          "given": "C."
+        },
+        {
+          "family": "Scorza",
+          "given": "K."
+        },
+        {
+          "family": "Ecker",
+          "given": "L."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "42": {
+      "authors": "Terrazas F, Kelley ST, Demasi T, et al",
+      "year": 2025,
+      "title": "Influence of menstrual cycle and oral contraception on taxonomic composition and gas production in the gut microbiome",
+      "journal": "Journal of Medical Microbiology",
+      "doi": "10.1099/jmm.0.001987",
+      "authors_parsed": [
+        {
+          "family": "Terrazas",
+          "given": "F."
+        },
+        {
+          "family": "Kelley",
+          "given": "S. T."
+        },
+        {
+          "family": "Demasi",
+          "given": "T."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "43": {
+      "authors": "Paul G, York S, Alcazar R",
+      "year": 2025,
+      "title": "Gut Microbiota Shifts with Lifetime Duration of Oral Contraception Use",
+      "journal": "bioRxiv",
+      "doi": "10.1101/2025.09.09.675238",
+      "authors_parsed": [
+        {
+          "family": "Paul",
+          "given": "G."
+        },
+        {
+          "family": "York",
+          "given": "S."
+        },
+        {
+          "family": "Alcazar",
+          "given": "R."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "44": {
+      "authors": "Pierudzka W, Sławatycki J, Klemenska P, et al",
+      "year": 2025,
+      "title": "Hormonal Contraceptives and the Gut Microbiome in Female Athletes: Implications for Health, Performance, and Exercise-Related Physiological Adjustments",
+      "journal": "Cureus",
+      "doi": "10.7759/cureus.88789",
+      "authors_parsed": [
+        {
+          "family": "Pierudzka",
+          "given": "W."
+        },
+        {
+          "family": "Sławatycki",
+          "given": "J."
+        },
+        {
+          "family": "Klemenska",
+          "given": "P."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "45": {
+      "authors": "Terrazas F, Kelley ST, Demasi T, et al",
+      "year": 2025,
+      "title": "Influence of menstrual cycle and oral contraception on taxonomic composition and gas production in the gut microbiome",
+      "journal": "Journal of Medical Microbiology",
+      "doi": "10.1099/jmm.0.001987",
+      "authors_parsed": [
+        {
+          "family": "Terrazas",
+          "given": "F."
+        },
+        {
+          "family": "Kelley",
+          "given": "S. T."
+        },
+        {
+          "family": "Demasi",
+          "given": "T."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "46": {
+      "authors": "Zim A, Bommareddy A",
+      "year": 2025,
+      "title": "Estrogen-Gut-Brain Axis: Examining the Role of Combined Oral Contraceptives on Mental Health Through Their Impact on the Gut Microbiome",
+      "journal": "Cureus",
+      "doi": "10.7759/cureus.81354",
+      "authors_parsed": [
+        {
+          "family": "Zim",
+          "given": "A."
+        },
+        {
+          "family": "Bommareddy",
+          "given": "A."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "47": {
+      "authors": "Nagata N, Nishijima S, Miyoshi-Akiyama T, et al",
+      "year": 2022,
+      "title": "Population-level metagenomics uncovers distinct effects of multiple medications on the human gut microbiome",
+      "journal": "Gastroenterology",
+      "doi": "10.1053/j.gastro.2022.06.070",
+      "authors_parsed": [
+        {
+          "family": "Nagata",
+          "given": "N."
+        },
+        {
+          "family": "Nishijima",
+          "given": "S."
+        },
+        {
+          "family": "Miyoshi-Akiyama",
+          "given": "T."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "48": {
+      "authors": "Totleben L, et al.",
+      "year": 2025,
+      "title": "Drug-mediated disruption of the aging gut microbiota and mucosal immune system",
+      "url": "https://www.frontiersin.org/journals/aging/articles/10.3389/fragi.2025.1603847/full",
+      "journal": "Frontiers in Aging",
+      "doi": "10.3389/fragi.2025.1603847",
+      "authors_parsed": [
+        {
+          "family": "Totleben",
+          "given": "L."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "49": {
+      "authors": "Grießhammer A, de la Cuesta-Zuluaga J, Müller P, Gekeler C, Homolak J, Chang H, Schmitt K, Planker C, Schmidtchen V, Gallage S, Bohn E, Nguyen TH, Hetzer J, Heikenwälder M, Huang KC, Zahir T, Maier L",
+      "year": 2025,
+      "title": "Non-antibiotics disrupt colonization resistance against enteropathogens",
+      "journal": "Nature",
+      "doi": "10.1038/s41586-025-09217-2",
+      "authors_parsed": [
+        {
+          "family": "Grießhammer",
+          "given": "A."
+        },
+        {
+          "family": "de la Cuesta-Zuluaga",
+          "given": "J."
+        },
+        {
+          "family": "Müller",
+          "given": "P."
+        },
+        {
+          "family": "Gekeler",
+          "given": "C."
+        },
+        {
+          "family": "Homolak",
+          "given": "J."
+        },
+        {
+          "family": "Chang",
+          "given": "H."
+        },
+        {
+          "family": "Schmitt",
+          "given": "K."
+        },
+        {
+          "family": "Planker",
+          "given": "C."
+        },
+        {
+          "family": "Schmidtchen",
+          "given": "V."
+        },
+        {
+          "family": "Gallage",
+          "given": "S."
+        },
+        {
+          "family": "Bohn",
+          "given": "E."
+        },
+        {
+          "family": "Nguyen",
+          "given": "T. H."
+        },
+        {
+          "family": "Hetzer",
+          "given": "J."
+        },
+        {
+          "family": "Heikenwälder",
+          "given": "M."
+        },
+        {
+          "family": "Huang",
+          "given": "K. C."
+        },
+        {
+          "family": "Zahir",
+          "given": "T."
+        },
+        {
+          "family": "Maier",
+          "given": "L."
+        }
+      ],
+      "authors_et_al": false
+    },
+    "50": {
+      "authors": "Goodman AL, Kumar A, Sun R, et al",
+      "year": 2024,
+      "title": "Impacts of Medications on Microbiome-mediated Protection against Enteric Pathogens",
+      "journal": "Research Square",
+      "doi": "10.21203/rs.3.rs-5199936/v1",
+      "authors_parsed": [
+        {
+          "family": "Goodman",
+          "given": "A. L."
+        },
+        {
+          "family": "Kumar",
+          "given": "A."
+        },
+        {
+          "family": "Sun",
+          "given": "R."
+        }
+      ],
+      "authors_et_al": true
+    },
+    "51": {
+      "authors": "Larsson A, Ericson U, Jönsson D, et al",
+      "year": 2024,
+      "title": "New connections of medication use and polypharmacy with the gut microbiota composition and functional potential in a large population",
+      "journal": "Scientific Reports",
+      "doi": "10.1038/s41598-024-71571-4",
+      "authors_parsed": [
+        {
+          "family": "Larsson",
+          "given": "A."
+        },
+        {
+          "family": "Ericson",
+          "given": "U."
+        },
+        {
+          "family": "Jönsson",
+          "given": "D."
+        }
+      ],
+      "authors_et_al": true
+    }
+  },
+  "summary": {
+    "overview": "This report synthesizes evidence from large human cohorts and targeted interventional studies on medication-microbiome interactions across six major drug classes: PPIs, metformin, SSRIs/antidepressants, statins, corticosteroids, and oral contraceptives.",
+    "key_patterns": [
+      "Strong and consistent compositional signatures for PPIs with oral-taxa enrichment and SCFA-producer depletion",
+      "Metformin produces prominent Escherichia/Shigella shifts linked to glycemic benefit but GI side effects",
+      "SSRIs show heterogeneous taxonomy but consistent beta-diversity differences with treatment-response biomarker potential",
+      "Statins demonstrate modest diversity effects but strong metabolic axis links (bile acids, choline-TMA) to glucose intolerance",
+      "Corticosteroids show route-dependent effects (oral vs IM) with SCFA-capacity reduction",
+      "Oral contraceptives frequently show minimal effects on diversity in most studies",
+      "Polypharmacy shows additive dysbiotic effects with reduced SCFA metabolism and increased pathobiont colonization"
+    ],
+    "clinical_actionability": "PPIs and metformin have the most direct clinical implications (CDI risk and GI side effects respectively); antidepressants and statins offer microbiome-based biomarker potential; corticosteroids show mechanistic links to side effects; oral contraceptives show minimal microbiome relevance in most settings"
+  }
+}

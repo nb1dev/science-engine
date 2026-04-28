@@ -1,0 +1,221 @@
+{
+  "topic": "physical_activity",
+  "source_files": [
+    "Elicit - Gut Microbiome and Health A Bidirectional Review - Report.pdf"
+  ],
+  "lookup_keys": [
+    "exercise",
+    "physical activity",
+    "sedentary",
+    "endurance",
+    "strength training",
+    "resistance training",
+    "cardio",
+    "running",
+    "cycling",
+    "athlete",
+    "athletic",
+    "overtraining",
+    "excessive training",
+    "SCFA",
+    "short-chain fatty acids",
+    "butyrate",
+    "propionate",
+    "Prevotella",
+    "Bacteroides",
+    "barrier integrity",
+    "tight junctions",
+    "immune",
+    "neurocognitive",
+    "moderate activity",
+    "light activity",
+    "walking",
+    "steps",
+    "sitting",
+    "sedentary lifestyle",
+    "diversity",
+    "permeability",
+    "gut barrier",
+    "epithelial"
+  ],
+  "related_topics": [
+    "bacterial_guilds",
+    "scfa_barrier_function",
+    "dietary_patterns",
+    "stress_gutbrain",
+    "immune_function",
+    "metabolic_health"
+  ],
+  "findings": [
+    {
+      "id": 1,
+      "title": "Physical Activity as Significant Modulator",
+      "description": "Physical activity emerged as a significant modulator of gut microbiome structure and function. Regular endurance or mixed training loads increased microbial diversity, SCFA-producing taxa, and enhanced barrier integrity.",
+      "page": 20,
+      "key_citation": "Physical activity emerged as a significant modulator of gut microbiome structure and function. Regular endurance or mixed training loads increased microbial diversity, SCFA-producing taxa, and enhanced barrier integrity [4]."
+    },
+    {
+      "id": 2,
+      "title": "Sport-Specific Microbial Profiles",
+      "description": "Athletic populations demonstrated unique microbial signatures characterized by enhanced metabolic potential and sport-specific taxonomic profiles. Endurance athletes showed higher Prevotella abundance, while strength-trained athletes exhibited elevated Bacteroides.",
+      "page": 20,
+      "key_citation": "Athletic populations demonstrated unique microbial signatures characterized by enhanced metabolic potential, with sport-specific taxonomic profiles: endurance athletes showed higher Prevotella abundance, while strength-trained athletes exhibited elevated Bacteroides [5]."
+    },
+    {
+      "id": 3,
+      "title": "Overtraining Harms Microbiome",
+      "description": "Excessive training loads reduced microbial diversity and increased permeability, indicating potential detrimental effects on gut barrier function and immune homeostasis. Overtraining represents a caution for already-depleted individuals.",
+      "page": 20,
+      "key_citation": "Excessive training loads reduced diversity and increased permeability [4]. While exercise-induced microbiome modifications included production of beneficial metabolites like butyrate and propionate [31], strengthened epithelial tight junctions [4], and enhanced immune and neurocognitive health [31]."
+    },
+    {
+      "id": 4,
+      "title": "SCFA Production and Barrier Function",
+      "description": "Exercise-induced microbiome modifications included production of beneficial metabolites like butyrate and propionate. These short-chain fatty acids strengthen epithelial tight junctions, enhance immune signaling, and improve neurocognitive health outcomes.",
+      "page": 20,
+      "key_citation": "Exercise-induced microbiome modifications included production of beneficial metabolites like butyrate and propionate [31]. Strengthened epithelial tight junctions [4] and enhanced immune and neurocognitive health [31]."
+    },
+    {
+      "id": 5,
+      "title": "Sedentary Lifestyle Effects",
+      "description": "While not explicitly detailed in page 20, sedentary lifestyle represents the inverse of physical activity benefits, implying reduced diversity, lower SCFA-producing taxa, compromised barrier integrity, and diminished immune function compared to regularly active individuals.",
+      "page": 20,
+      "key_citation": "Physical activity emerged as a significant modulator of gut microbiome structure and function. Regular endurance or mixed training loads increased microbial diversity, SCFA-producing taxa, and enhanced barrier integrity [4]."
+    },
+    {
+      "id": 6,
+      "title": "Caution: Exercise in Depleted Individuals",
+      "description": "Overtraining harm increases permeability and reduces diversity. Special consideration needed when applying exercise interventions to individuals with already-compromised gut microbiome or barrier function.",
+      "page": 20,
+      "keywords": [
+        "overtraining",
+        "permeability",
+        "diversity",
+        "caution",
+        "depleted"
+      ]
+    }
+  ],
+  "papers": {
+    "reference_4": {
+      "id": 4,
+      "authors": "Maksymilian Czarnota, Weronika Ossowska, Wiktoria Oszreicher",
+      "year": 2025,
+      "title": "Gut Microbiota Modulation to Enhance Exercise Performance and Recovery - Systematic Review",
+      "journal": "Quality in Sport",
+      "doi": "https://doi.org/10.12775/qs.2025.43.62420",
+      "topics": [
+        "exercise",
+        "diversity",
+        "permeability",
+        "SCFA",
+        "barrier integrity"
+      ],
+      "relevance": "Direct evidence on exercise effects on microbiome composition and function",
+      "authors_parsed": [
+        {
+          "family": "Czarnota",
+          "given": "Maksymilian"
+        },
+        {
+          "family": "Ossowska",
+          "given": "Weronika"
+        },
+        {
+          "family": "Oszreicher",
+          "given": "Wiktoria"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "reference_5": {
+      "id": 5,
+      "authors": "Qin Zeng, Xianqiong Feng, Yanling Hu, Shaoyu Su",
+      "year": 2025,
+      "title": "The human gut microbiota is associated with host lifestyle: a comprehensive narrative review",
+      "journal": "Frontiers in Microbiology",
+      "doi": "https://doi.org/10.3389/fmicb.2025.1549160",
+      "topics": [
+        "physical activity",
+        "lifestyle",
+        "athlete",
+        "sport-specific profiles",
+        "endurance",
+        "strength training"
+      ],
+      "relevance": "Comprehensive review of lifestyle-microbiome associations including detailed sport-specific profiles",
+      "authors_parsed": [
+        {
+          "family": "Zeng",
+          "given": "Qin"
+        },
+        {
+          "family": "Feng",
+          "given": "Xianqiong"
+        },
+        {
+          "family": "Hu",
+          "given": "Yanling"
+        },
+        {
+          "family": "Su",
+          "given": "Shaoyu"
+        }
+      ],
+      "authors_et_al": false
+    },
+    "reference_31": {
+      "id": 31,
+      "authors": "Katarzyna Moliszewska, Pawel Kukieła, Joanna Kośka et al.",
+      "year": 2025,
+      "title": "Probiotics in Sports: Modulating the Microbiome for Performance and Health",
+      "journal": "Quality in Sport",
+      "doi": "https://doi.org/10.12775/qs.2025.43.62412",
+      "topics": [
+        "exercise",
+        "SCFA",
+        "butyrate",
+        "propionate",
+        "tight junctions",
+        "immune",
+        "neurocognitive"
+      ],
+      "relevance": "Evidence on exercise-induced microbial metabolite production and downstream health effects",
+      "authors_parsed": [
+        {
+          "family": "Moliszewska",
+          "given": "Katarzyna"
+        },
+        {
+          "family": "Kukieła",
+          "given": "Pawel"
+        },
+        {
+          "family": "Kośka",
+          "given": "Joanna"
+        }
+      ],
+      "authors_et_al": true
+    }
+  },
+  "cautions": [
+    {
+      "warning": "Overtraining Increases Permeability",
+      "description": "Excessive training loads paradoxically reduce microbial diversity and increase intestinal permeability, compromising barrier function and potentially triggering immune dysregulation."
+    },
+    {
+      "warning": "Exercise in Already-Depleted Individuals",
+      "description": "Caution when applying exercise interventions to individuals with existing microbiome dysbiosis or compromised barrier function. Initial intervention may need to restore microbial diversity before intensive training."
+    },
+    {
+      "warning": "Dose-Dependent Response",
+      "description": "The relationship between exercise and microbiome health is not linear. Moderate regular activity promotes diversity and SCFA production, while excessive volumes may trigger negative adaptations."
+    }
+  ],
+  "metadata": {
+    "created": "2026-04-08",
+    "source_pdf_pages": "20, 32-37",
+    "data_quality": "Primary literature with systematic review methodology",
+    "last_updated": "2026-04-08"
+  }
+}
